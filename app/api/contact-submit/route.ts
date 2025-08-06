@@ -1,6 +1,9 @@
 // app/api/contact-submit/route.ts
 import { NextRequest, NextResponse } from 'next/server'
-import nodemailer from 'nodemailer'
+import sendMailModule from '../../../compiled/email/index.js';
+import nodemailer from 'nodemailer';
+
+const sendMail = (sendMailModule as any).default;
 
 // Verify reCAPTCHA
 async function verifyRecaptcha(token: string) {
@@ -44,15 +47,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Create transporter
-    const transporter = nodemailer.createTransporter({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_PORT === '465',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
+   const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  secure: process.env.SMTP_PORT === '465',
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
     // Email content
     const emailContent = `
@@ -135,7 +138,7 @@ Submission time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata'
       `
     }
 
-    await transporter.sendMail(mailOptions)
+    await sendMail(mailOptions)
 
     return NextResponse.json({ success: true })
 
