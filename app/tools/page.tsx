@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+// dummy comment to force deploy
+
 export const metadata: Metadata = {
   title: 'Free SEO Tools - 13+ Professional Tools | SEO Shouts',
   description: 'Access 13+ professional free SEO tools for keyword research, technical optimization, content analysis, and performance monitoring. No registration required.',
