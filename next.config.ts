@@ -15,14 +15,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Additional bypass options
-  experimental: {
-    forceSwcTransforms: true,
-  },
   // Disable strict mode that can cause additional checks
   reactStrictMode: false,
-  // Disable SWC minification that can cause issues
-  swcMinify: false,
 };
 
 export default nextConfig;
