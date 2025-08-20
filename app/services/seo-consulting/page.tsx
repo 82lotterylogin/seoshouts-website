@@ -211,11 +211,11 @@ export default function SEOConsultingServicePage() {
                 </a>
                 
                 <a 
-                  href="tel:+91809488817"
+                  href="tel:+918094888157"
                   className="group px-8 py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-blue-600 hover:text-blue-600 transition-all duration-300 flex items-center justify-center"
                   aria-label="Call SEO Shouts for SEO consulting"
                 >
-                  📞 Call +91 809488817
+                  📞 Call +91 8094888157
                 </a>
               </div>
             </div>
@@ -956,7 +956,7 @@ export default function SEOConsultingServicePage() {
                       <span className="text-2xl">📞</span>
                     </div>
                     <div className="text-left">
-                      <p className="text-white font-semibold">Call: +91 809488817</p>
+                      <p className="text-white font-semibold">Call: +91 8094888157</p>
                       <p className="text-white/80 text-sm">Speak directly with our SEO consulting team</p>
                     </div>
                   </div>
@@ -996,11 +996,11 @@ export default function SEOConsultingServicePage() {
                 </a>
                 
                 <a 
-                  href="tel:+91809488817"
+                  href="tel:+918094888157"
                   className="group px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300 flex items-center justify-center"
                   aria-label="Call SEOShouts for SEO consulting"
                 >
-                  📞 Call +91 809488817
+                  📞 Call +91 8094888157
                 </a>
               </div>
 

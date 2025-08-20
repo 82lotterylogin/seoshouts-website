@@ -149,7 +149,7 @@ export default async function AjayPorwalAuthorPage() {
                     LinkedIn
                   </a>
                   <a 
-                    href="tel:+918094888158"
+                    href="tel:+918094888157"
                     className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,7 +329,7 @@ export default async function AjayPorwalAuthorPage() {
                     Email Me
                   </a>
                   <a 
-                    href="tel:+918094888158"
+                    href="tel:+918094888157"
                     className="flex items-center justify-center gap-2 w-full bg-white border border-purple-200 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors text-sm"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -372,7 +372,7 @@ export default async function AjayPorwalAuthorPage() {
               "Digital Marketing Strategy"
             ],
             "email": "ajay@seoshouts.com",
-            "telephone": "+918094888158",
+            "telephone": "+918094888157",
             "address": {
               "@type": "PostalAddress",
               "addressRegion": "Rajasthan",

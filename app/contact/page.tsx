@@ -179,8 +179,7 @@ export default function ContactPage() {
                     <div>
                       <h4 className="font-semibold text-gray-900">Location</h4>
                       <p className="text-gray-600 text-sm">
-                        Nathdwara, Rajasthan<br />
-                        India
+                        Rajasthan, India
                       </p>
                       <p className="text-sm text-gray-500 mt-1">Serving clients globally</p>
                     </div>

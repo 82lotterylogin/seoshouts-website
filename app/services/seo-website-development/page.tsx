@@ -218,11 +218,11 @@ export default function SEOWebsiteDevelopmentServicePage() {
                 </a>
                 
                 <a 
-                  href="tel:+91809488817"
+                  href="tel:+918094888157"
                   className="group px-8 py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-green-600 hover:text-green-600 transition-all duration-300 flex items-center justify-center"
                   aria-label="Call SEO Shouts for website development"
                 >
-                  📞 Call +91 809488817
+                  📞 Call +91 8094888157
                 </a>
               </div>
             </div>
@@ -823,7 +823,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                       <span className="text-2xl">📞</span>
                     </div>
                     <div className="text-left">
-                      <p className="text-white font-semibold">Call: +91 809488817</p>
+                      <p className="text-white font-semibold">Call: +91 8094888157</p>
                       <p className="text-white/80 text-sm">Talk directly with our development team</p>
                     </div>
                   </div>
@@ -863,11 +863,11 @@ export default function SEOWebsiteDevelopmentServicePage() {
                 </a>
                 
                 <a 
-                  href="tel:+91809488817"
+                  href="tel:+918094888157"
                   className="group px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white hover:text-green-600 transition-all duration-300 flex items-center justify-center"
                   aria-label="Call SEOShouts for website development"
                 >
-                  📞 Call +91 809488817
+                  📞 Call +91 8094888157
                 </a>
               </div>
 

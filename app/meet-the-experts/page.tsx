@@ -230,10 +230,10 @@ export default function MeetTheExperts() {
               📧 Email Us
             </a>
             <a
-              href="tel:+91809488817"
+              href="tel:+918094888157"
               className="font-bold px-7 py-3 border-2 border-white rounded-xl text-white hover:bg-white hover:text-blue-700 transition"
             >
-              📞 +91 809488817
+              📞 +91 8094888157
             </a>
           </div>
           <div className="mt-3 text-blue-100 text-sm">Helping businesses across India and beyond</div>

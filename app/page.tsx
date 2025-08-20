@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import NewsletterFormSection from './components/NewsletterFormSection'
+import InquiryForm from './components/InquiryForm'
 import { getAllStories } from './lib/storyblok'
 
 export const metadata: Metadata = {
@@ -198,35 +199,7 @@ export default async function HomePage() {
                     </p>
                   </div>
                   
-                  <form className="space-y-6" role="search" aria-label="Website SEO Analysis">
-                    <div className="flex flex-col gap-4">
-                      <div className="flex-1">
-                        <div className="relative">
-                          <div className="absolute inset-y-0 left-0 pl-4 sm:pl-6 flex items-center pointer-events-none">
-                            <span className="text-gray-400 text-lg" aria-hidden="true">🌐</span>
-                          </div>
-                          <input
-                            type="url"
-                            placeholder="https://yourwebsite.com"
-                            className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-4 sm:py-5 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl border-2 border-gray-200 focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/20 text-gray-800 placeholder-gray-500 font-medium text-base sm:text-lg transition-all duration-300 shadow-lg"
-                            required
-                            aria-label="Website URL for SEO analysis"
-                          />
-                        </div>
-                      </div>
-                      <button 
-                        type="submit"
-                        className="group relative px-6 sm:px-10 py-4 sm:py-5 bg-primary text-white rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-2xl hover:shadow-3xl hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 overflow-hidden w-full sm:w-auto"
-                        aria-label="Start SEO analysis"
-                      >
-                        <span className="relative z-10 flex items-center justify-center">
-                          🚀 START MY ANALYSIS
-                          <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
-                        </span>
-                      </button>
-                    </div>
+                  <InquiryForm />
                     
                     {/* Analysis Features */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-6 border-t border-gray-200">
@@ -255,7 +228,6 @@ export default async function HomePage() {
                         <span className="text-sm font-medium text-gray-700">Optimization Suggestions</span>
                       </div>
                     </div>
-                  </form>
                 </div>
 
                 {/* Trust Indicators */}

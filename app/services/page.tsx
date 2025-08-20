@@ -413,10 +413,10 @@ export default function ServicesPage() {
                 🎯 Get Free Analysis
               </a>
               <a
-                href="tel:+91809488817"
+                href="tel:+918094888157"
                 className="px-8 py-4 bg-white/20 border border-white text-white rounded-xl font-bold hover:bg-white/30 transition"
               >
-                📞 Call +91 809488817
+                📞 Call +91 8094888157
               </a>
             </div>
           </div>

@@ -264,7 +264,7 @@ export default function PrivacyPolicyPage() {
               <strong>SEOShouts</strong><br />
               Udaipur, Rajasthan, India<br />
               Email: contact@seoshouts.com<br />
-              Phone: +91 809488817
+              Phone: +91 8094888157
             </p>
             <p className="text-gray-700 mt-4">
               For EU/EEA users, our GDPR representative can be contacted at the above address.

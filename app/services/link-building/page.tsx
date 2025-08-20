@@ -656,7 +656,7 @@ export default function LinkBuildingPage() {
                       <span className="text-2xl">📞</span>
                     </div>
                     <div className="text-left">
-                      <p className="text-white font-semibold">Call: +91 809488817</p>
+                      <p className="text-white font-semibold">Call: +91 8094888157</p>
                       <p className="text-white/80 text-sm">Speak directly with our link building team in Udaipur, Rajasthan</p>
                     </div>
                   </div>
@@ -696,11 +696,11 @@ export default function LinkBuildingPage() {
                 </a>
                 
                 <a 
-                  href="tel:+91809488817"
+                  href="tel:+918094888157"
                   className="group px-8 py-4 bg-transparent border-2 border-white text-white rounded-xl font-bold text-lg hover:bg-white hover:text-primary transition-all duration-300 flex items-center justify-center"
                   aria-label="Call SEOShouts for Link Building consultation"
                 >
-                  📞 Call +91 809488817
+                  📞 Call +91 8094888157
                 </a>
               </div>
 

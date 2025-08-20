@@ -267,7 +267,7 @@ export default function TermsAndConditionsPage() {
               <strong>SEOShouts</strong><br />
               Udaipur, Rajasthan, India<br />
               Email: contact@seoshouts.com<br />
-              Phone: +91 809488817
+              Phone: +91 8094888157
             </p>
             <p className="text-gray-700 mt-4">
               Thank you for choosing SEOShouts. We look forward to serving you!
