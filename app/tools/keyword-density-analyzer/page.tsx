@@ -209,6 +209,67 @@ export default function KeywordDensityAnalyzer() {
         }}
       />
       
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What's the ideal keyword density percentage?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "There's no universal perfect percentage, but 1-3% for primary keywords is generally recommended. Focus more on natural usage and user value than hitting exact percentages."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can high keyword density hurt my rankings?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, keyword stuffing (excessive keyword repetition) can result in penalties. Our tool helps you identify when density is too high."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I analyze just my main content or include navigation?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "For best results, analyze just your main content (body text) rather than including navigation, footers, or sidebar elements."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How often should I check keyword density?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Check density during content creation and before publishing. Also analyze when updating existing content or if you notice ranking changes."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does the tool work for non-English content?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, our analyzer works with content in multiple languages, though optimal density ranges may vary by language."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I analyze competitor content?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, you can analyze any publicly accessible webpage using the URL analysis feature."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

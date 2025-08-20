@@ -124,6 +124,59 @@ export default function WordsCharacterCounter() {
         }}
       />
       
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this actually accurate?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yep. We count the same way major platforms do. Cross-tested against Twitter, Facebook, and Google's own counters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it work without internet?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Once the page loads, yes! Everything happens in your browser, so you can count offline."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I count really long documents?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sure, but for massive files you might want to count sections at a time for better performance."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What about emojis and special characters?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We count everything correctly, including emojis, symbols, and all Unicode characters."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my text stored anywhere?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Nope. Everything stays in your browser. We don't save, store, or even see what you're counting."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      
       {/* Header with Tool */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

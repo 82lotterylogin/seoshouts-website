@@ -617,6 +617,67 @@ ${htmlContent}
         }}
       />
       
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this HTML editor really free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, completely free. No signup required, no hidden fees, no limitations on usage."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use this for professional projects?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Absolutely! It's great for prototyping, testing code snippets, and creating HTML templates for clients."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does it work offline?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, after the page loads, you can continue coding even without an internet connection."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I save my work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Your work auto-saves to your browser's local storage. You can also copy/download your code anytime."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What frameworks and libraries can I use?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You can include any client-side library via CDN links - Bootstrap, jQuery, React, Vue.js, etc."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my code private and secure?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, everything runs in your browser. We don't store, transmit, or see your code."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      
       {/* Global styles for the visual editor */}
       <style dangerouslySetInnerHTML={{
         __html: `

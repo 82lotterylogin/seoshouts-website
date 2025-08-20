@@ -186,6 +186,67 @@ export default function MetaTagOptimizer() {
         }}
       />
       
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this tool really free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, completely free. No signup required, no hidden fees."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do meta tags directly affect my rankings?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Title tags are a direct ranking factor. Meta descriptions don't directly impact rankings but significantly affect click-through rates."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How often should I update my meta tags?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Update them when you refresh content, target new keywords, or if your current tags aren't performing well."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use this for multiple languages?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Absolutely. The tool works with any language and character set."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does this tool store my data?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No, everything is processed in your browser. We don't store or track your content."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why is human verification required?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We use reCAPTCHA to prevent automated abuse of our free tools while ensuring legitimate users have a great experience."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

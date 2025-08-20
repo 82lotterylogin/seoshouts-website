@@ -196,6 +196,67 @@ function AICopywriterTool() {
         }}
       />
       
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Will AI copy hurt my brand voice?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not if you customize the tone settings and edit the output. Use it as a starting point, not the final word."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can search engines tell if copy is AI-generated?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Google cares about quality and usefulness, not who wrote it. Good AI copy that serves your audience is perfectly fine."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I use AI copy without editing it?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Usually you'll want to make some tweaks. The AI handles the heavy lifting, but you add the finishing touches."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I know if the copy will actually convert?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Test it! AI gives you great starting points, but real-world testing tells you what works for your specific audience."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use this for different industries?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, the AI understands context for virtually any industry or niche."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will this replace professional copywriters?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No, but it makes them more efficient. Think collaboration, not replacement."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

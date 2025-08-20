@@ -140,6 +140,74 @@ function SEOMetaWriterTool() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Will AI-generated meta tags hurt my SEO?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not if they're good quality and relevant to your content. Search engines care about user experience, and better meta tags improve click-through rates."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can Google tell if meta tags are AI-generated?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Google cares about quality and relevance, not who or what wrote them. As long as they accurately describe your content, you're fine."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I edit the AI suggestions?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Usually just minor tweaks are needed. The AI handles the heavy lifting, but you might want to adjust for brand voice or specific details."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many options should I test?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Start with 3-5 variations and A/B test them if possible. Different audiences respond to different approaches."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use this for different languages?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, our AI supports multiple languages and understands cultural nuances for different markets."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will this replace human copywriters?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No, but it makes them more efficient. Use AI for speed and volume, humans for strategy and final polish."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is this tool completely free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, completely free with no registration required. Generate as many meta tags as you need."
+                }
+              }
+            ]
+          })
+        }}
+      />
       {/* Software Application Schema */}
       <script
         type="application/ld+json"
