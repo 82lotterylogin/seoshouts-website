@@ -6,7 +6,7 @@ const AuthorBio = ({ author }: { author: any }) => {
   const authorData = author?.content || {
     name: 'Rohit Sharma',
     slug: 'rohit-sharma',
-    picture: null,
+    picture: { filename: '/images/team/rohit-sharma.jpg' },
   };
 
   return (

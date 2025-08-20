@@ -1,10 +1,29 @@
 // app/components/SocialShare.tsx
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const SocialShare = ({ title, slug }: { title: string; slug: string }) => {
   const [copied, setCopied] = useState(false);
+  const [shouldHide, setShouldHide] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const footer = document.querySelector('footer');
+      if (footer) {
+        const footerRect = footer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Hide social icons when footer is visible with some margin
+        setShouldHide(footerRect.top < windowHeight - 50);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const url = `https://www.seoshouts.com/blog/${slug}`;
 
@@ -72,8 +91,10 @@ const SocialShare = ({ title, slug }: { title: string; slug: string }) => {
     }
   };
 
+  if (shouldHide) return null;
+
   return (
-    <div className="hidden md:flex fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex-col space-y-3">
+    <div className="hidden md:flex fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex-col space-y-3 transition-opacity duration-300">
       {shareLinks.map((platform) => (
         <a
           key={platform.name}

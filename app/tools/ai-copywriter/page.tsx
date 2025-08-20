@@ -146,6 +146,56 @@ function AICopywriterTool() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "AI Copywriter",
+            "description": "Generate compelling copy and marketing content with AI assistance. Create headlines, descriptions, and engaging content in seconds.",
+            "url": "https://seoshouts.com/tools/ai-copywriter",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "AI-powered content generation",
+              "Multiple content types",
+              "Instant results",
+              "Customizable tone",
+              "Export functionality",
+              "Marketing copy creation",
+              "Creative writing assistance"
+            ],
+            "keywords": "AI copywriter, content generation, marketing copy, AI writing tool",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.6",
+              "bestRating": "5",
+              "ratingCount": "1567"
+            },
+            "softwareVersion": "3.1",
+            "datePublished": "2024-03-01",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

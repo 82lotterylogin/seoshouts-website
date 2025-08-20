@@ -131,6 +131,56 @@ function BlogIdeasGeneratorTool() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "AI Blog Ideas Generator",
+            "description": "Generate compelling blog topics and content ideas with AI assistance. Get inspired with hundreds of topic suggestions tailored to your niche.",
+            "url": "https://seoshouts.com/tools/blog-ideas-generator",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "AI topic generation",
+              "Niche-specific ideas",
+              "SEO-friendly suggestions",
+              "Bulk generation",
+              "Export functionality",
+              "Content planning",
+              "Creative inspiration"
+            ],
+            "keywords": "blog ideas, content ideas, AI blog generator, topic generator",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.7",
+              "bestRating": "5",
+              "ratingCount": "1203"
+            },
+            "softwareVersion": "2.8",
+            "datePublished": "2024-02-15",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

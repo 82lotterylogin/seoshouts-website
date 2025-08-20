@@ -1,0 +1,7 @@
+# Netlify _redirects file
+# Force HTTPS redirects (in case not handled by DNS/CDN level)
+http://seoshouts.com/* https://seoshouts.com/:splat 301!
+http://www.seoshouts.com/* https://www.seoshouts.com/:splat 301!
+
+# Fallback for SPA routing (if needed)
+/* /index.html 200

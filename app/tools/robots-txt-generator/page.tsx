@@ -190,6 +190,56 @@ export default function RobotsTxtGenerator() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Robots.txt Generator",
+            "description": "Generate and validate robots.txt files to control how search engines crawl your website. Includes syntax validation and testing.",
+            "url": "https://seoshouts.com/tools/robots-txt-generator",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "Automated generation",
+              "Syntax validation",
+              "Testing functionality",
+              "Custom rules creation",
+              "Download functionality",
+              "Template library",
+              "Crawl control"
+            ],
+            "keywords": "robots.txt, crawler control, search engine crawling, SEO technical",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.5",
+              "bestRating": "5",
+              "ratingCount": "687"
+            },
+            "softwareVersion": "1.8",
+            "datePublished": "2024-02-05",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

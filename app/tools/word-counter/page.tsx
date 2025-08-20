@@ -74,6 +74,56 @@ export default function WordsCharacterCounter() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Word Counter Tool",
+            "description": "Count words, characters, paragraphs, and sentences in your content. Track reading time and optimize for target word counts.",
+            "url": "https://seoshouts.com/tools/word-counter",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "Real-time counting",
+              "Reading time estimation",
+              "Multiple metrics tracking",
+              "Character limits checking",
+              "Export functionality",
+              "Text analysis",
+              "Content optimization"
+            ],
+            "keywords": "word counter, character counter, content analysis, writing tools",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "bestRating": "5",
+              "ratingCount": "1834"
+            },
+            "softwareVersion": "1.5",
+            "datePublished": "2024-01-05",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Header with Tool */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

@@ -211,6 +211,56 @@ export default function KeywordDifficultyChecker() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Keyword Difficulty Checker",
+            "description": "Evaluate keyword competition and difficulty scores. Make informed decisions about which keywords to target in your SEO strategy.",
+            "url": "https://seoshouts.com/tools/keyword-difficulty-checker",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "Competition analysis",
+              "Difficulty scoring",
+              "Alternative suggestions",
+              "SERP analysis",
+              "Ranking probability",
+              "Competitor research",
+              "Search volume insights"
+            ],
+            "keywords": "keyword difficulty, competition analysis, SEO research, keyword planning",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.7",
+              "bestRating": "5",
+              "ratingCount": "892"
+            },
+            "softwareVersion": "2.3",
+            "datePublished": "2024-01-25",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

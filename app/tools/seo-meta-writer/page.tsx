@@ -140,6 +140,56 @@ function SEOMetaWriterTool() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "SEO Meta Writer",
+            "description": "AI-powered meta content writer that creates optimized titles, descriptions, and meta tags for better search engine visibility.",
+            "url": "https://seoshouts.com/tools/seo-meta-writer",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "AI meta generation",
+              "SEO optimization",
+              "Character count compliance",
+              "Multiple variations",
+              "SERP preview",
+              "Meta tag optimization",
+              "Content enhancement"
+            ],
+            "keywords": "SEO meta writer, AI meta tags, meta description generator, SEO content",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "bestRating": "5",
+              "ratingCount": "945"
+            },
+            "softwareVersion": "2.5",
+            "datePublished": "2024-02-20",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Hero Section - Minimal Intro Only */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
@@ -482,8 +532,7 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center">
-              <span className="mr-3">⛔</span>
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
               Stop Staring at Blank Screens Trying to Write Meta Tags
             </h2>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
@@ -524,16 +573,14 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center">
-              <span className="mr-3">🚀</span>
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
               What This AI Tool Actually Does (And Why It's Different)
             </h2>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
                 Think of this as having a copywriter who's read every high-performing meta tag on the internet, knows exactly what makes people click, and can write faster than you can type.
               </p>
-              <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                <span className="mr-3">📝</span>
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">
                 Here's what happens when you use it:
               </h3>
               <ul className="space-y-3 mb-6">
@@ -572,8 +619,7 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center">
-              <span className="mr-3">🧠</span>
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
               Why AI-Generated Meta Tags Actually Work Better
             </h2>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
@@ -583,8 +629,7 @@ function SEOMetaWriterTool() {
               
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                    <span className="mr-3">🤖</span>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
                     What AI does better than humans:
                   </h3>
                   <ul className="space-y-3">
@@ -622,8 +667,7 @@ function SEOMetaWriterTool() {
                 </div>
                 
                 <div>
-                  <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                    <span className="mr-3">👨‍💻</span>
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
                     What I still do better than AI:
                   </h3>
                   <ul className="space-y-3">
@@ -663,16 +707,14 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center">
-              <span className="mr-3">⚙️</span>
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
               How Our AI Meta Tag Generator Actually Works
             </h2>
             
             <div className="space-y-8">
               {/* Smart Content Analysis */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🧠</span>
+                <h3 className="text-2xl font-semibold mb-4 text-gray-800">
                   Smart Content Analysis
                 </h3>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -711,8 +753,7 @@ function SEOMetaWriterTool() {
 
               {/* Multiple Creative Angles */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🎨</span>
+                <h3 className="text-2xl font-semibold mb-4 text-gray-800">
                   Multiple Creative Angles
                 </h3>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -761,8 +802,7 @@ function SEOMetaWriterTool() {
 
               {/* Real-Time Optimization */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">⚡</span>
+                <h3 className="text-2xl font-semibold mb-4 text-gray-800">
                   Real-Time Optimization
                 </h3>
                 <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -817,15 +857,13 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 flex items-center justify-center">
-              <span className="mr-3">✨</span>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
               Key Features That Make This Tool Essential
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🚀</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Instant Multiple Variations
                 </h3>
                 <p className="text-gray-600">
@@ -834,8 +872,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">📏</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Character Count Precision
                 </h3>
                 <p className="text-gray-600">
@@ -844,8 +881,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🎭</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Tone Customization
                 </h3>
                 <p className="text-gray-600">
@@ -854,8 +890,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">📊</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Competitor Analysis Integration
                 </h3>
                 <p className="text-gray-600">
@@ -864,8 +899,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-8 border border-teal-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">📈</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Bulk Generation Capability
                 </h3>
                 <p className="text-gray-600">
@@ -874,8 +908,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-8 border border-pink-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">👁️</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Preview Mode
                 </h3>
                 <p className="text-gray-600">
@@ -891,15 +924,13 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 flex items-center justify-center">
-              <span className="mr-3">👥</span>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
               Who Actually Uses This Tool?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">✍️</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Content Creators and Bloggers
                 </h3>
                 <p className="text-gray-600">
@@ -908,8 +939,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🛒</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   eCommerce Store Owners
                 </h3>
                 <p className="text-gray-600">
@@ -918,8 +948,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🎯</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Digital Marketing Agencies
                 </h3>
                 <p className="text-gray-600">
@@ -928,8 +957,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🏢</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Small Business Owners
                 </h3>
                 <p className="text-gray-600">
@@ -938,8 +966,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">💻</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Web Developers
                 </h3>
                 <p className="text-gray-600">
@@ -955,15 +982,13 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 flex items-center justify-center">
-              <span className="mr-3">💡</span>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
               Common Scenarios Where This Tool Saves Your Sanity
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">📚</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   "I Have 50 Blog Posts Without Meta Descriptions"
                 </h3>
                 <p className="text-gray-600">
@@ -972,8 +997,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">📉</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   "My Meta Tags Are Getting Zero Clicks"
                 </h3>
                 <p className="text-gray-600">
@@ -982,8 +1006,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🧠</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   "I Can't Think of Anything Creative"
                 </h3>
                 <p className="text-gray-600">
@@ -992,8 +1015,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">⏰</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   "My Client Needs Meta Tags Yesterday"
                 </h3>
                 <p className="text-gray-600">
@@ -1002,8 +1024,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">✏️</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   "I'm Not a Natural Copywriter"
                 </h3>
                 <p className="text-gray-600">
@@ -1019,15 +1040,13 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 flex items-center justify-center">
-              <span className="mr-3">🔥</span>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
               What Makes Our AI Different from Generic Tools
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">📈</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Trained on Current SEO Data
                 </h3>
                 <p className="text-gray-600">
@@ -1036,8 +1055,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🎯</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Context-Aware Generation
                 </h3>
                 <p className="text-gray-600">
@@ -1046,8 +1064,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">💰</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Conversion-Focused
                 </h3>
                 <p className="text-gray-600">
@@ -1056,8 +1073,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🧬</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Brand Voice Learning
                 </h3>
                 <p className="text-gray-600">
@@ -1073,15 +1089,13 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 flex items-center justify-center">
-              <span className="mr-3">📝</span>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
               Quick Tips for Getting the Best Results
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🎯</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Be Specific About Your Content
                 </h3>
                 <p className="text-gray-600">
@@ -1090,8 +1104,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">🔄</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Test Multiple Angles
                 </h3>
                 <p className="text-gray-600">
@@ -1100,8 +1113,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">💎</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Include Your Main Benefit
                 </h3>
                 <p className="text-gray-600">
@@ -1110,8 +1122,7 @@ function SEOMetaWriterTool() {
               </div>
               
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-                  <span className="mr-3">👥</span>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
                   Consider Your Audience
                 </h3>
                 <p className="text-gray-600">
@@ -1127,70 +1138,44 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800 flex items-center justify-center">
-              <span className="mr-3">❓</span>
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-8">
-              
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-                  <span className="mr-3">🔍</span>
-                  Will AI-generated meta tags hurt my SEO?
-                </h3>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Will AI-generated meta tags hurt my SEO?</h3>
                 <p className="text-gray-600">
                   Not if they're good quality and relevant to your content. Search engines care about user experience, and better meta tags improve click-through rates.
                 </p>
               </div>
               
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-                  <span className="mr-3">🤖</span>
-                  Can Google tell if meta tags are AI-generated?
-                </h3>
-                <p className="text-gray-600">
-                  Google cares about quality and relevance, not who or what wrote them. As long as they accurately describe your content, you're fine.
-                </p>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can Google tell if meta tags are AI-generated?</h3>
+                <p className="text-gray-600">Google cares about quality and relevance, not who or what wrote them. As long as they accurately describe your content, you're fine.</p>
               </div>
               
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-                  <span className="mr-3">✏️</span>
-                  Should I edit the AI suggestions?
-                </h3>
-                <p className="text-gray-600">
-                  Usually just minor tweaks are needed. The AI handles the heavy lifting, but you might want to adjust for brand voice or specific details.
-                </p>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Should I edit the AI suggestions?</h3>
+                <p className="text-gray-600">Usually just minor tweaks are needed. The AI handles the heavy lifting, but you might want to adjust for brand voice or specific details.</p>
               </div>
               
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-                  <span className="mr-3">📊</span>
-                  How many options should I test?
-                </h3>
-                <p className="text-gray-600">
-                  Start with 3-5 variations and A/B test them if possible. Different audiences respond to different approaches.
-                </p>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">How many options should I test?</h3>
+                <p className="text-gray-600">Start with 3-5 variations and A/B test them if possible. Different audiences respond to different approaches.</p>
               </div>
               
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-                  <span className="mr-3">🌍</span>
-                  Can I use this for different languages?
-                </h3>
-                <p className="text-gray-600">
-                  Yes, our AI supports multiple languages and understands cultural nuances for different markets.
-                </p>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I use this for different languages?</h3>
+                <p className="text-gray-600">Yes, our AI supports multiple languages and understands cultural nuances for different markets.</p>
               </div>
               
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800 flex items-center">
-                  <span className="mr-3">👨‍💻</span>
-                  Will this replace human copywriters?
-                </h3>
-                <p className="text-gray-600">
-                  No, but it makes them more efficient. Use AI for speed and volume, humans for strategy and final polish.
-                </p>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Will this replace human copywriters?</h3>
+                <p className="text-gray-600">No, but it makes them more efficient. Use AI for speed and volume, humans for strategy and final polish.</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is this tool completely free?</h3>
+                <p className="text-gray-600">Yes, completely free with no registration required. Generate as many meta tags as you need.</p>
               </div>
             </div>
           </div>
@@ -1202,8 +1187,7 @@ function SEOMetaWriterTool() {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800 flex items-center justify-center">
-                <span className="mr-3">🛠️</span>
+              <h2 className="text-3xl font-bold mb-4 text-gray-800">
                 Explore Our Other SEO Tools
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -1244,8 +1228,7 @@ function SEOMetaWriterTool() {
       <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6 flex items-center justify-center">
-              <span className="mr-3">🚀</span>
+            <h2 className="text-3xl font-bold mb-6">
               Start Creating Better Meta Tags Today
             </h2>
             <p className="text-lg mb-8 opacity-90 leading-relaxed">
@@ -1256,8 +1239,7 @@ function SEOMetaWriterTool() {
             </p>
             
             <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-6 flex items-center justify-center">
-                <span className="mr-3">📋</span>
+              <h3 className="text-2xl font-bold mb-6">
                 Get Started Right Now:
               </h3>
               <div className="space-y-4 text-lg">

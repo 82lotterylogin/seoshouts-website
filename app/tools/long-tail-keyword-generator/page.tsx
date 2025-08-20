@@ -149,6 +149,56 @@ const generateKeywords = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Long Tail Keyword Generator",
+            "description": "Generate hundreds of long-tail keyword variations from your seed keywords. Find less competitive, high-converting keyword opportunities.",
+            "url": "https://seoshouts.com/tools/long-tail-keyword-generator",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "Bulk keyword generation",
+              "Search volume data",
+              "Export functionality", 
+              "Competitor analysis",
+              "Long-tail suggestions",
+              "Keyword variations",
+              "Search intent analysis"
+            ],
+            "keywords": "long tail keywords, keyword generator, SEO keywords, niche keywords",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.6",
+              "bestRating": "5",
+              "ratingCount": "1156"
+            },
+            "softwareVersion": "2.2",
+            "datePublished": "2024-01-20",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

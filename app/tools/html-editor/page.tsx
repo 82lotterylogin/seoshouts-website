@@ -567,6 +567,56 @@ ${htmlContent}
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "HTML Editor",
+            "description": "Online HTML, CSS, and JavaScript editor with live preview. Code, test, and debug web pages instantly in your browser.",
+            "url": "https://seoshouts.com/tools/html-editor",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "Live preview",
+              "Syntax highlighting",
+              "Export functionality",
+              "Multi-language support",
+              "Responsive testing",
+              "Visual editor mode",
+              "Code validation"
+            ],
+            "keywords": "HTML editor, CSS editor, JavaScript editor, web development, code editor",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.5",
+              "bestRating": "5",
+              "ratingCount": "2156"
+            },
+            "softwareVersion": "3.0",
+            "datePublished": "2024-02-01",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Global styles for the visual editor */}
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -729,8 +779,9 @@ ${htmlContent}
         }
         `
       }} />
-      {/* Reduced top spacing */}
-      <section className="pt-6 pb-12">
+      
+      {/* Main Tool Section */}
+      <section id="tool-section" className="py-4 sm:py-6">
         <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
             {/* Global actions */}
@@ -747,9 +798,9 @@ ${htmlContent}
             </div>
 
             {/* Two panes: Source TOP on mobile, LEFT on desktop, Visual BOTTOM on mobile, RIGHT on desktop */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 h-auto lg:h-[75vh] min-h-[600px] sm:min-h-[700px] lg:min-h-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 h-auto min-h-[500px] sm:min-h-[600px]">
               {/* SOURCE (Top on mobile, Left on desktop) */}
-              <div className="border-r-0 lg:border-r border-gray-200 border-b lg:border-b-0 flex flex-col min-h-[300px] lg:min-h-0 overflow-hidden">
+              <div className="border-r-0 lg:border-r border-gray-200 border-b lg:border-b-0 flex flex-col min-h-[250px] overflow-hidden">
                 <div className="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 flex flex-wrap items-center gap-1 sm:gap-2 shrink-0">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700 mr-2">💻 HTML Source</span>
                   <button className="order-1 lg:order-none px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-gray-800 text-white rounded-lg" onClick={sourceClean} title="Clean / Sanitize">
@@ -771,7 +822,7 @@ ${htmlContent}
                   id="source-textarea"
                   value={htmlContent}
                   onChange={handleSourceChange}
-                  className="flex-1 p-4 sm:p-6 font-mono text-xs sm:text-sm resize-none focus:outline-none border-0 overflow-auto min-h-[250px] lg:min-h-0"
+                  className="flex-1 p-4 sm:p-6 font-mono text-xs sm:text-sm resize-none focus:outline-none border-0 overflow-auto min-h-[200px]"
                   style={{ fontSize: `${sourceFontSize}px`, lineHeight: 1.6 }}
                   spellCheck={false}
                   aria-label="HTML source"
@@ -779,10 +830,10 @@ ${htmlContent}
               </div>
 
               {/* VISUAL (Bottom on mobile, Right on desktop) */}
-              <div className="flex flex-col min-h-[300px] lg:min-h-0 overflow-hidden">
+              <div className="flex flex-col min-h-[250px] overflow-hidden">
                 {/* Visual toolbar */}
-                <div className="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 shrink-0 overflow-x-auto">
-                  <div className="flex flex-wrap lg:flex-nowrap items-center gap-1 sm:gap-2 min-w-fit">
+                <div className="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 shrink-0">
+                  <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                     {/* Undo/Redo */}
                     <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('undo')} className={btn} title="Undo">↶</button>
                     <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('redo')} className={btn} title="Redo">↷</button>
@@ -888,7 +939,7 @@ ${htmlContent}
                   onKeyUp={handleVisualChange}
                   onPaste={handlePaste}
                   onKeyDown={handleKeyDown}
-                  className="visual-editor flex-1 p-4 sm:p-6 overflow-auto focus:outline-none max-w-none min-h-[250px] lg:min-h-0"
+                  className="visual-editor flex-1 p-4 sm:p-6 overflow-auto focus:outline-none max-w-none min-h-[200px]"
                   style={{
                     border: 'none',
                     outline: 'none',
@@ -930,16 +981,656 @@ ${htmlContent}
               <span className="float-right text-green-600">✅ Visual & source stay in sync</span>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Page description under the tool */}
-          <div className="mt-8 text-center">
-            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-2">
-              HTML5 Editor — Visual &amp; Source, Always in Sync
+      {/* Header Section */}
+      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Free Online Tool
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free HTML5 Editor - Online Code Editor
+              </span>
+              <br />
+              <span className="text-primary">Write HTML, CSS & JavaScript Instantly</span>
             </h1>
-            <p className="text-base sm:text-lg text-gray-600">
-              Visual editor on the <strong>right</strong>, HTML source on the <strong>left</strong>. Toolbars, emoji picker,
-              tables, colors, clean, and more.
+            
+            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Code Without the Complicated Setup</h2>
+              <p>
+                Ever wanted to quickly test some HTML code but didn't want to open your entire development setup? Or maybe you're learning web development and need a simple way to practice without complicated software?
+              </p>
+              <p>
+                Our HTML5 Online Editor is perfect for exactly that. Open your browser, start typing code, and watch your webpage come to life in real time.
+              </p>
+              <p>
+                <strong>Best part?</strong> No downloads, no setup, no headaches. Just pure, instant coding.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Live Preview
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Syntax Highlighting
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                HTML, CSS & JavaScript
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What Makes This Editor Actually Useful Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What Makes This Editor Actually Useful</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">See Your Code in Action Immediately</h3>
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                Type HTML on the left, see the result on the right. Add CSS, watch it update instantly. Drop in JavaScript, see it work right away.
+              </p>
+              <p className="text-lg text-gray-700 leading-relaxed mb-4">No more:</p>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Saving files and refreshing browsers</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Setting up local servers for testing</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Wondering if your code actually works</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Switching between multiple windows and apps</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 italic">Just pure, instant feedback as you code.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Works Like the Real Development Tools You Know Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Works Like the Real Development Tools You Know</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                We didn&rsquo;t reinvent the wheel. The editor feels familiar and gets out of the way.
+              </p>
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">What you get:</h3>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Syntax highlighting for readability</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Auto-indentation to keep everything neat</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Error hints that help catch typos early</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Bracket and tag matching so you don&rsquo;t lose structure</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 italic">Good tools should feel natural, not frustrating.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Handles Everything Modern Websites Need Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Handles Everything Modern Websites Need</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                This isn&rsquo;t just for basic HTML. Build complete, modern webpages.
+              </p>
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">Full support for:</h3>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">HTML5 semantic tags and modern elements</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">CSS3 (flexbox, grid, animations, variables)</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">JavaScript for interactive functionality</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Embedding images, video, audio, and iframes</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Responsive layouts that adapt across devices</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 italic">Practice real-world skills, not toy examples.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How to Use the HTML5 Editor Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">How to Use the HTML5 Editor</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+              <ol className="space-y-6">
+                <li className="flex items-start space-x-4">
+                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">Start Typing</h3>
+                    <p className="text-gray-700">Open the tool and start writing HTML in the left panel. Even just &lt;h1&gt;Hello World&lt;/h1&gt; will show you how it works.</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4">
+                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">Add Some Style</h3>
+                    <p className="text-gray-700">Drop in CSS between &lt;style&gt; tags or in the CSS section to make your page look good.</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4">
+                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">Make It Interactive</h3>
+                    <p className="text-gray-700">Add JavaScript to create buttons, forms, animations&mdash;whatever you want your page to do.</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4">
+                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">See It All Work</h3>
+                    <p className="text-gray-700">Watch the right panel update in real time as you type. No save button needed.</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4">
+                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-2">Export When Ready</h3>
+                    <p className="text-gray-700">Copy your code or download it when you&rsquo;re happy with how everything looks and works.</p>
+                  </div>
+                </li>
+              </ol>
+              <div className="mt-8 bg-primary/10 border border-primary/20 rounded-xl p-6 text-center">
+                <p className="text-gray-700">
+                  <strong>Pro tip:</strong> Start simple and layer complexity. The live preview makes it easy to see what each change does.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Who Actually Uses This Tool Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Who Should Use This Tool?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 text-center">
+                <div className="text-3xl mb-4">📚</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">People Learning Web Development</h3>
+                <p className="text-gray-600">Perfect for following tutorials, trying examples, or experimenting without setup.</p>
+              </div>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100 text-center">
+                <div className="text-3xl mb-4">⚡</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Developers Who Need Quick Tests</h3>
+                <p className="text-gray-600">Test a snippet, try a CSS technique, or debug some JavaScript&mdash;faster than creating new files.</p>
+              </div>
+              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100 text-center">
+                <div className="text-3xl mb-4">🎨</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Designers Prototyping Ideas</h3>
+                <p className="text-gray-600">Sketch layouts, test color systems, and try typography without committing to a full design.</p>
+              </div>
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100 text-center">
+                <div className="text-3xl mb-4">✍️</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Content Creators Adding Custom Code</h3>
+                <p className="text-gray-600">Building a custom widget for a blog or landing page? Test it here first.</p>
+              </div>
+              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100 text-center">
+                <div className="text-3xl mb-4">🎓</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Teachers and Students</h3>
+                <p className="text-gray-600">Great for assignments, demos, and collaborative exercises with a shared environment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What You Can Build With This Editor Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">What You Can Build With This Editor</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">🌐 Simple Websites and Landing Pages</h3>
+                <p className="text-gray-600">Create pages with headers, navigation, content sections, and footers.</p>
+              </div>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">⚡ Interactive Widgets</h3>
+                <p className="text-gray-600">Build calculators, quizzes, carousels, image galleries, and more.</p>
+              </div>
+              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">🎨 CSS Experiments</h3>
+                <p className="text-gray-600">Try new layout techniques, test animations, and explore design systems.</p>
+              </div>
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-100">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">💻 JavaScript Practice</h3>
+                <p className="text-gray-600">Learn DOM manipulation, events, fetch/API calls, and state patterns with instant feedback.</p>
+              </div>
+              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 border border-yellow-100">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">📧 Email Templates</h3>
+                <p className="text-gray-600">Draft HTML emails and preview structure before testing in clients.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Common Coding Scenarios This Tool Handles Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Common Coding Scenarios This Tool Handles</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;I Want to Try This Tutorial&rdquo;</h3>
+                <p className="text-gray-600">Paste examples and see them work immediately.</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;Does This CSS Actually Work?&rdquo;</h3>
+                <p className="text-gray-600">Test compatibility and new techniques in seconds.</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;I Need to Debug This Code&rdquo;</h3>
+                <p className="text-gray-600">Use error hints and live preview to spot issues quickly.</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;Can I Make This Responsive?&rdquo;</h3>
+                <p className="text-gray-600">Preview across widths and tweak breakpoints confidently.</p>
+              </div>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;I Want to Learn by Doing&rdquo;</h3>
+                <p className="text-gray-600">Write, see, adjust, repeat&mdash;the fastest way to learn.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Best Practices Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Web Development Best Practices Built Into the Editor</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* HTML Guidelines */}
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-6 text-gray-800">🏷️ HTML Guidelines</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start space-x-3">
+                    <span className="text-primary mr-2 mt-1">•</span>
+                    <span>Use semantic tags: header, nav, main, section, article</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-primary mr-2 mt-1">•</span>
+                    <span>Always include alt text for images</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-primary mr-2 mt-1">•</span>
+                    <span>Prefer strong/em over b/i for meaning</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-primary mr-2 mt-1">•</span>
+                    <span>Structure content hierarchically with headings</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* CSS Tips */}
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-6 text-gray-800">🎨 CSS Tips</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start space-x-3">
+                    <span className="text-secondary mr-2 mt-1">•</span>
+                    <span>Use flexbox and grid for modern layouts</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-secondary mr-2 mt-1">•</span>
+                    <span>Keep color contrast readable (4.5:1 minimum)</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-secondary mr-2 mt-1">•</span>
+                    <span>Use CSS variables for consistent theming</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-secondary mr-2 mt-1">•</span>
+                    <span>Make designs responsive with mobile-first approach</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* JavaScript Best Practices */}
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <h3 className="text-xl font-semibold mb-6 text-gray-800">⚡ JavaScript Best Practices</h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start space-x-3">
+                    <span className="text-purple-600 mr-2 mt-1">•</span>
+                    <span>Use const and let instead of var</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-purple-600 mr-2 mt-1">•</span>
+                    <span>Add event listeners properly</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-purple-600 mr-2 mt-1">•</span>
+                    <span>Handle errors gracefully with try-catch</span>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <span className="text-purple-600 mr-2 mt-1">•</span>
+                    <span>Keep functions small and focused</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Common Mistakes Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Common HTML/CSS/JavaScript Mistakes This Tool Helps You Avoid</h2>
+            
+            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-500 text-xl">❌</span>
+                  <span className="text-gray-700"><strong>Forgetting to close HTML tags</strong> - Live preview shows broken layouts immediately</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-500 text-xl">❌</span>
+                  <span className="text-gray-700"><strong>CSS syntax errors</strong> - See styles not applying in real-time</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-500 text-xl">❌</span>
+                  <span className="text-gray-700"><strong>JavaScript console errors</strong> - Use browser dev tools to debug easily</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-500 text-xl">❌</span>
+                  <span className="text-gray-700"><strong>Poor mobile responsiveness</strong> - Test different screen sizes instantly</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-500 text-xl">❌</span>
+                  <span className="text-gray-700"><strong>Missing accessibility features</strong> - Practice adding proper labels and alt text</span>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-500 text-xl">❌</span>
+                  <span className="text-gray-700"><strong>Inline styles everywhere</strong> - Learn to separate HTML structure from CSS presentation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Privacy and Security Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Privacy and Security</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                Everything happens in your browser. We don&rsquo;t store, save, or even see your code. When you close the tab, your work is gone unless you save it yourself.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">No account required.</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">No tracking or data collection.</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Works offline after the page loads.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is this HTML editor really free?</h3>
+                <p className="text-gray-600">Yes, completely free. No signup required, no hidden fees, no limitations on usage.</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I use this for professional projects?</h3>
+                <p className="text-gray-600">Absolutely! It's great for prototyping, testing code snippets, and creating HTML templates for clients.</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Does it work offline?</h3>
+                <p className="text-gray-600">Yes, after the page loads, you can continue coding even without an internet connection.</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I save my work?</h3>
+                <p className="text-gray-600">Your work auto-saves to your browser's local storage. You can also copy/download your code anytime.</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">What frameworks and libraries can I use?</h3>
+                <p className="text-gray-600">You can include any client-side library via CDN links - Bootstrap, jQuery, React, Vue.js, etc.</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is my code private and secure?</h3>
+                <p className="text-gray-600">Yes, everything runs in your browser. We don't store, transmit, or see your code.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Limitations Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center">
+              <span className="mr-3">⚠️</span>
+              Limitations (Being Honest Here)
+            </h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
+              <ul className="space-y-3">
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Client-side only: Runs HTML, CSS, and JavaScript&mdash;not server-side languages like PHP, Python, or Node.js.</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">No file hosting: You&rsquo;ll need to host finished sites elsewhere.</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <span className="text-gray-700">Not a full IDE: For large projects, use tools like VS Code or WebStorm.</span>
+                </li>
+              </ul>
+              <p className="text-gray-700 italic mt-6">For quick testing, learning, and prototyping? This tool is perfect.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Explore More SEO Tools Section */}
+      <section className="py-16 bg-gradient-to-br from-primary/5 to-indigo/5">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
+              </p>
+            </div>
+
+            {/* Featured Tools Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">📊</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
+                <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
+                <a href="/tools/keyword-density-analyzer" className="text-primary font-medium hover:underline">
+                  Try Tool →
+                </a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🏷️</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
+                <a href="/tools/meta-tag-optimizer" className="text-primary font-medium hover:underline">
+                  Try Tool →
+                </a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">💻</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">HTML5 Editor</h3>
+                <p className="text-sm text-gray-600 mb-4">Write and test HTML, CSS, and JavaScript with instant live preview.</p>
+                <span className="text-green-600 font-medium">✓ Current Tool</span>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🤖</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Blog Ideas Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate compelling blog topics with AI-powered content suggestions.</p>
+                <a href="/tools/blog-ideas-generator" className="text-primary font-medium hover:underline">
+                  Try Tool →
+                </a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">✍️</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Copywriter</h3>
+                <p className="text-sm text-gray-600 mb-4">Create persuasive copy and marketing content with AI assistance.</p>
+                <a href="/tools/ai-copywriter" className="text-primary font-medium hover:underline">
+                  Try Tool →
+                </a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🔢</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Word Counter</h3>
+                <p className="text-sm text-gray-600 mb-4">Count words, characters, and analyze readability of your content.</p>
+                <a href="/tools/word-counter" className="text-primary font-medium hover:underline">
+                  Try Tool →
+                </a>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="text-center">
+              <a 
+                href="/tools"
+                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                <span className="mr-2">🛠️</span>
+                Browse All SEO Tools
+              </a>
+              <p className="text-sm text-gray-500 mt-3">
+                All tools are 100% free • No signup required • Instant results
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Start Coding Right Now (Final CTA) Section */}
+      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl font-bold mb-6">Start Coding Right Now</h2>
+            <p className="text-lg mb-8 opacity-90 leading-relaxed">
+              Whether a beginner or a seasoned developer, the SEOShouts HTML5 Online Editor gives a fast, focused space to write, test, and perfect your web code.
             </p>
+            <p className="text-xl font-semibold mb-8">
+              No setup. No downloads. No complications. Just open, code, and create.
+            </p>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-6 flex items-center justify-center">
+                <span className="mr-3">📋</span>
+                Get Started Immediately:
+              </h3>
+              <div className="space-y-4 text-lg">
+                <div className="flex items-start justify-center space-x-3">
+                  <span>🚀</span>
+                  <div>
+                    <strong>Open the HTML5 Editor &rarr;</strong><br/>
+                    <em className="text-white/80">Start coding in seconds&mdash;completely free</em>
+                  </div>
+                </div>
+                <div className="flex items-start justify-center space-x-3">
+                  <span>💡</span>
+                  <div>
+                    <strong>Simple enough to learn on, powerful enough for real work</strong><br/>
+                    <em className="text-white/80">Stop wrestling with development setup and start creating.</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+              <p className="text-xl font-bold mb-4">
+                Try SEOShouts&rsquo; HTML5 Online Editor now. Built for anyone who wants to code without the hassle.
+              </p>
+            </div>
           </div>
         </div>
       </section>

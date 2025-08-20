@@ -1,11 +1,70 @@
 // app/components/StoryblokBlogPost.tsx
 import { storyblokEditable } from "@storyblok/react/rsc";
-import { richTextResolver } from '@storyblok/richtext';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// Simple function to render rich text content
+const renderContent = (content: any): string => {
+  if (typeof content === 'string') {
+    return content;
+  }
+  
+  if (!content || !content.content) {
+    return '';
+  }
+  
+  // Basic rich text rendering without external dependencies
+  const processNode = (node: any): string => {
+    if (node.type === 'text') {
+      return node.text || '';
+    }
+    
+    if (node.type === 'paragraph') {
+      const content = node.content ? node.content.map(processNode).join('') : '';
+      return `<p>${content}</p>`;
+    }
+    
+    if (node.type === 'heading') {
+      const level = node.attrs?.level || 2;
+      const content = node.content ? node.content.map(processNode).join('') : '';
+      return `<h${level}>${content}</h${level}>`;
+    }
+    
+    if (node.type === 'bullet_list') {
+      const items = node.content ? node.content.map(processNode).join('') : '';
+      return `<ul>${items}</ul>`;
+    }
+    
+    if (node.type === 'list_item') {
+      const content = node.content ? node.content.map(processNode).join('') : '';
+      return `<li>${content}</li>`;
+    }
+    
+    if (node.type === 'ordered_list') {
+      const items = node.content ? node.content.map(processNode).join('') : '';
+      return `<ol>${items}</ol>`;
+    }
+    
+    if (node.type === 'blockquote') {
+      const content = node.content ? node.content.map(processNode).join('') : '';
+      return `<blockquote>${content}</blockquote>`;
+    }
+    
+    if (node.content) {
+      return node.content.map(processNode).join('');
+    }
+    
+    return '';
+  };
+  
+  if (Array.isArray(content.content)) {
+    return content.content.map(processNode).join('');
+  }
+  
+  return '';
+};
+
 const StoryblokBlogPost = ({ blok }: { blok: any }) => {
-  const { render } = richTextResolver();
   
   return (
     <div {...storyblokEditable(blok)}>
@@ -61,7 +120,7 @@ const StoryblokBlogPost = ({ blok }: { blok: any }) => {
           [&>div>blockquote]:py-6 [&>div>blockquote]:px-8 [&>div>blockquote]:my-8 [&>div>blockquote]:italic 
           [&>div>blockquote]:text-lg [&>div>blockquote]:rounded-r-lg"
       >
-        <div dangerouslySetInnerHTML={{ __html: render(blok.content) }} />
+        <div dangerouslySetInnerHTML={{ __html: renderContent(blok.content) }} />
       </article>
     </div>
   );

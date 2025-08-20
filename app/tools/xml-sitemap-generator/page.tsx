@@ -209,6 +209,56 @@ export default function XMLSitemapGenerator() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "XML Sitemap Generator",
+            "description": "Create comprehensive XML sitemaps for search engines. Supports various content types and includes priority and frequency settings.",
+            "url": "https://seoshouts.com/tools/xml-sitemap-generator",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "Automated sitemap creation",
+              "Priority & frequency settings",
+              "Multi-format support",
+              "URL validation",
+              "Download functionality",
+              "Bulk URL processing",
+              "SEO optimization"
+            ],
+            "keywords": "XML sitemap, sitemap generator, search engine submission, SEO technical",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.7",
+              "bestRating": "5",
+              "ratingCount": "923"
+            },
+            "softwareVersion": "2.0",
+            "datePublished": "2024-02-10",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

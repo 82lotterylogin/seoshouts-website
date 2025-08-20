@@ -1,3 +1,64 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Meet Our SEO Experts - Rohit & Ajay | SEO Shouts Team',
+  description: 'Meet Rohit Sharma and Ajay Porwal, the SEO experts behind SEO Shouts. Real results, honest advice, and proven digital marketing strategies for your business growth.',
+  keywords: 'SEO experts, digital marketing team, Rohit Sharma SEO, Ajay Porwal, SEO consultants India, SEO agency team, local SEO experts',
+  authors: [{ name: 'SEO Shouts Team' }],
+  creator: 'SEO Shouts',
+  publisher: 'SEO Shouts',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://seoshouts.com'),
+  alternates: {
+    canonical: '/meet-the-experts',
+  },
+  openGraph: {
+    title: 'Meet Our SEO Experts - Rohit & Ajay | SEO Shouts Team',
+    description: 'Meet Rohit Sharma and Ajay Porwal, the SEO experts behind SEO Shouts. Real results, honest advice, and proven digital marketing strategies.',
+    url: '/meet-the-experts',
+    siteName: 'SEO Shouts',
+    images: [
+      {
+        url: '/images/team/rohit-sharma.jpg',
+        width: 400,
+        height: 400,
+        alt: 'Rohit Sharma - SEO Expert',
+      },
+      {
+        url: '/images/team/ajay-porwal.jpg', 
+        width: 400,
+        height: 400,
+        alt: 'Ajay Porwal - Digital Marketing Expert',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Meet Our SEO Experts - Rohit & Ajay | SEO Shouts Team',
+    description: 'Meet the SEO experts behind SEO Shouts. Real results, honest advice, and proven digital marketing strategies for business growth.',
+    images: ['/images/team/rohit-sharma.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
+
 export default function MeetTheExperts() {
   return (
     <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen pb-16 pt-12">
@@ -31,7 +92,7 @@ export default function MeetTheExperts() {
           <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl border-t-8 border-blue-700 transition-all duration-300 flex flex-col items-center px-6 py-8 relative">
             {/* === SWAP THIS URL WITH YOUR REAL PHOTO LATER === */}
             <img
-              src="https://randomuser.me/api/portraits/men/32.jpg"
+              src="/images/team/rohit-sharma.jpg"
               alt="Rohit Sharma"
               className="w-32 h-32 rounded-full mb-4 shadow-lg border-4 border-white object-cover"
             />
@@ -59,7 +120,7 @@ export default function MeetTheExperts() {
             </ul>
             <p className="text-gray-400 italic text-xs">Udaipur, Rajasthan</p>
             <a
-              href="/blog/author/rohit-sharma"
+              href="/authors/rohit-sharma/"
               className="mt-4 inline-flex items-center text-blue-700 hover:text-purple-600 text-sm font-semibold underline"
             >
               Know more about Rohit <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
@@ -70,7 +131,7 @@ export default function MeetTheExperts() {
           <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl border-t-8 border-purple-700 transition-all duration-300 flex flex-col items-center px-6 py-8 relative">
             {/* === SWAP THIS URL WITH YOUR REAL PHOTO LATER === */}
             <img
-              src="https://randomuser.me/api/portraits/men/78.jpg"
+              src="/images/team/ajay-porwal.jpg"
               alt="Ajay Porwal"
               className="w-32 h-32 rounded-full mb-4 shadow-lg border-4 border-white object-cover"
             />
@@ -98,7 +159,7 @@ export default function MeetTheExperts() {
             </ul>
             <p className="text-gray-400 italic text-xs">Udaipur, Rajasthan</p>
             <a
-              href="/blog/author/ajay-porwal"
+              href="/authors/ajay-porwal"
               className="mt-4 inline-flex items-center text-purple-700 hover:text-blue-700 text-sm font-semibold underline"
             >
               Know more about Ajay <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>

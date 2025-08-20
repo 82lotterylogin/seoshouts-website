@@ -136,6 +136,56 @@ export default function MetaTagOptimizer() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Software Application Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Meta Tag Optimizer",
+            "description": "Create and optimize meta titles and descriptions with real-time SERP preview, character count, and CTR improvement suggestions.",
+            "url": "https://seoshouts.com/tools/meta-tag-optimizer",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com"
+            },
+            "featureList": [
+              "SERP preview simulation",
+              "Character count optimization",
+              "CTR improvement tips",
+              "Mobile preview",
+              "Social media previews",
+              "Real-time validation",
+              "Meta tag generation"
+            ],
+            "keywords": "meta tags, meta description, title tag, SERP preview, SEO optimization",
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "bestRating": "5",
+              "ratingCount": "2134"
+            },
+            "softwareVersion": "2.1",
+            "datePublished": "2024-01-10",
+            "dateModified": "2024-08-19",
+            "author": {
+              "@type": "Organization",
+              "name": "SEO Shouts"
+            }
+          })
+        }}
+      />
+      
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">

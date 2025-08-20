@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 // dummy comment to force deploy
 
 export const metadata: Metadata = {
-  title: 'Free SEO Tools - 13+ Professional Tools | SEO Shouts',
-  description: 'Access 13+ professional free SEO tools for keyword research, technical optimization, content analysis, and performance monitoring. No registration required.',
-  keywords: 'free SEO tools, keyword density analyzer, meta tag optimizer, website speed test, robots txt generator, xml sitemap generator, content analyzer, plagiarism checker, domain authority checker, google index checker',
+  title: 'Free SEO Tools - 11 Professional Tools | SEO Shouts',
+  description: 'Access 11 professional free SEO tools for keyword research, technical optimization, content creation, and AI-powered assistance. No registration required.',
+  keywords: 'free SEO tools, keyword density analyzer, meta tag optimizer, long tail keywords, robots txt generator, xml sitemap generator, word counter, AI copywriter, blog ideas generator, HTML editor',
   authors: [{ name: 'SEO Shouts' }],
   creator: 'SEO Shouts',
   publisher: 'SEO Shouts',
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools',
   },
   openGraph: {
-    title: 'Free SEO Tools - 13+ Professional Tools | SEO Shouts',
-    description: 'Access 13+ professional SEO tools for free. Keyword research, technical SEO, content optimization, and performance analysis tools.',
+    title: 'Free SEO Tools - 11 Professional Tools | SEO Shouts',
+    description: 'Access 11 professional SEO tools for free. Keyword research, technical SEO, content optimization, and AI-powered tools.',
     url: 'https://seoshouts.com/tools',
     siteName: 'SEO Shouts',
     images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free SEO Tools - 13+ Professional Tools | SEO Shouts',
-    description: 'Access 13+ professional SEO tools for free. All tools available without registration.',
+    title: 'Free SEO Tools - 11 Professional Tools | SEO Shouts',
+    description: 'Access 11 professional SEO tools for free. All tools available without registration.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/tools-twitter-image.jpg'],
@@ -83,47 +83,6 @@ export default function ToolsPage() {
         }}
       />
 
-      {/* Software Application Schema for Tools */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "SEO Shouts Free Tools Suite",
-            "description": "Collection of 13+ professional SEO tools including keyword research, technical SEO, content optimization, and performance analysis tools.",
-            "url": "https://seoshouts.com/tools",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
-            },
-            "featureList": [
-              "Keyword Density Analyzer",
-              "Keyword Difficulty Checker",
-              "Long Tail Keyword Generator",
-              "SERP Analyzer",
-              "Meta Tag Optimizer",
-              "Website Speed Test",
-              "Robots.txt Generator",
-              "XML Sitemap Generator",
-              "Content Analyzer",
-              "Heading Structure Analyzer",
-              "Word Counter",
-              "Plagiarism Checker",
-              "Domain Authority Checker",
-              "Google Index Checker"
-            ]
-          })
-        }}
-      />
 
       {/* FAQ Schema */}
       <script
@@ -138,7 +97,7 @@ export default function ToolsPage() {
                 "name": "Are your SEO tools really free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, all 13+ SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, speed tests, and more without any cost."
+                  "text": "Yes, all 11 SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, AI-powered content creators, and more without any cost."
                 }
               },
               {
@@ -154,7 +113,7 @@ export default function ToolsPage() {
                 "name": "What types of SEO tools do you offer?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We offer tools in 4 main categories: Keyword Research (keyword density, difficulty checker, long-tail generator), Technical SEO (meta tags, speed test, robots.txt), Content Optimization (content analyzer, word counter, plagiarism checker), and Authority & Performance (domain authority, index checker)."
+                  "text": "We offer tools in 4 main categories: Keyword Research (density analyzer, difficulty checker, long-tail generator), Technical SEO (meta tags, robots.txt, XML sitemap), Content & AI Tools (word counter, AI copywriter, blog ideas generator, SEO meta writer), and Developer Tools (HTML editor)."
                 }
               }
             ]
@@ -176,7 +135,7 @@ export default function ToolsPage() {
             <div className="max-w-5xl mx-auto text-center">
               <div className="inline-flex items-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-gray-200 mb-6 sm:mb-8">
                 <span className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
-                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 13+ Professional Free SEO Tools</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 11 Professional Free SEO Tools</span>
               </div>
               
               <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
@@ -196,7 +155,7 @@ export default function ToolsPage() {
               {/* Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
-                  <div className="text-2xl font-bold text-primary mb-1">13+</div>
+                  <div className="text-2xl font-bold text-primary mb-1">11</div>
                   <div className="text-sm text-gray-600">Free SEO Tools</div>
                 </div>
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
@@ -274,7 +233,7 @@ export default function ToolsPage() {
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                     Discover, analyze, and optimize keywords for better search rankings.
                   </p>
-                  <div className="text-sm text-primary font-medium">4 Tools Available</div>
+                  <div className="text-sm text-primary font-medium">3 Tools Available</div>
                 </div>
               </div>
 
@@ -291,11 +250,11 @@ export default function ToolsPage() {
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                     Optimize technical aspects of your website for search engines.
                   </p>
-                  <div className="text-sm text-primary font-medium">4 Tools Available</div>
+                  <div className="text-sm text-primary font-medium">3 Tools Available</div>
                 </div>
               </div>
 
-              {/* Content Optimization Category */}
+              {/* Content & AI Tools Category */}
               <div className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/30 overflow-hidden">
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
@@ -303,29 +262,29 @@ export default function ToolsPage() {
                     <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📄</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    Content Optimization
+                    Content & AI Tools
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                    Create and optimize content that ranks and converts.
+                    Create and optimize content with AI-powered assistance.
                   </p>
                   <div className="text-sm text-primary font-medium">4 Tools Available</div>
                 </div>
               </div>
 
-              {/* Authority & Performance Category */}
+              {/* Developer Tools Category */}
               <div className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/30 overflow-hidden">
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    Authority & Performance
+                    Developer Tools
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                    Monitor and improve your website's authority and performance.
+                    Code and test HTML, CSS, and JavaScript online.
                   </p>
-                  <div className="text-sm text-primary font-medium">2 Tools Available</div>
+                  <div className="text-sm text-primary font-medium">1 Tool Available</div>
                 </div>
               </div>
             </div>
@@ -449,34 +408,6 @@ export default function ToolsPage() {
                     </a>
                   </div>
                 </article>
-
-                {/* Tool 4 */}
-                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔎</span>
-                    </div>
-                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      SERP Analyzer
-                    </h4>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Analyze search engine result pages to understand competition and identify ranking opportunities for your target keywords.
-                    </p>
-                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Top 10 competitor analysis</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Content gap identification</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Ranking difficulty assessment</li>
-                    </ul>
-                    <a 
-                      href="/tools/serp-analyzer"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch SERP Analyzer tool"
-                    >
-                      Launch Tool
-                    </a>
-                  </div>
-                </article>
               </div>
             </div>
 
@@ -523,34 +454,6 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">⚡</span>
-                    </div>
-                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Website Speed Test
-                    </h4>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Comprehensive site speed analysis with Core Web Vitals monitoring, performance metrics, and actionable optimization recommendations.
-                    </p>
-                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Core Web Vitals analysis</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Performance scoring</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Optimization suggestions</li>
-                    </ul>
-                    <a 
-                      href="/tools/website-speed-test"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Website Speed Test tool"
-                    >
-                      Launch Tool
-                    </a>
-                  </div>
-                </article>
-
-                {/* Technical Tool 3 */}
-                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
@@ -574,7 +477,7 @@ export default function ToolsPage() {
                   </div>
                 </article>
 
-                {/* Technical Tool 4 */}
+                {/* Technical Tool 3 */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
@@ -604,73 +507,17 @@ export default function ToolsPage() {
               </div>
             </div>
 
-            {/* Content Optimization Tools */}
+            {/* Content & AI Tools */}
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
                   <span className="text-primary text-xl" aria-hidden="true">📄</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Content Optimization Tools</h3>
+                <h3 className="text-2xl font-bold text-gray-900">Content & AI Tools</h3>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Content Tool 1 */}
-                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📋</span>
-                    </div>
-                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Content Analyzer
-                    </h4>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Analyze content readability, SEO optimization, and engagement metrics. Get detailed insights to improve your content performance.
-                    </p>
-                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Readability scoring</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO optimization analysis</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Engagement predictions</li>
-                    </ul>
-                    <a 
-                      href="/tools/content-analyzer"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Content Analyzer tool"
-                    >
-                      Launch Tool
-                    </a>
-                  </div>
-                </article>
-
-                {/* Content Tool 2 */}
-                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📑</span>
-                    </div>
-                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Heading Structure Analyzer
-                    </h4>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Check and optimize your H1-H6 heading structure for better SEO and user experience. Identify hierarchy issues and improvements.
-                    </p>
-                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Heading hierarchy analysis</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO best practices check</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Structure optimization tips</li>
-                    </ul>
-                    <a 
-                      href="/tools/heading-analyzer"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Heading Structure Analyzer tool"
-                    >
-                      Launch Tool
-                    </a>
-                  </div>
-                </article>
-
-                {/* Content Tool 3 */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
@@ -698,28 +545,84 @@ export default function ToolsPage() {
                   </div>
                 </article>
 
+                {/* Content Tool 2 */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">✍️</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      AI Copywriter
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Generate compelling copy and marketing content with AI assistance. Create headlines, descriptions, and engaging content in seconds.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>AI-powered content generation</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multiple content types</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Instant results</li>
+                    </ul>
+                    <a 
+                      href="/tools/ai-copywriter"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch AI Copywriter tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
+
+                {/* Content Tool 3 */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      AI Blog Ideas Generator
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Generate compelling blog topics and content ideas with AI assistance. Get inspired with hundreds of topic suggestions tailored to your niche.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>AI topic generation</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Niche-specific ideas</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO-friendly suggestions</li>
+                    </ul>
+                    <a 
+                      href="/tools/blog-ideas-generator"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch AI Blog Ideas Generator tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
+
                 {/* Content Tool 4 */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🛡️</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Plagiarism Checker
+                      SEO Meta Writer
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Check content originality and detect duplicate content across the web. Ensure your content is unique and avoid SEO penalties.
+                      AI-powered meta content writer that creates optimized titles, descriptions, and meta tags for better search engine visibility.
                     </p>
                     <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Originality verification</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Source identification</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Similarity percentage</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>AI meta generation</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO optimization</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Character count compliance</li>
                     </ul>
                     <a 
-                      href="/tools/plagiarism-checker"
+                      href="/tools/seo-meta-writer"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Plagiarism Checker tool"
+                      aria-label="Launch SEO Meta Writer tool"
                     >
                       Launch Tool
                     </a>
@@ -728,66 +631,38 @@ export default function ToolsPage() {
               </div>
             </div>
 
-            {/* Authority & Performance Tools */}
+            {/* Developer Tools */}
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">📊</span>
+                  <span className="text-primary text-xl" aria-hidden="true">💻</span>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Authority & Performance Tools</h3>
+                <h3 className="text-2xl font-bold text-gray-900">Developer Tools</h3>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Authority Tool 1 */}
+                {/* Developer Tool 1 */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Domain Authority Checker
+                      HTML Editor
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Check domain and page authority scores to measure your website's credibility and ranking potential in search engines.
+                      Online HTML, CSS, and JavaScript editor with live preview. Code, test, and debug web pages instantly in your browser.
                     </p>
                     <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Domain authority scoring</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Page authority analysis</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Competitive comparison</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Live preview</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Syntax highlighting</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
                     <a 
-                      href="/tools/domain-authority-checker"
+                      href="/tools/html-editor"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Domain Authority Checker tool"
-                    >
-                      Launch Tool
-                    </a>
-                  </div>
-                </article>
-
-                {/* Authority Tool 2 */}
-                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔍</span>
-                    </div>
-                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Google Index Checker
-                    </h4>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Check if your pages are indexed by Google and other search engines. Monitor indexation status and identify crawling issues.
-                    </p>
-                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Indexation verification</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multi-search engine check</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Crawling issue detection</li>
-                    </ul>
-                    <a 
-                      href="/tools/google-indexing-checker"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Google Index Checker tool"
+                      aria-label="Launch HTML Editor tool"
                     >
                       Launch Tool
                     </a>
