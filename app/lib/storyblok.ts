@@ -4,7 +4,7 @@
 import StoryblokClient from "storyblok-js-client";
 
 // These are for connecting Storyblok's visual editor and React components.
-import { apiPlugin, storyblokInit } from "@storyblok/react/rsc";
+import { apiPlugin, storyblokInit } from "@storyblok/react";
 import StoryblokBlogPost from "../components/StoryblokBlogPost";
 
 

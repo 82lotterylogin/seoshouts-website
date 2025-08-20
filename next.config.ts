@@ -1,7 +1,7 @@
 import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  output: 'export', // Re-enabled after fixing components
+  output: 'export', // Re-enabled with params fix
   trailingSlash: true,
   images: {
     unoptimized: true,

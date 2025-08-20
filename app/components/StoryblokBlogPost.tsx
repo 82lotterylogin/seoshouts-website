@@ -1,5 +1,5 @@
 // app/components/StoryblokBlogPost.tsx
-import { storyblokEditable } from "@storyblok/react/rsc";
+import { storyblokEditable } from "@storyblok/react";
 import Image from 'next/image';
 import Link from 'next/link';
 

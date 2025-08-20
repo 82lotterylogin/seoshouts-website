@@ -1,7 +1,7 @@
 // app/blog/[slug]/page.tsx
 import { getStory } from "../../lib/storyblok";
 import { getAllStories } from "../../lib/storyblok";
-import { StoryblokServerComponent } from "@storyblok/react/rsc";
+import { StoryblokComponent } from "@storyblok/react";
 import ViewTracker from "../../components/ViewTracker";
 import ReadingProgress from "../../components/ReadingProgress";
 import TableOfContents from "../../components/TableOfContents";
@@ -26,8 +26,8 @@ export async function generateStaticParams() {
 
 export const dynamicParams = false;
 
-export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function BlogArticlePage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   let story;
   const possibleSlugs = [
     `blog/${slug}`,
@@ -206,7 +206,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
               <article className="prose prose-lg max-w-none">
                 <div className="prose-headings:text-gray-900 prose-h1:text-4xl prose-h1:font-bold prose-h1:leading-tight prose-h1:mb-6 prose-h1:mt-8 prose-h2:text-3xl prose-h2:font-bold prose-h2:text-gray-900 prose-h2:leading-tight prose-h2:mb-4 prose-h2:mt-8 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200 prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-gray-800 prose-h3:leading-tight prose-h3:mb-3 prose-h3:mt-6 prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:mb-2 prose-li:text-lg prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:my-6 prose-blockquote:italic prose-a:text-blue-600 prose-a:hover:text-blue-800 prose-a:font-medium prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-red-600 prose-pre:bg-gray-900 prose-pre:text-white prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6 prose-table:border-collapse prose-table:my-6 prose-th:border prose-th:border-gray-300 prose-th:bg-gray-50 prose-th:p-3 prose-th:text-left prose-th:font-semibold prose-td:border prose-td:border-gray-300 prose-td:p-3 prose-strong:font-semibold prose-strong:text-gray-900">
                   
-                  <StoryblokServerComponent blok={story.content} />
+                  <StoryblokComponent blok={story.content} />
                 </div>
               </article>
 
@@ -259,8 +259,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
   );
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const possibleSlugs = [`blog/${slug}`, slug];
   
   for (const slugToTry of possibleSlugs) {
