@@ -27,15 +27,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Skip reCAPTCHA for now (can be re-enabled later)
-    if (recaptchaToken !== 'skip_for_now') {
-      const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
-      if (!isValidRecaptcha) {
-        return NextResponse.json(
-          { error: 'reCAPTCHA verification failed. Please try again.' },
-          { status: 400 }
-        )
-      }
+    // Verify reCAPTCHA
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { error: 'reCAPTCHA verification is required.' },
+        { status: 400 }
+      )
+    }
+    
+    const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
+    if (!isValidRecaptcha) {
+      return NextResponse.json(
+        { error: 'reCAPTCHA verification failed. Please try again.' },
+        { status: 400 }
+      )
     }
 
     // Log the submission (will appear in your server console)
@@ -66,7 +71,7 @@ export async function POST(request: NextRequest) {
 
         const mailOptions = {
           from: `"SEO Shouts Contact Form" <${process.env.SMTP_USER}>`,
-          to: 'seoshouts@gmail.com',
+          to: 'contact@seoshouts.com',
           replyTo: email,
           subject: `🎯 New SEO Inquiry from ${name} - ${service || 'General'}`,
           html: `

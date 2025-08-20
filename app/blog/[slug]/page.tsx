@@ -26,8 +26,8 @@ export async function generateStaticParams() {
 
 export const dynamicParams = false;
 
-export default async function BlogArticlePage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   let story;
   const possibleSlugs = [
     `blog/${slug}`,
@@ -259,8 +259,8 @@ export default async function BlogArticlePage({ params }: { params: { slug: stri
   );
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const possibleSlugs = [`blog/${slug}`, slug];
   
   for (const slugToTry of possibleSlugs) {

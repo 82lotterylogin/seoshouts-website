@@ -164,11 +164,6 @@ export default function ContactPage() {
                             contact@seoshouts.com
                           </a>
                         </div>
-                        <div>
-                          <a href="mailto:seoshouts@gmail.com" className="text-blue-600 hover:text-blue-800 font-medium text-sm">
-                            seoshouts@gmail.com
-                          </a>
-                        </div>
                       </div>
                       <p className="text-sm text-gray-500 mt-1">24hr response time</p>
                     </div>

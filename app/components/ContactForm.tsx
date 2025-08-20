@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,8 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
@@ -35,6 +38,13 @@ export default function ContactForm() {
       return
     }
 
+    const recaptchaToken = recaptchaRef.current?.getValue()
+    if (!recaptchaToken) {
+      setErrorMessage('Please complete the reCAPTCHA verification.')
+      setSubmitStatus('error')
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus('idle')
     setErrorMessage('')
@@ -47,7 +57,7 @@ export default function ContactForm() {
         },
         body: JSON.stringify({
           ...formData,
-          recaptchaToken: 'skip_for_now' // We'll skip reCAPTCHA for now
+          recaptchaToken: recaptchaToken
         }),
       })
 
@@ -65,13 +75,16 @@ export default function ContactForm() {
           budget: '',
           message: ''
         })
+        recaptchaRef.current?.reset()
       } else {
         setSubmitStatus('error')
         setErrorMessage(result.error || 'Something went wrong. Please try again.')
+        recaptchaRef.current?.reset()
       }
     } catch (error) {
       setSubmitStatus('error')
       setErrorMessage('Network error. Please check your connection and try again.')
+      recaptchaRef.current?.reset()
     } finally {
       setIsSubmitting(false)
     }
@@ -257,6 +270,15 @@ export default function ContactForm() {
             onChange={handleInputChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             placeholder="What are your main SEO goals? What challenges are you facing? Any specific questions?"
+          />
+        </div>
+
+        {/* reCAPTCHA */}
+        <div className="flex justify-center">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            theme="light"
           />
         </div>
 
