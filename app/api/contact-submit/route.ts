@@ -27,18 +27,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Verify reCAPTCHA
-    if (!recaptchaToken) {
+    // Verify reCAPTCHA (skip if disabled)
+    if (recaptchaToken && recaptchaToken !== 'recaptcha_disabled') {
+      const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
+      if (!isValidRecaptcha) {
+        return NextResponse.json(
+          { error: 'reCAPTCHA verification failed. Please try again.' },
+          { status: 400 }
+        )
+      }
+    } else if (!recaptchaToken) {
       return NextResponse.json(
         { error: 'reCAPTCHA verification is required.' },
-        { status: 400 }
-      )
-    }
-    
-    const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
-    if (!isValidRecaptcha) {
-      return NextResponse.json(
-        { error: 'reCAPTCHA verification failed. Please try again.' },
         { status: 400 }
       )
     }

@@ -39,7 +39,7 @@ export default function ContactForm() {
     }
 
     const recaptchaToken = recaptchaRef.current?.getValue()
-    if (!recaptchaToken) {
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !recaptchaToken) {
       setErrorMessage('Please complete the reCAPTCHA verification.')
       setSubmitStatus('error')
       return
@@ -57,7 +57,7 @@ export default function ContactForm() {
         },
         body: JSON.stringify({
           ...formData,
-          recaptchaToken: recaptchaToken
+          recaptchaToken: recaptchaToken || 'recaptcha_disabled'
         }),
       })
 
@@ -75,16 +75,16 @@ export default function ContactForm() {
           budget: '',
           message: ''
         })
-        recaptchaRef.current?.reset()
+        if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
       } else {
         setSubmitStatus('error')
         setErrorMessage(result.error || 'Something went wrong. Please try again.')
-        recaptchaRef.current?.reset()
+        if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
       }
     } catch (error) {
       setSubmitStatus('error')
       setErrorMessage('Network error. Please check your connection and try again.')
-      recaptchaRef.current?.reset()
+      if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
     } finally {
       setIsSubmitting(false)
     }
@@ -274,13 +274,21 @@ export default function ContactForm() {
         </div>
 
         {/* reCAPTCHA */}
-        <div className="flex justify-center">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-            theme="light"
-          />
-        </div>
+        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+          <div className="flex justify-center">
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              theme="light"
+            />
+          </div>
+        ) : (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+            <p className="text-yellow-800 text-sm">
+              ⚠️ reCAPTCHA is temporarily unavailable. Form submission is still enabled.
+            </p>
+          </div>
+        )}
 
         <button
           type="submit"

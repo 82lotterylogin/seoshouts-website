@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import NewsletterFormSection from './components/NewsletterFormSection'
+import { getAllStories } from './lib/storyblok'
 
 export const metadata: Metadata = {
   title: 'SEO Shouts - Professional SEO Tools & Services | Free Website Analysis',
@@ -59,7 +60,16 @@ export const metadata: Metadata = {
   },
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch latest blog posts
+  let blogPosts = []
+  try {
+    const allPosts = await getAllStories("blog_post")
+    blogPosts = allPosts.slice(0, 2) // Get latest 2 posts
+  } catch (error) {
+    console.error('Error fetching blog posts:', error)
+    // Fallback to empty array, will show placeholder
+  }
   return (
     <>
       {/* Breadcrumb Schema */}
@@ -576,13 +586,13 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">⚡</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    Speed Performance Audit
+                    Robots.txt Generator
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                    Comprehensive site speed analysis with Core Web Vitals monitoring and actionable optimization recommendations.
+                    Professional robots.txt generator with advanced crawling directives, sitemap integration, and SEO best practices.
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
@@ -590,9 +600,9 @@ export default function HomePage() {
                       <span>Free Forever</span>
                     </div>
                     <a 
-                      href="/tools/website-speed-test"
+                      href="/tools/robots-txt-generator"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-                      aria-label="Launch Speed Performance Audit tool"
+                      aria-label="Launch Robots.txt Generator tool"
                     >
                       Launch Tool
                     </a>
@@ -639,73 +649,125 @@ export default function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
-              <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
-                <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
-                  FEATURED
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
-                  <span className="text-lg sm:text-xl text-white" aria-hidden="true">📈</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
-                  The Complete SEO Roadmap for 2025
-                </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
-                  Master the latest SEO techniques with our comprehensive guide covering technical optimization, 
-                  content strategy, and emerging AI-powered ranking factors that will dominate 2025.
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs sm:text-sm font-bold">SE</span>
+              {blogPosts.length > 0 ? (
+                blogPosts.map((post: any, index: number) => (
+                  <article key={post.uuid} className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
+                      {index === 0 ? 'LATEST' : 'FEATURED'}
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-800 text-sm sm:text-base">SEO Expert</p>
-                      <p className="text-xs sm:text-sm text-gray-500">Published Soon</p>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
+                      <span className="text-lg sm:text-xl text-white" aria-hidden="true">
+                        {index === 0 ? '📈' : '🎯'}
+                      </span>
                     </div>
-                  </div>
-                  <a 
-                    href="/blog/seo-roadmap-2025"
-                    className="px-4 sm:px-6 py-2 bg-white text-primary rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm sm:text-base"
-                    aria-label="Read complete SEO roadmap for 2025"
-                  >
-                    Read More
-                  </a>
-                </div>
-              </article>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
+                      {post.content?.title || post.name}
+                    </h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
+                      {post.content?.excerpt || 'Expert SEO insights and strategies to help your business grow online.'}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs sm:text-sm font-bold">
+                            {(post.content?.author?.content?.name || 'SEO Expert').split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800 text-sm sm:text-base">
+                            {post.content?.author?.content?.name || 'SEO Expert'}
+                          </p>
+                          <p className="text-xs sm:text-sm text-gray-500">
+                            {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { 
+                              year: 'numeric', 
+                              month: 'short', 
+                              day: 'numeric' 
+                            })}
+                          </p>
+                        </div>
+                      </div>
+                      <a 
+                        href={`/blog/${post.slug}`}
+                        className="px-4 sm:px-6 py-2 bg-white text-primary rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm sm:text-base"
+                        aria-label={`Read ${post.content?.title || post.name}`}
+                      >
+                        Read More
+                      </a>
+                    </div>
+                  </article>
+                ))
+              ) : (
+                // Fallback content when no blog posts are available
+                <>
+                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
+                      FEATURED
+                    </div>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
+                      <span className="text-lg sm:text-xl text-white" aria-hidden="true">📈</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
+                      Expert SEO Insights Coming Soon
+                    </h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
+                      Master the latest SEO techniques with our comprehensive guides covering technical optimization, 
+                      content strategy, and emerging AI-powered ranking factors.
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs sm:text-sm font-bold">SE</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800 text-sm sm:text-base">SEO Expert</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Publishing Soon</p>
+                        </div>
+                      </div>
+                      <a 
+                        href="/blog"
+                        className="px-4 sm:px-6 py-2 bg-white text-primary rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm sm:text-base"
+                        aria-label="Visit our blog"
+                      >
+                        Visit Blog
+                      </a>
+                    </div>
+                  </article>
 
-              <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
-                <div className="absolute top-4 right-4 px-3 py-1 bg-gray-600 text-white text-xs font-semibold rounded-full">
-                  TRENDING
-                </div>
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-600 rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
-                  <span className="text-lg sm:text-xl text-white" aria-hidden="true">🎯</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-gray-700 transition-colors duration-300 leading-tight">
-                  Local SEO: Dominate Your Market in 2025
-                </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
-                  Discover the latest local SEO strategies that are driving foot traffic and phone calls for local businesses. 
-                  From Google My Business optimization to local link building tactics.
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-600 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs sm:text-sm font-bold">LS</span>
+                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-gray-600 text-white text-xs font-semibold rounded-full">
+                      TRENDING
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-800 text-sm sm:text-base">Local SEO Pro</p>
-                      <p className="text-xs sm:text-sm text-gray-500">Coming Soon</p>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-600 rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
+                      <span className="text-lg sm:text-xl text-white" aria-hidden="true">🎯</span>
                     </div>
-                  </div>
-                  <a 
-                    href="/blog/local-seo-dominate-2025"
-                    className="px-4 sm:px-6 py-2 bg-white text-gray-600 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-gray-200 text-sm sm:text-base"
-                    aria-label="Read local SEO guide for 2025"
-                  >
-                    Read More
-                  </a>
-                </div>
-              </article>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-gray-700 transition-colors duration-300 leading-tight">
+                      SEO Strategies & Tips
+                    </h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
+                      Discover the latest SEO strategies that are driving organic traffic and conversions for businesses worldwide. 
+                      From technical SEO to content optimization tactics.
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-600 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs sm:text-sm font-bold">SS</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-800 text-sm sm:text-base">SEO Strategist</p>
+                          <p className="text-xs sm:text-sm text-gray-500">Publishing Soon</p>
+                        </div>
+                      </div>
+                      <a 
+                        href="/blog"
+                        className="px-4 sm:px-6 py-2 bg-white text-gray-600 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-gray-200 text-sm sm:text-base"
+                        aria-label="Visit our blog"
+                      >
+                        Visit Blog
+                      </a>
+                    </div>
+                  </article>
+                </>
+              )}
             </div>
           </div>
         </section>
