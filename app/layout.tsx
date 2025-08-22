@@ -135,10 +135,11 @@ export default function RootLayout({
         <meta name="generator" content="Next.js" />
         
         {/* Favicon */}
-        <link rel="icon" href="/favicon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <meta name="msapplication-TileImage" content="/favicon.png" />
         
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-29PVGYBCLV"></script>

@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['better-sqlite3'],
   experimental: {
     webVitalsAttribution: ['CLS', 'LCP'],
+    // Fix Jest worker issues
+    workerThreads: false,
+    cpus: 1,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
