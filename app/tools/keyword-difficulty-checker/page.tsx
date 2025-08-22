@@ -262,58 +262,6 @@ export default function KeywordDifficultyChecker() {
         }}
       />
       
-      {/* Header Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Keyword Difficulty Checker Tool
-              </span>
-              <br />
-              <span className="text-primary">Stop Wasting Time on Impossible Keywords</span>
-            </h1>
-            
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Out Which Keywords You Can Actually Rank For</h2>
-              <p>
-                Ever spent months trying to rank for a keyword, only to realize later that you needed the SEO budget of Amazon to compete? Yeah, we've all been there.
-              </p>
-              <p>
-                <strong>Here's the thing:</strong> Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks won't get you to page one. Others look hard but are actually achievable with the right strategy.
-              </p>
-              <p>
-                <strong>Our Keyword Difficulty Checker</strong> tells you exactly which category your target keywords fall into. No more guessing. No more wasted effort. Just clear data to help you pick battles you can actually win.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Instant Difficulty Scores
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Bulk Analysis
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                CSV Export
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Tool Section */}
       <section className="py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
@@ -599,6 +547,58 @@ export default function KeywordDifficultyChecker() {
               <p className="text-sm text-gray-500 mt-3">
                 All tools are 100% free • No signup required • Instant results
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Header Section */}
+      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Free SEO Tool
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free Keyword Difficulty Checker Tool
+              </span>
+              <br />
+              <span className="text-primary">Stop Wasting Time on Impossible Keywords</span>
+            </h1>
+            
+            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Out Which Keywords You Can Actually Rank For</h2>
+              <p>
+                Ever spent months trying to rank for a keyword, only to realize later that you needed the SEO budget of Amazon to compete? Yeah, we've all been there.
+              </p>
+              <p>
+                <strong>Here's the thing:</strong> Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks won't get you to page one. Others look hard but are actually achievable with the right strategy.
+              </p>
+              <p>
+                <strong>Our Keyword Difficulty Checker</strong> tells you exactly which category your target keywords fall into. No more guessing. No more wasted effort. Just clear data to help you pick battles you can actually win.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Instant Difficulty Scores
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Bulk Analysis
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                CSV Export
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
             </div>
           </div>
         </div>

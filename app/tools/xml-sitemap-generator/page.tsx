@@ -260,63 +260,6 @@ export default function XMLSitemapGenerator() {
         }}
       />
       
-      {/* Header Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free XML Sitemap Generator Tool
-              </span>
-              <br />
-              <span className="text-primary">Help Search Engines Find Every Page on Your Website</span>
-            </h1>
-            
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Create Professional Sitemaps in Seconds (No Coding Required)</h2>
-              <p>
-                Here's a story that'll make you appreciate sitemaps: A friend launched her online store last year with 500 products. Three months later, she discovered that Google had only indexed 47 of her product pages. The rest? Invisible to search engines.
-              </p>
-              <p>
-                Turns out, her website structure was so confusing that Google's crawlers gave up trying to find everything. One properly formatted XML sitemap later, and boom - all 500+ pages got indexed within two weeks.
-              </p>
-              <p>
-                <strong>That's the power of a good sitemap.</strong>
-              </p>
-              <p>
-                Most people think search engines automatically find every page on their website. Nope. If you've got a complex site structure, new pages, or just want to make sure nothing gets missed, you need an XML sitemap.
-              </p>
-              <p>
-                <strong>Our XML Sitemap Generator</strong> creates professional, Google-approved sitemaps in seconds. No technical knowledge required.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Manual URL Input
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Up to 2,000 URLs
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Google-Approved Format
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Tool Section */}
       <section className="py-16 sm:py-20">
@@ -554,6 +497,64 @@ export default function XMLSitemapGenerator() {
                     )}
                   </div>
                 )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Header Section */}
+      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Free SEO Tool
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free XML Sitemap Generator Tool
+              </span>
+              <br />
+              <span className="text-primary">Help Search Engines Find Every Page on Your Website</span>
+            </h1>
+            
+            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Create Professional Sitemaps in Seconds (No Coding Required)</h2>
+              <p>
+                Here's a story that'll make you appreciate sitemaps: A friend launched her online store last year with 500 products. Three months later, she discovered that Google had only indexed 47 of her product pages. The rest? Invisible to search engines.
+              </p>
+              <p>
+                Turns out, her website structure was so confusing that Google's crawlers gave up trying to find everything. One properly formatted XML sitemap later, and boom - all 500+ pages got indexed within two weeks.
+              </p>
+              <p>
+                <strong>That's the power of a good sitemap.</strong>
+              </p>
+              <p>
+                Most people think search engines automatically find every page on their website. Nope. If you've got a complex site structure, new pages, or just want to make sure nothing gets missed, you need an XML sitemap.
+              </p>
+              <p>
+                <strong>Our XML Sitemap Generator</strong> creates professional, Google-approved sitemaps in seconds. No technical knowledge required.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Manual URL Input
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Up to 2,000 URLs
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Google-Approved Format
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
               </div>
             </div>
           </div>

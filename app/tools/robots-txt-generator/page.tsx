@@ -241,60 +241,6 @@ export default function RobotsTxtGenerator() {
         }}
       />
       
-      {/* Tool Section */}
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Robots.txt Generator Tool
-              </span>
-              <br />
-              <span className="text-primary">Tell Search Engines Where They Can (And Can't) Go</span>
-            </h1>
-            
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Create Perfect Robots.txt Files Without Breaking Your Website</h2>
-              <p>
-                Last month, a small business owner called me in a panic. "Google isn't showing any of my pages!" he said. Turns out, he'd tried to create a robots.txt file himself and accidentally blocked his entire website. One tiny typo cost him three weeks of lost traffic.
-              </p>
-              <p>
-                <strong>Don't be that guy.</strong>
-              </p>
-              <p>
-                Creating a robots.txt file might seem simple, but mess up the syntax and you could accidentally hide your whole site from Google. Or worse, you could leave sensitive pages completely exposed.
-              </p>
-              <p>
-                <strong>Our Robots.txt Generator</strong> takes the guesswork out of it. Just click what you want to block or allow, and we'll create a bulletproof robots.txt file that actually works.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Multi-Agent Support
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                AI Bot Control
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Real-time Preview
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Tool Section */}
       <section className="py-16 sm:py-20">
@@ -608,10 +554,60 @@ export default function RobotsTxtGenerator() {
         </div>
       </section>
 
-      {/* Add all your content sections here from the previous version */}
-      {/* What Is Robots.txt, Why Our Generator Beats DIY, etc. */}
-      
+      {/* Hero Section */}
+      <section className="py-16 sm:py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Free SEO Tool
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free Robots.txt Generator Tool
+              </span>
+              <br />
+              <span className="text-primary">Tell Search Engines Where They Can (And Can't) Go</span>
+            </h1>
+            
+            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Create Perfect Robots.txt Files Without Breaking Your Website</h2>
+              <p>
+                Last month, a small business owner called me in a panic. "Google isn't showing any of my pages!" he said. Turns out, he'd tried to create a robots.txt file himself and accidentally blocked his entire website. One tiny typo cost him three weeks of lost traffic.
+              </p>
+              <p>
+                <strong>Don't be that guy.</strong>
+              </p>
+              <p>
+                Creating a robots.txt file might seem simple, but mess up the syntax and you could accidentally hide your whole site from Google. Or worse, you could leave sensitive pages completely exposed.
+              </p>
+              <p>
+                <strong>Our Robots.txt Generator</strong> takes the guesswork out of it. Just click what you want to block or allow, and we'll create a bulletproof robots.txt file that actually works.
+              </p>
+            </div>
 
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Multi-Agent Support
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                AI Bot Control
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Real-time Preview
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* What Is Robots.txt Section */}
       <section className="py-16 bg-white">
