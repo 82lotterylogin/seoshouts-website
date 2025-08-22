@@ -34,7 +34,8 @@
       "Bash(npm audit:*)",
       "Bash(npm outdated:*)",
       "Bash(npm update:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
