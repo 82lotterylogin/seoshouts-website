@@ -63,6 +63,7 @@ export default function RobotsTxtGenerator() {
       document.head.appendChild(metaKeywords)
     }
     metaKeywords.setAttribute('content', 'robots.txt generator, robots txt file, search engine crawling, website security, SEO tools')
+    
   }, [])
 
   const [selectedPlatform, setSelectedPlatform] = useState<'wordpress' | 'shopify' | 'general'>('wordpress')

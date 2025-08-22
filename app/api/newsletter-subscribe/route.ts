@@ -1,22 +1,26 @@
 // app/api/newsletter-subscribe/route.ts
 import { NextRequest, NextResponse } from 'next/server'
+import { sanitizeInput, validateEmail, logSecurityEvent, getSecurityHeaders } from '@/app/lib/security';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, firstName, recaptchaToken } = await request.json()
+    let { email, firstName, recaptchaToken } = await request.json()
+    
+    // Sanitize inputs
+    email = sanitizeInput(email);
+    firstName = sanitizeInput(firstName);
     
     if (!email) {
-      return NextResponse.json({ error: 'Email is required' }, { status: 400 })
+      return NextResponse.json({ error: 'Email is required' }, { status: 400, headers: getSecurityHeaders() })
     }
 
     if (!recaptchaToken) {
-      return NextResponse.json({ error: 'reCAPTCHA verification is required' }, { status: 400 })
+      return NextResponse.json({ error: 'reCAPTCHA verification is required' }, { status: 400, headers: getSecurityHeaders() })
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
+    // Validate email format using security utility
+    if (!validateEmail(email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400, headers: getSecurityHeaders() })
     }
 
     // ✅ VERIFY reCAPTCHA TOKEN
@@ -24,7 +28,7 @@ export async function POST(request: NextRequest) {
     
     if (!RECAPTCHA_SECRET_KEY) {
       console.error('reCAPTCHA secret key is missing')
-      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500, headers: getSecurityHeaders() })
     }
 
     console.log('Verifying reCAPTCHA token...')
@@ -49,8 +53,9 @@ export async function POST(request: NextRequest) {
     })
 
     if (!recaptchaData.success) {
+      logSecurityEvent('NEWSLETTER_RECAPTCHA_FAILED', { email, errorCodes: recaptchaData['error-codes'] }, request);
       console.error('reCAPTCHA verification failed:', recaptchaData['error-codes'])
-      return NextResponse.json({ error: 'reCAPTCHA verification failed. Please try again.' }, { status: 400 })
+      return NextResponse.json({ error: 'reCAPTCHA verification failed. Please try again.' }, { status: 400, headers: getSecurityHeaders() })
     }
 
     // ✅ BREVO INTEGRATION WITH ENHANCED ERROR HANDLING
@@ -63,14 +68,14 @@ export async function POST(request: NextRequest) {
         hasListId: !!BREVO_LIST_ID,
         apiKeyLength: BREVO_API_KEY?.length || 0
       })
-      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500, headers: getSecurityHeaders() })
     }
 
+    // Log request without exposing API key
     console.log('Making Brevo API request:', {
-      email,
+      email: email.replace(/(.{3}).*(@.*)/, '$1***$2'), // Mask email for privacy
       firstName: firstName || 'Not provided',
-      listId: BREVO_LIST_ID,
-      apiKeyPrefix: BREVO_API_KEY.substring(0, 10) + '...'
+      listId: BREVO_LIST_ID
     })
 
     // Prepare attributes object
@@ -119,7 +124,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           success: true,
           message: 'Successfully subscribed to newsletter!'
-        })
+        }, { headers: getSecurityHeaders() })
       }
       
       // Try to parse JSON if response has content
@@ -130,13 +135,13 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           success: true,
           message: 'Successfully subscribed to newsletter!'
-        })
+        }, { headers: getSecurityHeaders() })
       } catch (parseError) {
         console.log('Non-JSON response, but request was successful')
         return NextResponse.json({
           success: true,
           message: 'Successfully subscribed to newsletter!'
-        })
+        }, { headers: getSecurityHeaders() })
       }
     }
 
@@ -154,17 +159,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         message: 'You are already subscribed to our newsletter!'
-      })
+      }, { headers: getSecurityHeaders() })
     }
     
     if (response.status === 401) {
       console.error('Brevo API authentication failed')
-      return NextResponse.json({ error: 'API authentication failed' }, { status: 500 })
+      return NextResponse.json({ error: 'API authentication failed' }, { status: 500, headers: getSecurityHeaders() })
     }
 
     if (response.status === 400) {
       console.error('Brevo API bad request:', errorText)
-      return NextResponse.json({ error: 'Invalid request data' }, { status: 400 })
+      return NextResponse.json({ error: 'Invalid request data' }, { status: 400, headers: getSecurityHeaders() })
     }
 
     console.error('Brevo API failed:', {
@@ -175,14 +180,15 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { error: 'Subscription failed. Please try again.' }, 
-      { status: 500 }
+      { status: 500, headers: getSecurityHeaders() }
     )
 
   } catch (error) {
+    logSecurityEvent('NEWSLETTER_SUBSCRIPTION_ERROR', { error: error instanceof Error ? error.message : 'Unknown error' }, request);
     console.error('Newsletter subscription error:', error)
     return NextResponse.json(
       { error: 'Subscription failed. Please try again.' }, 
-      { status: 500 }
+      { status: 500, headers: getSecurityHeaders() }
     )
   }
 }

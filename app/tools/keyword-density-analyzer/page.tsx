@@ -24,6 +24,7 @@ export default function KeywordDensityAnalyzer() {
       document.head.appendChild(metaKeywords)
     }
     metaKeywords.setAttribute('content', 'keyword density analyzer, keyword density checker, SEO content analysis, keyword optimization, content SEO tool')
+    
   }, [])
 
   const [form, setForm] = useState({

@@ -23,6 +23,7 @@ export default function LongTailKeywordGenerator() {
       document.head.appendChild(metaKeywords)
     }
     metaKeywords.setAttribute('content', 'long tail keyword generator, keyword research tool, SEO keywords, keyword finder, profitable keywords')
+    
   }, [])
 
   const [form, setForm] = useState({

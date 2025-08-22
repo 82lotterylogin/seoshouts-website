@@ -114,11 +114,12 @@ export default function BlogSidebarSubscription() {
 
           {/* reCAPTCHA */}
           <div className="flex justify-center">
-            <div className="bg-white/95 rounded-lg p-2">
+            <div style={{ transform: 'scale(0.85)', transformOrigin: 'center' }}>
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
                 theme="light"
+                size="normal"
               />
             </div>
           </div>
@@ -145,6 +146,15 @@ export default function BlogSidebarSubscription() {
               </>
             )}
           </button>
+
+          {/* Privacy Policy Text */}
+          <p className="text-blue-200 text-xs text-center leading-relaxed">
+            By clicking the "Subscribe" button, I agree and accept the{' '}
+            <a href="/privacy-policy" className="underline hover:text-white transition-colors">
+              privacy policy
+            </a>{' '}
+            of SEOShouts.
+          </p>
 
           {/* Success Message */}
           {formData.isSubscribed && (

@@ -82,7 +82,7 @@ export default function BlogNewsletterForm() {
           </div>
           
           {!formData.isSubscribed ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-2">
               <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <input
                   type="email"
@@ -113,12 +113,13 @@ export default function BlogNewsletterForm() {
               </div>
 
               {/* reCAPTCHA */}
-              <div className="flex justify-center pt-4">
-                <div className="bg-white/95 rounded-lg p-2">
+              <div className="flex justify-center">
+                <div style={{ transform: 'scale(0.75)', transformOrigin: 'center' }}>
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
                     theme="light"
+                    size="normal"
                   />
                 </div>
               </div>

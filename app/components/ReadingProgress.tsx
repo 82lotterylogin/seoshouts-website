@@ -10,11 +10,28 @@ const ReadingProgress = () => {
   useEffect(() => {
     const updateProgress = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
-      const clampedProgress = Math.min(100, Math.max(0, scrollPercent));
       
-      setProgress(clampedProgress);
+      // Try to find author box to use as 100% completion point
+      const authorBox = document.querySelector('[class*="author"]') || 
+                        document.querySelector('.author-bio') ||
+                        document.querySelector('#author') ||
+                        document.getElementById('author-section');
+      
+      let targetElement = authorBox;
+      
+      // If no author box found, use document height
+      if (!targetElement) {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        const clampedProgress = Math.min(100, Math.max(0, scrollPercent));
+        setProgress(clampedProgress);
+      } else {
+        // Calculate progress based on author box position
+        const targetPosition = targetElement.offsetTop;
+        const scrollPercent = Math.min(100, Math.max(0, (scrollTop / targetPosition) * 100));
+        setProgress(scrollPercent);
+      }
+      
       setIsVisible(scrollTop > 100);
     };
 
@@ -34,9 +51,10 @@ const ReadingProgress = () => {
       </div>
 
       {isVisible && (
-        <div className="fixed bottom-8 right-8 z-40">
-          <div className="w-16 h-16 bg-white rounded-full shadow-xl border border-gray-200 flex items-center justify-center">
-            <svg className="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+        <div className="fixed bottom-24 lg:bottom-20 right-4 lg:right-8 z-[60]">
+          {/* Reading Progress Circle */}
+          <div className="w-16 h-16 bg-white rounded-full shadow-xl border border-gray-200 relative flex items-center justify-center">
+            <svg className="absolute w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
               <path
                 className="text-gray-200"
                 stroke="currentColor"
@@ -56,11 +74,9 @@ const ReadingProgress = () => {
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
             </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs font-bold text-gray-700">
-                {Math.round(progress)}%
-              </span>
-            </div>
+            <span className="text-xs font-bold text-gray-700 z-10 relative">
+              {Math.round(progress)}%
+            </span>
           </div>
         </div>
       )}

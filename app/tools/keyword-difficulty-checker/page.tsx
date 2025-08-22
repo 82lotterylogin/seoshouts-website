@@ -79,6 +79,7 @@ export default function KeywordDifficultyChecker() {
       document.head.appendChild(metaKeywords)
     }
     metaKeywords.setAttribute('content', 'keyword difficulty checker, keyword competition analysis, SEO difficulty tool, keyword ranking difficulty')
+    
   }, [])
 
   const [form, setForm] = useState({

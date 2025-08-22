@@ -1,5 +1,6 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
+import ScrollToTop from './components/ScrollToTop'
 import './globals.css'
 
 export default function RootLayout({
@@ -102,13 +103,34 @@ export default function RootLayout({
     }
   }, [])
 
+  // Set default robots meta tag for pages that don't have metadata (client components)
+  useEffect(() => {
+    // Only add robots meta if it doesn't already exist (to avoid conflicts with server-side metadata)
+    if (typeof window !== 'undefined') {
+      const existingRobots = document.querySelector('meta[name="robots"]')
+      if (!existingRobots) {
+        const robotsMeta = document.createElement('meta')
+        robotsMeta.setAttribute('name', 'robots')
+        
+        // Check if this is an admin page - admin pages should not be indexed
+        const isAdminPage = window.location.pathname.startsWith('/admin')
+        if (isAdminPage) {
+          robotsMeta.setAttribute('content', 'noindex, nofollow')
+        } else {
+          robotsMeta.setAttribute('content', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1')
+        }
+        
+        document.head.appendChild(robotsMeta)
+      }
+    }
+  }, [])
+
   return (
     <html lang="en">
       <head>
         {/* Global SEO Elements */}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="author" content="SEO Shouts" />
         <meta name="generator" content="Next.js" />
         
@@ -174,7 +196,7 @@ export default function RootLayout({
         />
       </head>
       
-      <body className="overflow-x-hidden">
+      <body>
         {/* Cookie Consent Banner - Updated */}
         {showCookieConsent && (
           <div className="fixed bottom-4 right-4 max-w-sm w-full z-50 animate-fade-in-up">
@@ -579,9 +601,12 @@ export default function RootLayout({
         </header>
 
         {/* Main Content Area */}
-        <main className="min-h-screen">
+        <main className="min-h-screen overflow-x-hidden">
           {children}
         </main>
+        
+        {/* Scroll to Top - Available across all pages */}
+        <ScrollToTop />
         {/* Footer - Updated with SEO Website Development */}
         <footer className="bg-gray-900 text-white py-16 sm:py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>

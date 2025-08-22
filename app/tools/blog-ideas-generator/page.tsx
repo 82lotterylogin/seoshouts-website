@@ -25,6 +25,7 @@ function BlogIdeasGeneratorTool() {
     if (typeof window !== 'undefined') {
       document.title = 'Free Blog Ideas Generator Tool — Never Stare at a Blank Screen Again | SEO Shouts'
       
+      
       const storedUsage = localStorage.getItem('blog-ideas-generator-usage')
       const currentUsage = storedUsage ? parseInt(storedUsage) : 0
       

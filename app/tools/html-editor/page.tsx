@@ -5,6 +5,16 @@ import React, { useEffect, useRef, useState } from 'react';
 export default function HTMLEditor() {
   useEffect(() => {
     document.title = 'Free HTML Editor Tool | SEO Shouts';
+    
+    // Set meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', 'Free online HTML editor with live preview. Write, edit, and test HTML, CSS, and JavaScript code with syntax highlighting and real-time preview.');
+    
   }, []);
 
   // ---------------- State & Refs ----------------
@@ -294,7 +304,6 @@ export default function HTMLEditor() {
     if (visualRef.current) visualRef.current.innerHTML = normalized;
     setHtmlContent(normalized);
     setSourceUndoStack([normalized]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

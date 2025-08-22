@@ -1,6 +1,7 @@
 // app/api/contact-submit/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer';
+import { sanitizeInput, validateEmail, logSecurityEvent, getSecurityHeaders } from '@/app/lib/security';
 
 // Verify reCAPTCHA
 async function verifyRecaptcha(token: string) {
@@ -17,13 +18,31 @@ async function verifyRecaptcha(token: string) {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
-    const { name, email, phone, company, website, service, budget, message, recaptchaToken } = data
+    let { name, email, phone, company, website, service, budget, message, recaptchaToken } = data
+
+    // Sanitize all inputs
+    name = sanitizeInput(name);
+    email = sanitizeInput(email);
+    phone = sanitizeInput(phone);
+    company = sanitizeInput(company);
+    website = sanitizeInput(website);
+    service = sanitizeInput(service);
+    budget = sanitizeInput(budget);
+    message = sanitizeInput(message);
 
     // Validate required fields
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: 'Please fill in all required fields.' },
-        { status: 400 }
+        { status: 400, headers: getSecurityHeaders() }
+      )
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return NextResponse.json(
+        { error: 'Please provide a valid email address.' },
+        { status: 400, headers: getSecurityHeaders() }
       )
     }
 
@@ -31,15 +50,16 @@ export async function POST(request: NextRequest) {
     if (recaptchaToken && recaptchaToken !== 'recaptcha_disabled') {
       const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
       if (!isValidRecaptcha) {
+        logSecurityEvent('RECAPTCHA_FAILED', { email, ip: request.ip }, request);
         return NextResponse.json(
           { error: 'reCAPTCHA verification failed. Please try again.' },
-          { status: 400 }
+          { status: 400, headers: getSecurityHeaders() }
         )
       }
     } else if (!recaptchaToken) {
       return NextResponse.json(
         { error: 'reCAPTCHA verification is required.' },
-        { status: 400 }
+        { status: 400, headers: getSecurityHeaders() }
       )
     }
 
@@ -110,13 +130,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true,
       message: 'Thank you for your inquiry! We will get back to you soon.'
-    })
+    }, { headers: getSecurityHeaders() })
 
   } catch (error) {
+    logSecurityEvent('CONTACT_FORM_ERROR', { error: error instanceof Error ? error.message : 'Unknown error' }, request);
     console.error('Contact form error:', error)
     return NextResponse.json(
       { error: 'Failed to send message. Please try again.' },
-      { status: 500 }
+      { status: 500, headers: getSecurityHeaders() }
     )
   }
 }

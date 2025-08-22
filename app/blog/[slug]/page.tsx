@@ -1,50 +1,115 @@
 // app/blog/[slug]/page.tsx
-import { getStory } from "../../lib/storyblok";
-import { getAllStories } from "../../lib/storyblok";
-import { StoryblokComponent } from "@storyblok/react";
+import { calculateReadTime, extractExcerpt } from "../../lib/content-utils";
+import { getMultipleViewCounts } from "../../lib/firebase";
+import { getDatabase } from "../../lib/database";
+import { sanitizeHTML } from "../../lib/security";
 import ViewTracker from "../../components/ViewTracker";
 import ReadingProgress from "../../components/ReadingProgress";
 import TableOfContents from "../../components/TableOfContents";
 import SocialShare from "../../components/SocialShare";
 import AuthorBio from "../../components/AuthorBio";
-import ArticleNewsletter from "../../components/ArticleNewsletter";
+import BlogNewsletterForm from "../../components/BlogNewsletterForm";
 import RelatedPosts from "../../components/RelatedPosts";
-import BlogNewsletterForm from "../../components/BlogNewsletterForm"; // New import
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export async function generateStaticParams() {
+// Allow all dynamic params - no static generation for now
+export const dynamicParams = true;
+
+// Fetch single article by slug
+async function fetchArticle(slug: string) {
   try {
-    const blogPosts = await getAllStories("blog_post");
-    return blogPosts.map((post: any) => ({
-      slug: post.slug,
-    }));
+    const db = getDatabase();
+    
+    const article = db.prepare(`
+      SELECT 
+        a.*,
+        auth.name as author_name,
+        auth.email as author_email,
+        auth.bio as author_bio,
+        auth.avatar_url as author_avatar_url,
+        auth.job_title as author_job_title,
+        auth.location as author_location,
+        auth.linkedin_url as author_linkedin_url,
+        auth.company as author_company,
+        c.name as category_name,
+        c.slug as category_slug,
+        c.description as category_description
+      FROM articles a
+      JOIN authors auth ON a.author_id = auth.id
+      JOIN categories c ON a.category_id = c.id
+      WHERE a.slug = ? AND a.status = 'published'
+    `).get(slug) as any;
+    
+    if (!article) {
+      return null;
+    }
+    
+    // Get tags for the article
+    const tags = db.prepare('SELECT tag FROM article_tags WHERE article_id = ?').all(article.id) as { tag: string }[];
+    
+    return {
+      ...article,
+      author: {
+        id: article.author_id,
+        name: article.author_name,
+        email: article.author_email,
+        bio: article.author_bio,
+        avatar_url: article.author_avatar_url,
+        job_title: article.author_job_title,
+        location: article.author_location,
+        linkedin_url: article.author_linkedin_url,
+        company: article.author_company,
+        created_at: '',
+        updated_at: ''
+      },
+      category: {
+        id: article.category_id,
+        name: article.category_name,
+        slug: article.category_slug,
+        description: article.category_description,
+        created_at: '',
+        updated_at: ''
+      },
+      tags: tags.map(t => t.tag)
+    };
   } catch (error) {
-    console.error('Error in generateStaticParams:', error);
+    console.error('Error fetching article:', error);
+    return null;
+  }
+}
+
+// Fetch related articles
+async function fetchRelatedArticles(categoryId: number, currentSlug: string, limit = 3) {
+  try {
+    const db = getDatabase();
+    
+    const relatedArticles = db.prepare(`
+      SELECT 
+        a.id, a.title, a.slug, a.excerpt, a.featured_image, a.featured_image_alt,
+        a.published_at, a.created_at,
+        auth.name as author_name,
+        c.name as category_name
+      FROM articles a
+      JOIN authors auth ON a.author_id = auth.id
+      JOIN categories c ON a.category_id = c.id
+      WHERE a.category_id = ? AND a.slug != ? AND a.status = 'published'
+      ORDER BY a.published_at DESC, a.created_at DESC
+      LIMIT ?
+    `).all(categoryId, currentSlug, limit) as any[];
+    
+    return relatedArticles;
+  } catch (error) {
+    console.error('Error fetching related articles:', error);
     return [];
   }
 }
 
-export const dynamicParams = false;
-
 export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  let story;
-  const possibleSlugs = [
-    `blog/${slug}`,
-    slug,
-    `blog/${slug}/`,
-  ];
+  const article = await fetchArticle(slug);
   
-  for (const slugToTry of possibleSlugs) {
-    try {
-      story = await getStory(slugToTry);
-      break;
-    } catch (error) {
-      continue;
-    }
-  }
-  
-  if (!story || !story.content) {
+  if (!article) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4">
         <div className="max-w-md mx-auto text-center">
@@ -71,13 +136,20 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
     );
   }
 
+  const relatedArticles = await fetchRelatedArticles(article.category_id, slug);
+  const readTime = calculateReadTime(article.content);
+  
+  // Get view counts
+  const viewCounts = await getMultipleViewCounts([slug]);
+  const viewCount = viewCounts[slug] || 0;
+
   return (
     <div className="bg-white min-h-screen">
       {/* Fixed Elements */}
       <ReadingProgress />
       <ViewTracker articleSlug={slug} />
       
-      {/* Enhanced Hero Section with Blue Theme */}
+      {/* Enhanced Hero Section */}
       <header className="relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 py-12 lg:py-16">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 opacity-10">
@@ -99,37 +171,37 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                 </svg>
-                <span className="text-white/60 capitalize">{story.content.category || 'SEO'}</span>
+                <span className="text-white/60 capitalize">{article.category.name}</span>
               </div>
             </nav>
             
             {/* Category Badge */}
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 py-2 mb-6">
               <div className="w-2 h-2 bg-white rounded-full"></div>
-              <span className="text-sm font-bold uppercase tracking-wider">{story.content.category || 'SEO Strategy'}</span>
+              <span className="text-sm font-bold uppercase tracking-wider">{article.category.name}</span>
             </div>
             
             {/* Article Title */}
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-12 drop-shadow-lg">
-              {story.content.title}
+              {article.title}
             </h1>
             
-            {/* Author & Meta Information - Mobile Responsive */}
+            {/* Author & Meta Information */}
             <div className="flex flex-col items-center justify-center space-y-6 md:space-y-0 md:flex-row md:gap-8">
               
               {/* Author Info */}
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full overflow-hidden ring-3 ring-white/30">
-                  {story.content.author?.content?.picture?.filename ? (
+                  {article.author.avatar_url ? (
                     <img
-                      src={story.content.author.content.picture.filename}
-                      alt={story.content.author.content.name || 'Author'}
+                      src={article.author.avatar_url}
+                      alt={article.author.name}
                       className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-white/20 flex items-center justify-center">
                       <span className="text-white font-bold text-lg">
-                        {(story.content.author?.content?.name || 'RS').split(' ').map((n: string) => n[0]).join('')}
+                        {article.author.name.split(' ').map((n: string) => n[0]).join('')}
                       </span>
                     </div>
                   )}
@@ -137,39 +209,35 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                 <div className="text-left">
                   <div className="text-sm text-white/70">Written by</div>
                   <div className="text-white font-semibold">
-                    {story.content.author?.content?.name || 'Rohit Sharma'}
+                    {article.author.name}
                   </div>
                 </div>
               </div>
               
-              {/* Divider - Hidden on mobile */}
+              {/* Divider */}
               <div className="hidden md:block w-px h-12 bg-white/30"></div>
               
-              {/* Mobile: 2-column grid for Date and Reading Time */}
-              <div className="grid grid-cols-2 gap-8 md:contents">
-                
-                {/* Publication Date */}
-                <div className="text-center">
-                  <div className="text-sm text-white/70 mb-1">Published</div>
-                  <div className="font-semibold text-white">
-                    {new Date(story.first_published_at).toLocaleDateString("en-US", { 
-                      month: 'short', 
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
-                  </div>
+              {/* Publication Date */}
+              <div className="text-center">
+                <div className="text-sm text-white/70 mb-1">Published</div>
+                <div className="font-semibold text-white">
+                  {new Date(article.published_at || article.created_at).toLocaleDateString("en-US", { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
                 </div>
-                
-                {/* Desktop Divider */}
-                <div className="hidden md:block w-px h-12 bg-white/30"></div>
-                
-                {/* Reading Time */}
-                <div className="text-center">
-                  <div className="text-sm text-white/70 mb-1">Reading Time</div>
-                  <div className="font-semibold text-white">5 min read</div>
-                </div>
-                
               </div>
+              
+              {/* Divider */}
+              <div className="hidden md:block w-px h-12 bg-white/30"></div>
+              
+              {/* Reading Time */}
+              <div className="text-center">
+                <div className="text-sm text-white/70 mb-1">Reading Time</div>
+                <div className="font-semibold text-white">{readTime} min read</div>
+              </div>
+              
             </div>
           </div>
         </div>
@@ -177,11 +245,11 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
       {/* Featured Image Section */}
       <div className="container mx-auto px-4 lg:px-8 -mt-12 pt-8 md:pt-0 relative z-20 mb-8">
-        {story.content.image?.filename && (
+        {article.featured_image && (
           <div className="relative aspect-[16/9] md:aspect-[2/1] rounded-xl overflow-hidden shadow-xl max-w-4xl mx-auto">
             <img
-              src={story.content.image.filename}
-              alt={story.content.image.alt || story.content.title}
+              src={article.featured_image}
+              alt={article.featured_image_alt || article.title}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
@@ -195,42 +263,58 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
 
             {/* Main Article Content */}
-            <main className="lg:col-span-8">
+            <main className="lg:col-span-8 min-w-0 overflow-hidden">
               
               {/* NEWSLETTER FORM - Moved from bottom */}
-              <div className="mb-4">
+              <div className="mb-2">
                 <BlogNewsletterForm />
               </div>
               
               {/* Enhanced Article Content with Better Typography */}
-              <article className="prose prose-lg max-w-none">
-                <div className="prose-headings:text-gray-900 prose-h1:text-4xl prose-h1:font-bold prose-h1:leading-tight prose-h1:mb-6 prose-h1:mt-8 prose-h2:text-3xl prose-h2:font-bold prose-h2:text-gray-900 prose-h2:leading-tight prose-h2:mb-4 prose-h2:mt-8 prose-h2:pb-2 prose-h2:border-b prose-h2:border-gray-200 prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-gray-800 prose-h3:leading-tight prose-h3:mb-3 prose-h3:mt-6 prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:mb-2 prose-li:text-lg prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:my-6 prose-blockquote:italic prose-a:text-blue-600 prose-a:hover:text-blue-800 prose-a:font-medium prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-red-600 prose-pre:bg-gray-900 prose-pre:text-white prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6 prose-table:border-collapse prose-table:my-6 prose-th:border prose-th:border-gray-300 prose-th:bg-gray-50 prose-th:p-3 prose-th:text-left prose-th:font-semibold prose-td:border prose-td:border-gray-300 prose-td:p-3 prose-strong:font-semibold prose-strong:text-gray-900">
+              <article className="prose prose-lg max-w-none overflow-hidden">
+                <div className="prose-headings:text-gray-900 prose-h1:text-4xl prose-h1:font-bold prose-h1:leading-tight prose-h1:mb-6 prose-h1:mt-8 prose-h2:text-3xl prose-h2:font-bold prose-h2:text-gray-900 prose-h2:leading-tight prose-h2:mb-4 prose-h2:mt-8 prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-gray-800 prose-h3:leading-tight prose-h3:mb-3 prose-h3:mt-6 prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:mb-2 prose-li:text-lg prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:my-6 prose-blockquote:italic prose-a:text-blue-600 prose-a:hover:text-blue-800 prose-a:font-medium prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-img:max-w-full prose-img:h-auto prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-red-600 prose-pre:bg-gray-900 prose-pre:text-white prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6 prose-table:border-collapse prose-table:my-6 prose-table:overflow-x-auto prose-table:block prose-table:max-w-full prose-th:border prose-th:border-gray-300 prose-th:bg-gray-50 prose-th:p-3 prose-th:text-left prose-th:font-semibold prose-td:border prose-td:border-gray-300 prose-td:p-3 prose-strong:font-semibold prose-strong:text-gray-900 overflow-hidden break-words">
                   
-                  <StoryblokComponent blok={story.content} />
+                  <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.content) }} />
                 </div>
               </article>
 
               {/* Author Box */}
               <div className="mt-8 mb-2">
-                <AuthorBio author={story.content.author} />
+                <AuthorBio author={{
+                  content: {
+                    name: article.author.name,
+                    slug: article.author.name.toLowerCase().replace(/\s+/g, '-'),
+                    picture: { filename: article.author.avatar_url },
+                    email: article.author.email,
+                    linkedin_url: article.author.linkedin_url,
+                    twitter_url: article.author.twitter_url,
+                    website_url: article.author.website_url,
+                    bio: article.author.bio,
+                    job_title: article.author.job_title
+                  }
+                }} />
               </div>
-
 
             </main>
 
             {/* Right Sidebar - Only TOC */}
-            <aside className="lg:col-span-4">
-              <div className="sticky top-8 space-y-6">
+            <aside className="lg:col-span-4 hidden lg:block">
+              <div className="sticky top-24 space-y-3 z-40">
                 {/* Table of Contents */}
-                <TableOfContents content={story.content.content} />
+                <TableOfContents content={article.content} />
               </div>
             </aside>
           </div>
         </div>
       </div>
+      
+      {/* Mobile Floating Table of Contents */}
+      <div className="lg:hidden">
+        <TableOfContents content={article.content} />
+      </div>
 
       {/* Full-width sections */}
-      <RelatedPosts currentSlug={story.slug} category={story.content.category} />
+      <RelatedPosts currentSlug={article.slug} category={article.category.name} categorySlug={article.category.slug} categoryId={article.category.id} />
 
       {/* Enhanced Back to Blog Section - Blue Theme */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 py-16">
@@ -254,43 +338,61 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
       </section>
       
       {/* Social Share - positioned on left side */}
-      <SocialShare title={story.content.title} slug={story.slug} />
+      <SocialShare title={article.title} slug={slug} />
     </div>
   );
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const possibleSlugs = [`blog/${slug}`, slug];
+  const article = await fetchArticle(slug);
   
-  for (const slugToTry of possibleSlugs) {
-    try {
-      const story = await getStory(slugToTry);
-      return {
-        title: `${story.content.title} | SEO Shouts`,
-        description: story.content.excerpt || 'Expert SEO insights and strategies from SEO Shouts',
-        openGraph: {
-          title: story.content.title,
-          description: story.content.excerpt,
-          images: [story.content.image?.filename],
-          type: 'article',
-          publishedTime: story.first_published_at,
-          authors: [story.content.author?.content?.name || 'Rohit Sharma'],
-        },
-        twitter: {
-          card: 'summary_large_image',
-          title: story.content.title,
-          description: story.content.excerpt,
-          images: [story.content.image?.filename],
-        },
-      };
-    } catch (error) {
-      continue;
-    }
+  if (!article) {
+    return {
+      title: 'Article Not Found | SEO Shouts',
+      description: 'The article you are looking for could not be found.',
+    };
   }
   
   return {
-    title: 'Article Not Found | SEO Shouts',
-    description: 'The article you are looking for could not be found.',
+    title: article.meta_title || `${article.title} | SEO Shouts`,
+    description: article.meta_description || article.excerpt || extractExcerpt(article.content, 160),
+    keywords: article.tags?.join(', '),
+    authors: [{ name: article.author.name }],
+    metadataBase: new URL('https://seoshouts.com'),
+    alternates: {
+      canonical: `https://seoshouts.com/blog/${slug}`,
+    },
+    openGraph: {
+      title: article.meta_title || article.title,
+      description: article.meta_description || article.excerpt || extractExcerpt(article.content, 160),
+      images: article.featured_image ? [{ 
+        url: article.featured_image,
+        alt: article.featured_image_alt || article.title 
+      }] : [],
+      type: 'article',
+      publishedTime: article.published_at || article.created_at,
+      authors: [article.author.name],
+      tags: article.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.meta_title || article.title,
+      description: article.meta_description || article.excerpt || extractExcerpt(article.content, 160),
+      images: article.featured_image ? [article.featured_image] : [],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }

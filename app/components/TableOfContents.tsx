@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 const TableOfContents = ({ content }: { content: any }) => {
   const [headings, setHeadings] = useState<Array<{id: string, title: string, level: number}>>([]);
   const [activeId, setActiveId] = useState('');
-  const [isOpen, setIsOpen] = useState(true); // Open by default
+  const [isOpen, setIsOpen] = useState(false); // Closed by default
 
   useEffect(() => {
     // DOM extraction method (what was working before)
@@ -56,15 +56,20 @@ const TableOfContents = ({ content }: { content: any }) => {
 
   // ✅ ENHANCED: Custom scroll function with header offset
   const scrollToHeading = (headingId: string) => {
+    console.log('Scrolling to heading:', headingId); // Debug log
     const element = document.getElementById(headingId);
-    if (!element) return;
+    if (!element) {
+      console.log('Element not found:', headingId);
+      return;
+    }
 
-    // Calculate header height dynamically
-    const header = document.querySelector('header') || document.querySelector('nav') || document.querySelector('.sticky');
-    const headerHeight = header ? header.offsetHeight : 100; // fallback to 100px
+    // Calculate header height more precisely
+    const header = document.querySelector('header[class*="sticky"]') || 
+                   document.querySelector('header');
+    const headerHeight = header ? header.offsetHeight : 80;
     
     // Add extra padding for breathing room
-    const offset = headerHeight + 20;
+    const offset = headerHeight + 40; // Reduced from 80 to 40
     
     // Get element position
     const elementPosition = element.getBoundingClientRect().top;
@@ -78,7 +83,7 @@ const TableOfContents = ({ content }: { content: any }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-gray-100">
+    <div className="bg-white/95 lg:bg-white backdrop-blur-sm lg:backdrop-blur-none rounded-lg border border-gray-100 lg:shadow-lg lg:relative lg:static fixed bottom-4 left-4 right-4 lg:left-auto lg:right-auto lg:bottom-auto shadow-2xl z-40 lg:z-auto max-w-sm lg:max-w-none mx-auto lg:mx-0">
       {/* Header with Toggle Button */}
       <div className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h3 className="font-bold text-gray-800 flex items-center gap-2">
@@ -107,20 +112,29 @@ const TableOfContents = ({ content }: { content: any }) => {
       
       {/* Navigation Content */}
       {isOpen && (
-        <nav className="p-4 max-h-[60vh] overflow-y-auto">
+        <nav className="p-4 max-h-[60vh] lg:max-h-[60vh] max-h-[50vh] overflow-y-auto">
           {headings.length > 0 ? (
-            <ul className="space-y-2">
-              {headings.map((heading) => (
+            <ul className="space-y-1">
+              {headings.map((heading, index) => (
                 <li key={heading.id}>
                   <button
-                    onClick={() => scrollToHeading(heading.id)}
-                    className={`block text-sm py-2 px-3 rounded-lg transition-colors duration-200 w-full text-left ${
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Button clicked for:', heading.id);
+                      scrollToHeading(heading.id);
+                    }}
+                    className={`block text-sm py-1.5 px-3 rounded-lg transition-colors duration-200 w-full text-left flex items-start gap-2 ${
                       activeId === heading.id
                         ? 'text-blue-600 font-semibold bg-blue-50 border-l-2 border-blue-600'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }`}
                   >
-                    {heading.title}
+                    <span className={`text-xs font-mono mt-0.5 flex-shrink-0 ${
+                      activeId === heading.id ? 'text-blue-500' : 'text-gray-400'
+                    }`}>
+                      {(index + 1).toString().padStart(2, '0')}.
+                    </span>
+                    <span className="flex-1">{heading.title}</span>
                   </button>
                 </li>
               ))}

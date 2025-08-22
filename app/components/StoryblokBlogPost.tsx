@@ -1,5 +1,6 @@
 // app/components/StoryblokBlogPost.tsx
 import { storyblokEditable } from "@storyblok/react";
+import { sanitizeHTML } from "../lib/security";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -120,7 +121,7 @@ const StoryblokBlogPost = ({ blok }: { blok: any }) => {
           [&>div>blockquote]:py-6 [&>div>blockquote]:px-8 [&>div>blockquote]:my-8 [&>div>blockquote]:italic 
           [&>div>blockquote]:text-lg [&>div>blockquote]:rounded-r-lg"
       >
-        <div dangerouslySetInnerHTML={{ __html: renderContent(blok.content) }} />
+        <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(renderContent(blok.content)) }} />
       </article>
     </div>
   );

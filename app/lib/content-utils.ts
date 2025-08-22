@@ -1,17 +1,33 @@
 // app/lib/content-utils.ts
-import { richTextResolver } from '@storyblok/richtext';
 
-// Function to calculate accurate read time from Storyblok rich text content
-export function calculateReadTime(richTextContent: any): number {
+// Function to calculate accurate read time from content (supports both HTML and plain text)
+export function calculateReadTime(content: any): number {
   try {
-    // Use the richTextResolver to render content to HTML
-    const { render } = richTextResolver();
-    const htmlContent = render(richTextContent);
+    let plainText = '';
     
-    // Remove HTML tags to get plain text
-    const plainText = htmlContent.replace(/<[^>]*>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+    // Handle different content types
+    if (typeof content === 'string') {
+      // If it's a string, treat it as HTML/plain text
+      plainText = content.replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    } else if (content && typeof content === 'object') {
+      // If it's an object (Storyblok rich text), try to extract text
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const { richTextResolver } = require('@storyblok/richtext');
+        const { render } = richTextResolver();
+        const htmlContent = render(content);
+        plainText = htmlContent.replace(/<[^>]*>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      } catch {
+        // Fallback: try to extract text from object structure
+        plainText = JSON.stringify(content).replace(/<[^>]*>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+    }
     
     // Count words (split by whitespace and filter empty strings)
     const words = plainText.split(/\s+/).filter(word => word.length > 0);
@@ -30,14 +46,34 @@ export function calculateReadTime(richTextContent: any): number {
   }
 }
 
-// Function to extract excerpt from rich text content
-export function extractExcerpt(richTextContent: any, maxLength: number = 160): string {
+// Function to extract excerpt from content (supports both HTML and plain text)
+export function extractExcerpt(content: any, maxLength: number = 160): string {
   try {
-    const { render } = richTextResolver();
-    const htmlContent = render(richTextContent);
-    const plainText = htmlContent.replace(/<[^>]*>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
+    let plainText = '';
+    
+    // Handle different content types
+    if (typeof content === 'string') {
+      // If it's a string, treat it as HTML/plain text
+      plainText = content.replace(/<[^>]*>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    } else if (content && typeof content === 'object') {
+      // If it's an object (Storyblok rich text), try to extract text
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const { richTextResolver } = require('@storyblok/richtext');
+        const { render } = richTextResolver();
+        const htmlContent = render(content);
+        plainText = htmlContent.replace(/<[^>]*>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      } catch {
+        // Fallback: try to extract text from object structure
+        plainText = JSON.stringify(content).replace(/<[^>]*>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+    }
     
     if (plainText.length <= maxLength) {
       return plainText;

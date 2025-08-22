@@ -31,6 +31,7 @@ export default function XMLSitemapGenerator() {
       document.head.appendChild(metaKeywords)
     }
     metaKeywords.setAttribute('content', 'XML sitemap generator, sitemap creator, SEO sitemap, Google sitemap, manual sitemap')
+    
   }, [])
 
   // Manual URL inputs
