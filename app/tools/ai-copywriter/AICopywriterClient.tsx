@@ -143,17 +143,7 @@ export default function AICopywriterClient() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-            AI Copywriting Tool
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Generate high-converting copy for ads, product descriptions, emails, and more. Professional copywriting powered by AI in seconds.
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8 mb-16">
           
           {/* Input Form */}
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -369,6 +359,16 @@ export default function AICopywriterClient() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+            AI Copywriting Tool
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Generate high-converting copy for ads, product descriptions, emails, and more. Professional copywriting powered by AI in seconds.
+          </p>
         </div>
 
         {/* Copywriting Tips */}

@@ -140,55 +140,6 @@ export default function WordCounterClient() {
         }}
       />
       
-      {/* Header Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free Content Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Words and Character Counter Tool
-              </span>
-              <br />
-              <span className="text-primary">Count Words, Characters & Track Reading Time Instantly</span>
-            </h1>
-            
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Perfect for Writers, Bloggers & Content Creators</h2>
-              <p>
-                Need to hit a specific word count? Checking character limits for social media? Our word counter tool gives you real-time stats as you type.
-              </p>
-              <p>
-                Track words, characters (with and without spaces), paragraphs, sentences, and estimated reading time. Great for essays, blog posts, social media, and any content with specific length requirements.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Real-time Counting
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Reading Time Estimate
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Multiple Metrics
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Tool Section */}
       <section className="py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
@@ -295,6 +246,55 @@ export default function WordCounterClient() {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Header Section */}
+      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Free Content Tool
+            </div>
+            
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free Words and Character Counter Tool
+              </span>
+              <br />
+              <span className="text-primary">Count Words, Characters & Track Reading Time Instantly</span>
+            </h1>
+            
+            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Perfect for Writers, Bloggers & Content Creators</h2>
+              <p>
+                Need to hit a specific word count? Checking character limits for social media? Our word counter tool gives you real-time stats as you type.
+              </p>
+              <p>
+                Track words, characters (with and without spaces), paragraphs, sentences, and estimated reading time. Great for essays, blog posts, social media, and any content with specific length requirements.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Real-time Counting
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Reading Time Estimate
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Multiple Metrics
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
               </div>
             </div>
           </div>
