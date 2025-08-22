@@ -259,44 +259,6 @@ function SEOMetaWriterTool() {
         }}
       />
       
-      {/* Hero Section - Minimal Intro Only */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free AI SEO Tool
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Online AI SEO Meta Title and Description Generator — Write Perfect Meta Tags in Seconds
-              </span>
-            </h1>
-            
-            <div className="max-w-3xl mx-auto">
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Generate AI-powered meta titles and descriptions that actually get clicks. Perfect for content creators, agencies, and businesses who want better search results.
-              </p>
-              
-              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>AI-Powered Generation
-                </div>
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>Content-Type Aware
-                </div>
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>Character Optimization
-                </div>
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>100% Free
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Main Tool Section */}
       <section className="py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
@@ -590,6 +552,44 @@ function SEOMetaWriterTool() {
                       </ul>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Hero Section - Minimal Intro Only */}
+      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+              Free AI SEO Tool
+            </div>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free Online AI SEO Meta Title and Description Generator — Write Perfect Meta Tags in Seconds
+              </span>
+            </h1>
+            
+            <div className="max-w-3xl mx-auto">
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Generate AI-powered meta titles and descriptions that actually get clicks. Perfect for content creators, agencies, and businesses who want better search results.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>AI-Powered Generation
+                </div>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>Content-Type Aware
+                </div>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>Character Optimization
+                </div>
+                <div className="flex items-center">
+                  <span className="text-green-500 mr-2">✓</span>100% Free
                 </div>
               </div>
             </div>

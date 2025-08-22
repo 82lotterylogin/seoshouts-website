@@ -241,8 +241,8 @@ export default function RobotsTxtGenerator() {
         }}
       />
       
-      {/* Header Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
+      {/* Tool Section */}
+      <section className="py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
