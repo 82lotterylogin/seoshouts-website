@@ -33,7 +33,8 @@
       "Bash(set NODE_OPTIONS=--max-old-space-size=8192)",
       "Bash(npm audit:*)",
       "Bash(npm outdated:*)",
-      "Bash(npm update:*)"
+      "Bash(npm update:*)",
+      "Bash(vercel:*)"
     ],
     "deny": [],
     "ask": []
