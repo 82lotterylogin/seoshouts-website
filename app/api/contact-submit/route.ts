@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
         const mailOptions = {
           from: `"SEO Shouts Contact Form" <${process.env.SMTP_USER}>`,
-          to: 'contact@seoshouts.com',
+          to: 'seoshouts@gmail.com',
           replyTo: email,
           subject: `🎯 New SEO Inquiry from ${name} - ${service || 'General'}`,
           html: `
