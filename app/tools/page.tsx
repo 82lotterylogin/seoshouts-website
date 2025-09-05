@@ -155,8 +155,8 @@ export default function ToolsPage() {
               {/* Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
-                  <div className=\"text-2xl font-bold text-primary mb-1\">12</div>
-                  <div className=\"text-sm text-gray-600\">Free SEO Tools</div>
+                  <div className="text-2xl font-bold text-primary mb-1">11</div>
+                  <div className="text-sm text-gray-600">Free SEO Tools</div>
                 </div>
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
                   <div className="text-2xl font-bold text-primary mb-1">10K+</div>
@@ -634,23 +634,23 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🎬</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      YouTube Shorts Generator
+                      Word Counter
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                      Convert any YouTube video (up to 10 mins) into 60s vertical Shorts with auto-cropping, previews, and downloads.
+                      Count words, characters, paragraphs, and reading time for your content with detailed analytics and insights.
                     </p>
                     <ul className="space-y-2 mb-6 text-sm text-gray-600">
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Auto-split into 60s segments</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Vertical 9:16 smart cropping</li>
-                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Preview + download each clip</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Word & character counting</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Reading time estimation</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Paragraph & sentence analysis</li>
                     </ul>
                     <a 
-                      href="/tools/youtube-shorts-generator/"
+                      href="/tools/word-counter/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch YouTube Shorts Generator tool"
+                      aria-label="Launch Word Counter tool"
                     >
                       Launch Tool
                     </a>
