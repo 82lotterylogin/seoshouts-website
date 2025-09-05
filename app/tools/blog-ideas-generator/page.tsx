@@ -1075,13 +1075,13 @@ function BlogIdeasGeneratorTool() {
                 <div className="text-3xl mb-3">🏷️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Meta Tag Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect meta titles and descriptions with AI power.</p>
-                <a href="/tools/seo-meta-writer" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/seo-meta-writer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">✍️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Copywriter</h3>
                 <p className="text-sm text-gray-600 mb-4">Create compelling copy for ads, emails, and websites with AI.</p>
-                <a href="/tools/ai-copywriter" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/ai-copywriter/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">💡</div>
@@ -1091,7 +1091,7 @@ function BlogIdeasGeneratorTool() {
               </div>
             </div>
             <div className="text-center">
-              <a href="/tools" className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl">
+              <a href="/tools/" className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl">
                 <span className="mr-2">🛠️</span>Browse All SEO Tools
               </a>
               <p className="text-sm text-gray-500 mt-3">All tools are 100% free • No signup required • Instant results</p>

@@ -326,7 +326,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">Browse by Category</h2>
                   <div className="flex flex-wrap gap-3">
                     <Link
-                      href="/blog"
+                      href="/blog/"
                       className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
                     >
                       All Posts ({articles.length})

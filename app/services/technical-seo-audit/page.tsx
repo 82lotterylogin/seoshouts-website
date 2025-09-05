@@ -208,7 +208,7 @@ export default function TechnicalSEOAuditServicePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="/contact"
+                  href="/contact/"
                   className="group px-8 py-4 bg-red-600 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-red-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   aria-label="Get free Technical SEO audit"
                 >
@@ -411,7 +411,7 @@ export default function TechnicalSEOAuditServicePage() {
             {/* CTA in Services Section */}
             <div className="text-center">
               <a 
-                href="/contact"
+                href="/contact/"
                 className="inline-block px-8 py-4 bg-red-600 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-red-700 transform hover:scale-105 transition-all duration-300"
                 aria-label="Get started with Technical SEO audit"
               >
@@ -713,7 +713,7 @@ export default function TechnicalSEOAuditServicePage() {
               </p>
 
               <a 
-                href="/contact"
+                href="/contact/"
                 className="inline-block px-8 py-4 bg-white text-red-600 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300"
                 aria-label="Get custom quote for Technical SEO audit"
               >
@@ -833,7 +833,7 @@ export default function TechnicalSEOAuditServicePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="/contact"
+                  href="/contact/"
                   className="group px-8 py-4 bg-white text-red-600 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   aria-label="Request Technical SEO audit quote from SEOShouts"
                 >

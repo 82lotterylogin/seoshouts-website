@@ -1597,7 +1597,7 @@ ${htmlContent}
                 <div className="text-3xl mb-3">📊</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
-                <a href="/tools/keyword-density-analyzer" className="text-primary font-medium hover:underline">
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -1606,7 +1606,7 @@ ${htmlContent}
                 <div className="text-3xl mb-3">🏷️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer" className="text-primary font-medium hover:underline">
+                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -1622,7 +1622,7 @@ ${htmlContent}
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Blog Ideas Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate compelling blog topics with AI-powered content suggestions.</p>
-                <a href="/tools/blog-ideas-generator" className="text-primary font-medium hover:underline">
+                <a href="/tools/blog-ideas-generator/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -1631,7 +1631,7 @@ ${htmlContent}
                 <div className="text-3xl mb-3">✍️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Copywriter</h3>
                 <p className="text-sm text-gray-600 mb-4">Create persuasive copy and marketing content with AI assistance.</p>
-                <a href="/tools/ai-copywriter" className="text-primary font-medium hover:underline">
+                <a href="/tools/ai-copywriter/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -1640,7 +1640,7 @@ ${htmlContent}
                 <div className="text-3xl mb-3">🔢</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Word Counter</h3>
                 <p className="text-sm text-gray-600 mb-4">Count words, characters, and analyze readability of your content.</p>
-                <a href="/tools/word-counter" className="text-primary font-medium hover:underline">
+                <a href="/tools/word-counter/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -1649,7 +1649,7 @@ ${htmlContent}
             {/* CTA Button */}
             <div className="text-center">
               <a 
-                href="/tools"
+                href="/tools/"
                 className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <span className="mr-2">🛠️</span>

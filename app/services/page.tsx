@@ -228,13 +228,13 @@ export default function ServicesPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
-                href="/contact"
+                href="/contact/"
                 className="px-8 py-4 bg-gradient-to-r from-blue-700 to-purple-700 text-white rounded-xl font-bold hover:scale-105 transition transform shadow-xl"
               >
                 Get Your Free SEO Analysis
               </a>
               <a
-                href="/meet-the-experts"
+                href="/meet-the-experts/"
                 className="px-8 py-4 bg-white border-2 border-blue-700 text-blue-700 rounded-xl font-bold hover:bg-blue-50 transition"
               >
                 Meet Our Experts
@@ -304,7 +304,7 @@ export default function ServicesPage() {
                       Learn More
                     </a>
                     <a
-                      href="/contact"
+                      href="/contact/"
                       className="w-full py-3 border-2 border-blue-700 text-blue-700 rounded-lg font-semibold hover:bg-blue-50 transition text-center"
                     >
                       Get Quote
@@ -407,7 +407,7 @@ export default function ServicesPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="/contact"
+                href="/contact/"
                 className="px-8 py-4 bg-white text-blue-700 rounded-xl font-bold hover:bg-gray-100 transition shadow-xl"
               >
                 🎯 Get Free Analysis

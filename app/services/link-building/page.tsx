@@ -228,7 +228,7 @@ export default function LinkBuildingPage() {
             </p>
             
             <a
-              href="/contact"
+              href="/contact/"
               className="inline-block px-8 py-4 bg-gradient-to-r from-blue-700 to-purple-700 text-white rounded-xl font-bold hover:scale-105 transition transform shadow-xl"
             >
               Let's Discuss Your Link Building Strategy →
@@ -685,7 +685,7 @@ export default function LinkBuildingPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="/contact"
+                  href="/contact/"
                   className="group px-8 py-4 bg-white text-primary rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   aria-label="Get free Link Building audit from SEOShouts"
                 >

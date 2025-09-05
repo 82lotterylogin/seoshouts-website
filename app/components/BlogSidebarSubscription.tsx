@@ -150,7 +150,7 @@ export default function BlogSidebarSubscription() {
           {/* Privacy Policy Text */}
           <p className="text-blue-200 text-xs text-center leading-relaxed">
             By clicking the "Subscribe" button, I agree and accept the{' '}
-            <a href="/privacy-policy" className="underline hover:text-white transition-colors">
+            <a href="/privacy-policy/" className="underline hover:text-white transition-colors">
               privacy policy
             </a>{' '}
             of SEOShouts.

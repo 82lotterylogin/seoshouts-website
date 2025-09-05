@@ -288,7 +288,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               <div className="mt-8 flex justify-center">
                 <div className="inline-flex rounded-md shadow">
                   <Link
-                    href="/blog"
+                    href="/blog/"
                     className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors duration-200"
                   >
                     ← All Articles
@@ -390,7 +390,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                     <h3 className="mt-2 text-lg font-medium text-gray-900">No articles found</h3>
                     <p className="mt-1 text-gray-500">No articles have been published in this category yet.</p>
                     <Link
-                      href="/blog"
+                      href="/blog/"
                       className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200"
                     >
                       Browse All Articles

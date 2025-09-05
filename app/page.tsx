@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import NewsletterFormSection from './components/NewsletterFormSection'
 import InquiryForm from './components/InquiryForm'
-import { getAllStories } from './lib/storyblok'
 
 export const metadata: Metadata = {
   title: 'SEO Shouts - Professional SEO Tools & Services | Free Website Analysis',
-  description: 'Professional SEO tools and services for businesses worldwide. Get free SEO analysis, keyword research, technical audits, and expert SEO consulting. 13+ free tools available.',
+  description: 'Professional SEO tools and services for businesses worldwide. Get free SEO analysis, keyword research, technical audits, and expert SEO consulting. 11+ free tools available.',
   keywords: 'SEO tools, SEO services, free SEO analysis, keyword research, technical SEO, link building, local SEO, SEO consulting',
   authors: [{ name: 'SEO Shouts' }],
   creator: 'SEO Shouts',
@@ -38,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'SEO Shouts - Professional SEO Tools & Services',
-    description: 'Professional SEO tools and services for businesses worldwide. 13+ free tools available.',
+    description: 'Professional SEO tools and services for businesses worldwide. 11+ free tools available.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/twitter-image.jpg'],
@@ -61,16 +60,50 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function HomePage() {
-  // Fetch latest blog posts
-  let blogPosts = []
+// Fetch latest blog posts from database
+async function fetchLatestBlogPosts() {
   try {
-    const allPosts = await getAllStories("blog_post")
-    blogPosts = allPosts.slice(0, 2) // Get latest 2 posts
+    const { getDatabase } = await import('./lib/database');
+    const db = getDatabase();
+    
+    const articles = db.prepare(`
+      SELECT 
+        a.id,
+        a.title,
+        a.slug,
+        a.excerpt,
+        a.featured_image,
+        a.published_at,
+        a.created_at,
+        auth.name as author_name
+      FROM articles a
+      JOIN authors auth ON a.author_id = auth.id
+      WHERE a.status = 'published'
+      ORDER BY a.published_at DESC
+      LIMIT 3
+    `).all() as any[];
+    
+    return articles.map(article => ({
+      id: article.id,
+      title: article.title,
+      slug: article.slug,
+      excerpt: article.excerpt,
+      featured_image: article.featured_image,
+      published_at: article.published_at,
+      created_at: article.created_at,
+      author: {
+        name: article.author_name
+      }
+    }));
   } catch (error) {
-    console.error('Error fetching blog posts:', error)
-    // Fallback to empty array, will show placeholder
+    console.error('Error fetching blog posts:', error);
+    return [];
   }
+}
+
+export default async function HomePage() {
+  // Fetch latest blog posts from database
+  const blogPosts = await fetchLatestBlogPosts();
   return (
     <>
       {/* Breadcrumb Schema */}
@@ -138,7 +171,7 @@ export default async function HomePage() {
                 "name": "What SEO tools do you offer for free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We offer 13+ free SEO tools including keyword density analyzer, meta tag optimizer, website speed test, robots.txt generator, XML sitemap generator, content analyzer, and more."
+                  "text": "We offer 11+ free SEO tools including keyword density analyzer, meta tag optimizer, website speed test, robots.txt generator, XML sitemap generator, content analyzer, and more."
                 }
               },
               {
@@ -250,7 +283,7 @@ export default async function HomePage() {
               {/* Secondary CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
                 <a 
-                  href="/services" 
+                  href="/services/" 
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="View our professional SEO services"
                 >
@@ -261,7 +294,7 @@ export default async function HomePage() {
                 </a>
                 
                 <a 
-                  href="/tools" 
+                  href="/tools/" 
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-gray-400 hover:text-gray-800 transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="Browse our free SEO tools"
                 >
@@ -319,7 +352,7 @@ export default async function HomePage() {
                     <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Review management strategy</li>
                   </ul>
                   <a 
-                    href="/services/local-seo"
+                    href="/services/local-seo/"
                     className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                     aria-label="Get Local SEO service quote"
                   >
@@ -347,7 +380,7 @@ export default async function HomePage() {
                     <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Shopping feed optimization</li>
                   </ul>
                   <a 
-                    href="/services/ecommerce-seo"
+                    href="/services/ecommerce-seo/"
                     className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                     aria-label="Get eCommerce SEO service quote"
                   >
@@ -375,7 +408,7 @@ export default async function HomePage() {
                     <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Broken link building</li>
                   </ul>
                   <a 
-                    href="/services/link-building"
+                    href="/services/link-building/"
                     className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                     aria-label="Get Link Building service quote"
                   >
@@ -406,7 +439,7 @@ export default async function HomePage() {
                     <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Schema markup implementation</li>
                   </ul>
                   <a 
-                    href="/services/technical-seo-audit"
+                    href="/services/technical-seo-audit/"
                     className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                     aria-label="Get Technical SEO Audit quote"
                   >
@@ -435,7 +468,7 @@ export default async function HomePage() {
                     <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Competitive analysis</li>
                   </ul>
                   <a 
-                    href="/services/seo-consulting"
+                    href="/services/seo-consulting/"
                     className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                     aria-label="Schedule SEO consulting session"
                   >
@@ -453,7 +486,7 @@ export default async function HomePage() {
                   Every business is unique. Let's discuss your specific SEO needs and create a tailored plan that drives real results for your industry and goals.
                 </p>
                 <a 
-                  href="/services"
+                  href="/services/"
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 flex items-center mx-auto max-w-fit"
                   aria-label="Get custom SEO strategy"
                 >
@@ -514,7 +547,7 @@ export default async function HomePage() {
                       <span>Free Forever</span>
                     </div>
                     <a 
-                      href="/tools/keyword-density-analyzer"
+                      href="/tools/keyword-density-analyzer/"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
                       aria-label="Launch Keyword Density Analyzer tool"
                     >
@@ -543,7 +576,7 @@ export default async function HomePage() {
                       <span>Free Forever</span>
                     </div>
                     <a 
-                      href="/tools/meta-tag-optimizer"
+                      href="/tools/meta-tag-optimizer/"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
                       aria-label="Launch Meta Tag Optimizer tool"
                     >
@@ -572,7 +605,7 @@ export default async function HomePage() {
                       <span>Free Forever</span>
                     </div>
                     <a 
-                      href="/tools/robots-txt-generator"
+                      href="/tools/robots-txt-generator/"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
                       aria-label="Launch Robots.txt Generator tool"
                     >
@@ -585,11 +618,11 @@ export default async function HomePage() {
 
             <div className="text-center mt-12 sm:mt-16">
               <a 
-                href="/tools"
+                href="/tools/"
                 className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center mx-auto max-w-fit"
-                aria-label="View all 13+ free SEO tools"
+                aria-label="View all 11+ free SEO tools"
               >
-                View All 13+ Free Tools
+                View All 11+ Free Tools
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -620,122 +653,174 @@ export default async function HomePage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {blogPosts.length > 0 ? (
                 blogPosts.map((post: any, index: number) => (
-                  <article key={post.uuid} className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
-                      {index === 0 ? 'LATEST' : 'FEATURED'}
-                    </div>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
-                      <span className="text-lg sm:text-xl text-white" aria-hidden="true">
-                        {index === 0 ? '📈' : '🎯'}
-                      </span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
-                      {post.content?.title || post.name}
-                    </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
-                      {post.content?.excerpt || 'Expert SEO insights and strategies to help your business grow online.'}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs sm:text-sm font-bold">
-                            {(post.content?.author?.content?.name || 'SEO Expert').split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+                  <article key={post.id} className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    {/* Featured Image */}
+                    <div className="relative overflow-hidden h-48 sm:h-56">
+                      {post.featured_image ? (
+                        <img 
+                          src={post.featured_image}
+                          alt={post.title || 'Blog post image'}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                          <span className="text-4xl sm:text-5xl" aria-hidden="true">
+                            {index === 0 ? '📈' : index === 1 ? '🎯' : '📊'}
                           </span>
                         </div>
-                        <div>
-                          <p className="font-semibold text-gray-800 text-sm sm:text-base">
-                            {post.content?.author?.content?.name || 'SEO Expert'}
-                          </p>
-                          <p className="text-xs sm:text-sm text-gray-500">
-                            {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { 
-                              year: 'numeric', 
-                              month: 'short', 
-                              day: 'numeric' 
-                            })}
-                          </p>
-                        </div>
+                      )}
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
+                        {index === 0 ? 'LATEST' : index === 1 ? 'FEATURED' : 'POPULAR'}
                       </div>
-                      <a 
-                        href={`/blog/${post.slug}`}
-                        className="px-4 sm:px-6 py-2 bg-white text-primary rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm sm:text-base"
-                        aria-label={`Read ${post.content?.title || post.name}`}
-                      >
-                        Read More
-                      </a>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="p-6 sm:p-8">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 leading-tight line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                        {post.excerpt || 'Expert SEO insights and strategies to help your business grow online.'}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">
+                              {(post.author?.name || 'SEO Expert').split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-800 text-sm">
+                              {post.author?.name || 'SEO Expert'}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'short', 
+                                day: 'numeric' 
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                        <a 
+                          href={`/blog/${post.slug}`}
+                          className="px-4 py-2 bg-white text-primary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm"
+                          aria-label={`Read ${post.title}`}
+                        >
+                          Read More
+                        </a>
+                      </div>
                     </div>
                   </article>
                 ))
               ) : (
                 // Fallback content when no blog posts are available
                 <>
-                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
-                      FEATURED
-                    </div>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
-                      <span className="text-lg sm:text-xl text-white" aria-hidden="true">📈</span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 leading-tight">
-                      Expert SEO Insights Coming Soon
-                    </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
-                      Master the latest SEO techniques with our comprehensive guides covering technical optimization, 
-                      content strategy, and emerging AI-powered ranking factors.
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs sm:text-sm font-bold">SE</span>
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-800 text-sm sm:text-base">SEO Expert</p>
-                          <p className="text-xs sm:text-sm text-gray-500">Publishing Soon</p>
-                        </div>
+                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    <div className="relative overflow-hidden h-48 sm:h-56 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                      <span className="text-4xl sm:text-5xl" aria-hidden="true">📈</span>
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
+                        LATEST
                       </div>
-                      <a 
-                        href="/blog"
-                        className="px-4 sm:px-6 py-2 bg-white text-primary rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm sm:text-base"
-                        aria-label="Visit our blog"
-                      >
-                        Visit Blog
-                      </a>
+                    </div>
+                    <div className="p-6 sm:p-8">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 leading-tight">
+                        Expert SEO Insights Coming Soon
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                        Master the latest SEO techniques with our comprehensive guides covering technical optimization and content strategy.
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">SE</span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-800 text-sm">SEO Expert</p>
+                            <p className="text-xs text-gray-500">Publishing Soon</p>
+                          </div>
+                        </div>
+                        <a 
+                          href="/blog/"
+                          className="px-4 py-2 bg-white text-primary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm"
+                          aria-label="Visit our blog"
+                        >
+                          Visit Blog
+                        </a>
+                      </div>
                     </div>
                   </article>
 
-                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden">
-                    <div className="absolute top-4 right-4 px-3 py-1 bg-gray-600 text-white text-xs font-semibold rounded-full">
-                      TRENDING
-                    </div>
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-600 rounded-lg sm:rounded-xl flex items-center justify-center mb-6">
-                      <span className="text-lg sm:text-xl text-white" aria-hidden="true">🎯</span>
-                    </div>
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 group-hover:text-gray-700 transition-colors duration-300 leading-tight">
-                      SEO Strategies & Tips
-                    </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed text-base sm:text-lg">
-                      Discover the latest SEO strategies that are driving organic traffic and conversions for businesses worldwide. 
-                      From technical SEO to content optimization tactics.
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs sm:text-sm font-bold">SS</span>
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-800 text-sm sm:text-base">SEO Strategist</p>
-                          <p className="text-xs sm:text-sm text-gray-500">Publishing Soon</p>
-                        </div>
+                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    <div className="relative overflow-hidden h-48 sm:h-56 bg-gradient-to-br from-secondary/20 to-accent/20 flex items-center justify-center">
+                      <span className="text-4xl sm:text-5xl" aria-hidden="true">🎯</span>
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-secondary text-white text-xs font-semibold rounded-full">
+                        FEATURED
                       </div>
-                      <a 
-                        href="/blog"
-                        className="px-4 sm:px-6 py-2 bg-white text-gray-600 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-gray-200 text-sm sm:text-base"
-                        aria-label="Visit our blog"
-                      >
-                        Visit Blog
-                      </a>
+                    </div>
+                    <div className="p-6 sm:p-8">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-secondary transition-colors duration-300 leading-tight">
+                        SEO Strategies & Tips
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                        Discover the latest SEO strategies that are driving organic traffic and conversions for businesses worldwide.
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">SS</span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-800 text-sm">SEO Strategist</p>
+                            <p className="text-xs text-gray-500">Publishing Soon</p>
+                          </div>
+                        </div>
+                        <a 
+                          href="/blog/"
+                          className="px-4 py-2 bg-white text-secondary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-secondary/20 text-sm"
+                          aria-label="Visit our blog"
+                        >
+                          Visit Blog
+                        </a>
+                      </div>
+                    </div>
+                  </article>
+
+                  <article className="group relative bg-gray-50 rounded-2xl sm:rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    <div className="relative overflow-hidden h-48 sm:h-56 bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
+                      <span className="text-4xl sm:text-5xl" aria-hidden="true">📊</span>
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-accent text-white text-xs font-semibold rounded-full">
+                        POPULAR
+                      </div>
+                    </div>
+                    <div className="p-6 sm:p-8">
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-accent transition-colors duration-300 leading-tight">
+                        Technical SEO Guide
+                      </h3>
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                        Learn how to optimize your website's technical foundation for better search engine performance and user experience.
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">TS</span>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-800 text-sm">Tech SEO Expert</p>
+                            <p className="text-xs text-gray-500">Publishing Soon</p>
+                          </div>
+                        </div>
+                        <a 
+                          href="/blog/"
+                          className="px-4 py-2 bg-white text-accent rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-accent/20 text-sm"
+                          aria-label="Visit our blog"
+                        >
+                          Visit Blog
+                        </a>
+                      </div>
                     </div>
                   </article>
                 </>

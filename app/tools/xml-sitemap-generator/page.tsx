@@ -767,7 +767,7 @@ export default function XMLSitemapGenerator() {
                 <div className="text-3xl mb-3">📊</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
-                <a href="/tools/keyword-density-analyzer" className="text-primary font-medium hover:underline">
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -776,7 +776,7 @@ export default function XMLSitemapGenerator() {
                 <div className="text-3xl mb-3">🏷️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer" className="text-primary font-medium hover:underline">
+                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -785,7 +785,7 @@ export default function XMLSitemapGenerator() {
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Create perfect robots.txt files without breaking your website.</p>
-                <a href="/tools/robots-txt-generator" className="text-primary font-medium hover:underline">
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -801,7 +801,7 @@ export default function XMLSitemapGenerator() {
                 <div className="text-3xl mb-3">🔍</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Long Tail Keyword Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Find hidden keywords that actually convert and drive traffic.</p>
-                <a href="/tools/long-tail-keyword-generator" className="text-primary font-medium hover:underline">
+                <a href="/tools/long-tail-keyword-generator/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -810,7 +810,7 @@ export default function XMLSitemapGenerator() {
                 <div className="text-3xl mb-3">⚡</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Page Speed Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Check your website's loading speed and get optimization tips.</p>
-                <a href="/tools/page-speed-analyzer" className="text-primary font-medium hover:underline">
+                <a href="/tools/page-speed-analyzer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -819,7 +819,7 @@ export default function XMLSitemapGenerator() {
             {/* CTA Button */}
             <div className="text-center">
               <a 
-                href="/tools"
+                href="/tools/"
                 className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <span className="mr-2">🛠️</span>

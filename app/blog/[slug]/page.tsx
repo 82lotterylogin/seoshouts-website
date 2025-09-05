@@ -123,7 +123,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
             The article you're looking for couldn't be found. It might have been moved or deleted.
           </p>
           <Link 
-            href="/blog" 
+            href="/blog/" 
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 no-underline"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,7 +167,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                 </svg>
-                <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+                <Link href="/blog/" className="hover:text-white transition-colors">Blog</Link>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -325,7 +325,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
               Discover more expert insights, proven strategies, and actionable tips to dominate search rankings.
             </p>
             <Link 
-              href="/blog" 
+              href="/blog/" 
               className="inline-flex items-center gap-3 bg-white text-blue-600 px-8 py-4 rounded-xl font-bold hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 no-underline"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

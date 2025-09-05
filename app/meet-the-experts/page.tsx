@@ -78,7 +78,7 @@ export default function MeetTheExperts() {
           </p>
           <div className="mt-6">
             <a
-              href="/contact"
+              href="/contact/"
               className="inline-block px-8 py-3 bg-gradient-to-r from-blue-700 to-purple-700 shadow-xl text-white rounded-full font-bold uppercase tracking-wide hover:scale-105 hover:bg-blue-800 transition"
             >
               Let's Chat &rarr;
@@ -217,7 +217,7 @@ export default function MeetTheExperts() {
           <p className="text-blue-100 mb-5 text-lg max-w-xl mx-auto">No fluff. No upsells. Just an honest conversation about helping your business grow. Let's bring clarity and real results to your digital strategy.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
             <a
-              href="/contact"
+              href="/contact/"
               className="font-bold px-7 py-3 bg-white text-blue-700 rounded-xl shadow hover:bg-blue-50 hover:text-blue-900 transition"
             >
               🎯 Book a Strategy Call

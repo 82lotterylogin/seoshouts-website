@@ -137,7 +137,7 @@ export default function ArticlesPage() {
         {/* Back to Admin */}
         <div className="mb-6">
           <Link
-            href="/admin"
+            href="/admin/"
             className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900"
           >
             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

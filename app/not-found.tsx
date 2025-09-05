@@ -21,13 +21,13 @@ export default function NotFound() {
           </Link>
           
           <div className="text-sm text-gray-500">
-            <Link href="/blog" className="text-indigo-600 hover:underline mr-4">
+            <Link href="/blog/" className="text-indigo-600 hover:underline mr-4">
               Browse Blog
             </Link>
-            <Link href="/services" className="text-indigo-600 hover:underline mr-4">
+            <Link href="/services/" className="text-indigo-600 hover:underline mr-4">
               Our Services
             </Link>
-            <Link href="/tools" className="text-indigo-600 hover:underline">
+            <Link href="/tools/" className="text-indigo-600 hover:underline">
               SEO Tools
             </Link>
           </div>

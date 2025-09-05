@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 // dummy comment to force deploy
 
 export const metadata: Metadata = {
-  title: 'Free SEO Tools - 11 Professional Tools | SEO Shouts',
-  description: 'Access 11 professional free SEO tools for keyword research, technical optimization, content creation, and AI-powered assistance. No registration required.',
+  title: 'Free SEO Tools - 12 Professional Tools | SEO Shouts',
+  description: 'Access 12 professional free SEO tools for keyword research, technical optimization, content creation, and AI-powered assistance. No registration required.',
   keywords: 'free SEO tools, keyword density analyzer, meta tag optimizer, long tail keywords, robots txt generator, xml sitemap generator, word counter, AI copywriter, blog ideas generator, HTML editor',
   authors: [{ name: 'SEO Shouts' }],
   creator: 'SEO Shouts',
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools',
   },
   openGraph: {
-    title: 'Free SEO Tools - 11 Professional Tools | SEO Shouts',
-    description: 'Access 11 professional SEO tools for free. Keyword research, technical SEO, content optimization, and AI-powered tools.',
+    title: 'Free SEO Tools - 12 Professional Tools | SEO Shouts',
+    description: 'Access 12 professional SEO tools for free. Keyword research, technical SEO, content optimization, and AI-powered tools.',
     url: 'https://seoshouts.com/tools',
     siteName: 'SEO Shouts',
     images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free SEO Tools - 11 Professional Tools | SEO Shouts',
-    description: 'Access 11 professional SEO tools for free. All tools available without registration.',
+    title: 'Free SEO Tools - 12 Professional Tools | SEO Shouts',
+    description: 'Access 12 professional SEO tools for free. All tools available without registration.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/tools-twitter-image.jpg'],
@@ -97,7 +97,7 @@ export default function ToolsPage() {
                 "name": "Are your SEO tools really free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, all 11 SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, AI-powered content creators, and more without any cost."
+                  "text": "Yes, all 12 SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, AI-powered content creators, and more without any cost."
                 }
               },
               {
@@ -135,7 +135,7 @@ export default function ToolsPage() {
             <div className="max-w-5xl mx-auto text-center">
               <div className="inline-flex items-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-gray-200 mb-6 sm:mb-8">
                 <span className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
-                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 11 Professional Free SEO Tools</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 12 Professional Free SEO Tools</span>
               </div>
               
               <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
@@ -155,8 +155,8 @@ export default function ToolsPage() {
               {/* Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
-                  <div className="text-2xl font-bold text-primary mb-1">11</div>
-                  <div className="text-sm text-gray-600">Free SEO Tools</div>
+                  <div className=\"text-2xl font-bold text-primary mb-1\">12</div>
+                  <div className=\"text-sm text-gray-600\">Free SEO Tools</div>
                 </div>
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
                   <div className="text-2xl font-bold text-primary mb-1">10K+</div>
@@ -267,7 +267,7 @@ export default function ToolsPage() {
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                     Create and optimize content with AI-powered assistance.
                   </p>
-                  <div className="text-sm text-primary font-medium">4 Tools Available</div>
+                  <div className="text-sm text-primary font-medium">5 Tools Available</div>
                 </div>
               </div>
 
@@ -344,7 +344,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Optimization recommendations</li>
                     </ul>
                     <a 
-                      href="/tools/keyword-density-analyzer"
+                      href="/tools/keyword-density-analyzer/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Keyword Density Analyzer tool"
                     >
@@ -372,7 +372,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Alternative suggestions</li>
                     </ul>
                     <a 
-                      href="/tools/keyword-difficulty-checker"
+                      href="/tools/keyword-difficulty-checker/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Keyword Difficulty Checker tool"
                     >
@@ -400,7 +400,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
                     <a 
-                      href="/tools/long-tail-keyword-generator"
+                      href="/tools/long-tail-keyword-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Long Tail Keyword Generator tool"
                     >
@@ -440,7 +440,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>CTR improvement tips</li>
                     </ul>
                     <a 
-                      href="/tools/meta-tag-optimizer"
+                      href="/tools/meta-tag-optimizer/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Meta Tag Optimizer tool"
                     >
@@ -468,7 +468,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Testing functionality</li>
                     </ul>
                     <a 
-                      href="/tools/robots-txt-generator"
+                      href="/tools/robots-txt-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Robots.txt Generator tool"
                     >
@@ -496,7 +496,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multi-format support</li>
                     </ul>
                     <a 
-                      href="/tools/xml-sitemap-generator"
+                      href="/tools/xml-sitemap-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch XML Sitemap Generator tool"
                     >
@@ -536,7 +536,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multiple metrics tracking</li>
                     </ul>
                     <a 
-                      href="/tools/word-counter"
+                      href="/tools/word-counter/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Word Counter tool"
                     >
@@ -564,7 +564,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Instant results</li>
                     </ul>
                     <a 
-                      href="/tools/ai-copywriter"
+                      href="/tools/ai-copywriter/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch AI Copywriter tool"
                     >
@@ -592,7 +592,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO-friendly suggestions</li>
                     </ul>
                     <a 
-                      href="/tools/blog-ideas-generator"
+                      href="/tools/blog-ideas-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch AI Blog Ideas Generator tool"
                     >
@@ -620,9 +620,37 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Character count compliance</li>
                     </ul>
                     <a 
-                      href="/tools/seo-meta-writer"
+                      href="/tools/seo-meta-writer/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch SEO Meta Writer tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
+
+                {/* Content Tool 5 */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🎬</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      YouTube Shorts Generator
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Convert any YouTube video (up to 10 mins) into 60s vertical Shorts with auto-cropping, previews, and downloads.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Auto-split into 60s segments</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Vertical 9:16 smart cropping</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Preview + download each clip</li>
+                    </ul>
+                    <a 
+                      href="/tools/youtube-shorts-generator/"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch YouTube Shorts Generator tool"
                     >
                       Launch Tool
                     </a>
@@ -660,7 +688,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
                     <a 
-                      href="/tools/html-editor"
+                      href="/tools/html-editor/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch HTML Editor tool"
                     >
@@ -711,7 +739,7 @@ export default function ToolsPage() {
                 </a>
                 
                 <a 
-                  href="/services"
+                  href="/services/"
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-white hover:text-primary transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="View professional SEO services"
                 >

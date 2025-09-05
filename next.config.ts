@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
   // Disable strict mode to avoid conflicts
   reactStrictMode: false,
   // Enable Node.js runtime for middleware
-  serverExternalPackages: ['better-sqlite3'],
+  serverExternalPackages: ['better-sqlite3', '@distube/ytdl-core', '@ffmpeg-installer/ffmpeg'],
   experimental: {
     webVitalsAttribution: ['CLS', 'LCP'],
     // Fix Jest worker issues

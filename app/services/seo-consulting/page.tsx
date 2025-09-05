@@ -200,7 +200,7 @@ export default function SEOConsultingServicePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="/contact"
+                  href="/contact/"
                   className="group px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   aria-label="Schedule Strategic SEO Consultation"
                 >
@@ -516,7 +516,7 @@ export default function SEOConsultingServicePage() {
             {/* CTA in Services Section */}
             <div className="text-center">
               <a 
-                href="/contact"
+                href="/contact/"
                 className="inline-block px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
                 aria-label="Get started with SEO consulting"
               >
@@ -678,7 +678,7 @@ export default function SEOConsultingServicePage() {
 
                 <div className="text-center">
                   <a 
-                    href="/contact"
+                    href="/contact/"
                     className="w-full px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-300 inline-block"
                     aria-label="Get Strategic SEO Consulting"
                   >
@@ -712,7 +712,7 @@ export default function SEOConsultingServicePage() {
 
                 <div className="text-center">
                   <a 
-                    href="/contact"
+                    href="/contact/"
                     className="w-full px-6 py-3 bg-teal-600 text-white rounded-xl font-semibold hover:bg-teal-700 transition-all duration-300 inline-block"
                     aria-label="Get Technical SEO Consulting"
                   >
@@ -746,7 +746,7 @@ export default function SEOConsultingServicePage() {
 
                 <div className="text-center">
                   <a 
-                    href="/contact"
+                    href="/contact/"
                     className="w-full px-6 py-3 bg-cyan-600 text-white rounded-xl font-semibold hover:bg-cyan-700 transition-all duration-300 inline-block"
                     aria-label="Get Enterprise SEO Consulting"
                   >
@@ -985,7 +985,7 @@ export default function SEOConsultingServicePage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
-                  href="/contact"
+                  href="/contact/"
                   className="group px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   aria-label="Schedule Strategic SEO Consultation with SEOShouts"
                 >
