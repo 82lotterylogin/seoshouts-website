@@ -189,7 +189,7 @@ export default async function HomePage() {
 
       <div>
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-24 lg:py-32">
+        <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-8 sm:py-12 lg:py-16">
           {/* Animated Background Elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-32 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>

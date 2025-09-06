@@ -1,7 +1,8 @@
 // app/components/NewsletterSubscription.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 interface NewsletterSubscriptionProps {
   theme?: 'blue' | 'white' | 'gray'
@@ -25,11 +26,21 @@ export default function NewsletterSubscription({
     error: ''
   })
 
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!form.email) {
       setForm(prev => ({ ...prev, error: 'Please enter your email address' }))
+      return
+    }
+
+    // Get reCAPTCHA token
+    const recaptchaToken = recaptchaRef.current?.getValue()
+    
+    if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && !recaptchaToken) {
+      setForm(prev => ({ ...prev, error: 'Please complete the reCAPTCHA verification' }))
       return
     }
 
@@ -39,7 +50,10 @@ export default function NewsletterSubscription({
       const response = await fetch('/api/newsletter-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email })
+        body: JSON.stringify({ 
+          email: form.email,
+          recaptchaToken: recaptchaToken || 'recaptcha_disabled'
+        })
       })
 
       const data = await response.json()
@@ -51,6 +65,9 @@ export default function NewsletterSubscription({
           isSubscribed: true,
           email: '' 
         }))
+        
+        // Reset reCAPTCHA
+        recaptchaRef.current?.reset()
         
         // Reset success message after 5 seconds
         setTimeout(() => {
@@ -65,6 +82,9 @@ export default function NewsletterSubscription({
         isLoading: false, 
         error: error instanceof Error ? error.message : 'Subscription failed. Please try again.' 
       }))
+      
+      // Reset reCAPTCHA on error
+      recaptchaRef.current?.reset()
     }
   }
 
@@ -155,6 +175,26 @@ export default function NewsletterSubscription({
               )}
             </button>
           </div>
+
+          {/* reCAPTCHA */}
+          {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+            <div className="flex justify-center">
+              <div className={theme === 'blue' ? 'bg-white/95 rounded-lg p-2' : ''}>
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  theme="light"
+                  size="compact"
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2 text-center">
+              <p className="text-yellow-800 text-xs">
+                ⚠️ reCAPTCHA is temporarily unavailable. Form submission is still enabled.
+              </p>
+            </div>
+          )}
           
           {/* Success Message */}
           {form.isSubscribed && (

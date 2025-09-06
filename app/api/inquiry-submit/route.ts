@@ -1,6 +1,7 @@
 // app/api/inquiry-submit/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer';
+import { sanitizeInput, validateEmail, logSecurityEvent, getSecurityHeaders } from '@/app/lib/security';
 
 // Verify reCAPTCHA
 async function verifyRecaptcha(token: string) {
@@ -17,13 +18,25 @@ async function verifyRecaptcha(token: string) {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
-    const { website, email, recaptchaToken } = data
+    let { website, email, recaptchaToken } = data
+
+    // Sanitize all inputs
+    website = sanitizeInput(website);
+    email = sanitizeInput(email);
 
     // Validate required fields
     if (!website || !email) {
       return NextResponse.json(
         { error: 'Please fill in all required fields.' },
-        { status: 400 }
+        { status: 400, headers: getSecurityHeaders() }
+      )
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      return NextResponse.json(
+        { error: 'Please provide a valid email address.' },
+        { status: 400, headers: getSecurityHeaders() }
       )
     }
 
@@ -31,11 +44,17 @@ export async function POST(request: NextRequest) {
     if (recaptchaToken && recaptchaToken !== 'recaptcha_disabled') {
       const isValidRecaptcha = await verifyRecaptcha(recaptchaToken)
       if (!isValidRecaptcha) {
+        logSecurityEvent('RECAPTCHA_FAILED', { email, ip: request.ip }, request);
         return NextResponse.json(
           { error: 'reCAPTCHA verification failed. Please try again.' },
-          { status: 400 }
+          { status: 400, headers: getSecurityHeaders() }
         )
       }
+    } else if (!recaptchaToken) {
+      return NextResponse.json(
+        { error: 'reCAPTCHA verification is required.' },
+        { status: 400, headers: getSecurityHeaders() }
+      )
     }
 
     // Log the submission (will appear in your server console)
@@ -84,7 +103,7 @@ export async function POST(request: NextRequest) {
         console.log('✅ SMTP connection verified');
         
         await transporter.sendMail(mailOptions);
-        console.log('✅ Inquiry email sent successfully to:', 'contact@seoshouts.com');
+        console.log('✅ Inquiry email sent successfully to:', 'seoshouts@gmail.com');
       } catch (emailError) {
         console.error('❌ Email sending failed:', emailError);
         // Don't fail the request if email fails
@@ -96,13 +115,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true,
       message: 'Thank you for your inquiry! We will send you a detailed SEO report within 24 hours.'
-    })
+    }, { headers: getSecurityHeaders() })
 
   } catch (error) {
+    logSecurityEvent('INQUIRY_FORM_ERROR', { error: error instanceof Error ? error.message : 'Unknown error' }, request);
     console.error('Inquiry form error:', error)
     return NextResponse.json(
       { error: 'Failed to send inquiry. Please try again.' },
-      { status: 500 }
+      { status: 500, headers: getSecurityHeaders() }
     )
   }
 }

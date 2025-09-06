@@ -20,14 +20,18 @@ function SEOMetaWriterTool() {
     isLimitReached: false
   })
 
+  // Input mode selection
+  const [inputMode, setInputMode] = useState<'manual' | 'url'>('manual')
+  const [url, setUrl] = useState('')
+
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       document.title = 'Free Online AI SEO Meta Title and Description Generator - No Sign - No Login'
       
-      
-      const storedUsage = localStorage.getItem('seo-meta-writer-usage')
+      // Load usage count from session storage
+      const storedUsage = sessionStorage.getItem('seo-meta-writer-usage')
       const currentUsage = storedUsage ? parseInt(storedUsage) : 0
       
       setUsageInfo({
@@ -49,14 +53,21 @@ function SEOMetaWriterTool() {
       return
     }
 
-    if (!formData.title.trim()) {
-      setFormData(prev => ({ ...prev, error: 'Please enter a title for your content' }))
-      return
-    }
+    if (inputMode === 'manual') {
+      if (!formData.title.trim()) {
+        setFormData(prev => ({ ...prev, error: 'Please enter a title for your content' }))
+        return
+      }
 
-    if (!formData.content.trim()) {
-      setFormData(prev => ({ ...prev, error: 'Please enter content for context' }))
-      return
+      if (!formData.content.trim()) {
+        setFormData(prev => ({ ...prev, error: 'Please enter content for context' }))
+        return
+      }
+    } else {
+      if (!url.trim()) {
+        setFormData(prev => ({ ...prev, error: 'Please enter a URL to analyze' }))
+        return
+      }
     }
 
     const recaptchaToken = recaptchaRef.current?.getValue()
@@ -68,16 +79,27 @@ function SEOMetaWriterTool() {
     setFormData(prev => ({ ...prev, isLoading: true, error: '', results: null }))
 
     try {
+      const requestBody = inputMode === 'manual' 
+        ? {
+            title: formData.title,
+            content: formData.content,
+            contentType: formData.contentType,
+            numberOfVariations: formData.numberOfVariations,
+            recaptchaToken: recaptchaToken,
+            mode: 'manual'
+          }
+        : {
+            url: url,
+            contentType: formData.contentType,
+            numberOfVariations: formData.numberOfVariations,
+            recaptchaToken: recaptchaToken,
+            mode: 'url'
+          }
+
       const response = await fetch('/api/generate-meta-tags', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: formData.title,
-          content: formData.content,
-          contentType: formData.contentType,
-          numberOfVariations: formData.numberOfVariations,
-          recaptchaToken: recaptchaToken
-        })
+        body: JSON.stringify(requestBody)
       })
 
       const data = await response.json()
@@ -90,7 +112,7 @@ function SEOMetaWriterTool() {
         }))
         
         const newUsageCount = usageInfo.usageCount + 1
-        localStorage.setItem('seo-meta-writer-usage', newUsageCount.toString())
+        sessionStorage.setItem('seo-meta-writer-usage', newUsageCount.toString())
         
         setUsageInfo({
           usageCount: newUsageCount,
@@ -130,13 +152,30 @@ function SEOMetaWriterTool() {
   }
 
   const resetUsageLimit = () => {
-    localStorage.removeItem('seo-meta-writer-usage')
+    sessionStorage.removeItem('seo-meta-writer-usage')
     setUsageInfo({
       usageCount: 0,
       maxUsage: 5,
       isLimitReached: false
     })
     setFormData(prev => ({ ...prev, error: '' }))
+  }
+
+  const resetForm = () => {
+    setFormData({ 
+      title: '', 
+      content: '', 
+      contentType: 'Landing Page', 
+      numberOfVariations: 3, 
+      isLoading: false, 
+      error: '', 
+      results: null 
+    })
+    setInputMode('manual')
+    setUrl('')
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset()
+    }
   }
 
   return (
@@ -260,19 +299,19 @@ function SEOMetaWriterTool() {
       />
       
       {/* Main Tool Section */}
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section className="py-8 sm:py-12">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Form */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">🤖 AI Meta Tag Generator</h2>
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">🤖 AI Meta Tag Generator</h2>
                 
                 {/* Usage Counter */}
                 <div className="mb-6 p-4 border-2 border-blue-200 bg-blue-50 rounded-xl">
                   <div className="flex items-center mb-3">
                     <span className="text-blue-600 mr-2">⚡</span>
-                    <span className="text-sm font-semibold text-blue-800">Daily Usage Limit</span>
+                    <span className="text-sm font-semibold text-blue-800">Session Usage Limit</span>
                   </div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-blue-700">
@@ -300,17 +339,71 @@ function SEOMetaWriterTool() {
                   </div>
                   {usageInfo.isLimitReached ? (
                     <p className="text-sm text-red-700">
-                      Daily limit reached. Try again tomorrow.
+                      Session limit reached. Refresh page to continue.
                     </p>
                   ) : usageInfo.usageCount >= 4 ? (
                     <p className="text-sm text-yellow-700">
-                      Only {usageInfo.maxUsage - usageInfo.usageCount} generation(s) remaining today
+                      Only {usageInfo.maxUsage - usageInfo.usageCount} generation(s) remaining this session
                     </p>
                   ) : (
                     <p className="text-sm text-green-700">
-                      {usageInfo.maxUsage - usageInfo.usageCount} generations remaining today
+                      {usageInfo.maxUsage - usageInfo.usageCount} generations remaining this session
                     </p>
                   )}
+                </div>
+
+                {/* Input Mode Selection */}
+                <div className="mb-6">
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    Choose Analysis Method *
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div
+                      onClick={() => setInputMode('manual')}
+                      className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                        inputMode === 'manual'
+                          ? 'border-primary bg-primary/5'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center mb-2">
+                        <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                          inputMode === 'manual' ? 'border-primary bg-primary' : 'border-gray-300'
+                        }`}>
+                          {inputMode === 'manual' && (
+                            <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-gray-800">📝 Manual Input</h3>
+                      </div>
+                      <p className="text-sm text-gray-600 ml-7">
+                        Enter title and content description manually
+                      </p>
+                    </div>
+
+                    <div
+                      onClick={() => setInputMode('url')}
+                      className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                        inputMode === 'url'
+                          ? 'border-primary bg-primary/5'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center mb-2">
+                        <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                          inputMode === 'url' ? 'border-primary bg-primary' : 'border-gray-300'
+                        }`}>
+                          {inputMode === 'url' && (
+                            <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                          )}
+                        </div>
+                        <h3 className="font-semibold text-gray-800">🌐 Website URL</h3>
+                      </div>
+                      <p className="text-sm text-gray-600 ml-7">
+                        Analyze content from any webpage automatically
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-6">
@@ -359,47 +452,74 @@ function SEOMetaWriterTool() {
                     </select>
                   </div>
 
-                  {/* Title Input */}
-                  <div>
-                    <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Content Title *
-                    </label>
-                    <input
-                      type="text"
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value, error: '' }))}
-                      placeholder="Enter your content title or main topic"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                      disabled={formData.isLoading || usageInfo.isLimitReached}
-                      required
-                    />
-                    <div className="flex justify-between items-center mt-1">
-                      <p className="text-xs text-gray-400">Enter your main topic</p>
-                      <p className="text-xs text-gray-500">{formData.title.length}/100 characters</p>
+                  {/* URL Input (for URL mode) */}
+                  {inputMode === 'url' && (
+                    <div>
+                      <label htmlFor="url" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Website URL to Analyze *
+                      </label>
+                      <input
+                        type="url"
+                        id="url"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder="https://example.com/your-page"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                        disabled={formData.isLoading || usageInfo.isLimitReached}
+                        required
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Enter the URL of the webpage you want to generate meta tags for
+                      </p>
                     </div>
-                  </div>
+                  )}
 
-                  {/* Content Description */}
-                  <div>
-                    <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Content Description *
-                    </label>
-                    <textarea
-                      id="content"
-                      value={formData.content}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value, error: '' }))}
-                      placeholder="Describe your content, key benefits, target audience, and what makes it valuable..."
-                      rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
-                      disabled={formData.isLoading || usageInfo.isLimitReached}
-                      required
-                    />
-                    <div className="flex justify-between items-center mt-1">
-                      <p className="text-xs text-gray-400">Provide context for better AI results</p>
-                      <p className="text-xs text-gray-500">{formData.content.length}/500 characters</p>
-                    </div>
-                  </div>
+                  {/* Manual Input Fields (for manual mode) */}
+                  {inputMode === 'manual' && (
+                    <>
+                      {/* Title Input */}
+                      <div>
+                        <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
+                          Content Title *
+                        </label>
+                        <input
+                          type="text"
+                          id="title"
+                          value={formData.title}
+                          onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value, error: '' }))}
+                          placeholder="Enter your content title or main topic"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                          disabled={formData.isLoading || usageInfo.isLimitReached}
+                          required={inputMode === 'url'}
+                        />
+                        <div className="flex justify-between items-center mt-1">
+                          <p className="text-xs text-gray-400">Enter your main topic</p>
+                          <p className="text-xs text-gray-500">{formData.title.length}/100 characters</p>
+                        </div>
+                      </div>
+
+                      {/* Content Description */}
+                      <div>
+                        <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
+                          Content Description *
+                        </label>
+                        <textarea
+                          id="content"
+                          value={formData.content}
+                          onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value, error: '' }))}
+                          placeholder="Describe your content, key benefits, target audience, and what makes it valuable..."
+                          rows={4}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
+                          disabled={formData.isLoading || usageInfo.isLimitReached}
+                          required={inputMode === 'manual'}
+                        />
+                        <div className="flex justify-between items-center mt-1">
+                          <p className="text-xs text-gray-400">Provide context for better AI results</p>
+                          <p className="text-xs text-gray-500">{formData.content.length}/500 characters</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   {/* reCAPTCHA */}
                   <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
@@ -445,7 +565,7 @@ function SEOMetaWriterTool() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setFormData({ title: '', content: '', contentType: 'Landing Page', numberOfVariations: 3, isLoading: false, error: '', results: null })}
+                      onClick={resetForm}
                       className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
                     >
                       Reset
@@ -463,7 +583,7 @@ function SEOMetaWriterTool() {
 
               {/* Results Panel */}
               <div className="space-y-6">
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
                   <h2 className="text-2xl font-bold mb-6 text-gray-800">🎯 Generated AI Meta Tags</h2>
                   
                   {!formData.results ? (
@@ -517,7 +637,7 @@ function SEOMetaWriterTool() {
                                   {result.description.length}/160 characters
                                 </span>
                               </div>
-                              <p className="text-gray-700 bg-white p-2 rounded border text-sm">{result.description}</p>
+                              <p className="text-gray-700 bg-white p-3 rounded border text-sm leading-relaxed min-h-[4rem]">{result.description}</p>
                             </div>
                           </div>
                         </div>

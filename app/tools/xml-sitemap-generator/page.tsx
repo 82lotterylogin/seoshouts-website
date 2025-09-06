@@ -12,7 +12,7 @@ interface SitemapUrl {
 }
 
 export default function XMLSitemapGenerator() {
-  // Set page title and meta tags
+  // Set page title and meta tags + load usage count
   useEffect(() => {
     document.title = 'Free XML Sitemap Generator Tool | SEO Shouts'
     
@@ -32,10 +32,23 @@ export default function XMLSitemapGenerator() {
     }
     metaKeywords.setAttribute('content', 'XML sitemap generator, sitemap creator, SEO sitemap, Google sitemap, manual sitemap')
     
+    // Load usage count from session storage
+    const savedUsageCount = sessionStorage.getItem('sitemapGeneratorUsage')
+    if (savedUsageCount) {
+      setUsageCount(parseInt(savedUsageCount))
+    }
   }, [])
 
+  // Input mode selection
+  const [inputMode, setInputMode] = useState<'manual' | 'crawl'>('crawl')
+  
   // Manual URL inputs
   const [manualUrls, setManualUrls] = useState('')
+  
+  // Crawl inputs
+  const [crawlUrl, setCrawlUrl] = useState('')
+  const [maxPages, setMaxPages] = useState(100)
+  const [crawlDepth, setCrawlDepth] = useState(3)
   
   // Settings
   const [changeFreq, setChangeFreq] = useState<'daily' | 'weekly' | 'monthly'>('weekly')
@@ -50,6 +63,10 @@ export default function XMLSitemapGenerator() {
   const [captchaValue, setCaptchaValue] = useState<string | null>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
+  // Usage tracking
+  const [usageCount, setUsageCount] = useState(0)
+  const [usageLimit] = useState(5)
+
   // Handle reCAPTCHA verification
   const handleCaptchaChange = (value: string | null) => {
     console.log('reCAPTCHA value:', value)
@@ -57,10 +74,16 @@ export default function XMLSitemapGenerator() {
     setIsVerified(!!value)
   }
 
-  // Generate sitemap from manual URLs
+  // Generate sitemap from manual URLs or crawling
   const generateSitemap = async () => {
     if (!isVerified) {
       setError('Please complete the human verification first!')
+      return
+    }
+
+    // Check usage limit
+    if (usageCount >= usageLimit) {
+      setError(`You've reached the limit of ${usageLimit} sitemap generations per session. Please refresh the page to continue.`)
       return
     }
 
@@ -70,46 +93,95 @@ export default function XMLSitemapGenerator() {
     setSitemapXML('')
 
     try {
-      // Manual URL input
-      if (!manualUrls.trim()) {
-        setError('Please enter URLs to include in the sitemap')
-        setIsGenerating(false)
-        return
-      }
+      let urls: string[] = []
 
-      const urls = manualUrls
-        .split('\n')
-        .map(url => url.trim())
-        .filter(url => url.length > 0)
+      if (inputMode === 'manual') {
+        // Manual URL input
+        if (!manualUrls.trim()) {
+          setError('Please enter URLs to include in the sitemap')
+          setIsGenerating(false)
+          return
+        }
 
-      // Check if URLs exceed 2000 limit BEFORE processing
-      if (urls.length > 2000) {
-        setError(`Too many URLs! You've entered ${urls.length} URLs, but the maximum allowed is 2,000. Please remove ${urls.length - 2000} URLs.`)
-        setIsGenerating(false)
-        return
-      }
+        urls = manualUrls
+          .split('\n')
+          .map(url => url.trim())
+          .filter(url => url.length > 0)
 
-      // Validate URLs
-      const invalidUrls = urls.filter(url => {
+        // Check if URLs exceed 2000 limit BEFORE processing
+        if (urls.length > 2000) {
+          setError(`Too many URLs! You've entered ${urls.length} URLs, but the maximum allowed is 2,000. Please remove ${urls.length - 2000} URLs.`)
+          setIsGenerating(false)
+          return
+        }
+      } else {
+        // Crawl mode
+        if (!crawlUrl.trim()) {
+          setError('Please enter a website URL to crawl')
+          setIsGenerating(false)
+          return
+        }
+
+        // Validate the crawl URL
         try {
-          new URL(url)
-          return false
+          new URL(crawlUrl)
         } catch {
-          return true
+          setError('Please enter a valid website URL (e.g., https://example.com)')
+          setIsGenerating(false)
+          return
+        }
+
+        // Crawl the website
+        urls = await crawlWebsite(crawlUrl, maxPages, crawlDepth)
+        
+        if (urls.length === 0) {
+          setError('No valid pages found. Please check the URL and try again.')
+          setIsGenerating(false)
+          return
+        }
+      }
+
+      // Normalize and deduplicate URLs
+      const normalizedUrls = new Set<string>()
+      
+      urls.forEach(url => {
+        try {
+          const urlObj = new URL(url)
+          
+          // Build normalized URL with consistent trailing slashes
+          let normalizedUrl = urlObj.origin + urlObj.pathname
+          
+          // Ensure trailing slash for consistency (except for files with extensions)
+          const hasFileExtension = /\.[a-zA-Z0-9]+$/.test(urlObj.pathname)
+          
+          if (!hasFileExtension && !normalizedUrl.endsWith('/')) {
+            normalizedUrl += '/'
+          }
+          
+          // Add query parameters and hash if they exist
+          if (urlObj.search) {
+            normalizedUrl += urlObj.search
+          }
+          if (urlObj.hash) {
+            normalizedUrl += urlObj.hash
+          }
+          
+          normalizedUrls.add(normalizedUrl)
+        } catch {
+          // Skip invalid URLs
         }
       })
 
-      if (invalidUrls.length > 0) {
-        setError(`Invalid URLs found: ${invalidUrls.slice(0, 3).join(', ')}${invalidUrls.length > 3 ? '...' : ''}`)
+      const validUrls = Array.from(normalizedUrls)
+      
+      if (validUrls.length === 0) {
+        setError('No valid URLs found. Please check your URLs and try again.')
         setIsGenerating(false)
         return
       }
 
-      // Simulate processing delay
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
       // Convert URLs to sitemap format
-      const sitemapData: SitemapUrl[] = urls.map(url => {
+      const sitemapData: SitemapUrl[] = validUrls.map(url => {
         let priority = 0.5
         let changefreq: SitemapUrl['changefreq'] = changeFreq
         
@@ -137,11 +209,45 @@ export default function XMLSitemapGenerator() {
 
       setSitemapUrls(sitemapData)
       generateXML(sitemapData)
+      
+      // Increment usage count and save to session storage
+      const newUsageCount = usageCount + 1
+      setUsageCount(newUsageCount)
+      sessionStorage.setItem('sitemapGeneratorUsage', newUsageCount.toString())
     } catch (err) {
       setError('Failed to generate sitemap. Please try again.')
       console.error(err)
     } finally {
       setIsGenerating(false)
+    }
+  }
+
+  // Crawl website function
+  const crawlWebsite = async (startUrl: string, maxPages: number, maxDepth: number): Promise<string[]> => {
+    try {
+      const response = await fetch('/api/crawl-website', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: startUrl,
+          maxPages: maxPages,
+          maxDepth: maxDepth,
+          recaptchaToken: captchaValue
+        })
+      })
+
+      const data = await response.json()
+      
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Crawling failed')
+      }
+
+      return data.urls || []
+    } catch (error) {
+      console.error('Crawl error:', error)
+      throw error
     }
   }
 
@@ -193,7 +299,11 @@ export default function XMLSitemapGenerator() {
   }
 
   const resetForm = () => {
+    setInputMode('crawl')
     setManualUrls('')
+    setCrawlUrl('')
+    setMaxPages(100)
+    setCrawlDepth(3)
     setChangeFreq('weekly')
     setSitemapUrls([])
     setSitemapXML('')
@@ -205,8 +315,8 @@ export default function XMLSitemapGenerator() {
     }
   }
 
-  // Count URLs for display
-  const urlCount = manualUrls.split('\n').filter(url => url.trim().length > 0).length
+  // Count URLs for display (only for manual mode)
+  const urlCount = inputMode === 'manual' ? manualUrls.split('\n').filter(url => url.trim().length > 0).length : 0
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -262,44 +372,219 @@ export default function XMLSitemapGenerator() {
       
 
       {/* Tool Section */}
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
+      <section className="py-8 sm:py-12">
+        <div className="container mx-auto px-2 sm:px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Input Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">XML Sitemap Generator</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">XML Sitemap Generator</h2>
+                
+                {/* Usage Counter Display */}
+                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-blue-600 mr-2">📊</span>
+                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-700">
+                        {usageLimit - usageCount} / {usageLimit}
+                      </div>
+                      <div className="text-xs text-blue-600">generations remaining</div>
+                    </div>
+                  </div>
+                  {usageCount >= usageLimit && (
+                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
+                      <p className="text-orange-800 text-xs font-medium">
+                        ⚠️ Session limit reached. Refresh page to continue.
+                      </p>
+                    </div>
+                  )}
+                </div>
                 
                 <div className="space-y-6">
-                  {/* Manual URL Input */}
+                  {/* Input Mode Selection */}
                   <div>
-                    <label htmlFor="manualUrls" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Website URLs *
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      How would you like to create your sitemap? *
                     </label>
-                    <textarea
-                      id="manualUrls"
-                      value={manualUrls}
-                      onChange={(e) => setManualUrls(e.target.value)}
-                      placeholder="Enter your website URLs, one per line:&#10;https://yourwebsite.com&#10;https://yourwebsite.com/about&#10;https://yourwebsite.com/contact&#10;https://yourwebsite.com/blog/post-1&#10;https://yourwebsite.com/products/product-1"
-                      rows={12}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
-                    />
-                    <div className="flex justify-between items-center mt-2">
-                      <p className="text-xs text-gray-500">
-                        Enter one URL per line (maximum 2,000 URLs)
-                      </p>
-                      <div className={`text-xs font-medium ${urlCount > 2000 ? 'text-red-600' : urlCount > 1800 ? 'text-yellow-600' : 'text-gray-500'}`}>
-                        {urlCount}/2,000 URLs
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div
+                        onClick={() => setInputMode('crawl')}
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                          inputMode === 'crawl'
+                            ? 'border-primary bg-primary/5'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center mb-2">
+                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                            inputMode === 'crawl' ? 'border-primary bg-primary' : 'border-gray-300'
+                          }`}>
+                            {inputMode === 'crawl' && (
+                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                            )}
+                          </div>
+                          <h3 className="font-semibold text-gray-800">🤖 Automatic Crawling</h3>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-7">
+                          Enter your website URL and let us crawl it automatically to find all pages
+                        </p>
+                        <div className="mt-2 ml-7">
+                          <span className="inline-block bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
+                            Recommended
+                          </span>
+                        </div>
+                      </div>
+
+                      <div
+                        onClick={() => setInputMode('manual')}
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                          inputMode === 'manual'
+                            ? 'border-primary bg-primary/5'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center mb-2">
+                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                            inputMode === 'manual' ? 'border-primary bg-primary' : 'border-gray-300'
+                          }`}>
+                            {inputMode === 'manual' && (
+                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                            )}
+                          </div>
+                          <h3 className="font-semibold text-gray-800">✏️ Manual Input</h3>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-7">
+                          Manually enter specific URLs you want to include in your sitemap
+                        </p>
+                        <div className="mt-2 ml-7">
+                          <span className="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">
+                            Precise Control
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    {urlCount > 2000 && (
-                      <div className="mt-2 bg-red-50 border border-red-200 rounded-lg p-2">
-                        <p className="text-red-700 text-xs">
-                          ⚠️ Too many URLs! Please remove {urlCount - 2000} URLs to proceed.
+                  </div>
+
+                  {/* Crawl Mode Input */}
+                  {inputMode === 'crawl' && (
+                    <>
+                      <div>
+                        <label htmlFor="crawlUrl" className="block text-sm font-semibold text-gray-700 mb-2">
+                          Website URL to Crawl *
+                        </label>
+                        <input
+                          type="url"
+                          id="crawlUrl"
+                          value={crawlUrl}
+                          onChange={(e) => setCrawlUrl(e.target.value)}
+                          placeholder="https://yourwebsite.com"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Enter the main URL of your website. We'll automatically discover all linked pages.
                         </p>
                       </div>
-                    )}
-                  </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="maxPages" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Maximum Pages to Crawl
+                          </label>
+                          <select
+                            id="maxPages"
+                            value={maxPages}
+                            onChange={(e) => setMaxPages(parseInt(e.target.value))}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                          >
+                            <option value={50}>50 pages</option>
+                            <option value={100}>100 pages</option>
+                            <option value={250}>250 pages</option>
+                            <option value={500}>500 pages</option>
+                            <option value={1000}>1,000 pages</option>
+                            <option value={2000}>2,000 pages (max)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label htmlFor="crawlDepth" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Crawl Depth
+                          </label>
+                          <select
+                            id="crawlDepth"
+                            value={crawlDepth}
+                            onChange={(e) => setCrawlDepth(parseInt(e.target.value))}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                          >
+                            <option value={1}>1 level (homepage only)</option>
+                            <option value={2}>2 levels</option>
+                            <option value={3}>3 levels (recommended)</option>
+                            <option value={4}>4 levels</option>
+                            <option value={5}>5 levels (deep crawl)</option>
+                          </select>
+                          <p className="text-xs text-gray-500 mt-1">
+                            How many clicks deep to follow links from your homepage
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <h3 className="text-sm font-semibold text-blue-800 mb-2">🤖 Automatic Crawling:</h3>
+                        <ul className="text-sm text-blue-700 space-y-1">
+                          <li>• Discovers pages automatically by following links</li>
+                          <li>• Respects robots.txt files and meta tags</li>
+                          <li>• Filters out non-indexable pages</li>
+                          <li>• Perfect for most websites</li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Manual Mode Input */}
+                  {inputMode === 'manual' && (
+                    <>
+                      <div>
+                        <label htmlFor="manualUrls" className="block text-sm font-semibold text-gray-700 mb-2">
+                          Website URLs *
+                        </label>
+                        <textarea
+                          id="manualUrls"
+                          value={manualUrls}
+                          onChange={(e) => setManualUrls(e.target.value)}
+                          placeholder="Enter your website URLs, one per line:&#10;https://yourwebsite.com&#10;https://yourwebsite.com/about&#10;https://yourwebsite.com/contact&#10;https://yourwebsite.com/blog/post-1&#10;https://yourwebsite.com/products/product-1"
+                          rows={12}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
+                        />
+                        <div className="flex justify-between items-center mt-2">
+                          <p className="text-xs text-gray-500">
+                            Enter one URL per line (maximum 2,000 URLs)
+                          </p>
+                          <div className={`text-xs font-medium ${urlCount > 2000 ? 'text-red-600' : urlCount > 1800 ? 'text-yellow-600' : 'text-gray-500'}`}>
+                            {urlCount}/2,000 URLs
+                          </div>
+                        </div>
+                        {urlCount > 2000 && (
+                          <div className="mt-2 bg-red-50 border border-red-200 rounded-lg p-2">
+                            <p className="text-red-700 text-xs">
+                              ⚠️ Too many URLs! Please remove {urlCount - 2000} URLs to proceed.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                        <h3 className="text-sm font-semibold text-orange-800 mb-2">✏️ Manual Input:</h3>
+                        <ul className="text-sm text-orange-700 space-y-1">
+                          <li>• Complete control over which pages to include</li>
+                          <li>• Perfect for private or password-protected sites</li>
+                          <li>• Good for new sites with few pages</li>
+                          <li>• Requires you to list all URLs manually</li>
+                        </ul>
+                      </div>
+                    </>
+                  )}
 
                   {/* Change Frequency */}
                   <div>
@@ -319,15 +604,22 @@ export default function XMLSitemapGenerator() {
                     <p className="text-xs text-gray-500 mt-1">How often your content typically changes</p>
                   </div>
 
-                  {/* 2000 URL Limit Notice */}
+                  {/* Usage Counter & Limits Notice */}
                   <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                    <h3 className="text-sm font-semibold text-blue-800 mb-2">📊 Sitemap Limits:</h3>
+                    <h3 className="text-sm font-semibold text-blue-800 mb-2">📊 Usage & Limits:</h3>
                     <ul className="text-sm text-blue-700 space-y-1">
                       <li>• Maximum 2,000 URLs per sitemap</li>
+                      <li>• {usageLimit - usageCount} generations remaining this session</li>
                       <li>• Automatic priority optimization</li>
                       <li>• Google-compliant XML format</li>
-                      <li>• Manual URL validation</li>
                     </ul>
+                    {usageCount >= usageLimit && (
+                      <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
+                        <p className="text-orange-800 text-xs font-medium">
+                          ⚠️ Session limit reached. Refresh page to continue.
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   {/* Human Verification Section */}
@@ -368,7 +660,7 @@ export default function XMLSitemapGenerator() {
                   <div className="flex gap-4">
                     <button
                       onClick={generateSitemap}
-                      disabled={isGenerating || !manualUrls.trim() || urlCount > 2000 || !isVerified}
+                      disabled={isGenerating || (inputMode === 'manual' && (!manualUrls.trim() || urlCount > 2000)) || (inputMode === 'crawl' && !crawlUrl.trim()) || !isVerified || usageCount >= usageLimit}
                       className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
                     >
                       {isGenerating ? (
@@ -401,7 +693,9 @@ export default function XMLSitemapGenerator() {
 
               {/* Results Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Generated Sitemap</h2>
+                <h2 className="text-2xl font-bold mb-6 text-gray-800">
+                  {inputMode === 'crawl' ? 'Crawled Sitemap Results' : 'Generated Sitemap'}
+                </h2>
                 
                 {sitemapUrls.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">

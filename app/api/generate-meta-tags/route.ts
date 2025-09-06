@@ -2,18 +2,59 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { title, content, contentType, numberOfVariations, recaptchaToken } = await request.json()
+    const body = await request.json()
+    const mode = (body.mode || 'manual') as 'manual' | 'url'
+    let { title, content, contentType, numberOfVariations, recaptchaToken } = body
 
     console.log('=== REQUEST INFO ===')
+    console.log('Mode:', mode)
     console.log('Content Type:', contentType)
     console.log('Number of variations:', numberOfVariations)
-    console.log('Title:', title?.substring(0, 50))
+    console.log('Title preview:', title?.substring(0, 50))
 
-    if (!title || !content || !contentType || !numberOfVariations) {
+    // Normalize numberOfVariations
+    numberOfVariations = typeof numberOfVariations === 'string' ? parseInt(numberOfVariations, 10) : numberOfVariations
+
+    if (!contentType || !numberOfVariations) {
       return NextResponse.json(
         { success: false, error: 'All fields are required' },
         { status: 400 }
       )
+    }
+
+    if (mode === 'manual') {
+      if (!title || !content) {
+        return NextResponse.json(
+          { success: false, error: 'All fields are required' },
+          { status: 400 }
+        )
+      }
+    } else if (mode === 'url') {
+      const url = (body.url || '').trim()
+      if (!url) {
+        return NextResponse.json(
+          { success: false, error: 'URL is required' },
+          { status: 400 }
+        )
+      }
+      // Validate URL and security constraints
+      if (!isValidHttpUrl(url) || !isAllowedUrl(url)) {
+        return NextResponse.json(
+          { success: false, error: 'Please provide a valid public URL' },
+          { status: 400 }
+        )
+      }
+      // Fetch page content
+      const { pageTitle, textContent, error: fetchError } = await fetchPageContent(url)
+      if (fetchError) {
+        return NextResponse.json(
+          { success: false, error: fetchError },
+          { status: 400 }
+        )
+      }
+      // Use fetched values for prompt
+      title = pageTitle || title || url
+      content = textContent
     }
 
     if (numberOfVariations < 1 || numberOfVariations > 5) {
@@ -38,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create simple, clean prompt
-    const promptText = createSimplePrompt(contentType, title, content, numberOfVariations)
+    const promptText = createSimplePrompt(contentType, title as string, content as string, numberOfVariations)
 
     console.log('Calling Gemini API...')
     
@@ -65,7 +106,7 @@ export async function POST(request: NextRequest) {
 
     if (!geminiResponse.ok) {
       console.error('Gemini API failed, using clean fallback')
-      const fallbackResults = createCleanFallback(contentType, title, numberOfVariations)
+      const fallbackResults = createCleanFallback(contentType, title as string, numberOfVariations)
       return NextResponse.json({
         success: true,
         results: fallbackResults
@@ -89,12 +130,12 @@ export async function POST(request: NextRequest) {
       
     } catch (parseError) {
       console.log('Parse failed, using clean fallback')
-      results = createCleanFallback(contentType, title, numberOfVariations)
+      results = createCleanFallback(contentType, title as string, numberOfVariations)
     }
 
     // Ensure correct number of results
     if (!Array.isArray(results) || results.length === 0) {
-      results = createCleanFallback(contentType, title, numberOfVariations)
+      results = createCleanFallback(contentType, title as string, numberOfVariations)
     }
 
     // Get exact number requested
@@ -102,7 +143,7 @@ export async function POST(request: NextRequest) {
       if (results.length > numberOfVariations) {
         results = results.slice(0, numberOfVariations)
       } else {
-        const fallback = createCleanFallback(contentType, title, numberOfVariations)
+        const fallback = createCleanFallback(contentType, title as string, numberOfVariations)
         while (results.length < numberOfVariations) {
           results.push(fallback[results.length] || fallback[0])
         }
@@ -110,8 +151,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Clean up and optimize results
-    const optimizedResults = results.map((result, index) => {
-      return cleanOptimizeMetaTags(result, title, contentType, index)
+    const optimizedResults = results.map((result: any, index: number) => {
+      return cleanOptimizeMetaTags(result, title as string, contentType, index)
     })
 
     console.log('Returning', optimizedResults.length, 'clean results')
@@ -170,75 +211,76 @@ function createCleanFallback(contentType: string, title: string, numberOfVariati
   // Clean the title first
   const businessName = cleanBusinessName(title)
   
-  let baseResults = []
+  let baseResults: { title: string; description: string }[] = []
   
   if (contentType === 'Landing Page') {
+    // Generic, brand-safe landing page options (no location assumptions)
     baseResults = [
       {
-        title: `${businessName} - Luxury Accommodation Udaipur`,
-        description: `Book your stay at ${businessName}. Premium villa accommodation with exceptional amenities and service in Udaipur. Reserve now for best rates.`
+        title: `${businessName} — Official Site`,
+        description: `Discover ${businessName}. Quality you can trust, exceptional service, and solutions tailored to your needs. Learn more.`
       },
       {
-        title: `Premium Villa Rentals | ${businessName}`,
-        description: `Experience luxury at ${businessName}, Udaipur's premier villa resort. Beautiful accommodation, top-class service, unforgettable experience.`
+        title: `${businessName} | Excellence Delivered`,
+        description: `${businessName} offers reliable, customer‑focused solutions with a commitment to quality and results. Get started today.`
       },
       {
-        title: `${businessName} Resort - Book Your Dream Stay`,
-        description: `Discover ${businessName}, a luxury villa resort in Udaipur. Premium amenities, stunning views, exceptional hospitality. Book today.`
+        title: `Welcome to ${businessName}`,
+        description: `Explore what ${businessName} can do for you — premium quality, trusted expertise, and a seamless experience from start to finish.`
       },
       {
-        title: `Best Villa Resort Udaipur | ${businessName}`,
-        description: `Choose ${businessName} for your Udaipur stay. Luxury villas, premium facilities, personalized service. Perfect for memorable holidays.`
+        title: `${businessName} | Trusted by Customers`,
+        description: `Experience ${businessName}: dependable quality, expert support, and real results that matter. Learn more.`
       },
       {
-        title: `${businessName} - Udaipur's Premier Villa Resort`,
-        description: `Stay at ${businessName}, Udaipur's top-rated villa resort. Luxurious accommodation, world-class amenities, exceptional guest experience.`
+        title: `${businessName} — Quality You Can Rely On`,
+        description: `${businessName} delivers professional quality with a focus on value, trust, and customer satisfaction. Get started today.`
       }
     ]
   } else if (contentType === 'Service Page') {
     baseResults = [
       {
-        title: `Professional ${businessName} Solutions`,
-        description: `Get expert ${businessName.toLowerCase()} solutions tailored to your needs. Professional service, proven results, competitive pricing.`
+        title: `Professional ${businessName} Services`,
+        description: `Get expert ${businessName.toLowerCase()} services tailored to your needs. Professional team, proven results, and reliable support.`
       },
       {
-        title: `${businessName} - Expert Consultation`,
-        description: `Professional ${businessName.toLowerCase()} consultation and implementation. Experienced team, customized approach, guaranteed satisfaction.`
+        title: `${businessName} — Expert Solutions`,
+        description: `Professional ${businessName.toLowerCase()} solutions with measurable results. Experienced team, custom approach, clear outcomes.`
       },
       {
         title: `Reliable ${businessName} Support`,
-        description: `Trusted ${businessName.toLowerCase()} support with measurable results. Expert guidance, professional service, ongoing assistance.`
+        description: `Trusted ${businessName.toLowerCase()} support from experienced professionals. Quality service and a results‑driven approach.`
       },
       {
-        title: `${businessName} - Professional Results`,
-        description: `Get professional ${businessName.toLowerCase()} results that matter. Expert team, proven methods, customer-focused approach.`
+        title: `${businessName} — Proven Results`,
+        description: `Drive outcomes with professional ${businessName.toLowerCase()}. Expert guidance, practical implementation, and ongoing support.`
       },
       {
         title: `Expert ${businessName} Consulting`,
-        description: `Professional ${businessName.toLowerCase()} consulting with real results. Customized solutions, expert advice, reliable support.`
+        description: `Consulting and implementation for ${businessName.toLowerCase()}. Tailored strategies, expert advice, and dependable delivery.`
       }
     ]
   } else { // Blog Article
     baseResults = [
       {
-        title: `${businessName} - Complete Guide`,
-        description: `Everything you need to know about ${businessName.toLowerCase()}. Expert tips, practical advice, and actionable strategies for success.`
+        title: `${businessName} — Complete Guide`,
+        description: `Everything you need to know about ${businessName.toLowerCase()}. Expert tips, practical advice, and actionable strategies.`
       },
       {
         title: `${businessName} Tips and Best Practices`,
-        description: `Master ${businessName.toLowerCase()} with proven tips and best practices. Expert guidance for better results and implementation.`
+        description: `Master ${businessName.toLowerCase()} with proven tips and best practices. Clear guidance for better results.`
       },
       {
-        title: `Understanding ${businessName} - Expert Guide`,
-        description: `Comprehensive guide to ${businessName.toLowerCase()}. Learn from experts and get practical insights for immediate application.`
+        title: `Understanding ${businessName} — Expert Guide`,
+        description: `A comprehensive guide to ${businessName.toLowerCase()}. Learn key concepts and get practical insights you can apply today.`
       },
       {
-        title: `${businessName} - What You Need to Know`,
-        description: `Essential information about ${businessName.toLowerCase()}. Expert insights, practical tips, and proven strategies explained simply.`
+        title: `${businessName} — What You Need to Know`,
+        description: `Essential insights about ${businessName.toLowerCase()}. Practical tips and strategies explained simply.`
       },
       {
-        title: `${businessName} Explained - Expert Insights`,
-        description: `Get expert insights into ${businessName.toLowerCase()}. Practical guidance, proven methods, and actionable advice for success.`
+        title: `${businessName} Explained — Expert Insights`,
+        description: `Get expert insights into ${businessName.toLowerCase()}. Practical guidance, proven methods, and clear next steps.`
       }
     ]
   }
@@ -250,11 +292,10 @@ function cleanBusinessName(title: string) {
   // Remove common filler words and clean up the business name
   let clean = title
   
-  // Remove redundant words
-  clean = clean.replace(/best\s+/gi, '')
-  clean = clean.replace(/luxurious\s+/gi, '')
+  // Remove redundant words and location bias
+  clean = clean.replace(/\b(best|luxurious)\b\s*/gi, '')
   clean = clean.replace(/\s+villa\s+/gi, ' ')
-  clean = clean.replace(/\s+in\s+udaipur$/gi, '')
+  clean = clean.replace(/\s+in\s+[a-z\s]+$/gi, '')
   
   // Clean up extra spaces
   clean = clean.replace(/\s+/g, ' ').trim()
@@ -266,6 +307,105 @@ function cleanBusinessName(title: string) {
   }
   
   return clean
+}
+
+// === URL mode helpers (scoped to this route to avoid changing other modules) ===
+function isValidHttpUrl(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr)
+    return u.protocol === 'http:' || u.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
+function isAllowedUrl(urlStr: string): boolean {
+  try {
+    const u = new URL(urlStr)
+    const host = u.hostname.toLowerCase()
+    if (
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host === '0.0.0.0' ||
+      host.startsWith('10.') ||
+      host.startsWith('192.168.') ||
+      host.startsWith('172.16.') ||
+      host.startsWith('172.17.') ||
+      host.startsWith('172.18.') ||
+      host.startsWith('172.19.') ||
+      host.startsWith('172.2') ||
+      host.startsWith('172.30.') ||
+      host.startsWith('172.31.') ||
+      host.startsWith('169.254.')
+    ) {
+      return false
+    }
+    return true
+  } catch {
+    return false
+  }
+}
+
+function extractTextAndTitle(html: string): { title: string | null; text: string } {
+  // Remove script/style/noscript/comments
+  const clean = html
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<noscript[^>]*>[\s\S]*?<\/noscript>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+  const titleMatch = clean.match(/<title[^>]*>([\s\S]*?)<\/title>/i)
+  const title = titleMatch ? titleMatch[1].replace(/\s+/g, ' ').trim() : null
+  const text = clean
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&[a-zA-Z0-9#]+;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return { title, text }
+}
+
+async function fetchPageContent(url: string): Promise<{ pageTitle: string | null; textContent: string; error?: string }> {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'SEOShouts-MetaWriter/1.0 (Content Extraction Bot)',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+      },
+      // @ts-ignore Node fetch supports timeout signal
+      signal: (AbortSignal as any).timeout ? (AbortSignal as any).timeout(15000) : undefined,
+    })
+
+    if (!response.ok) {
+      return { pageTitle: null, textContent: '', error: `Failed to fetch URL: ${response.status} ${response.statusText}` }
+    }
+    const contentType = response.headers.get('content-type') || ''
+    if (!contentType.includes('text/html')) {
+      return { pageTitle: null, textContent: '', error: 'URL does not contain HTML content' }
+    }
+
+    const html = await response.text()
+    if (!html || html.trim().length === 0) {
+      return { pageTitle: null, textContent: '', error: 'No content found at the provided URL' }
+    }
+
+    const { title, text } = extractTextAndTitle(html)
+    if (!text || text.length < 50) {
+      return { pageTitle: title, textContent: '', error: 'Insufficient text content found on the webpage' }
+    }
+
+    return { pageTitle: title, textContent: text }
+  } catch (err: any) {
+    if (err?.name === 'AbortError') {
+      return { pageTitle: null, textContent: '', error: 'Request timeout - the webpage took too long to respond' }
+    }
+    return { pageTitle: null, textContent: '', error: 'Failed to fetch content from URL. Please try again.' }
+  }
 }
 
 function cleanOptimizeMetaTags(result: any, originalTitle: string, contentType: string, index: number) {
@@ -299,34 +439,41 @@ function cleanOptimizeMetaTags(result: any, originalTitle: string, contentType: 
   
   if (metaTitle.length < 55) {
     const space = 60 - metaTitle.length
-    if (space >= 8 && !metaTitle.includes('Udaipur')) {
-      metaTitle = metaTitle + ' Udaipur'
-    } else if (space >= 5) {
-      metaTitle = metaTitle + ' 2024'
+    // Avoid adding arbitrary locations or years; keep titles clean and relevant
+    if (space >= 5 && !/\b(19|20)\d{2}\b/.test(metaTitle)) {
+      // Optionally add a neutral qualifier only when it makes sense
+      // metaTitle = `${metaTitle} | Guide`
+      metaTitle = metaTitle
     }
   }
 
-  // Optimize description length (155-160 characters)
-  if (metaDescription.length > 160) {
-    const words = metaDescription.split(' ')
-    let shortened = ''
+  // Optimize description length to avoid SERP cropping
+  const MAX_DESC = 150  // Conservative limit to prevent truncation
+  if (metaDescription.length > MAX_DESC) {
+    // Find the last complete sentence or phrase within limit
+    const truncated = metaDescription.substring(0, MAX_DESC)
+    const lastPeriod = truncated.lastIndexOf('.')
+    const lastSpace = truncated.lastIndexOf(' ')
     
-    for (const word of words) {
-      if ((shortened + ' ' + word).trim().length <= 160) {
-        shortened = (shortened + ' ' + word).trim()
-      } else {
-        break
-      }
+    if (lastPeriod > MAX_DESC * 0.7) {
+      // If we have a sentence that's at least 70% of our target, use it
+      metaDescription = truncated.substring(0, lastPeriod + 1).trim()
+    } else if (lastSpace > MAX_DESC * 0.8) {
+      // Otherwise, break at the last word boundary if it's at least 80% of target
+      metaDescription = truncated.substring(0, lastSpace).trim()
+    } else {
+      // Fallback: just trim to limit
+      metaDescription = truncated.trim()
     }
-    metaDescription = shortened || metaDescription.substring(0, 160).trim()
   }
   
-  if (metaDescription.length < 155) {
-    const space = 160 - metaDescription.length
-    if (space >= 15) {
-      metaDescription = metaDescription + ' Book today.'
-    } else if (space >= 10) {
-      metaDescription = metaDescription + ' Call now.'
+  // Ensure description ends properly (no hanging words or incomplete phrases)
+  metaDescription = metaDescription.replace(/\s+(and|or|with|for|to|in|at|on|of|the|a|an)$/i, '').trim()
+  
+  // Add period if description doesn't end with punctuation
+  if (metaDescription && !/[.!?]$/.test(metaDescription)) {
+    if (metaDescription.length <= 149) {
+      metaDescription += '.'
     }
   }
 

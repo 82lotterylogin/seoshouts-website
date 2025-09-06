@@ -148,13 +148,11 @@ export default function NewsletterFormSection() {
 
                 {/* reCAPTCHA Widget - NEW */}
                 <div className="flex justify-center">
-                  <div className="bg-white/95 rounded-lg p-2">
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                      theme="light"
-                    />
-                  </div>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                    theme="light"
+                  />
                 </div>
 
                 {/* Success Message */}

@@ -24,6 +24,11 @@ export default function LongTailKeywordGenerator() {
     }
     metaKeywords.setAttribute('content', 'long tail keyword generator, keyword research tool, SEO keywords, keyword finder, profitable keywords')
     
+    // Load usage count from session storage
+    const savedUsageCount = sessionStorage.getItem('longTailKeywordUsage')
+    if (savedUsageCount) {
+      setUsageCount(parseInt(savedUsageCount))
+    }
   }, [])
 
   const [form, setForm] = useState({
@@ -32,13 +37,21 @@ export default function LongTailKeywordGenerator() {
     language: 'English'
   })
 
-  const [results, setResults] = useState<Array<{ keyword: string; volume: string; competition: string; intent: string }>>([])
+  const [results, setResults] = useState<Array<{ keyword: string; volume: string; competition: string; intent: string; cpc: string; difficulty: number }>>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [isVerified, setIsVerified] = useState(false)
   const [captchaValue, setCaptchaValue] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  // Usage tracking
+  const [usageCount, setUsageCount] = useState(0)
+  const [usageLimit] = useState(5)
+
+  // Enhanced features
+  const [sortBy, setSortBy] = useState<'keyword' | 'volume' | 'difficulty'>('volume')
+  const [filterIntent, setFilterIntent] = useState<'all' | 'Informational' | 'Commercial' | 'Local'>('all')
 
   // Handle reCAPTCHA verification
   const handleCaptchaChange = (value: string | null) => {
@@ -49,6 +62,16 @@ export default function LongTailKeywordGenerator() {
 
   // Generate keywords (demo function)
 const generateKeywords = () => {
+  if (!isVerified) {
+    setError('Please complete the human verification first!')
+    return
+  }
+
+  if (usageCount >= usageLimit) {
+    setError(`You've reached the limit of ${usageLimit} generations per session. Please refresh the page to continue.`)
+    return
+  }
+
   if (!form.keyword.trim()) {
     setError('Please enter a seed keyword')
     return
@@ -65,38 +88,44 @@ const generateKeywords = () => {
     
     const demoKeywords = [
       // Informational Intent Keywords (8 keywords)
-      { keyword: `${baseKeyword} for beginners`, volume: '1,200', competition: 'Low', intent: 'Informational' },
-      { keyword: `how to choose ${baseKeyword}`, volume: '850', competition: 'Low', intent: 'Informational' },
-      { keyword: `${baseKeyword} tips and tricks`, volume: '780', competition: 'Medium', intent: 'Informational' },
-      { keyword: `${baseKeyword} comparison guide`, volume: '540', competition: 'Low', intent: 'Informational' },
-      { keyword: `what is ${baseKeyword}`, volume: '920', competition: 'Low', intent: 'Informational' },
-      { keyword: `${baseKeyword} tutorial step by step`, volume: '670', competition: 'Medium', intent: 'Informational' },
-      { keyword: `${baseKeyword} vs alternatives`, volume: '430', competition: 'Medium', intent: 'Informational' },
-      { keyword: `${baseKeyword} benefits and advantages`, volume: '380', competition: 'Low', intent: 'Informational' },
+      { keyword: `${baseKeyword} for beginners`, volume: '1,200', competition: 'Low', intent: 'Informational', cpc: '$0.45', difficulty: 25 },
+      { keyword: `how to choose ${baseKeyword}`, volume: '850', competition: 'Low', intent: 'Informational', cpc: '$0.35', difficulty: 22 },
+      { keyword: `${baseKeyword} tips and tricks`, volume: '780', competition: 'Medium', intent: 'Informational', cpc: '$0.55', difficulty: 38 },
+      { keyword: `${baseKeyword} comparison guide`, volume: '540', competition: 'Low', intent: 'Informational', cpc: '$0.40', difficulty: 28 },
+      { keyword: `what is ${baseKeyword}`, volume: '920', competition: 'Low', intent: 'Informational', cpc: '$0.30', difficulty: 20 },
+      { keyword: `${baseKeyword} tutorial step by step`, volume: '670', competition: 'Medium', intent: 'Informational', cpc: '$0.50', difficulty: 35 },
+      { keyword: `${baseKeyword} vs alternatives`, volume: '430', competition: 'Medium', intent: 'Informational', cpc: '$0.65', difficulty: 42 },
+      { keyword: `${baseKeyword} benefits and advantages`, volume: '380', competition: 'Low', intent: 'Informational', cpc: '$0.38', difficulty: 26 },
 
       // Commercial Intent Keywords (10 keywords)
-      { keyword: `buy ${baseKeyword} online`, volume: '2,100', competition: 'High', intent: 'Commercial' },
-      { keyword: `best ${baseKeyword} 2024`, volume: '1,450', competition: 'Medium', intent: 'Commercial' },
-      { keyword: `affordable ${baseKeyword} services`, volume: '450', competition: 'Low', intent: 'Commercial' },
-      { keyword: `top rated ${baseKeyword} providers`, volume: '320', competition: 'Low', intent: 'Commercial' },
-      { keyword: `${baseKeyword} reviews and ratings`, volume: '890', competition: 'Medium', intent: 'Commercial' },
-      { keyword: `cheap ${baseKeyword} under 1000`, volume: '650', competition: 'Medium', intent: 'Commercial' },
-      { keyword: `professional ${baseKeyword} services`, volume: '680', competition: 'Medium', intent: 'Commercial' },
-      { keyword: `${baseKeyword} deals and discounts`, volume: '290', competition: 'Low', intent: 'Commercial' },
-      { keyword: `premium ${baseKeyword} brands`, volume: '340', competition: 'High', intent: 'Commercial' },
-      { keyword: `${baseKeyword} price comparison`, volume: '520', competition: 'Medium', intent: 'Commercial' },
+      { keyword: `buy ${baseKeyword} online`, volume: '2,100', competition: 'High', intent: 'Commercial', cpc: '$2.85', difficulty: 78 },
+      { keyword: `best ${baseKeyword} 2024`, volume: '1,450', competition: 'Medium', intent: 'Commercial', cpc: '$1.95', difficulty: 55 },
+      { keyword: `affordable ${baseKeyword} services`, volume: '450', competition: 'Low', intent: 'Commercial', cpc: '$1.45', difficulty: 32 },
+      { keyword: `top rated ${baseKeyword} providers`, volume: '320', competition: 'Low', intent: 'Commercial', cpc: '$1.75', difficulty: 29 },
+      { keyword: `${baseKeyword} reviews and ratings`, volume: '890', competition: 'Medium', intent: 'Commercial', cpc: '$1.25', difficulty: 45 },
+      { keyword: `cheap ${baseKeyword} under 1000`, volume: '650', competition: 'Medium', intent: 'Commercial', cpc: '$1.55', difficulty: 48 },
+      { keyword: `professional ${baseKeyword} services`, volume: '680', competition: 'Medium', intent: 'Commercial', cpc: '$2.25', difficulty: 52 },
+      { keyword: `${baseKeyword} deals and discounts`, volume: '290', competition: 'Low', intent: 'Commercial', cpc: '$1.15', difficulty: 28 },
+      { keyword: `premium ${baseKeyword} brands`, volume: '340', competition: 'High', intent: 'Commercial', cpc: '$3.45', difficulty: 72 },
+      { keyword: `${baseKeyword} price comparison`, volume: '520', competition: 'Medium', intent: 'Commercial', cpc: '$1.85', difficulty: 44 },
 
       // Local Intent Keywords (7 keywords)
-      { keyword: `${baseKeyword} near me`, volume: '890', competition: 'Medium', intent: 'Local' },
-      { keyword: `best ${baseKeyword} in ${location}`, volume: '650', competition: 'Medium', intent: 'Local' },
-      { keyword: `${baseKeyword} ${location} reviews`, volume: '240', competition: 'Low', intent: 'Local' },
-      { keyword: `${baseKeyword} shop ${location}`, volume: '180', competition: 'Low', intent: 'Local' },
-      { keyword: `${baseKeyword} delivery ${location}`, volume: '320', competition: 'Medium', intent: 'Local' },
-      { keyword: `${baseKeyword} store near ${location}`, volume: '210', competition: 'Low', intent: 'Local' },
-      { keyword: `local ${baseKeyword} experts ${location}`, volume: '150', competition: 'Low', intent: 'Local' }
+      { keyword: `${baseKeyword} near me`, volume: '890', competition: 'Medium', intent: 'Local', cpc: '$1.65', difficulty: 38 },
+      { keyword: `best ${baseKeyword} in ${location}`, volume: '650', competition: 'Medium', intent: 'Local', cpc: '$1.45', difficulty: 41 },
+      { keyword: `${baseKeyword} ${location} reviews`, volume: '240', competition: 'Low', intent: 'Local', cpc: '$0.95', difficulty: 24 },
+      { keyword: `${baseKeyword} shop ${location}`, volume: '180', competition: 'Low', intent: 'Local', cpc: '$1.25', difficulty: 22 },
+      { keyword: `${baseKeyword} delivery ${location}`, volume: '320', competition: 'Medium', intent: 'Local', cpc: '$1.35', difficulty: 36 },
+      { keyword: `${baseKeyword} store near ${location}`, volume: '210', competition: 'Low', intent: 'Local', cpc: '$1.15', difficulty: 26 },
+      { keyword: `local ${baseKeyword} experts ${location}`, volume: '150', competition: 'Low', intent: 'Local', cpc: '$1.85', difficulty: 18 }
     ]
 
     setResults(demoKeywords)
+    
+    // Increment usage count and save to session storage
+    const newUsageCount = usageCount + 1
+    setUsageCount(newUsageCount)
+    sessionStorage.setItem('longTailKeywordUsage', newUsageCount.toString())
+    
     setLoading(false)
   }, 2000)
 }
@@ -263,13 +292,36 @@ const generateKeywords = () => {
       
 
       {/* Tool Section */}
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section className="py-8 sm:py-12">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Keyword Generator</h2>
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Keyword Generator</h2>
+                
+                {/* Usage Counter Display */}
+                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-blue-600 mr-2">📊</span>
+                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-700">
+                        {usageLimit - usageCount} / {usageLimit}
+                      </div>
+                      <div className="text-xs text-blue-600">generations remaining</div>
+                    </div>
+                  </div>
+                  {usageCount >= usageLimit && (
+                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
+                      <p className="text-orange-800 text-xs font-medium">
+                        ⚠️ Session limit reached. Refresh page to continue.
+                      </p>
+                    </div>
+                  )}
+                </div>
                 
                 <div className="space-y-6">
                   {/* Seed Keyword */}
@@ -394,7 +446,7 @@ const generateKeywords = () => {
               </div>
 
               {/* Results Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Generated Keywords</h2>
                 
                 {results.length === 0 ? (

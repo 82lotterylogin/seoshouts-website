@@ -1,11 +1,17 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 interface KeywordResult {
   keyword: string
   difficulty: number
   difficultyLabel: string
+  searchVolume: number
+  competition: string
+  cpc: number
+  intent: string
+  recommendations: string[]
 }
 
 const countries = [
@@ -60,7 +66,7 @@ const countries = [
 ]
 
 export default function KeywordDifficultyChecker() {
-  // Set page title and meta tags
+  // Set page title and meta tags + load usage count
   useEffect(() => {
     document.title = 'Free Keyword Difficulty Checker Tool | SEO Shouts'
     
@@ -80,7 +86,19 @@ export default function KeywordDifficultyChecker() {
     }
     metaKeywords.setAttribute('content', 'keyword difficulty checker, keyword competition analysis, SEO difficulty tool, keyword ranking difficulty')
     
+    // Load usage count from session storage
+    const savedUsageCount = sessionStorage.getItem('keywordDifficultyUsage')
+    if (savedUsageCount) {
+      setUsageCount(parseInt(savedUsageCount))
+    }
   }, [])
+
+  // Handle reCAPTCHA verification
+  const handleCaptchaChange = (value: string | null) => {
+    console.log('reCAPTCHA value:', value)
+    setCaptchaValue(value)
+    setIsVerified(!!value)
+  }
 
   const [form, setForm] = useState({
     keywords: '',
@@ -93,28 +111,60 @@ export default function KeywordDifficultyChecker() {
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
 
-  // Calculate keyword difficulty
+  // Usage tracking
+  const [usageCount, setUsageCount] = useState(0)
+  const [usageLimit] = useState(8)
+  
+  // CAPTCHA states
+  const [isVerified, setIsVerified] = useState(false)
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null)
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  // Enhanced features
+  const [selectedKeyword, setSelectedKeyword] = useState<KeywordResult | null>(null)
+  const [sortBy, setSortBy] = useState<'keyword' | 'difficulty' | 'volume'>('difficulty')
+
+  // Calculate keyword difficulty with enhanced metrics
   const calculateDifficulty = (keyword: string): KeywordResult => {
     // Simulate realistic difficulty calculation
     const baseScore = Math.floor(Math.random() * 100) + 1
     
     // Add complexity based on keyword characteristics
     let difficulty = baseScore
+    const wordCount = keyword.split(' ').length
+    const keywordLower = keyword.toLowerCase()
     
     // Brand keywords get higher difficulty
-    const brandTerms = ['google', 'facebook', 'amazon', 'apple', 'microsoft', 'netflix', 'youtube']
-    if (brandTerms.some(brand => keyword.toLowerCase().includes(brand))) {
-      difficulty = Math.min(100, difficulty + 20)
+    const brandTerms = ['google', 'facebook', 'amazon', 'apple', 'microsoft', 'netflix', 'youtube', 'samsung', 'nike', 'coca cola']
+    if (brandTerms.some(brand => keywordLower.includes(brand))) {
+      difficulty = Math.min(100, difficulty + 25)
+    }
+    
+    // Commercial intent keywords are harder
+    const commercialTerms = ['buy', 'purchase', 'price', 'cost', 'cheap', 'best', 'review', 'vs', 'compare']
+    if (commercialTerms.some(term => keywordLower.includes(term))) {
+      difficulty = Math.min(100, difficulty + 10)
     }
     
     // Short keywords are typically harder
-    if (keyword.split(' ').length === 1) {
-      difficulty = Math.min(100, difficulty + 15)
+    if (wordCount === 1) {
+      difficulty = Math.min(100, difficulty + 20)
+    } else if (wordCount === 2) {
+      difficulty = Math.min(100, difficulty + 10)
     }
     
     // Long tail keywords are easier
-    if (keyword.split(' ').length >= 4) {
-      difficulty = Math.max(1, difficulty - 20)
+    if (wordCount >= 4) {
+      difficulty = Math.max(1, difficulty - 15)
+    }
+    if (wordCount >= 6) {
+      difficulty = Math.max(1, difficulty - 25)
+    }
+
+    // Question keywords are often easier
+    const questionWords = ['how', 'what', 'why', 'when', 'where', 'who']
+    if (questionWords.some(q => keywordLower.startsWith(q))) {
+      difficulty = Math.max(1, difficulty - 10)
     }
 
     // Ensure within range
@@ -127,15 +177,74 @@ export default function KeywordDifficultyChecker() {
       return 'Very High'
     }
 
+    // Generate search volume (simulate realistic data)
+    let searchVolume = Math.floor(Math.random() * 50000) + 100
+    if (wordCount === 1) searchVolume *= 2 // Single words often have higher volume
+    if (brandTerms.some(brand => keywordLower.includes(brand))) searchVolume *= 3
+    if (wordCount >= 4) searchVolume = Math.max(100, searchVolume * 0.3) // Long tail lower volume
+
+    // Generate CPC
+    const baseCPC = Math.random() * 5 + 0.5
+    let cpc = baseCPC
+    if (commercialTerms.some(term => keywordLower.includes(term))) cpc *= 2
+    cpc = Math.round(cpc * 100) / 100
+
+    // Determine competition level
+    const competition = difficulty <= 30 ? 'Low' : difficulty <= 60 ? 'Medium' : 'High'
+
+    // Determine search intent
+    let intent = 'Informational'
+    if (commercialTerms.some(term => keywordLower.includes(term))) intent = 'Commercial'
+    if (keywordLower.includes('buy') || keywordLower.includes('purchase')) intent = 'Transactional'
+    if (keywordLower.includes('near me') || keywordLower.includes('location')) intent = 'Local'
+
+    // Generate recommendations
+    const recommendations: string[] = []
+    if (difficulty <= 30) {
+      recommendations.push('Great opportunity! This keyword has low competition.')
+      recommendations.push('Focus on creating high-quality, comprehensive content.')
+    } else if (difficulty <= 50) {
+      recommendations.push('Achievable with good content and some link building.')
+      recommendations.push('Consider targeting related long-tail variations.')
+    } else if (difficulty <= 70) {
+      recommendations.push('Challenging but possible with strong domain authority.')
+      recommendations.push('Build topic authority with supporting content first.')
+    } else {
+      recommendations.push('Very competitive - consider easier variations first.')
+      recommendations.push('Focus on long-tail keywords to build authority.')
+    }
+
+    if (wordCount >= 4) {
+      recommendations.push('Long-tail keyword - good for conversions!')
+    }
+    if (intent === 'Commercial') {
+      recommendations.push('Commercial intent - optimize for conversions.')
+    }
+
     return {
       keyword,
       difficulty,
-      difficultyLabel: getDifficultyLabel(difficulty)
+      difficultyLabel: getDifficultyLabel(difficulty),
+      searchVolume: Math.round(searchVolume),
+      competition,
+      cpc,
+      intent,
+      recommendations
     }
   }
 
   // Analyze keywords
   const analyzeKeywords = () => {
+    if (!isVerified) {
+      setError('Please complete the human verification first!')
+      return
+    }
+
+    if (usageCount >= usageLimit) {
+      setError(`You've reached the limit of ${usageLimit} analyses per session. Please refresh the page to continue.`)
+      return
+    }
+
     if (!form.keywords.trim()) {
       setError('Please enter at least one keyword')
       return
@@ -144,6 +253,7 @@ export default function KeywordDifficultyChecker() {
     setError('')
     setLoading(true)
     setResults([])
+    setSelectedKeyword(null)
 
     // Simulate API call
     setTimeout(() => {
@@ -152,9 +262,21 @@ export default function KeywordDifficultyChecker() {
         .map(k => k.trim())
         .filter(Boolean)
 
+      if (keywordList.length > 20) {
+        setError('Please enter maximum 20 keywords per analysis')
+        setLoading(false)
+        return
+      }
+
       const analysisResults = keywordList.map(keyword => calculateDifficulty(keyword))
       
       setResults(analysisResults)
+      
+      // Increment usage count and save to session storage
+      const newUsageCount = usageCount + 1
+      setUsageCount(newUsageCount)
+      sessionStorage.setItem('keywordDifficultyUsage', newUsageCount.toString())
+      
       setLoading(false)
     }, 2500)
   }
@@ -201,7 +323,28 @@ export default function KeywordDifficultyChecker() {
     setResults([])
     setError('')
     setLoading(false)
+    setSelectedKeyword(null)
+    setSortBy('difficulty')
+    setIsVerified(false)
+    setCaptchaValue(null)
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset()
+    }
   }
+
+  // Sort results
+  const sortedResults = [...results].sort((a, b) => {
+    switch (sortBy) {
+      case 'keyword':
+        return a.keyword.localeCompare(b.keyword)
+      case 'difficulty':
+        return b.difficulty - a.difficulty
+      case 'volume':
+        return b.searchVolume - a.searchVolume
+      default:
+        return 0
+    }
+  })
 
   const getDifficultyColor = (difficulty: number) => {
     if (difficulty <= 30) return 'text-green-600 bg-green-100'
@@ -263,13 +406,36 @@ export default function KeywordDifficultyChecker() {
       />
       
       {/* Tool Section */}
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section className="py-8 sm:py-12">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Keyword Difficulty Analysis</h2>
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Keyword Difficulty Analysis</h2>
+                
+                {/* Usage Counter Display */}
+                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-blue-600 mr-2">📊</span>
+                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-700">
+                        {usageLimit - usageCount} / {usageLimit}
+                      </div>
+                      <div className="text-xs text-blue-600">analyses remaining</div>
+                    </div>
+                  </div>
+                  {usageCount >= usageLimit && (
+                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
+                      <p className="text-orange-800 text-xs font-medium">
+                        ⚠️ Session limit reached. Refresh page to continue.
+                      </p>
+                    </div>
+                  )}
+                </div>
                 
                 <div className="space-y-6">
                   {/* Keywords Input */}
@@ -332,6 +498,33 @@ export default function KeywordDifficultyChecker() {
                     </select>
                   </div>
 
+                  {/* Human Verification Section */}
+                  <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
+                    <div className="flex items-center mb-3">
+                      <span className="text-blue-600 mr-2">🛡️</span>
+                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
+                    </div>
+                    <p className="text-sm text-blue-700 mb-4">
+                      Please verify that you're not a robot to analyze keyword difficulty.
+                    </p>
+                    
+                    <div className="mb-4">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                        onChange={handleCaptchaChange}
+                        theme="light"
+                      />
+                    </div>
+
+                    {isVerified && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
+                        <span className="text-green-600 mr-2">✅</span>
+                        <span className="text-sm font-medium text-green-800">Verification successful! You can now analyze keywords.</span>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Error Message */}
                   {error && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-3">
@@ -343,7 +536,7 @@ export default function KeywordDifficultyChecker() {
                   <div className="flex gap-4">
                     <button
                       onClick={analyzeKeywords}
-                      disabled={loading || !form.keywords.trim()}
+                      disabled={loading || !form.keywords.trim() || !isVerified || usageCount >= usageLimit}
                       className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
                     >
                       {loading ? (

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 export default function KeywordDensityAnalyzer() {
-  // Set page title and meta tags
+  // Set page title and meta tags + load usage count
   useEffect(() => {
     document.title = 'Free Keyword Density Analyzer Tool | SEO Shouts'
     
@@ -25,6 +26,11 @@ export default function KeywordDensityAnalyzer() {
     }
     metaKeywords.setAttribute('content', 'keyword density analyzer, keyword density checker, SEO content analysis, keyword optimization, content SEO tool')
     
+    // Load usage count from session storage
+    const savedUsageCount = sessionStorage.getItem('keywordAnalyzerUsage')
+    if (savedUsageCount) {
+      setUsageCount(parseInt(savedUsageCount))
+    }
   }, [])
 
   const [form, setForm] = useState({
@@ -33,6 +39,19 @@ export default function KeywordDensityAnalyzer() {
     isAnalyzing: false,
     results: null as any
   })
+
+  // Usage tracking
+  const [usageCount, setUsageCount] = useState(0)
+  const [usageLimit] = useState(10)
+  
+  // Input mode selection
+  const [inputMode, setInputMode] = useState<'text' | 'url'>('text')
+  const [url, setUrl] = useState('')
+
+  // CAPTCHA states
+  const [isVerified, setIsVerified] = useState(false)
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null)
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const [analysis, setAnalysis] = useState<{
     totalWords: number
@@ -44,6 +63,13 @@ export default function KeywordDensityAnalyzer() {
     readabilityScore: number
   } | null>(null)
 
+  // Handle reCAPTCHA verification
+  const handleCaptchaChange = (value: string | null) => {
+    console.log('reCAPTCHA value:', value)
+    setCaptchaValue(value)
+    setIsVerified(!!value)
+  }
+
   // Clean and process text
   const cleanText = (text: string) => {
     return text
@@ -53,17 +79,70 @@ export default function KeywordDensityAnalyzer() {
       .trim()
   }
 
+  // Fetch content from URL
+  const fetchUrlContent = async (url: string): Promise<string> => {
+    try {
+      const response = await fetch('/api/fetch-url-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      })
+      const data = await response.json()
+      if (data.success) {
+        return data.content
+      } else {
+        throw new Error(data.error || 'Failed to fetch content')
+      }
+    } catch (error) {
+      throw error
+    }
+  }
+
   // Calculate keyword density
-  const analyzeContent = () => {
-    if (!form.content.trim()) {
-      alert('Please enter some content to analyze')
+  const analyzeContent = async () => {
+    if (!isVerified) {
+      alert('Please complete the human verification first!')
       return
+    }
+
+    // Check usage limit
+    if (usageCount >= usageLimit) {
+      alert(`You've reached the limit of ${usageLimit} analyses per session. Please refresh the page to continue.`)
+      return
+    }
+
+    let contentToAnalyze = ''
+    
+    if (inputMode === 'text') {
+      if (!form.content.trim()) {
+        alert('Please enter some content to analyze')
+        return
+      }
+      contentToAnalyze = form.content.trim()
+    } else {
+      if (!url.trim()) {
+        alert('Please enter a URL to analyze')
+        return
+      }
+      try {
+        setForm(prev => ({ ...prev, isAnalyzing: true }))
+        contentToAnalyze = await fetchUrlContent(url.trim())
+        if (!contentToAnalyze.trim()) {
+          alert('No content found at the provided URL')
+          setForm(prev => ({ ...prev, isAnalyzing: false }))
+          return
+        }
+      } catch (error) {
+        alert('Failed to fetch content from URL. Please check the URL and try again.')
+        setForm(prev => ({ ...prev, isAnalyzing: false }))
+        return
+      }
     }
 
     setForm(prev => ({ ...prev, isAnalyzing: true }))
 
     setTimeout(() => {
-      const content = form.content.trim()
+      const content = contentToAnalyze
       const cleanedContent = cleanText(content)
       const words = cleanedContent.split(' ').filter(word => word.length > 0)
       
@@ -144,6 +223,11 @@ export default function KeywordDensityAnalyzer() {
         readabilityScore
       })
 
+      // Increment usage count and save to session storage
+      const newUsageCount = usageCount + 1
+      setUsageCount(newUsageCount)
+      sessionStorage.setItem('keywordAnalyzerUsage', newUsageCount.toString())
+
       setForm(prev => ({ ...prev, isAnalyzing: false }))
     }, 1500)
   }
@@ -155,7 +239,14 @@ export default function KeywordDensityAnalyzer() {
       isAnalyzing: false,
       results: null
     })
+    setUrl('')
+    setInputMode('text')
     setAnalysis(null)
+    setIsVerified(false)
+    setCaptchaValue(null)
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset()
+    }
   }
 
   return (
@@ -272,15 +363,92 @@ export default function KeywordDensityAnalyzer() {
       />
       
       {/* Tool Section */}
-      <section className="py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section className="py-8 sm:py-12">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Content Analysis</h2>
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Content Analysis</h2>
+                
+                {/* Usage Counter Display */}
+                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="text-blue-600 mr-2">📊</span>
+                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-700">
+                        {usageLimit - usageCount} / {usageLimit}
+                      </div>
+                      <div className="text-xs text-blue-600">analyses remaining</div>
+                    </div>
+                  </div>
+                  {usageCount >= usageLimit && (
+                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
+                      <p className="text-orange-800 text-xs font-medium">
+                        ⚠️ Session limit reached. Refresh page to continue.
+                      </p>
+                    </div>
+                  )}
+                </div>
                 
                 <div className="space-y-6">
+                  {/* Input Mode Selection */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Choose Analysis Method *
+                    </label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div
+                        onClick={() => setInputMode('text')}
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                          inputMode === 'text'
+                            ? 'border-primary bg-primary/5'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center mb-2">
+                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                            inputMode === 'text' ? 'border-primary bg-primary' : 'border-gray-300'
+                          }`}>
+                            {inputMode === 'text' && (
+                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                            )}
+                          </div>
+                          <h3 className="font-semibold text-gray-800">📝 Text Content</h3>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-7">
+                          Paste your content directly for analysis
+                        </p>
+                      </div>
+
+                      <div
+                        onClick={() => setInputMode('url')}
+                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
+                          inputMode === 'url'
+                            ? 'border-primary bg-primary/5'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center mb-2">
+                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                            inputMode === 'url' ? 'border-primary bg-primary' : 'border-gray-300'
+                          }`}>
+                            {inputMode === 'url' && (
+                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                            )}
+                          </div>
+                          <h3 className="font-semibold text-gray-800">🌐 Website URL</h3>
+                        </div>
+                        <p className="text-sm text-gray-600 ml-7">
+                          Analyze content from any webpage
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div>
                     <label htmlFor="targetKeyword" className="block text-sm font-semibold text-gray-700 mb-2">
                       Target Keyword (Optional)
@@ -297,10 +465,33 @@ export default function KeywordDensityAnalyzer() {
                     <p className="text-xs text-gray-500 mt-1">Enter your main keyword to check its density</p>
                   </div>
 
-                  <div>
-                    <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Content to Analyze *
-                    </label>
+                  {/* URL Input (for URL mode) */}
+                  {inputMode === 'url' && (
+                    <div>
+                      <label htmlFor="url" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Website URL to Analyze *
+                      </label>
+                      <input
+                        type="url"
+                        id="url"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder="https://example.com/your-page"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+                        disabled={form.isAnalyzing}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Enter the URL of the webpage you want to analyze for keyword density
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Text Content Input (for text mode) */}
+                  {inputMode === 'text' && (
+                    <div>
+                      <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Content to Analyze *
+                      </label>
                     <textarea
                       id="content"
                       value={form.content}
@@ -311,15 +502,43 @@ export default function KeywordDensityAnalyzer() {
                       disabled={form.isAnalyzing}
                       required
                     />
-                    <p className="text-xs text-gray-500 mt-1">
-                      {form.content.length} characters • {form.content.trim().split(/\s+/).filter(word => word.length > 0).length} words
+                      <p className="text-xs text-gray-500 mt-1">
+                        {form.content.length} characters • {form.content.trim().split(/\s+/).filter(word => word.length > 0).length} words
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Human Verification Section */}
+                  <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
+                    <div className="flex items-center mb-3">
+                      <span className="text-blue-600 mr-2">🛡️</span>
+                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
+                    </div>
+                    <p className="text-sm text-blue-700 mb-4">
+                      Please verify that you're not a robot to analyze your content.
                     </p>
+                    
+                    <div className="mb-4">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                        onChange={handleCaptchaChange}
+                        theme="light"
+                      />
+                    </div>
+
+                    {isVerified && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
+                        <span className="text-green-600 mr-2">✅</span>
+                        <span className="text-sm font-medium text-green-800">Verification successful! You can now analyze your content.</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex gap-4">
                     <button
                       onClick={analyzeContent}
-                      disabled={form.isAnalyzing || !form.content.trim()}
+                      disabled={form.isAnalyzing || (inputMode === 'text' && !form.content.trim()) || (inputMode === 'url' && !url.trim()) || !isVerified || usageCount >= usageLimit}
                       className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
                     >
                       {form.isAnalyzing ? (
@@ -348,7 +567,7 @@ export default function KeywordDensityAnalyzer() {
               </div>
 
               {/* Results Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Analysis Results</h2>
                 
                 {!analysis ? (
