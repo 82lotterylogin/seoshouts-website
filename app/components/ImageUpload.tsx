@@ -125,7 +125,7 @@ export default function ImageUpload({ onImageUploaded, currentImage, label = "Im
               📎 Uploaded file: {originalFileName}
             </p>
             <p className="text-xs text-blue-600 mt-1">
-              Storage path: {imageUrl}
+              Storage: {imageUrl.startsWith('data:') ? 'Inline data URL (base64)' : (imageUrl.length > 80 ? imageUrl.slice(0, 77) + '...' : imageUrl)}
             </p>
           </div>
         )}

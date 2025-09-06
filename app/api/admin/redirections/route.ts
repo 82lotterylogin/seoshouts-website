@@ -3,9 +3,11 @@ export const runtime = 'nodejs';
 import { getDatabase } from '@/app/lib/database';
 import { CreateRedirection } from '@/app/lib/types';
 import { updateRedirectionsCache } from '@/app/lib/redirect-cache';
+import { requireAuth } from '@/app/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
+    await requireAuth();
     const db = getDatabase();
     const { searchParams } = new URL(request.url);
     
@@ -42,6 +44,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
     const db = getDatabase();
     const body: CreateRedirection = await request.json();
     

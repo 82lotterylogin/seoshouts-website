@@ -9,7 +9,7 @@ import { Color } from '@tiptap/extension-color';
 import Underline from '@tiptap/extension-underline';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Highlight } from '@tiptap/extension-highlight';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MediaLibraryModal from './MediaLibraryModal';
 
 interface TipTapEditorProps {
@@ -21,6 +21,13 @@ interface TipTapEditorProps {
 export default function TipTapEditor({ value, onChange, placeholder }: TipTapEditorProps) {
   const [showMediaLibrary, setShowMediaLibrary] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [isEditorReady, setIsEditorReady] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Handle hydration
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -45,10 +52,19 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
         alignments: ['left', 'center', 'right', 'justify'],
       }),
     ],
-    content: value,
+    content: value || '',
     onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      onChange(html);
+      try {
+        if (editor && typeof editor.getHTML === 'function') {
+          const html = editor.getHTML();
+          onChange(html);
+        }
+      } catch (error) {
+        console.error('TipTap editor update error:', error);
+      }
+    },
+    onCreate: ({ editor }) => {
+      setIsEditorReady(true);
     },
     editorProps: {
       attributes: {
@@ -87,10 +103,13 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
   ];
 
 
-  if (!editor) {
+  if (!isMounted || !editor) {
     return (
       <div className="border border-gray-300 rounded-md p-4 min-h-[400px] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="flex flex-col items-center space-y-2">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p className="text-sm text-gray-500">Loading editor...</p>
+        </div>
       </div>
     );
   }

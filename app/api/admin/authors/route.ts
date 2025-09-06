@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/app/lib/database';
 import { CreateAuthor } from '@/app/lib/types';
+import { requireAuth } from '@/app/lib/auth';
 
 export const runtime = 'nodejs';
 
 export async function GET() {
   try {
+    await requireAuth();
     const db = getDatabase();
     
     const authors = db.prepare(`
@@ -31,6 +33,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
     const db = getDatabase();
     const body: CreateAuthor = await request.json();
     

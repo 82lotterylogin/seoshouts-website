@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getDatabase } from '@/app/lib/database';
+import { requireAuth } from '@/app/lib/auth';
 
 export const runtime = 'nodejs';
 
 export async function GET() {
   try {
+    await requireAuth();
     const db = getDatabase();
     
     // Get all stats in parallel

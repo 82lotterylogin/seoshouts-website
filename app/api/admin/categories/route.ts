@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/app/lib/database';
 import { CreateCategory, Category } from '@/app/lib/types';
+import { requireAuth } from '@/app/lib/auth';
 
 export const runtime = 'nodejs';
 
@@ -13,6 +14,7 @@ function generateSlug(name: string): string {
 
 export async function GET() {
   try {
+    await requireAuth();
     const db = getDatabase();
     
     const categories = db.prepare(`
@@ -37,6 +39,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
     const db = getDatabase();
     const body: CreateCategory = await request.json();
     

@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/app/lib/database';
 import { saveUploadedFile, deleteUploadedFile } from '@/app/lib/upload';
+import { requireAuth } from '@/app/lib/auth';
 
 export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {
+    await requireAuth();
     const db = getDatabase();
     const { searchParams } = new URL(request.url);
     
@@ -42,6 +44,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await requireAuth();
     const db = getDatabase();
     const formData = await request.formData();
     const file = formData.get('file') as File;
