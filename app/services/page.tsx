@@ -60,7 +60,7 @@ const services = [
       'Google Maps ranking optimization',
       'Multi-location SEO (if applicable)'
     ],
-    href: '/services/local-seo',
+    href: '/services/local-seo/',
     icon: '📍',
     gradient: 'from-green-500 to-emerald-600',
     popular: false
@@ -80,7 +80,7 @@ const services = [
       'Conversion rate optimization',
       'Shopping feed optimization'
     ],
-    href: '/services/ecommerce-seo',
+    href: '/services/ecommerce-seo/',
     icon: '🛒',
     gradient: 'from-blue-500 to-purple-600',
     popular: true
@@ -100,7 +100,7 @@ const services = [
       'Analytics & tracking setup',
       'Conversion optimization'
     ],
-    href: '/services/seo-website-development',
+    href: '/services/seo-website-development/',
     icon: '💻',
     gradient: 'from-purple-500 to-pink-600',
     popular: false
@@ -120,7 +120,7 @@ const services = [
       'Internal linking review',
       'Actionable recommendations'
     ],
-    href: '/services/technical-seo-audit',
+    href: '/services/technical-seo-audit/',
     icon: '🔧',
     gradient: 'from-orange-500 to-red-600',
     popular: false
@@ -140,7 +140,7 @@ const services = [
       'Link quality assessment',
       'Monthly reporting & analysis'
     ],
-    href: '/services/link-building',
+    href: '/services/link-building/',
     icon: '🔗',
     gradient: 'from-teal-500 to-cyan-600',
     popular: false
@@ -160,7 +160,7 @@ const services = [
       'Monthly strategy calls',
       'Ongoing support & guidance'
     ],
-    href: '/services/seo-consulting',
+    href: '/services/seo-consulting/',
     icon: '💡',
     gradient: 'from-indigo-500 to-blue-600',
     popular: false
