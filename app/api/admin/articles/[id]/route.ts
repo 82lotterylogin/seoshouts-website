@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/app/lib/database';
+import { requireAuth } from '@/app/lib/auth';
 import { UpdateArticle, Article } from '@/app/lib/types';
 
 export const runtime = 'nodejs';
@@ -9,6 +10,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const db = getDatabase();
     
@@ -88,6 +90,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const db = getDatabase();
     const body: Partial<UpdateArticle> = await request.json();
@@ -253,6 +256,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const db = getDatabase();
     

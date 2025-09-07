@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import TipTapEditor from '@/app/components/TipTapEditor';
+import BasicHtmlEditor from '@/app/components/BasicHtmlEditor';
 import ImageUpload from '@/app/components/ImageUpload';
 
 interface Author {
@@ -237,7 +237,7 @@ export default function NewArticle() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Content *
                 </label>
-                <TipTapEditor
+                <BasicHtmlEditor
                   value={formData.content}
                   onChange={(value) => handleInputChange('content', value)}
                   placeholder="Write your article content here..."

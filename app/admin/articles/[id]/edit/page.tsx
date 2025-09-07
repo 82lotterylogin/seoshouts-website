@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import TipTapEditor from '@/app/components/TipTapEditor';
+import BasicHtmlEditor from '@/app/components/BasicHtmlEditor';
 import ImageUpload from '@/app/components/ImageUpload';
 
 interface Author {
@@ -35,8 +35,8 @@ interface Article {
 
 export default function EditArticle() {
   const router = useRouter();
-  const params = useParams();
-  const articleId = params.id as string;
+  const params = useParams() as { id?: string | string[] };
+  const articleId = Array.isArray(params?.id) ? params.id[0] : (params?.id || '');
   
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -353,7 +353,7 @@ export default function EditArticle() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Content *
                 </label>
-                <TipTapEditor
+                <BasicHtmlEditor
                   value={formData.content}
                   onChange={(value) => handleInputChange('content', value)}
                   placeholder="Write your article content here..."
