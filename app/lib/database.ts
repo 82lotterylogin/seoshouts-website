@@ -4,54 +4,19 @@ import { initializeAdminUser } from './auth';
 
 let db: Database.Database;
 
-// Check if we should use a cloud database URL
-const DATABASE_URL = process.env.DATABASE_URL;
-
 export function getDatabase() {
   if (!db) {
-    try {
-      if (DATABASE_URL) {
-        // Use cloud database (Turso/LibSQL)
-        console.log('🌐 Using cloud database:', DATABASE_URL.substring(0, 20) + '...');
-        db = new Database(DATABASE_URL);
-      } else {
-        // Use local SQLite file
-        console.log('💾 Using local SQLite database');
-        const dbPath = path.join(process.cwd(), 'blog.db');
-        db = new Database(dbPath);
-      }
-      
-      // Enable foreign keys
-      db.pragma('foreign_keys = ON');
-      
-      // Initialize tables
-      initializeTables();
-      
-      // Initialize admin user
-      initializeAdminUser().catch(console.error);
-      
-      console.log('✅ Database initialized successfully');
-    } catch (error) {
-      console.error('❌ Database initialization failed:', error);
-      
-      // If cloud database fails, fallback to readonly local
-      if (DATABASE_URL) {
-        console.log('🔄 Cloud database failed, falling back to local SQLite...');
-        try {
-          const dbPath = path.join(process.cwd(), 'blog.db');
-          db = new Database(dbPath);
-          db.pragma('foreign_keys = ON');
-          initializeTables();
-          initializeAdminUser().catch(console.error);
-          console.log('✅ Fallback to local database successful');
-        } catch (fallbackError) {
-          console.error('❌ Fallback failed:', fallbackError);
-          throw fallbackError;
-        }
-      } else {
-        throw error;
-      }
-    }
+    const dbPath = path.join(process.cwd(), 'blog.db');
+    db = new Database(dbPath);
+    
+    // Enable foreign keys
+    db.pragma('foreign_keys = ON');
+    
+    // Initialize tables
+    initializeTables();
+    
+    // Initialize admin user
+    initializeAdminUser().catch(console.error);
   }
   return db;
 }
