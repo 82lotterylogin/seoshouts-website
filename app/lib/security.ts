@@ -61,11 +61,11 @@ export function getSecurityHeaders(): Record<string, string> {
     // Content Security Policy
     'Content-Security-Policy': [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google.com *.gstatic.com *.googleapis.com",
-      "style-src 'self' 'unsafe-inline' *.googleapis.com *.gstatic.com",
-      "img-src 'self' data: blob: *.google.com *.gstatic.com *.storyblok.com",
-      "font-src 'self' *.googleapis.com *.gstatic.com",
-      "connect-src 'self' *.google.com *.googleapis.com *.storyblok.com *.sendinblue.com *.brevo.com api.brevo.com",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google.com *.gstatic.com *.googleapis.com cdn.tiny.cloud *.tiny.cloud",
+      "style-src 'self' 'unsafe-inline' *.googleapis.com *.gstatic.com cdn.tiny.cloud *.tiny.cloud",
+      "img-src 'self' data: blob: *.google.com *.gstatic.com *.storyblok.com cdn.tiny.cloud *.tiny.cloud",
+      "font-src 'self' *.googleapis.com *.gstatic.com cdn.tiny.cloud *.tiny.cloud",
+      "connect-src 'self' *.google.com *.googleapis.com *.storyblok.com *.sendinblue.com *.brevo.com api.brevo.com cdn.tiny.cloud *.tiny.cloud",
       "frame-src 'self' *.google.com",
       "object-src 'none'",
       "base-uri 'self'",

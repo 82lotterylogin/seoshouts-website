@@ -4,11 +4,12 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import { TextStyle } from '@tiptap/extension-text-style';
-import { Color } from '@tiptap/extension-color';
-import Underline from '@tiptap/extension-underline';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { Highlight } from '@tiptap/extension-highlight';
+// Reduced extension set for maximum stability
+// import TextStyle from '@tiptap/extension-text-style';
+// import Color from '@tiptap/extension-color';
+// import Underline from '@tiptap/extension-underline';
+// import TextAlign from '@tiptap/extension-text-align';
+// import Highlight from '@tiptap/extension-highlight';
 import { useState, useEffect } from 'react';
 import MediaLibraryModal from './MediaLibraryModal';
 
@@ -20,7 +21,7 @@ interface TipTapEditorProps {
 
 export default function TipTapEditor({ value, onChange, placeholder }: TipTapEditorProps) {
   const [showMediaLibrary, setShowMediaLibrary] = useState(false);
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  // const [showColorPicker, setShowColorPicker] = useState(false);
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -32,7 +33,6 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Underline,
       Image.configure({
         HTMLAttributes: {
           class: 'max-w-full h-auto rounded-lg',
@@ -43,13 +43,6 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
         HTMLAttributes: {
           class: 'text-blue-600 underline hover:text-blue-800',
         },
-      }),
-      TextStyle,
-      Color.configure({ types: ['textStyle'] }),
-      Highlight.configure({ multicolor: true }),
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-        alignments: ['left', 'center', 'right', 'justify'],
       }),
     ],
     content: value || '',
@@ -82,6 +75,7 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
   };
 
   const setLink = () => {
+    if (typeof window === 'undefined') return;
     const previousUrl = editor?.getAttributes('link').href;
     const url = window.prompt('URL', previousUrl);
 
@@ -141,15 +135,7 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
             I
           </button>
 
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`px-2 py-1 rounded text-sm underline ${
-              editor.isActive('underline') ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            U
-          </button>
+          {/* Underline disabled for stability */}
 
           <button
             type="button"
@@ -164,54 +150,9 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
 
           <div className="w-px h-6 bg-gray-300"></div>
 
-          {/* Color Picker */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowColorPicker(!showColorPicker)}
-              className="px-2 py-1 text-sm border border-gray-300 rounded bg-white hover:bg-gray-100"
-            >
-              🎨
-            </button>
-            {showColorPicker && (
-              <div className="absolute top-8 left-0 z-10 bg-white border border-gray-300 rounded shadow-lg p-3">
-                <div className="grid grid-cols-10 gap-1 mb-2">
-                  {colors.map((color) => (
-                    <button
-                      key={color}
-                      type="button"
-                      onClick={() => {
-                        editor.chain().focus().setColor(color).run();
-                        setShowColorPicker(false);
-                      }}
-                      className="w-5 h-5 rounded border border-gray-300"
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    editor.chain().focus().unsetColor().run();
-                    setShowColorPicker(false);
-                  }}
-                  className="text-xs bg-gray-100 px-2 py-1 rounded hover:bg-gray-200"
-                >
-                  Remove Color
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Color Picker (disabled for stability) */}
 
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-            className={`px-2 py-1 rounded text-sm ${
-              editor.isActive('highlight') ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            ✏️
-          </button>
+          {/* Highlight disabled for stability */}
 
           <div className="w-px h-6 bg-gray-300"></div>
 
@@ -248,46 +189,7 @@ export default function TipTapEditor({ value, onChange, placeholder }: TipTapEdi
 
           <div className="w-px h-6 bg-gray-300"></div>
 
-          {/* Text Alignment */}
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('left').run()}
-            className={`px-2 py-1 rounded text-sm ${
-              editor.isActive({ textAlign: 'left' }) ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            ⬅️
-          </button>
-
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('center').run()}
-            className={`px-2 py-1 rounded text-sm ${
-              editor.isActive({ textAlign: 'center' }) ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            ↔️
-          </button>
-
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('right').run()}
-            className={`px-2 py-1 rounded text-sm ${
-              editor.isActive({ textAlign: 'right' }) ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            ➡️
-          </button>
-
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-            className={`px-2 py-1 rounded text-sm ${
-              editor.isActive({ textAlign: 'justify' }) ? 'bg-blue-100 text-blue-700' : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            ↕️
-          </button>
+          {/* Text Alignment disabled for stability */}
 
           <div className="w-px h-6 bg-gray-300"></div>
 

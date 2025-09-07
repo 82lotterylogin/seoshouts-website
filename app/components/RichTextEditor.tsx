@@ -1,13 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import dynamic from 'next/dynamic';
-
-const MDEditor = dynamic(
-  () => import('@uiw/react-md-editor').then((mod) => mod.default),
-  { ssr: false }
-);
-
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
@@ -16,25 +8,17 @@ interface RichTextEditorProps {
 
 export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
   return (
-    <div data-color-mode="light">
-      <MDEditor
+    <div>
+      <textarea
         value={value}
-        onChange={(val) => onChange(val || '')}
-        preview="edit"
-        hideToolbar={false}
-        textareaProps={{
-          placeholder: placeholder || 'Write your content here...',
-          style: {
-            fontSize: 14,
-            lineHeight: 1.5,
-            fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-          }
-        }}
-        height={400}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder || 'Write your content here...'}
+        rows={18}
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm leading-6"
+        spellCheck={false}
       />
       <div className="mt-2 text-sm text-gray-500">
-        <p>Supports Markdown syntax. Use the preview tab to see formatted output.</p>
-        <p>HTML tags are supported for advanced formatting.</p>
+        <p>Basic editor fallback. Supports plain text and HTML.</p>
       </div>
     </div>
   );
