@@ -77,6 +77,12 @@ export async function GET(
     
     return NextResponse.json({ success: true, data: articleResponse });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error fetching article:', error);
     return NextResponse.json({ 
       success: false, 
@@ -243,6 +249,12 @@ export async function PUT(
       message: 'Article updated successfully'
     });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error updating article:', error);
     return NextResponse.json({ 
       success: false, 
@@ -277,6 +289,12 @@ export async function DELETE(
       message: 'Article deleted successfully'
     });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error deleting article:', error);
     return NextResponse.json({ 
       success: false, 

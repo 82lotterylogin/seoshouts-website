@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 import { getDatabase } from '@/app/lib/database';
+import { requireAuth } from '@/app/lib/auth';
 import { UpdateAuthor } from '@/app/lib/types';
 
 export async function GET(
@@ -8,6 +9,7 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const db = getDatabase();
     
@@ -31,6 +33,12 @@ export async function GET(
     
     return NextResponse.json({ success: true, data: author });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error fetching author:', error);
     return NextResponse.json({ 
       success: false, 
@@ -44,6 +52,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const db = getDatabase();
     const body = await request.json();
@@ -206,6 +215,12 @@ export async function PUT(
       throw new Error(`Failed to fetch updated author: ${fetchError}`);
     }
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error updating author:', error);
     return NextResponse.json({ 
       success: false, 
@@ -219,6 +234,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAuth();
     const { id } = await params;
     const db = getDatabase();
     
@@ -248,6 +264,12 @@ export async function DELETE(
       message: 'Author deleted successfully'
     });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error deleting author:', error);
     return NextResponse.json({ 
       success: false, 
