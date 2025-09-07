@@ -238,8 +238,12 @@ export async function DELETE(
     const { id } = await params;
     const db = getDatabase();
     
+    console.log(`DELETE author attempt - ID: ${id}, Timestamp: ${new Date().toISOString()}`);
+    
     // Check if author exists
     const author = db.prepare('SELECT id FROM authors WHERE id = ?').get(id);
+    console.log(`Author existence check - ID: ${id}, Found: ${!!author}`);
+    
     if (!author) {
       return NextResponse.json({ 
         success: false, 
@@ -249,7 +253,10 @@ export async function DELETE(
     
     // Check if author has articles
     const articleCount = db.prepare('SELECT COUNT(*) as count FROM articles WHERE author_id = ?').get(id) as { count: number };
+    console.log(`Article count check - Author ID: ${id}, Count: ${articleCount.count}`);
+    
     if (articleCount.count > 0) {
+      console.log(`DELETE blocked - Author ${id} has ${articleCount.count} articles`);
       return NextResponse.json({ 
         success: false, 
         error: `Cannot delete author. They have ${articleCount.count} article(s) assigned to them.` 
@@ -257,7 +264,9 @@ export async function DELETE(
     }
     
     // Delete author
-    db.prepare('DELETE FROM authors WHERE id = ?').run(id);
+    console.log(`Attempting to delete author ${id}`);
+    const deleteResult = db.prepare('DELETE FROM authors WHERE id = ?').run(id);
+    console.log(`Delete result:`, deleteResult);
     
     return NextResponse.json({ 
       success: true, 
@@ -270,10 +279,15 @@ export async function DELETE(
         error: 'Authentication required' 
       }, { status: 401 });
     }
-    console.error('Error deleting author:', error);
+    console.error('Error deleting author - Full error details:', {
+      error: error instanceof Error ? error.message : error,
+      stack: error instanceof Error ? error.stack : undefined,
+      authorId: id,
+      timestamp: new Date().toISOString()
+    });
     return NextResponse.json({ 
       success: false, 
-      error: 'Failed to delete author' 
+      error: `Failed to delete author: ${error instanceof Error ? error.message : 'Unknown error'}` 
     }, { status: 500 });
   }
 }

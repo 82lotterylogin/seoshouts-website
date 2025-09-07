@@ -23,6 +23,12 @@ export async function GET() {
     
     return NextResponse.json({ success: true, data: authors });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error fetching authors:', error);
     return NextResponse.json({ 
       success: false, 
@@ -149,6 +155,12 @@ export async function POST(request: NextRequest) {
       message: 'Author created successfully'
     }, { status: 201 });
   } catch (error) {
+    if (error instanceof Error && error.message === 'Authentication required') {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Authentication required' 
+      }, { status: 401 });
+    }
     console.error('Error creating author:', error);
     return NextResponse.json({ 
       success: false, 
