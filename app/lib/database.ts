@@ -6,37 +6,17 @@ let db: Database.Database;
 
 export function getDatabase() {
   if (!db) {
-    // In production/serverless environments, use in-memory database if file system is read-only
-    // In development, use file-based database
-    let dbPath: string;
+    const dbPath = path.join(process.cwd(), 'blog.db');
+    db = new Database(dbPath);
     
-    if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
-      // Use in-memory database for production to avoid read-only filesystem issues
-      console.log('🗄️ Using in-memory SQLite database for production');
-      dbPath = ':memory:';
-    } else {
-      // Use file-based database for development
-      console.log('🗄️ Using file-based SQLite database for development');
-      dbPath = path.join(process.cwd(), 'blog.db');
-    }
+    // Enable foreign keys
+    db.pragma('foreign_keys = ON');
     
-    try {
-      db = new Database(dbPath);
-      
-      // Enable foreign keys
-      db.pragma('foreign_keys = ON');
-      
-      // Initialize tables
-      initializeTables();
-      
-      // Initialize admin user
-      initializeAdminUser().catch(console.error);
-      
-      console.log('✅ Database initialized successfully');
-    } catch (error) {
-      console.error('❌ Database initialization failed:', error);
-      throw error;
-    }
+    // Initialize tables
+    initializeTables();
+    
+    // Initialize admin user
+    initializeAdminUser().catch(console.error);
   }
   return db;
 }
