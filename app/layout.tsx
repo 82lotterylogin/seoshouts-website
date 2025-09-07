@@ -392,40 +392,49 @@ export default function RootLayout({
                       <div className="text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wide">Free SEO Tools</div>
                       
                       <div className="grid grid-cols-2 gap-6">
-                        {/* Keyword Research Tools */}
+                        {/* Content & AI Tools */}
                         <div>
                           <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
                             <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">🔍</span>
+                              <span className="text-primary text-sm">📄</span>
                             </span>
-                            Keyword Research
+                            Content & AI Tools
                           </h4>
                           <div className="space-y-2">
-                            <a href="/tools/keyword-density-analyzer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                            <a href="/tools/word-counter/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">📊</span>
+                                <span className="text-gray-600 text-xs">🔢</span>
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Keyword Density Analyzer</div>
-                                <div className="text-xs text-gray-500">Analyze keyword density & optimization</div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Word Counter</div>
+                                <div className="text-xs text-gray-500">Count words, characters & paragraphs</div>
                               </div>
                             </a>
-                            <a href="/tools/keyword-difficulty-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                            <a href="/tools/ai-copywriter/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🎯</span>
+                                <span className="text-gray-600 text-xs">✍️</span>
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Keyword Difficulty Checker</div>
-                                <div className="text-xs text-gray-500">Check keyword competition scores</div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">AI Copywriter</div>
+                                <div className="text-xs text-gray-500">Generate compelling copy with AI</div>
                               </div>
                             </a>
-                            <a href="/tools/long-tail-keyword-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                            <a href="/tools/blog-ideas-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🏷️</span>
+                                <span className="text-gray-600 text-xs">🤖</span>
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Long Tail Generator</div>
-                                <div className="text-xs text-gray-500">Generate long-tail keyword ideas</div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">AI Blog Ideas Generator</div>
+                                <div className="text-xs text-gray-500">Generate blog topics with AI</div>
+                              </div>
+                            </a>
+                            <a href="/tools/seo-meta-writer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">📝</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">SEO Meta Writer</div>
+                                <div className="text-xs text-gray-500">AI-powered meta content writer</div>
                               </div>
                             </a>
                           </div>
@@ -464,6 +473,15 @@ export default function RootLayout({
                               <div>
                                 <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">XML Sitemap Generator</div>
                                 <div className="text-xs text-gray-500">Create XML sitemaps for search engines</div>
+                              </div>
+                            </a>
+                            <a href="/tools/schema-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">🏗️</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Schema Generator</div>
+                                <div className="text-xs text-gray-500">Generate JSON-LD schema markup</div>
                               </div>
                             </a>
                           </div>
@@ -540,7 +558,7 @@ export default function RootLayout({
                       {/* View All Tools CTA */}
                       <div className="pt-4 mt-4 border-t border-gray-100">
                         <a href="/tools/" className="flex items-center justify-center w-full p-3 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All 11 Free Tools
+                          View All 13 Free Tools
                           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -731,6 +749,10 @@ export default function RootLayout({
                   <li><a href="/tools/html-editor/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     HTML Editor
+                  </a></li>
+                  <li><a href="/tools/schema-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    Schema Generator
                   </a></li>
                   <li><a href="/tools/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>

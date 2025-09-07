@@ -620,9 +620,9 @@ export default async function HomePage() {
               <a 
                 href="/tools/"
                 className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center mx-auto max-w-fit"
-                aria-label="View all 11+ free SEO tools"
+                aria-label="View all 13+ free SEO tools"
               >
-                View All 11+ Free Tools
+                View All 13+ Free Tools
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
