@@ -486,49 +486,40 @@ export default function RootLayout({
                             </a>
                           </div>
                         </div>
-                        {/* Content & AI Tools */}
+                        {/* Keyword Research Tools */}
                         <div>
                           <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
                             <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">📄</span>
+                              <span className="text-primary text-sm">🔍</span>
                             </span>
-                            Content & AI Tools
+                            Keyword Research
                           </h4>
                           <div className="space-y-2">
-                            <a href="/tools/word-counter/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                            <a href="/tools/keyword-density-analyzer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🔢</span>
+                                <span className="text-gray-600 text-xs">📊</span>
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Word Counter</div>
-                                <div className="text-xs text-gray-500">Count words, characters & paragraphs</div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Keyword Density Analyzer</div>
+                                <div className="text-xs text-gray-500">Analyze keyword density in content</div>
                               </div>
                             </a>
-                            <a href="/tools/ai-copywriter/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                            <a href="/tools/keyword-difficulty-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">✍️</span>
+                                <span className="text-gray-600 text-xs">🎯</span>
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">AI Copywriter</div>
-                                <div className="text-xs text-gray-500">Generate compelling copy with AI</div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Keyword Difficulty Checker</div>
+                                <div className="text-xs text-gray-500">Check keyword competition difficulty</div>
                               </div>
                             </a>
-                            <a href="/tools/blog-ideas-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                            <a href="/tools/long-tail-keyword-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🤖</span>
+                                <span className="text-gray-600 text-xs">🔗</span>
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">AI Blog Ideas Generator</div>
-                                <div className="text-xs text-gray-500">Generate blog topics with AI</div>
-                              </div>
-                            </a>
-                            <a href="/tools/seo-meta-writer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">📝</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">SEO Meta Writer</div>
-                                <div className="text-xs text-gray-500">AI-powered meta content writer</div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Long Tail Keyword Generator</div>
+                                <div className="text-xs text-gray-500">Generate long-tail keyword ideas</div>
                               </div>
                             </a>
                           </div>
@@ -558,7 +549,7 @@ export default function RootLayout({
                       {/* View All Tools CTA */}
                       <div className="pt-4 mt-4 border-t border-gray-100">
                         <a href="/tools/" className="flex items-center justify-center w-full p-3 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All 13 Free Tools
+                          View All 12 Free Tools
                           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>

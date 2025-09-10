@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 export default function WordCounterClient() {
   const [text, setText] = useState('')
@@ -141,7 +142,7 @@ export default function WordCounterClient() {
       />
       
       {/* Tool Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -251,6 +252,9 @@ export default function WordCounterClient() {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="Word Counter" toolSlug="word-counter" />
 
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">

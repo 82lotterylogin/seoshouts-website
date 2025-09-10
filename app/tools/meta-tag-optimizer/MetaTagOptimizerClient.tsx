@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 export default function MetaTagOptimizerClient() {
   const [form, setForm] = useState({
@@ -97,7 +98,7 @@ export default function MetaTagOptimizerClient() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
         
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           
@@ -287,6 +288,9 @@ export default function MetaTagOptimizerClient() {
             </div>
           </div>
         </div>
+
+        {/* Tool Breadcrumb */}
+        <ToolBreadcrumb toolName="Meta Tag Optimizer" toolSlug="meta-tag-optimizer" />
 
         {/* Header */}
         <div className="text-center mb-12">

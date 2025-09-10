@@ -706,7 +706,7 @@ export default async function HomePage() {
                           </div>
                         </div>
                         <a 
-                          href={`/blog/${post.slug}`}
+                          href={`/blog/${post.slug}/`}
                           className="px-4 py-2 bg-white text-primary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm"
                           aria-label={`Read ${post.title}`}
                         >

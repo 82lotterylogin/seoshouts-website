@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 interface SitemapUrl {
   url: string
@@ -796,6 +797,9 @@ export default function XMLSitemapGenerator() {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="XML Sitemap Generator" toolSlug="xml-sitemap-generator" />
 
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">

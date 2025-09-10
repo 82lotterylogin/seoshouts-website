@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 export default function LongTailKeywordGenerator() {
   // Set page title and meta tags
@@ -506,6 +507,9 @@ const generateKeywords = () => {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="Long Tail Keyword Generator" toolSlug="long-tail-keyword-generator" />
 
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">

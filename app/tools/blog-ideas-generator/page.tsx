@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 function BlogIdeasGeneratorTool() {
   const [formData, setFormData] = useState({
@@ -183,7 +184,7 @@ function BlogIdeasGeneratorTool() {
       />
       
       {/* Main Tool Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -462,6 +463,9 @@ function BlogIdeasGeneratorTool() {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="Blog Ideas Generator" toolSlug="blog-ideas-generator" />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 interface KeywordResult {
   keyword: string
@@ -623,6 +624,9 @@ export default function KeywordDifficultyChecker() {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="Keyword Difficulty Checker" toolSlug="keyword-difficulty-checker" />
 
       {/* What Is Keyword Difficulty Section */}
       <section className="py-16 bg-white">

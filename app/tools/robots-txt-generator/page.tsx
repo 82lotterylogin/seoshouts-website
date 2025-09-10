@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 interface RobotsRule {
   id: string
@@ -243,7 +244,7 @@ export default function RobotsTxtGenerator() {
       
 
       {/* Tool Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -553,6 +554,9 @@ export default function RobotsTxtGenerator() {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="Robots.txt Generator" toolSlug="robots-txt-generator" />
 
       {/* Hero Section */}
       <section className="py-16 sm:py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50">

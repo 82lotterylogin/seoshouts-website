@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import ToolBreadcrumb from '../../components/ToolBreadcrumb';
 
 export default function HTMLEditor() {
   useEffect(() => {
@@ -851,7 +852,7 @@ ${htmlContent}
       }} />
       
       {/* Main Tool Section */}
-      <section id="tool-section" className="py-4 sm:py-6">
+      <section id="tool-section" className="py-8 sm:py-12">
         <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
             {/* Global actions */}
@@ -1053,6 +1054,9 @@ ${htmlContent}
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="HTML Editor" toolSlug="html-editor" />
 
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">

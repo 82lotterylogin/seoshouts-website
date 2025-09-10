@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 export default function AICopywriterClient() {
   const [formData, setFormData] = useState({
@@ -141,7 +142,7 @@ export default function AICopywriterClient() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50">
-      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
         
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           
@@ -360,6 +361,9 @@ export default function AICopywriterClient() {
             )}
           </div>
         </div>
+
+        {/* Tool Breadcrumb */}
+        <ToolBreadcrumb toolName="AI Copywriter" toolSlug="ai-copywriter" />
 
         {/* Header */}
         <div className="text-center mb-12">

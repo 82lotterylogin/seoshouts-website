@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 
 function SEOMetaWriterTool() {
   const [formData, setFormData] = useState({
@@ -678,6 +679,9 @@ function SEOMetaWriterTool() {
           </div>
         </div>
       </section>
+
+      {/* Tool Breadcrumb */}
+      <ToolBreadcrumb toolName="SEO Meta Writer" toolSlug="seo-meta-writer" />
 
       {/* Hero Section - Minimal Intro Only */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
