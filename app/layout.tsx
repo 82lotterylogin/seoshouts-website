@@ -284,7 +284,7 @@ export default function RootLayout({
                   
                   {/* Services Dropdown Menu - Updated */}
                   <div 
-                    className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
+                    className={`absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
                       isServicesOpen 
                         ? 'opacity-100 visible translate-y-0 z-[70]' 
                         : 'opacity-0 invisible translate-y-2 z-[-1]'
@@ -381,7 +381,7 @@ export default function RootLayout({
                   
                   {/* Free Tools Mega Menu */}
                   <div 
-                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] max-w-[98vw] max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
+                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[1200px] max-w-[98vw] max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
                       isToolsOpen 
                         ? 'opacity-100 visible translate-y-0 z-[70]' 
                         : 'opacity-0 invisible translate-y-2 z-[-1]'
@@ -391,7 +391,7 @@ export default function RootLayout({
                     <div className="p-6">
                       <div className="text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wide">Free SEO Tools</div>
                       
-                      <div className="grid grid-cols-2 gap-6">
+                      <div className="grid grid-cols-4 gap-6">
                         {/* Content & AI Tools */}
                         <div>
                           <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
@@ -439,6 +439,7 @@ export default function RootLayout({
                             </a>
                           </div>
                         </div>
+                        
                         {/* Technical SEO Tools */}
                         <div>
                           <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
@@ -484,8 +485,18 @@ export default function RootLayout({
                                 <div className="text-xs text-gray-500">Generate JSON-LD schema markup</div>
                               </div>
                             </a>
+                            <a href="/tools/on-page-seo-analyzer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">🔬</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">On-Page SEO Analyzer</div>
+                                <div className="text-xs text-gray-500">Complete SEO analysis with 150+ factors</div>
+                              </div>
+                            </a>
                           </div>
                         </div>
+                        
                         {/* Keyword Research Tools */}
                         <div>
                           <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
@@ -549,7 +560,7 @@ export default function RootLayout({
                       {/* View All Tools CTA */}
                       <div className="pt-4 mt-4 border-t border-gray-100">
                         <a href="/tools/" className="flex items-center justify-center w-full p-3 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All 12 Free Tools
+                          View All 14 Free Tools
                           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>

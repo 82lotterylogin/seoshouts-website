@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 // dummy comment to force deploy
 
 export const metadata: Metadata = {
-  title: 'Free SEO Tools - 13 Professional Tools | SEO Shouts',
-  description: 'Access 13 professional free SEO tools for keyword research, technical optimization, content creation, AI-powered assistance, and schema generation. No registration required.',
+  title: 'Free SEO Tools - 14 Professional Tools | SEO Shouts',
+  description: 'Access 14 professional free SEO tools for keyword research, technical optimization, content creation, AI-powered assistance, and schema generation. No registration required.',
   keywords: 'free SEO tools, keyword density analyzer, meta tag optimizer, long tail keywords, robots txt generator, xml sitemap generator, word counter, AI copywriter, blog ideas generator, HTML editor',
   authors: [{ name: 'SEO Shouts' }],
   creator: 'SEO Shouts',
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools',
   },
   openGraph: {
-    title: 'Free SEO Tools - 13 Professional Tools | SEO Shouts',
-    description: 'Access 13 professional SEO tools for free. Keyword research, technical SEO, content optimization, AI-powered tools, and schema generation.',
+    title: 'Free SEO Tools - 14 Professional Tools | SEO Shouts',
+    description: 'Access 14 professional SEO tools for free. Keyword research, technical SEO, content optimization, AI-powered tools, and schema generation.',
     url: 'https://seoshouts.com/tools',
     siteName: 'SEO Shouts',
     images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free SEO Tools - 13 Professional Tools | SEO Shouts',
-    description: 'Access 13 professional SEO tools for free. All tools available without registration.',
+    title: 'Free SEO Tools - 14 Professional Tools | SEO Shouts',
+    description: 'Access 14 professional SEO tools for free. All tools available without registration.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/tools-twitter-image.jpg'],
@@ -97,7 +97,7 @@ export default function ToolsPage() {
                 "name": "Are your SEO tools really free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, all 13 SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, AI-powered content creators, schema generators, and more without any cost."
+                  "text": "Yes, all 14 SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, AI-powered content creators, schema generators, and more without any cost."
                 }
               },
               {
@@ -135,7 +135,7 @@ export default function ToolsPage() {
             <div className="max-w-5xl mx-auto text-center">
               <div className="inline-flex items-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-gray-200 mb-6 sm:mb-8">
                 <span className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
-                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 13 Professional Free SEO Tools</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 14 Professional Free SEO Tools</span>
               </div>
               
               <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
@@ -155,7 +155,7 @@ export default function ToolsPage() {
               {/* Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
-                  <div className="text-2xl font-bold text-primary mb-1">13</div>
+                  <div className="text-2xl font-bold text-primary mb-1">14</div>
                   <div className="text-sm text-gray-600">Free SEO Tools</div>
                 </div>
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
@@ -250,7 +250,7 @@ export default function ToolsPage() {
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                     Optimize technical aspects of your website for search engines.
                   </p>
-                  <div className="text-sm text-primary font-medium">4 Tools Available</div>
+                  <div className="text-sm text-primary font-medium">5 Tools Available</div>
                 </div>
               </div>
 
@@ -527,6 +527,34 @@ export default function ToolsPage() {
                       href="/tools/schema-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Schema Generator tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
+
+                {/* Technical Tool 5 - On-Page SEO Analyzer */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔬</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      On-Page SEO Analyzer
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Complete website analysis with 150+ SEO factors including technical SEO, content quality, Core Web Vitals, and actionable optimization recommendations.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>150+ SEO factor analysis</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Core Web Vitals data</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Actionable recommendations</li>
+                    </ul>
+                    <a 
+                      href="/tools/on-page-seo-analyzer/"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch On-Page SEO Analyzer tool"
                     >
                       Launch Tool
                     </a>
