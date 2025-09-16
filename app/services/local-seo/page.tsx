@@ -199,7 +199,7 @@ export default function LocalSEOServicePage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
+                <a
                   href="/contact/"
                   className="group px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
                   aria-label="Get free Local SEO audit"
@@ -209,8 +209,8 @@ export default function LocalSEOServicePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </a>
-                
-                <a 
+
+                <a
                   href="tel:+918094888157"
                   className="group px-8 py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center justify-center"
                   aria-label="Call SEO Shouts for Local SEO consultation"

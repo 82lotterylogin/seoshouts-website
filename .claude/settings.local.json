@@ -41,7 +41,12 @@
       "Bash(timeout 30 npm run build)",
       "Bash(git rm:*)",
       "Bash(git revert:*)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:seorch.net)",
+      "WebFetch(domain:www.seobility.net)",
+      "WebFetch(domain:www.seoptimer.com)",
+      "Bash(rg:*)",
+      "Bash(jq:*)"
     ],
     "deny": [],
     "ask": []
