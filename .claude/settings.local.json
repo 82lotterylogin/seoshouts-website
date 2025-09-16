@@ -46,7 +46,9 @@
       "WebFetch(domain:www.seobility.net)",
       "WebFetch(domain:www.seoptimer.com)",
       "Bash(rg:*)",
-      "Bash(jq:*)"
+      "Bash(jq:*)",
+      "Bash(xargs dirname:*)",
+      "Bash(xargs basename:*)"
     ],
     "deny": [],
     "ask": []
