@@ -1,1 +1,18 @@
-{}
+{
+  "/rank-new-products-in-googles-searches/": {
+    "to": "/blog/rank-new-products-in-googles-searches/",
+    "statusCode": 301
+  },
+  "/link-building-email-outreach-templates/": {
+    "to": "/blog/link-building-email-outreach-templates-from-experts-that-actually-works/",
+    "statusCode": 301
+  },
+  "/terms-and-conditions/": {
+    "to": "/terms/",
+    "statusCode": 301
+  },
+  "/about-us/": {
+    "to": "/meet-the-experts/",
+    "statusCode": 301
+  }
+}

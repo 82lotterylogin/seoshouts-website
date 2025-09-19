@@ -12,6 +12,10 @@ const JWT_SECRET = new TextEncoder().encode(
 // Simple redirections map - will be manually updated for now
 // In production, this could be environment variables or fetched during build
 const REDIRECTIONS: { [key: string]: { to: string; statusCode: number } } = {
+  "/rank-new-products-in-googles-searches/": { to: "/blog/rank-new-products-in-googles-searches/", statusCode: 301 },
+  "/link-building-email-outreach-templates/": { to: "/blog/link-building-email-outreach-templates-from-experts-that-actually-works/", statusCode: 301 },
+  "/terms-and-conditions/": { to: "/terms/", statusCode: 301 },
+  "/about-us/": { to: "/meet-the-experts/", statusCode: 301 },
 };
 
 // Function to check for redirections
