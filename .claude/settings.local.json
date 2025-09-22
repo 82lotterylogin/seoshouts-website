@@ -48,7 +48,12 @@
       "Bash(rg:*)",
       "Bash(jq:*)",
       "Bash(xargs dirname:*)",
-      "Bash(xargs basename:*)"
+      "Bash(xargs basename:*)",
+      "WebFetch(domain:best-hashtags.com)",
+      "WebFetch(domain:inflact.com)",
+      "WebFetch(domain:www.hootsuite.com)",
+      "WebFetch(domain:www.veed.io)",
+      "WebFetch(domain:vaizle.com)"
     ],
     "deny": [],
     "ask": []
