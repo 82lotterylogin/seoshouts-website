@@ -4,7 +4,7 @@ import InquiryForm from './components/InquiryForm'
 
 export const metadata: Metadata = {
   title: 'SEO Shouts - Professional SEO Tools & Services | Free Website Analysis',
-  description: 'Professional SEO tools and services for businesses worldwide. Get free SEO analysis, keyword research, technical audits, and expert SEO consulting. 14+ free tools available.',
+  description: 'Professional SEO tools and services for businesses worldwide. Get free SEO analysis, keyword research, technical audits, and expert SEO consulting. 15+ free tools available.',
   keywords: 'SEO tools, SEO services, free SEO analysis, keyword research, technical SEO, link building, local SEO, SEO consulting',
   authors: [{ name: 'SEO Shouts' }],
   creator: 'SEO Shouts',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'SEO Shouts - Professional SEO Tools & Services',
-    description: 'Professional SEO tools and services for businesses worldwide. 14+ free tools available.',
+    description: 'Professional SEO tools and services for businesses worldwide. 15+ free tools available.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/twitter-image.jpg'],
@@ -171,7 +171,7 @@ export default async function HomePage() {
                 "name": "What SEO tools do you offer for free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We offer 11+ free SEO tools including keyword density analyzer, meta tag optimizer, website speed test, robots.txt generator, XML sitemap generator, content analyzer, and more."
+                  "text": "We offer 15+ free SEO tools including keyword density analyzer, meta tag optimizer, website speed test, robots.txt generator, XML sitemap generator, content analyzer, and more."
                 }
               },
               {
@@ -620,9 +620,9 @@ export default async function HomePage() {
               <a 
                 href="/tools/"
                 className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center mx-auto max-w-fit"
-                aria-label="View all 13+ free SEO tools"
+                aria-label="View all 15+ free SEO tools"
               >
-                View All 14+ Free Tools
+                View All 15+ Free Tools
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

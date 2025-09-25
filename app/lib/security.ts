@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 
 // Rate limiting storage (in production, use Redis or database)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+export const dailyRateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
 export interface RateLimitConfig {
   windowMs: number; // Time window in milliseconds
@@ -47,6 +48,82 @@ export async function rateLimit(
   return {
     success: true,
     remainingRequests: config.maxRequests - entry.count
+  };
+}
+
+// Daily rate limiting function specifically for heavy operations
+export async function dailyRateLimit(
+  request: NextRequest,
+  toolName: string,
+  maxDailyRequests: number = 5,
+  message?: string
+): Promise<{ success: boolean; error?: string; remainingRequests?: number; resetTime?: string }> {
+  const ip = request.ip ||
+    request.headers.get('x-forwarded-for') ||
+    request.headers.get('x-real-ip') ||
+    'unknown';
+
+  const key = `${ip}:${toolName}:daily`;
+  const now = Date.now();
+  const today = new Date(now);
+  const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, 0, 0);
+  const resetTime = endOfDay.getTime();
+
+  // Get or create daily rate limit entry
+  let entry = dailyRateLimitMap.get(key);
+  if (!entry || entry.resetTime < now) {
+    entry = { count: 0, resetTime };
+    dailyRateLimitMap.set(key, entry);
+  }
+
+  // Check if daily limit exceeded
+  if (entry.count >= maxDailyRequests) {
+    const hoursUntilReset = Math.ceil((entry.resetTime - now) / (1000 * 60 * 60));
+    const resetDate = new Date(entry.resetTime);
+    let resetTimeStr;
+
+    if (isNaN(resetDate.getTime())) {
+      // Fallback if date is invalid
+      resetTimeStr = `in ${hoursUntilReset} hours`;
+    } else {
+      try {
+        resetTimeStr = `${resetDate.toLocaleDateString('en-US')} at ${resetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+      } catch (error) {
+        resetTimeStr = `in ${hoursUntilReset} hours`;
+      }
+    }
+
+    return {
+      success: false,
+      error: message || `Daily usage limit of ${maxDailyRequests} requests reached. Resets ${resetTimeStr}`,
+      remainingRequests: 0,
+      resetTime: resetTimeStr
+    };
+  }
+
+  // Increment count
+  entry.count++;
+
+  const resetDate = new Date(entry.resetTime);
+  let resetTimeStr;
+
+  if (isNaN(resetDate.getTime())) {
+    // Fallback if date is invalid
+    const hoursUntilReset = Math.ceil((entry.resetTime - now) / (1000 * 60 * 60));
+    resetTimeStr = `in ${hoursUntilReset} hours`;
+  } else {
+    try {
+      resetTimeStr = `${resetDate.toLocaleDateString('en-US')} at ${resetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+    } catch (error) {
+      const hoursUntilReset = Math.ceil((entry.resetTime - now) / (1000 * 60 * 60));
+      resetTimeStr = `in ${hoursUntilReset} hours`;
+    }
+  }
+
+  return {
+    success: true,
+    remainingRequests: maxDailyRequests - entry.count,
+    resetTime: resetTimeStr
   };
 }
 
@@ -249,6 +326,11 @@ setInterval(() => {
   for (const [key, entry] of rateLimitMap.entries()) {
     if (entry.resetTime < now) {
       rateLimitMap.delete(key);
+    }
+  }
+  for (const [key, entry] of dailyRateLimitMap.entries()) {
+    if (entry.resetTime < now) {
+      dailyRateLimitMap.delete(key);
     }
   }
 }, 60000); // Clean up every minute

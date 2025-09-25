@@ -53,7 +53,13 @@
       "WebFetch(domain:inflact.com)",
       "WebFetch(domain:www.hootsuite.com)",
       "WebFetch(domain:www.veed.io)",
-      "WebFetch(domain:vaizle.com)"
+      "WebFetch(domain:vaizle.com)",
+      "Bash(dir:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(if [ -f .env.local ])",
+      "Bash(else echo \".env.local not found\")",
+      "Bash(fi)",
+      "WebFetch(domain:wattup.in)"
     ],
     "deny": [],
     "ask": []

@@ -494,6 +494,15 @@ export default function RootLayout({
                                 <div className="text-xs text-gray-500">Complete SEO analysis with 150+ factors</div>
                               </div>
                             </a>
+                            <a href="/tools/internal-link-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">🔗</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Internal Link Checker</div>
+                                <div className="text-xs text-gray-500">Analyze internal links & anchor text</div>
+                              </div>
+                            </a>
                           </div>
                         </div>
                         
@@ -560,7 +569,7 @@ export default function RootLayout({
                       {/* View All Tools CTA */}
                       <div className="pt-4 mt-4 border-t border-gray-100">
                         <a href="/tools/" className="flex items-center justify-center w-full p-3 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All 14 Free Tools
+                          View All 15 Free Tools
                           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -583,8 +592,8 @@ export default function RootLayout({
                 </a>
                 {/* === NEW MENU ITEM: Meet Our Experts === */}
                
-                <a href="/contact/" className="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg">
-                  Get Quote
+                <a href="/tools/on-page-seo-analyzer/" className="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg">
+                  Free On Page Audit
                 </a>
               </div>
 
@@ -625,8 +634,8 @@ export default function RootLayout({
                     Meet Our Experts
                   </a>
                   <div className="px-4 pt-2">
-                    <a href="/contact/" className="w-full bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary/90 transition-colors block text-center">
-                      Get Quote
+                    <a href="/tools/on-page-seo-analyzer/" className="w-full bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary/90 transition-colors block text-center">
+                      Free On Page Audit
                     </a>
                   </div>
                 </div>
