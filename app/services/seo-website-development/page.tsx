@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import FaqAccordion, { type FaqItem } from './FaqAccordion'
 
 export const metadata: Metadata = {
   title: 'SEO Website Development Services India - Build Websites That Rank & Convert | SEO Shouts',
@@ -43,6 +44,59 @@ export const metadata: Metadata = {
     },
   },
 }
+
+const faqItems: FaqItem[] = [
+  {
+    question: 'How is SEO website development different from regular website development?',
+    answer:
+      "SEO website development ensures that SEO is integrated directly into the website's structure, content, and design from the very beginning. Unlike regular websites, which may need SEO optimization later, an SEO-developed website is built to rank from day one, with optimized URL structures, mobile-first design, fast load times, and SEO-friendly coding practices.",
+  },
+  {
+    question: 'Will you help optimize my website for mobile users?',
+    answer:
+      "Yes! All our websites are designed with mobile-first in mind. With a majority of internet traffic coming from mobile devices, we ensure that your website is responsive, loads quickly, and provides an optimal experience across all screen sizes and devices.",
+  },
+  {
+    question: 'How do you ensure that my website ranks well on Google?',
+    answer:
+      "Our SEO website development process includes optimizing your site for critical SEO factors like page speed, core web vitals, structured data (schema markup), and internal linking. We also ensure your content is optimized for both user intent and Google's algorithms to help you rank higher for relevant search queries.",
+  },
+  {
+    question: 'Will the website be optimized for local SEO and location-based searches?',
+    answer:
+      'Absolutely. We focus on local SEO optimization, which is crucial for businesses targeting customers in specific geographic locations. From integrating location-based keywords to optimizing your Google My Business profile and creating location-specific landing pages, we ensure that your website ranks well for relevant local searches.',
+  },
+  {
+    question: 'How long does it take to develop an SEO-optimized website?',
+    answer:
+      "The development timeline depends on the complexity of your website, but typically, it takes about 4-6 weeks for a fully SEO-optimized website to be completed. This includes stages like research, design, development, content optimization, and testing. We'll keep you updated throughout the process to ensure the website aligns with your business goals.",
+  },
+  {
+    question: 'Do you also handle the technical aspects of SEO for my website?',
+    answer:
+      "Yes, technical SEO is a crucial part of the SEO website development process. We focus on optimizing the back-end structure of your website, ensuring that it's crawlable, fast-loading, secure (with HTTPS), and follows best practices for technical SEO. This includes creating an XML sitemap, optimizing robots.txt, and setting up structured data to help search engines understand your website better.",
+  },
+  {
+    question: 'How do you ensure that my website is fast and optimized for performance?',
+    answer:
+      'Website speed is crucial for SEO and user experience. We use a combination of image compression, code minification, caching strategies, and CDN integration to ensure your website loads quickly. Additionally, we optimize your website for Core Web Vitals, which is an important ranking factor for Google.',
+  },
+  {
+    question: 'Will you provide support after my website is developed?',
+    answer:
+      "Yes! We provide post-launch support to ensure your website continues to perform well. This includes monitoring SEO performance, troubleshooting any issues, and offering guidance on how to update or add new content to maintain your rankings.",
+  },
+  {
+    question: 'Do you provide content for the website, or should I supply it?',
+    answer:
+      'We can assist with SEO-optimized content creation, including writing compelling copy with targeted keywords, meta descriptions, and headlines. However, if you already have content, we can work with your existing material to optimize it for both SEO and user engagement.',
+  },
+  {
+    question: 'Will my website be built with future SEO updates in mind?',
+    answer:
+      "Absolutely. We build websites with scalability and future-proofing in mind, ensuring they remain optimized even as SEO trends and Google algorithms evolve. Whether it's adopting new SEO techniques or preparing for major algorithm changes, your website will be ready for the future.",
+  },
+]
 
 export default function SEOWebsiteDevelopmentServicePage() {
   return (
@@ -135,32 +189,14 @@ export default function SEOWebsiteDevelopmentServicePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Are your prices including GST?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No, all our prices are exclusive of applicable GST as per Indian business standards. Registered businesses receive a proper GST invoice for input credit purposes."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How can I trust that your SEO website development will actually work for my Indian business?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "With over 13 years of proven SEO expertise, we've successfully launched and optimised hundreds of websites for Indian businesses. Our track record includes surviving multiple Google algorithm updates while maintaining and improving our clients' rankings."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What makes your experience different from other SEO agencies in India?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Most agencies offer templated solutions with basic SEO knowledge. Our over a decade of hands-on experience means we've actually built, tested, and optimised strategies through every major Google update since 2011."
-                }
+            "mainEntity": faqItems.map(faq => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
               }
-            ]
+            }))
           })
         }}
       />
@@ -1681,59 +1717,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              <div className="space-y-6">
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How is SEO website development different from regular website development?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> SEO website development ensures that SEO is integrated directly into the website's structure, content, and design from the very beginning. Unlike regular websites, which may need SEO optimization later, an SEO-developed website is built to rank from day one, with optimized URL structures, mobile-first design, fast load times, and SEO-friendly coding practices.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Will you help optimize my website for mobile users?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Yes! All our websites are designed with mobile-first in mind. With a majority of internet traffic coming from mobile devices, we ensure that your website is responsive, loads quickly, and provides an optimal experience across all screen sizes and devices.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How do you ensure that my website ranks well on Google?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Our SEO website development process includes optimizing your site for critical SEO factors like page speed, core web vitals, structured data (schema markup), and internal linking. We also ensure your content is optimized for both user intent and Google's algorithms to help you rank higher for relevant search queries.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Will the website be optimized for local SEO and location-based searches?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Absolutely. We focus on local SEO optimization, which is crucial for businesses targeting customers in specific geographic locations. From integrating location-based keywords to optimizing your Google My Business profile and creating location-specific landing pages, we ensure that your website ranks well for relevant local searches.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How long does it take to develop an SEO-optimized website?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> The development timeline depends on the complexity of your website, but typically, it takes about 4-6 weeks for a fully SEO-optimized website to be completed. This includes stages like research, design, development, content optimization, and testing. We'll keep you updated throughout the process to ensure the website aligns with your business goals.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Do you also handle the technical aspects of SEO for my website?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Yes, technical SEO is a crucial part of the SEO website development process. We focus on optimizing the back-end structure of your website, ensuring that it's crawlable, fast-loading, secure (with HTTPS), and follows best practices for technical SEO. This includes creating an XML sitemap, optimizing robots.txt, and setting up structured data to help search engines understand your website better.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How do you ensure that my website is fast and optimized for performance?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Website speed is crucial for SEO and user experience. We use a combination of image compression, code minification, caching strategies, and CDN integration to ensure your website loads quickly. Additionally, we optimize your website for Core Web Vitals, which is an important ranking factor for Google.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Will you provide support after my website is developed?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Yes! We provide post-launch support to ensure your website continues to perform well. This includes monitoring SEO performance, troubleshooting any issues, and offering guidance on how to update or add new content to maintain your rankings.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Do you provide content for the website, or should I supply it?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> We can assist with SEO-optimized content creation, including writing compelling copy with targeted keywords, meta descriptions, and headlines. However, if you already have content, we can work with your existing material to optimize it for both SEO and user engagement.</p>
-                </div>
-
-                <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Will my website be built with future SEO updates in mind?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Absolutely. We build websites with scalability and future-proofing in mind, ensuring they remain optimized even as SEO trends and Google algorithms evolve. Whether it's adopting new SEO techniques or preparing for major algorithm changes, your website will be ready for the future.</p>
-                </div>
-              </div>
-            </div>
+            <FaqAccordion faqs={faqItems} />
           </div>
         </section>
 
