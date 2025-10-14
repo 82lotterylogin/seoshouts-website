@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'SEO Website Development Services India - Build Websites That Rank & Convert | SEO Shouts',
-  description: 'Expert Developer-Led Team | B.Tech Computer Science | 13+ Years\' SEO Expertise in India. Professional SEO website development services for Indian businesses.',
+  description: 'Expert Developer-Led Team | Over 13 Years of SEO Expertise in India. Professional SEO website development services for Indian businesses.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
     canonical: 'https://seoshouts.com/services/seo-website-development',
   },
   openGraph: {
     title: 'SEO Website Development Services India - Build Websites That Rank & Convert | SEO Shouts',
-    description: 'Expert Developer-Led Team | B.Tech Computer Science | 13+ Years\' SEO Expertise in India. Professional SEO website development services.',
+    description: 'Expert Developer-Led Team | Over 13 Years of SEO Expertise in India. Professional SEO website development services.',
     url: 'https://seoshouts.com/services/seo-website-development',
     siteName: 'SEO Shouts',
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'SEO Website Development Services India - Build Websites That Rank & Convert | SEO Shouts',
-    description: 'Expert Developer-Led Team | B.Tech Computer Science | 13+ Years\' SEO Expertise in India.',
+    description: 'Expert Developer-Led Team | Over 13 Years of SEO Expertise in India.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/seo-website-development-twitter-image.jpg'],
@@ -149,15 +149,15 @@ export default function SEOWebsiteDevelopmentServicePage() {
                 "name": "How can I trust that your SEO website development will actually work for my Indian business?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "With 13+ years' proven SEO expertise, we've successfully launched and optimised hundreds of websites for Indian businesses. Our track record includes surviving multiple Google algorithm updates while maintaining and improving our clients' rankings."
+                  "text": "With over 13 years of proven SEO expertise, we've successfully launched and optimised hundreds of websites for Indian businesses. Our track record includes surviving multiple Google algorithm updates while maintaining and improving our clients' rankings."
                 }
               },
               {
                 "@type": "Question",
-                "name": "What makes your 13+ years' experience different from other SEO agencies in India?",
+                "name": "What makes your experience different from other SEO agencies in India?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Most agencies offer templated solutions with basic SEO knowledge. Our 13+ years of hands-on experience means we've actually built, tested, and optimised strategies through every major Google update since 2011."
+                  "text": "Most agencies offer templated solutions with basic SEO knowledge. Our over a decade of hands-on experience means we've actually built, tested, and optimised strategies through every major Google update since 2011."
                 }
               }
             ]
@@ -177,7 +177,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-gray-200 mb-4">
                 <span className="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></span>
-                <span className="text-sm font-medium text-gray-700">💻 Expert Developer-Led Team | B.Tech Computer Science | 13+ Years' SEO Expertise in India</span>
+                <span className="text-sm font-medium text-gray-700">Expert Developer-Led Team | Over 13 Years of SEO Expertise in India</span>
               </div>
 
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -194,35 +194,108 @@ export default function SEOWebsiteDevelopmentServicePage() {
                   Looking for genuine <strong>SEO website development</strong> that delivers measurable results for your Indian business?
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  At SEOShouts, you don't just get a web developer—you work directly with a B.Tech Computer Science professional who brings <strong>over 13 years' proven SEO expertise</strong> specifically for Indian and global markets.
+                  At SEOShouts, you don't just get a web developer—you work directly with an experienced SEO expert who brings <strong>over 13 years of proven SEO expertise</strong> specifically for Indian and global markets.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  Unlike typical agencies that design first and worry about SEO later, our <strong>13+ years of hands-on SEO experience</strong> has taught us to build search optimisation into every line of code from Day 1.
+                  Unlike typical agencies that design first and worry about SEO later, our <strong>over a decade of hands-on SEO experience</strong> has taught us to build search optimisation into every line of code from Day 1.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
                   We've witnessed Google's evolution, weathered algorithm updates, and consistently delivered ranking websites that drive real business growth across India.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            </div>
+          </div>
+        </section>
+
+        {/* Rectangle CTA Banner Section */}
+        <section className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 border-t-4 border-b-4 border-blue-900">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid lg:grid-cols-[1.2fr,1fr] gap-6 items-center py-8 lg:py-10">
+              {/* Left Side - Message */}
+              <div>
+                <div className="inline-block px-3 py-1 bg-yellow-400 rounded-md text-gray-900 font-bold text-xs uppercase mb-3">
+                  🎯 Limited Time Offer
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-white mb-2 leading-tight">
+                  Get Your FREE SEO Website Audit Worth ₹5,000
+                </h3>
+                <p className="text-blue-50 text-base lg:text-lg mb-2">
+                  Discover exactly what's holding your website back from ranking on Google India
+                </p>
+                <div className="flex flex-wrap gap-3 mt-4">
+                  <div className="flex items-center gap-1.5 text-white text-sm">
+                    <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span className="font-semibold">Complete Technical Analysis</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-white text-sm">
+                    <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span className="font-semibold">Actionable Recommendations</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-white text-sm">
+                    <svg className="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                    </svg>
+                    <span className="font-semibold">No Obligation</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Side - CTA Buttons */}
+              <div className="flex flex-col gap-3">
                 <a
                   href="/contact/"
-                  className="group px-8 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
-                  aria-label="Get SEO website development quote"
+                  className="group relative px-6 py-3.5 bg-white text-blue-600 rounded-xl font-bold text-base text-center overflow-hidden transition-all duration-300 hover:bg-yellow-400 hover:text-gray-900"
                 >
-                  🚀 Get Your Expert SEO Consultation
-                  <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    REQUEST FREE AUDIT NOW
+                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                 </a>
 
-                <a
-                  href="tel:+918094888157"
-                  className="group px-8 py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-blue-600 hover:text-blue-600 transition-all duration-300 flex items-center justify-center"
-                  aria-label="Call SEO Shouts for website development"
-                >
-                  📞 Call +91 8094888157
-                </a>
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href="tel:+918094888157"
+                    className="group px-4 py-3 bg-green-500 rounded-xl text-white font-bold text-center hover:bg-green-600 transition-all duration-300 relative overflow-hidden"
+                  >
+                    <span className="relative z-10 flex flex-col items-center gap-0.5">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                      </svg>
+                      <span className="text-xs">CALL NOW</span>
+                    </span>
+                    <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                  </a>
+
+                  <a
+                    href="https://wa.me/918094888157?text=Hi, I'm interested in SEO Website Development services"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group px-4 py-3 bg-[#25D366] rounded-xl text-white font-bold text-center hover:bg-[#20BA5A] transition-all duration-300 relative overflow-hidden"
+                  >
+                    <span className="relative z-10 flex flex-col items-center gap-0.5">
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                      </svg>
+                      <span className="text-xs">WHATSAPP</span>
+                    </span>
+                    <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                  </a>
+                </div>
+
+                <p className="text-center text-blue-100 text-xs mt-1">
+                  ⚡ Get response within 24 hours • 🔒 100% Confidential
+                </p>
               </div>
             </div>
           </div>
@@ -237,7 +310,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                   What Sets Our SEO Website Development Apart in India?
                 </h2>
                 <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  Over <strong>13+ years of SEO practice</strong>, we've analysed and rebuilt hundreds of Indian business websites.
+                  Over <strong>a decade of SEO practice</strong>, we've analysed and rebuilt hundreds of Indian business websites.
                 </p>
                 <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mt-4 leading-relaxed">
                   Most were held back by the same recurring issues—slow loading on Indian mobile networks, missing schema markup, poor URL structures, and content that doesn't match Indian search behaviour.
@@ -257,7 +330,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                       <h3 className="text-2xl sm:text-3xl font-bold text-red-700">Common Problems</h3>
                     </div>
 
-                    <p className="text-sm font-semibold text-red-600 mb-6 uppercase tracking-wide">Issues we've solved across 13+ years:</p>
+                    <p className="text-sm font-semibold text-red-600 mb-6 uppercase tracking-wide">Issues we've solved over the years:</p>
 
                     <div className="space-y-5">
                       <div className="group bg-red-50/50 hover:bg-red-50 rounded-xl p-4 transition-all duration-300 hover:shadow-md border border-red-100/50">
@@ -319,7 +392,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                       <h3 className="text-2xl sm:text-3xl font-bold text-blue-700">Our Solutions</h3>
                     </div>
 
-                    <p className="text-sm font-semibold text-blue-600 mb-6 uppercase tracking-wide">With SEOShouts' 13+ years' expertise:</p>
+                    <p className="text-sm font-semibold text-blue-600 mb-6 uppercase tracking-wide">With SEOShouts' over a decade of SEO expertise:</p>
 
                     <div className="space-y-5">
                       <div className="group bg-white hover:bg-blue-50/50 rounded-xl p-4 transition-all duration-300 hover:shadow-md border border-blue-100">
@@ -375,11 +448,11 @@ export default function SEOWebsiteDevelopmentServicePage() {
               <div className="mt-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 shadow-xl">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-white">
                   <div className="border-b md:border-b-0 md:border-r border-blue-400/30 pb-6 md:pb-0">
-                    <div className="text-4xl font-bold mb-2">13+</div>
+                    <div className="text-4xl font-bold mb-2">10+</div>
                     <div className="text-blue-100 text-sm uppercase tracking-wide">Years Experience</div>
                   </div>
                   <div className="border-b md:border-b-0 md:border-r border-blue-400/30 pb-6 md:pb-0">
-                    <div className="text-4xl font-bold mb-2">500+</div>
+                    <div className="text-4xl font-bold mb-2">100+</div>
                     <div className="text-blue-100 text-sm uppercase tracking-wide">Websites Built</div>
                   </div>
                   <div>
@@ -409,14 +482,14 @@ export default function SEOWebsiteDevelopmentServicePage() {
                   <span className="text-2xl text-white">📄</span>
                 </div>
                 <h3 className="text-2xl font-bold mb-2">SEO Optimised Static Website</h3>
-                <div className="text-3xl font-bold text-blue-600 mb-2">₹8,500 <span className="text-lg font-normal text-gray-500">+ GST</span></div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">₹8,500</div>
                 <p className="text-gray-600 mb-6 text-sm"><strong>Perfect for:</strong> Startups, solo entrepreneurs, consultants, and small business owners needing a results-driven web presence.</p>
 
-                <p className="text-sm font-semibold text-gray-700 mb-4">What 13+ years' SEO experience brings to your static site:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-4">What long-term SEO experience brings to your static site:</p>
                 <ul className="space-y-2 mb-6 text-sm">
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Up to 5 custom-designed pages with <strong>proven SEO architecture</strong></span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Google Core Web Vitals optimisation (tested across Indian devices and networks)</span></li>
-                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600"><strong>SEO-friendly web development</strong> using strategies refined over 13+ years</span></li>
+                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600"><strong>SEO-friendly web development</strong> using strategies refined over years</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Mobile-first responsive design optimised for Indian smartphone usage patterns</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Secure HTTPS/SSL implementation with Indian hosting considerations</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Schema markup for better Google India snippet visibility</span></li>
@@ -444,18 +517,18 @@ export default function SEOWebsiteDevelopmentServicePage() {
                   <span className="text-2xl text-white">💼</span>
                 </div>
                 <h3 className="text-2xl font-bold mb-2">SEO Optimised Website with Backend</h3>
-                <div className="text-3xl font-bold text-blue-600 mb-2">₹21,000 <span className="text-lg font-normal text-gray-500">+ GST</span></div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">₹21,000</div>
                 <p className="text-gray-600 mb-6 text-sm"><strong>Ideal for:</strong> Growing companies, service providers, and professionals who need content management capabilities with <strong>enterprise-level SEO</strong>.</p>
 
-                <p className="text-sm font-semibold text-gray-700 mb-4">Everything in Static Package, plus 13+ years' advanced SEO features:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-4">Everything in Static Package, plus advanced SEO features:</p>
                 <ul className="space-y-2 mb-6 text-sm">
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Custom content management system designed with <strong>SEO best practices from over a decade</strong></span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Blog/news section optimised for Indian local searches and "near me" queries</span></li>
-                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Advanced internal linking architecture based on <strong>13+ years of link equity strategies</strong></span></li>
+                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Advanced internal linking architecture based on <strong>long-term link equity strategies</strong></span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">User access management for Indian teams with SEO workflow integration</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Database optimisation techniques refined through <strong>years of performance testing</strong></span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Advanced security, anti-spam features, and Indian privacy compliance</span></li>
-                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Built-in analytics dashboard showing <strong>SEO metrics that matter</strong> after 13+ years of client reporting</span></li>
+                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Built-in analytics dashboard showing <strong>SEO metrics that matter</strong> from long-term client reporting</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600"><strong>Expert SEO training</strong> for your team based on proven methodologies</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">60 days extended support with <strong>ongoing SEO guidance</strong></span></li>
                 </ul>
@@ -475,17 +548,17 @@ export default function SEOWebsiteDevelopmentServicePage() {
                   <span className="text-2xl text-white">🛒</span>
                 </div>
                 <h3 className="text-2xl font-bold mb-2">SEO Optimised eCommerce Website</h3>
-                <div className="text-3xl font-bold text-blue-600 mb-2">₹42,000 <span className="text-lg font-normal text-gray-500">+ GST</span></div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">₹42,000</div>
                 <p className="text-gray-600 mb-6 text-sm"><strong>Best for:</strong> Indian eCommerce brands, D2C companies, retail stores, and exporters ready to dominate online sales.</p>
 
-                <p className="text-sm font-semibold text-gray-700 mb-4">Complete eCommerce solution with 13+ years' conversion-focused SEO:</p>
+                <p className="text-sm font-semibold text-gray-700 mb-4">Complete eCommerce solution with conversion-focused SEO:</p>
                 <ul className="space-y-2 mb-6 text-sm">
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">All features from previous packages with <strong>enterprise-grade SEO implementation</strong></span></li>
-                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Custom-built online store with <strong>conversion optimisation strategies</strong> proven over 13+ years</span></li>
+                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Custom-built online store with <strong>conversion optimisation strategies</strong> proven over the years</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Product catalogue with SEO-optimised descriptions targeting Indian buyer behaviour</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Secure cart and checkout with Indian payment gateways (UPI, Paytm, net banking)</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600"><strong>Advanced product schema</strong> for Google Shopping visibility (techniques refined over years of eCommerce SEO)</span></li>
-                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Category and product page SEO using <strong>long-tail keyword strategies</strong> from 13+ years of research</span></li>
+                  <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Category and product page SEO using <strong>long-tail keyword strategies</strong> from extensive research</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">Inventory management optimised for Indian seasonal shopping patterns (Diwali, festivals)</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600"><strong>Conversion tracking and analytics</strong> based on proven eCommerce SEO methodologies</span></li>
                   <li className="flex items-start"><span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span><span className="text-gray-600">90 days premium support including <strong>ongoing SEO optimisation</strong> and performance reviews</span></li>
@@ -502,7 +575,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
             </div>
 
             <div className="text-center">
-              <p className="text-sm text-gray-600"><strong>Note:</strong> All prices are exclusive of applicable GST. Registered businesses receive a GST invoice for input credit as per Indian tax regulations.</p>
+              <p className="text-sm text-gray-600"><strong>Note:</strong> All prices are clearly mentioned with no hidden costs. Proper invoicing provided for your business records.</p>
             </div>
           </div>
         </section>
@@ -519,7 +592,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                 Our Proven SEO Website Development Process
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-2">
-                Refined Over 13+ Years
+                Refined Over the Years
               </p>
               <p className="text-base text-gray-500 max-w-2xl mx-auto">
                 A transparent, step-by-step process that puts your business goals first
@@ -543,7 +616,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                         </div>
                         <div className="lg:text-right">
                           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Strategic Foundation</h3>
-                          <p className="text-sm text-blue-600 font-semibold">Built on 13+ Years' Experience</p>
+                          <p className="text-sm text-blue-600 font-semibold">Built on Years of Experience</p>
                         </div>
                       </div>
 
@@ -633,7 +706,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                         </div>
                         <div className="lg:text-right">
                           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Content & SEO Integration</h3>
-                          <p className="text-sm text-blue-600 font-semibold">13+ Years' Expertise Applied</p>
+                          <p className="text-sm text-blue-600 font-semibold">Expertise Applied</p>
                         </div>
                       </div>
 
@@ -688,7 +761,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                         </div>
                         <div>
                           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">Quality Assurance</h3>
-                          <p className="text-sm text-blue-600 font-semibold">13+ Years' Testing Protocols</p>
+                          <p className="text-sm text-blue-600 font-semibold">Testing Protocols</p>
                         </div>
                       </div>
 
@@ -1093,35 +1166,134 @@ export default function SEOWebsiteDevelopmentServicePage() {
         <section className="py-16 sm:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Indian Client Success Stories (From 13+ Years' Portfolio)</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Indian Client Success Stories</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Real results from real Indian businesses
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <span className="text-2xl text-white">🏡</span>
+              {/* AGP Nature Villa */}
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-200">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl text-white">🏡</span>
+                  </div>
+                  <a href="https://pagespeed.web.dev/analysis/https-agpnaturevilla-com/wn1w46uas0?form_factor=desktop" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1">
+                    Check Score →
+                  </a>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">AGP Nature Villa</h3>
-                <p className="text-gray-600">Successfully developed and optimized with proven SEO strategies for the Indian real estate market.</p>
+                <h3 className="text-2xl font-bold mb-3">AGP Nature Villa</h3>
+                <p className="text-gray-600 mb-6">Successfully developed and optimized with proven SEO strategies for the Indian real estate market.</p>
+
+                {/* Core Web Vitals Scores */}
+                <div className="bg-white rounded-xl p-4 border border-gray-200">
+                  <h4 className="text-sm font-bold text-gray-700 mb-4">Core Web Vitals Score</h4>
+
+                  {/* Mobile Score */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-gray-600">📱 Mobile</span>
+                      <span className="text-lg font-bold text-green-600">86</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style={{width: '86%'}}></div>
+                    </div>
+                  </div>
+
+                  {/* Desktop Score */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-gray-600">💻 Desktop</span>
+                      <span className="text-lg font-bold text-green-600">96</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style={{width: '96%'}}></div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <span className="text-2xl text-white">📊</span>
+              {/* Calcshark */}
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-blue-200">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl text-white">📊</span>
+                  </div>
+                  <a href="https://pagespeed.web.dev/analysis/https-calcshark-com/spkdcuvhgh?form_factor=desktop" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1">
+                    Check Score →
+                  </a>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">Calkshark</h3>
-                <p className="text-gray-600">Built with enterprise-grade SEO architecture to dominate their industry niche in Indian markets.</p>
+                <h3 className="text-2xl font-bold mb-3">Calcshark</h3>
+                <p className="text-gray-600 mb-6">Built with enterprise-grade SEO architecture to dominate their industry niche in Indian markets.</p>
+
+                {/* Core Web Vitals Scores */}
+                <div className="bg-white rounded-xl p-4 border border-blue-200">
+                  <h4 className="text-sm font-bold text-gray-700 mb-4">Core Web Vitals Score</h4>
+
+                  {/* Mobile Score */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-gray-600">📱 Mobile</span>
+                      <span className="text-lg font-bold text-green-600">97</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style={{width: '97%'}}></div>
+                    </div>
+                  </div>
+
+                  {/* Desktop Score */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-gray-600">💻 Desktop</span>
+                      <span className="text-lg font-bold text-green-600">100</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style={{width: '100%'}}></div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                  <span className="text-2xl text-white">🚀</span>
+              {/* SEOShouts */}
+              <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-gray-200">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <span className="text-2xl text-white">🚀</span>
+                  </div>
+                  <a href="https://pagespeed.web.dev/analysis/https-seoshouts-com-services-ecommerce-seo/0c2nuniv9k?form_factor=desktop" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 text-sm font-semibold flex items-center gap-1">
+                    Check Score →
+                  </a>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">SEOShouts</h3>
-                <p className="text-gray-600">Our own website showcases 13+ years of SEO expertise, ranking for competitive keywords across India.</p>
+                <h3 className="text-2xl font-bold mb-3">SEOShouts</h3>
+                <p className="text-gray-600 mb-6">Our own website showcases SEO expertise, ranking for competitive keywords across India.</p>
+
+                {/* Core Web Vitals Scores */}
+                <div className="bg-white rounded-xl p-4 border border-gray-200">
+                  <h4 className="text-sm font-bold text-gray-700 mb-4">Core Web Vitals Score</h4>
+
+                  {/* Mobile Score */}
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-gray-600">📱 Mobile</span>
+                      <span className="text-lg font-bold text-green-600">94</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style={{width: '94%'}}></div>
+                    </div>
+                  </div>
+
+                  {/* Desktop Score */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-gray-600">💻 Desktop</span>
+                      <span className="text-lg font-bold text-green-600">100</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full transition-all duration-500" style={{width: '100%'}}></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1131,7 +1303,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
         <section className="py-16 sm:py-24 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">13+ Years' SEO vs. Typical Agency Comparison</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">SEOShouts vs. Typical Agency Comparison</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 See why experience matters in SEO website development
               </p>
@@ -1143,24 +1315,24 @@ export default function SEOWebsiteDevelopmentServicePage() {
                   <thead className="bg-blue-600 text-white">
                     <tr>
                       <th className="px-4 py-4 text-left font-bold">Feature</th>
-                      <th className="px-4 py-4 text-left font-bold">SEOShouts (13+ Years' Expertise)</th>
+                      <th className="px-4 py-4 text-left font-bold">SEOShouts</th>
                       <th className="px-4 py-4 text-left font-bold">Typical Indian Agency</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     <tr className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-semibold">SEO Experience</td>
-                      <td className="px-4 py-3 text-blue-600 font-semibold">13+ years proven track record</td>
+                      <td className="px-4 py-3 text-blue-600 font-semibold">10+ years proven track record</td>
                       <td className="px-4 py-3 text-gray-600">Often 1-3 years, no portfolio</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-semibold">Developer Leadership</td>
-                      <td className="px-4 py-3 text-blue-600 font-semibold">B.Tech Computer Science + SEO expertise</td>
+                      <td className="px-4 py-3 text-blue-600 font-semibold">Coding + SEO expertise</td>
                       <td className="px-4 py-3 text-gray-600">Designers with basic SEO knowledge</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-semibold">Algorithm Updates</td>
-                      <td className="px-4 py-3 text-blue-600 font-semibold">Survived and thrived through 13+ years of changes</td>
+                      <td className="px-4 py-3 text-blue-600 font-semibold">Survived and thrived through years of changes</td>
                       <td className="px-4 py-3 text-gray-600">Struggle with each update</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
@@ -1175,7 +1347,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-semibold">Pricing Transparency</td>
-                      <td className="px-4 py-3 text-blue-600 font-semibold">Clear pricing + GST</td>
+                      <td className="px-4 py-3 text-blue-600 font-semibold">Clear pricing</td>
                       <td className="px-4 py-3 text-gray-600">Hidden costs and surprise fees</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
@@ -1185,7 +1357,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                     </tr>
                     <tr className="hover:bg-gray-50">
                       <td className="px-4 py-3 font-semibold">Results Guarantee</td>
-                      <td className="px-4 py-3 text-blue-600 font-semibold">Confident predictions based on 13+ years' data</td>
+                      <td className="px-4 py-3 text-blue-600 font-semibold">Confident predictions based on long-term data</td>
                       <td className="px-4 py-3 text-gray-600">Vague promises without backing</td>
                     </tr>
                     <tr className="hover:bg-gray-50">
@@ -1204,7 +1376,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
         <section className="py-16 sm:py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Why Choose 13+ Years' SEO Expertise Over Generic Agencies?</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Why Choose SEOShouts Web Development Expertise Over Generic Agencies?</h2>
             </div>
 
             <div className="max-w-5xl mx-auto">
@@ -1213,22 +1385,22 @@ export default function SEOWebsiteDevelopmentServicePage() {
                 <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
                   <h3 className="text-2xl font-bold mb-6 text-blue-800">Unmatched Technical and SEO Authority</h3>
                   <ul className="space-y-3">
-                    <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>B.Tech Computer Science</strong> foundation combined with <strong>13+ years' hands-on SEO experience</strong></span></li>
+                    <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Coding</strong> foundation combined with <strong>over a decade of hands-on SEO experience</strong></span></li>
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>No platform dependencies</strong> – 100% custom solutions without licensing fees or template limitations</span></li>
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Indian market specialisation</strong> developed through <strong>years of local client success stories</strong></span></li>
-                    <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Algorithm update experience</strong> – we've successfully navigated every major Google change over 13+ years</span></li>
+                    <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Algorithm update experience</strong> – we've successfully navigated every major Google change over the years</span></li>
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Direct communication</strong> in plain Indian English with <strong>expert-level technical guidance</strong></span></li>
                   </ul>
                 </div>
 
                 {/* Proven Track Record */}
                 <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
-                  <h3 className="text-2xl font-bold mb-6 text-blue-800">Proven Track Record Across 13+ Years</h3>
+                  <h3 className="text-2xl font-bold mb-6 text-blue-800">Proven Track Record</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Hundreds of successful websites</strong> launched and optimised for Indian businesses</span></li>
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Consistent ranking improvements</strong> achieved through algorithm updates and market changes</span></li>
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Long-term client relationships</strong> built on <strong>sustained SEO performance</strong> over years</span></li>
-                    <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Industry expertise</strong> across multiple verticals gained through 13+ years of diverse projects</span></li>
+                    <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Industry expertise</strong> across multiple verticals gained through years of diverse projects</span></li>
                     <li className="flex items-start"><span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span><span className="text-gray-700"><strong>Documented case studies</strong> showing <strong>measurable ROI</strong> from SEO website development investments</span></li>
                   </ul>
                 </div>
@@ -1252,7 +1424,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                 Advanced SEO Features
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Mastered Over 13+ Years
+                Mastered Over the Years
               </p>
             </div>
 
@@ -1285,7 +1457,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                             <span className="text-2xl flex-shrink-0">🗺️</span>
                             <div>
                               <h4 className="font-bold text-gray-900 mb-1">XML Sitemaps</h4>
-                              <p className="text-sm text-gray-600">Priority & frequency settings optimised through 13+ years of crawl analysis</p>
+                              <p className="text-sm text-gray-600">Priority & frequency settings optimised through years of crawl analysis</p>
                             </div>
                           </div>
                         </div>
@@ -1339,7 +1511,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                     <span className="text-3xl">⚡</span>
                   </div>
                   <h3 className="text-2xl font-bold mb-2 text-gray-900">Performance Optimisation</h3>
-                  <p className="text-sm text-blue-600 font-semibold mb-6">13+ Years' Proven Techniques</p>
+                  <p className="text-sm text-blue-600 font-semibold mb-6">Proven Techniques</p>
 
                   <div className="space-y-3">
                     <div className="flex items-start gap-3 bg-white/60 rounded-lg p-3">
@@ -1381,7 +1553,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                       <span className="text-xl flex-shrink-0">⏳</span>
                       <div>
                         <h4 className="font-bold text-gray-900 text-sm mb-1">Lazy Loading</h4>
-                        <p className="text-xs text-gray-600">UX patterns observed over 13+ years</p>
+                        <p className="text-xs text-gray-600">UX patterns observed over a decade</p>
                       </div>
                     </div>
                   </div>
@@ -1454,7 +1626,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
                     <div className="text-blue-100 text-sm">Custom Implementation</div>
                   </div>
                   <div className="border-t sm:border-t-0 sm:border-l border-blue-400/30 pt-6 sm:pt-0">
-                    <div className="text-3xl font-bold mb-2">13+</div>
+                    <div className="text-3xl font-bold mb-2">10+</div>
                     <div className="text-blue-100 text-sm">Years Mastering These Features</div>
                   </div>
                 </div>
@@ -1503,7 +1675,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
         <section className="py-16 sm:py-24 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Comprehensive FAQ (Answered from 13+ Years' Experience)</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">Comprehensive SEO Website Development Related FAQs</h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
                 Common questions about our SEO website development services
               </p>
@@ -1512,48 +1684,53 @@ export default function SEOWebsiteDevelopmentServicePage() {
             <div className="max-w-4xl mx-auto">
               <div className="space-y-6">
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Are your prices including GST?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> No, all our prices are exclusive of applicable GST as per Indian business standards. Registered businesses receive a proper GST invoice for input credit purposes. This transparent pricing helps you budget accurately for your <strong>SEO website development</strong> investment.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: How is SEO website development different from regular website development?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> SEO website development ensures that SEO is integrated directly into the website's structure, content, and design from the very beginning. Unlike regular websites, which may need SEO optimization later, an SEO-developed website is built to rank from day one, with optimized URL structures, mobile-first design, fast load times, and SEO-friendly coding practices.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How can I trust that your SEO website development will actually work for my Indian business?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> With <strong>13+ years' proven SEO expertise</strong>, we've successfully launched and optimised hundreds of websites for Indian businesses. Our track record includes surviving multiple Google algorithm updates while maintaining and improving our clients' rankings. We provide detailed case studies and can connect you with long-term clients who've seen sustained growth.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: Will you help optimize my website for mobile users?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Yes! All our websites are designed with mobile-first in mind. With a majority of internet traffic coming from mobile devices, we ensure that your website is responsive, loads quickly, and provides an optimal experience across all screen sizes and devices.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: What makes your 13+ years' experience different from other SEO agencies in India?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Most agencies offer templated solutions with basic SEO knowledge. Our <strong>13+ years of hands-on experience</strong> means we've actually built, tested, and optimised strategies through every major Google update since 2011. We understand what works long-term, not just short-term ranking tricks.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: How do you ensure that my website ranks well on Google?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Our SEO website development process includes optimizing your site for critical SEO factors like page speed, core web vitals, structured data (schema markup), and internal linking. We also ensure your content is optimized for both user intent and Google's algorithms to help you rank higher for relevant search queries.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Can you help with GST compliance and Indian business requirements?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Absolutely. Our <strong>web development seo services</strong> include guidance for GST integration, Indian server selection, and compliance with local data protection and business laws. We understand Indian market requirements from years of local client work.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: Will the website be optimized for local SEO and location-based searches?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Absolutely. We focus on local SEO optimization, which is crucial for businesses targeting customers in specific geographic locations. From integrating location-based keywords to optimizing your Google My Business profile and creating location-specific landing pages, we ensure that your website ranks well for relevant local searches.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How do you stay updated with SEO changes after 13+ years in the field?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> <strong>13+ years of experience</strong> has taught us to anticipate and adapt to Google's direction. We monitor algorithm updates, participate in SEO communities, test strategies on our own sites first, and maintain relationships with other long-term SEO professionals globally.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: How long does it take to develop an SEO-optimized website?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> The development timeline depends on the complexity of your website, but typically, it takes about 4-6 weeks for a fully SEO-optimized website to be completed. This includes stages like research, design, development, content optimization, and testing. We'll keep you updated throughout the process to ensure the website aligns with your business goals.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Can you guarantee results based on your 13+ years' experience?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> While no ethical SEO can guarantee specific rankings, our <strong>13+ years of consistent client success</strong> allows us to make confident predictions about timeline and improvement potential. We provide realistic expectations based on proven data and industry knowledge.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: Do you also handle the technical aspects of SEO for my website?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Yes, technical SEO is a crucial part of the SEO website development process. We focus on optimizing the back-end structure of your website, ensuring that it's crawlable, fast-loading, secure (with HTTPS), and follows best practices for technical SEO. This includes creating an XML sitemap, optimizing robots.txt, and setting up structured data to help search engines understand your website better.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: Do you accept UPI, NEFT, and other Indian payment methods?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> Yes, we accept all standard Indian payment methods including UPI, NEFT, RTGS, and major credit/debit cards. All transactions include proper invoicing for your business records and GST compliance.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: How do you ensure that my website is fast and optimized for performance?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Website speed is crucial for SEO and user experience. We use a combination of image compression, code minification, caching strategies, and CDN integration to ensure your website loads quickly. Additionally, we optimize your website for Core Web Vitals, which is an important ranking factor for Google.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: How has your approach changed over 13+ years of SEO experience?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> We've evolved from keyword-stuffing and link-building tactics to user-focused, technically excellent strategies. <strong>13+ years of experience</strong> has shown us that sustainable SEO success comes from building genuinely valuable websites that serve users while meeting technical requirements.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: Will you provide support after my website is developed?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Yes! We provide post-launch support to ensure your website continues to perform well. This includes monitoring SEO performance, troubleshooting any issues, and offering guidance on how to update or add new content to maintain your rankings.</p>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 shadow-lg">
-                  <h3 className="text-xl font-bold mb-3">Q: What's your biggest advantage after 13+ years in SEO website development?</h3>
-                  <p className="text-gray-600"><strong>A:</strong> <strong>Pattern recognition.</strong> After 13+ years, we can quickly identify what will and won't work for your specific business and market. This saves months of testing and gets you results faster with strategies we know succeed in the Indian market.</p>
+                  <h3 className="text-xl font-bold mb-3">Q: Do you provide content for the website, or should I supply it?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> We can assist with SEO-optimized content creation, including writing compelling copy with targeted keywords, meta descriptions, and headlines. However, if you already have content, we can work with your existing material to optimize it for both SEO and user engagement.</p>
+                </div>
+
+                <div className="bg-white rounded-2xl p-6 shadow-lg">
+                  <h3 className="text-xl font-bold mb-3">Q: Will my website be built with future SEO updates in mind?</h3>
+                  <p className="text-gray-600"><strong>A:</strong> Absolutely. We build websites with scalability and future-proofing in mind, ensuring they remain optimized even as SEO trends and Google algorithms evolve. Whether it's adopting new SEO techniques or preparing for major algorithm changes, your website will be ready for the future.</p>
                 </div>
               </div>
             </div>
@@ -1565,78 +1742,11 @@ export default function SEOWebsiteDevelopmentServicePage() {
           <div className="container mx-auto px-4 sm:px-6 text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Ready to Leverage 13+ Years' SEO Expertise for Your Indian Business?
+                Ready to Leverage SEO Expertise for Your Indian Business?
               </h2>
               <p className="text-lg sm:text-xl text-white/90 mb-8">
-                Don't waste time and money on agencies that promise the world but can't deliver proven results. Partner with <strong>13+ years of demonstrated SEO expertise</strong> and watch your Indian business dominate local and national search results.
+                Don't waste time and money on agencies that promise the world but can't deliver proven results. Partner with <strong>demonstrated SEO expertise</strong> and watch your Indian business dominate local and national search results.
               </p>
-
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 mb-8">
-                <h3 className="text-2xl font-bold text-white mb-6">Get Your Expert SEO Consultation</h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl">📱</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-semibold">Direct Line:</p>
-                      <a href="tel:+918094888157" className="text-white/90 hover:text-white">+91 8094888157 (Call/WhatsApp)</a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl">📧</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-semibold">Email:</p>
-                      <a href="mailto:seoshouts@gmail.com" className="text-white/90 hover:text-white">seoshouts@gmail.com</a>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl">🌐</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-semibold">View 13+ Years' Portfolio:</p>
-                      <p className="text-white/90 text-sm">Indian Client Success Stories</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl">📅</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-semibold">Book Expert Strategy Call:</p>
-                      <p className="text-white/90 text-sm">Schedule Free Consultation</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8">
-                <h3 className="text-xl font-bold text-white mb-4">Free SEO Analysis Available</h3>
-                <p className="text-white/90 mb-4">
-                  Send us your current website, and we'll provide a detailed analysis based on <strong>13+ years of SEO expertise</strong>—showing exactly what's holding back your Indian search rankings and how to fix it.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-white font-bold">💰</span>
-                    <span className="text-white"><strong>Transparent Pricing:</strong> All costs clearly mentioned + GST</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-white font-bold">📋</span>
-                    <span className="text-white"><strong>Proper Documentation:</strong> GST invoices provided for business compliance</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-white font-bold">🇮🇳</span>
-                    <span className="text-white"><strong>Indian Focus:</strong> Built for Indian networks, devices, and search behaviour</span>
-                  </div>
-                </div>
-              </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <a
@@ -1661,7 +1771,7 @@ export default function SEOWebsiteDevelopmentServicePage() {
 
               <div className="text-center">
                 <p className="text-white font-bold text-xl mb-4">
-                  SEOShouts: 13+ Years of Proven SEO Success for Indian Businesses
+                  SEOShouts: Proven SEO Success for Indian Businesses
                 </p>
                 <p className="text-white/80 italic">
                   Where experience meets expertise. Where results speak louder than promises.

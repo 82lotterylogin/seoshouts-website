@@ -63,6 +63,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const serviceLabels: Record<string, string> = {
+      'local-seo': 'Local SEO',
+      'ecommerce-seo': 'eCommerce SEO',
+      'website-development': 'SEO Website Development',
+      'technical-audit': 'Technical SEO Audit',
+      'link-building': 'Link Building',
+      'seo-consulting': 'SEO Consulting',
+      'not-sure': 'Not Sure - Need Guidance'
+    };
+
+    const budgetLabels: Record<string, string> = {
+      'under-25k': 'Under INR 25,000',
+      '25k-50k': 'INR 25,000 - INR 50,000',
+      '50k-100k': 'INR 50,000 - INR 100,000',
+      '100k-200k': 'INR 100,000 - INR 200,000',
+      'above-200k': 'Above INR 200,000',
+      'website-static': 'SEO Optimised Static Website - INR 8,500',
+      'website-backend': 'SEO Optimised Website with Backend - INR 21,000',
+      'website-ecommerce': 'SEO Optimised eCommerce Website - INR 42,000',
+      'discuss': 'Discuss Budget'
+    };
+
+    const formattedService = service ? (serviceLabels[service] || service) : 'Not selected';
+    const formattedBudget = budget ? (budgetLabels[budget] || budget) : 'Not selected';
+
     // Log the submission (will appear in your server console)
     console.log('📧 Contact Form Submission:', {
       name,
@@ -70,8 +95,8 @@ export async function POST(request: NextRequest) {
       phone,
       company,
       website,
-      service,
-      budget,
+      service: formattedService,
+      budget: formattedBudget,
       message,
       timestamp: new Date().toISOString()
     });
@@ -96,7 +121,7 @@ export async function POST(request: NextRequest) {
           from: `"SEO Shouts Contact Form" <${process.env.SMTP_USER}>`,
           to: 'seoshouts@gmail.com',
           replyTo: email,
-          subject: `🎯 New SEO Inquiry from ${name} - ${service || 'General'}`,
+          subject: `🎯 New SEO Inquiry from ${name} - ${formattedService}`,
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
               <h1 style="color: #3b82f6;">🎯 New Contact Form Submission</h1>
@@ -105,8 +130,8 @@ export async function POST(request: NextRequest) {
               <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
               <p><strong>Company:</strong> ${company || 'Not provided'}</p>
               <p><strong>Website:</strong> ${website || 'Not provided'}</p>
-              <p><strong>Service:</strong> ${service || 'Not selected'}</p>
-              <p><strong>Budget:</strong> ${budget || 'Not selected'}</p>
+              <p><strong>Service:</strong> ${formattedService}</p>
+              <p><strong>Budget:</strong> ${formattedBudget}</p>
               <p><strong>Message:</strong><br>${message.replace(/\n/g, '<br>')}</p>
               <p><small>Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST</small></p>
             </div>

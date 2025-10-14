@@ -18,11 +18,42 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+
+  const generalBudgetOptions = [
+    { value: 'under-25k', label: 'Under INR 25,000' },
+    { value: '25k-50k', label: 'INR 25,000 - INR 50,000' },
+    { value: '50k-100k', label: 'INR 50,000 - INR 100,000' },
+    { value: '100k-200k', label: 'INR 100,000 - INR 200,000' },
+    { value: 'above-200k', label: 'Above INR 200,000' },
+    { value: 'discuss', label: 'Discuss Budget' },
+  ]
+
+  const websiteDevelopmentBudgetOptions = [
+    { value: 'website-static', label: 'SEO Optimised Static Website - INR 8,500' },
+    { value: 'website-backend', label: 'SEO Optimised Website with Backend - INR 21,000' },
+    { value: 'website-ecommerce', label: 'SEO Optimised eCommerce Website - INR 42,000' },
+    { value: 'discuss', label: 'Discuss Custom Website Budget' },
+  ]
   
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
+
+    if (name === 'service') {
+      setFormData(prev => {
+        const isWebsiteDevelopment = value === 'website-development'
+        const budgetIsWebsiteSpecific = websiteDevelopmentBudgetOptions.some(option => option.value === prev.budget)
+
+        return {
+          ...prev,
+          service: value,
+          budget: isWebsiteDevelopment || budgetIsWebsiteSpecific ? '' : prev.budget,
+        }
+      })
+      return
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -247,12 +278,11 @@ export default function ContactForm() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">Select budget range</option>
-              <option value="under-25k">Under ₹25,000</option>
-              <option value="25k-50k">₹25,000 - ₹50,000</option>
-              <option value="50k-100k">₹50,000 - ₹1,00,000</option>
-              <option value="100k-200k">₹1,00,000 - ₹2,00,000</option>
-              <option value="above-200k">Above ₹2,00,000</option>
-              <option value="discuss">Discuss Budget</option>
+              {(formData.service === 'website-development' ? websiteDevelopmentBudgetOptions : generalBudgetOptions).map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
         </div>
