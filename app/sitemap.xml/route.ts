@@ -30,6 +30,7 @@ export async function GET() {
     { url: '/services/technical-seo-audit/', priority: '0.8', changefreq: 'monthly' },
     { url: '/services/seo-consulting/', priority: '0.8', changefreq: 'monthly' },
     { url: '/services/seo-website-development/', priority: '0.8', changefreq: 'monthly' },
+    { url: '/services/seo-website-development-usa/', priority: '0.8', changefreq: 'monthly' },
     { url: '/services/link-building/', priority: '0.8', changefreq: 'monthly' },
   ];
 
