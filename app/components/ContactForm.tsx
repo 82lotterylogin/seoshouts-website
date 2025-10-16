@@ -1,9 +1,13 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 export default function ContactForm() {
+  const searchParams = useSearchParams()
+  const region = searchParams.get('region') // 'usa' or null
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -14,7 +18,7 @@ export default function ContactForm() {
     budget: '',
     message: ''
   })
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
@@ -28,10 +32,26 @@ export default function ContactForm() {
     { value: 'discuss', label: 'Discuss Budget' },
   ]
 
+  const generalBudgetOptionsUSA = [
+    { value: 'under-300', label: 'Under $300' },
+    { value: '300-600', label: '$300 - $600' },
+    { value: '600-1200', label: '$600 - $1,200' },
+    { value: '1200-2400', label: '$1,200 - $2,400' },
+    { value: 'above-2400', label: 'Above $2,400' },
+    { value: 'discuss', label: 'Discuss Budget' },
+  ]
+
   const websiteDevelopmentBudgetOptions = [
     { value: 'website-static', label: 'SEO Optimised Static Website - INR 8,500' },
     { value: 'website-backend', label: 'SEO Optimised Website with Backend - INR 21,000' },
     { value: 'website-ecommerce', label: 'SEO Optimised eCommerce Website - INR 42,000' },
+    { value: 'discuss', label: 'Discuss Custom Website Budget' },
+  ]
+
+  const websiteDevelopmentBudgetOptionsUSA = [
+    { value: 'website-static-usa', label: 'SEO Optimized Static Website - $100' },
+    { value: 'website-backend-usa', label: 'SEO Optimized Website with Backend - $250' },
+    { value: 'website-ecommerce-usa', label: 'SEO Optimized eCommerce Website - $500' },
     { value: 'discuss', label: 'Discuss Custom Website Budget' },
   ]
   
@@ -278,11 +298,23 @@ export default function ContactForm() {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="">Select budget range</option>
-              {(formData.service === 'website-development' ? websiteDevelopmentBudgetOptions : generalBudgetOptions).map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+              {(() => {
+                const isUSA = region === 'usa'
+                const isWebDev = formData.service === 'website-development'
+
+                let options
+                if (isWebDev) {
+                  options = isUSA ? websiteDevelopmentBudgetOptionsUSA : websiteDevelopmentBudgetOptions
+                } else {
+                  options = isUSA ? generalBudgetOptionsUSA : generalBudgetOptions
+                }
+
+                return options.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))
+              })()}
             </select>
           </div>
         </div>
