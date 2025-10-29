@@ -59,7 +59,10 @@
       "Bash(if [ -f .env.local ])",
       "Bash(else echo \".env.local not found\")",
       "Bash(fi)",
-      "WebFetch(domain:wattup.in)"
+      "WebFetch(domain:wattup.in)",
+      "Bash(git check-ignore:*)",
+      "Bash(npx shadcn@latest add tooltip)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

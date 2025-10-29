@@ -3310,45 +3310,73 @@ function analyzeModernSEO(data: any): any {
 // Fetch Google PageSpeed Insights data (requires API key)
 async function getPageSpeedInsights(url: string) {
   const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
-  
+
   if (!apiKey) {
-    return {
-      error: 'PageSpeed Insights API key not configured',
-      hasData: false
-    };
+    return null;
   }
 
   try {
-    const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo`;
-    
-    const response = await fetch(apiUrl, {
-      signal: AbortSignal.timeout(30000) // 30 second timeout
-    });
+    // Fetch both mobile and desktop PageSpeed data in parallel
+    const [mobileResponse, desktopResponse] = await Promise.all([
+      fetch(`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}&strategy=mobile`, {
+        signal: AbortSignal.timeout(50000)
+      }),
+      fetch(`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&key=${apiKey}&strategy=desktop`, {
+        signal: AbortSignal.timeout(50000)
+      })
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`PageSpeed API error: ${response.status}`);
+    if (!mobileResponse.ok || !desktopResponse.ok) {
+      throw new Error('PageSpeed API error');
     }
 
-    const data = await response.json();
-    
+    const [mobileData, desktopData] = await Promise.all([
+      mobileResponse.json(),
+      desktopResponse.json()
+    ]);
+
+    // Helper function to extract Core Web Vitals with proper status
+    const extractCoreWebVitals = (lighthouseData: any) => {
+      const lcp = lighthouseData?.audits?.['largest-contentful-paint'];
+      const inp = lighthouseData?.audits?.['interaction-to-next-paint'] || lighthouseData?.audits?.['max-potential-fid'];
+      const cls = lighthouseData?.audits?.['cumulative-layout-shift'];
+
+      const getStatus = (score: number | undefined) => {
+        if (!score) return 'poor';
+        if (score >= 0.9) return 'good';
+        if (score >= 0.5) return 'needs-improvement';
+        return 'poor';
+      };
+
+      return {
+        LCP: {
+          value: lcp?.numericValue || 0,
+          status: getStatus(lcp?.score)
+        },
+        INP: {
+          value: inp?.numericValue || 0,
+          status: getStatus(inp?.score)
+        },
+        CLS: {
+          value: cls?.numericValue || 0,
+          status: getStatus(cls?.score)
+        }
+      };
+    };
+
     return {
-      hasData: true,
-      performanceScore: data.lighthouseResult?.categories?.performance?.score * 100 || 0,
-      accessibilityScore: data.lighthouseResult?.categories?.accessibility?.score * 100 || 0,
-      bestPracticesScore: data.lighthouseResult?.categories?.['best-practices']?.score * 100 || 0,
-      seoScore: data.lighthouseResult?.categories?.seo?.score * 100 || 0,
-      coreWebVitals: {
-        lcp: data.lighthouseResult?.audits?.['largest-contentful-paint']?.displayValue || 'N/A',
-        inp: data.lighthouseResult?.audits?.['max-potential-fid']?.displayValue || 'N/A',
-        cls: data.lighthouseResult?.audits?.['cumulative-layout-shift']?.displayValue || 'N/A'
+      desktop: {
+        score: Math.round((desktopData.lighthouseResult?.categories?.performance?.score || 0) * 100),
+        coreWebVitals: extractCoreWebVitals(desktopData.lighthouseResult)
+      },
+      mobile: {
+        score: Math.round((mobileData.lighthouseResult?.categories?.performance?.score || 0) * 100),
+        coreWebVitals: extractCoreWebVitals(mobileData.lighthouseResult)
       }
     };
   } catch (error) {
     console.error('PageSpeed Insights error:', error);
-    return {
-      error: 'Failed to fetch PageSpeed data',
-      hasData: false
-    };
+    return null;
   }
 }
 
@@ -3409,18 +3437,19 @@ export async function POST(request: NextRequest) {
     const analysis = analyzeSEO(parsedData, url, response);
     
     // Get PageSpeed Insights data (optional)
-    const pageSpeedData = await getPageSpeedInsights(url);
-    
+    const pageSpeed = await getPageSpeedInsights(url);
+
     // Add PageSpeed data to technical SEO if available
-    if (pageSpeedData.hasData) {
+    if (pageSpeed) {
+      const mobileScore = pageSpeed.mobile.score;
       analysis.factors.technicalSEO.checks.push({
         factor: 'Core Web Vitals',
-        status: (pageSpeedData.performanceScore ?? 0) >= 90 ? 'good' : (pageSpeedData.performanceScore ?? 0) >= 50 ? 'warning' : 'critical',
-        description: `Performance Score: ${Math.round(pageSpeedData.performanceScore ?? 0)}/100, LCP: ${pageSpeedData.coreWebVitals?.lcp ?? 'N/A'}, CLS: ${pageSpeedData.coreWebVitals?.cls ?? 'N/A'}`
+        status: mobileScore >= 90 ? 'good' : mobileScore >= 50 ? 'warning' : 'critical',
+        description: `Mobile Performance Score: ${mobileScore}/100, Desktop: ${pageSpeed.desktop.score}/100`
       });
-      
+
       // Update technical SEO score based on performance
-      const performanceBonus = Math.round((pageSpeedData.performanceScore ?? 0) / 5);
+      const performanceBonus = Math.round(mobileScore / 5);
       analysis.factors.technicalSEO.score = Math.min(analysis.factors.technicalSEO.score + performanceBonus, 100);
     }
 
@@ -3433,7 +3462,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       analysis,
-      pageSpeedData: pageSpeedData.hasData ? pageSpeedData : null,
+      pageSpeed: pageSpeed,
       timestamp: new Date().toISOString()
     }, { headers: getSecurityHeaders() });
 

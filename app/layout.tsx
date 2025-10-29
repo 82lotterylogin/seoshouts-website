@@ -1,6 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import ScrollToTop from './components/ScrollToTop'
+import FloatingContactPopup from './components/FloatingContactPopup'
 import './globals.css'
 
 export default function RootLayout({
@@ -651,6 +652,9 @@ export default function RootLayout({
         
         {/* Scroll to Top - Available across all pages */}
         <ScrollToTop />
+
+        {/* Floating Contact Popup - Available across all pages */}
+        <FloatingContactPopup />
         {/* Footer - Updated with SEO Website Development */}
         <footer className="bg-gray-900 text-white py-16 sm:py-20 relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>

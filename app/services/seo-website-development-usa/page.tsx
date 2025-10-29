@@ -566,13 +566,7 @@ export default function SEOWebsiteDevelopmentUSAPage() {
                       <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                       </svg>
-                      <span>XML sitemap and robots.txt optimization based on <strong>years of crawl budget analysis</strong></span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                      </svg>
-                      <span>Google Search Console and Analytics 4 setup with US market focus</span>
+                      <span>Google Search Console and Analytics 4 setup</span>
                     </li>
                     <li className="flex items-start gap-2 text-sm">
                       <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -608,7 +602,7 @@ export default function SEOWebsiteDevelopmentUSAPage() {
                       <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                       </svg>
-                      <span>Custom content management system designed with <strong>SEO best practices from over 13 years of development</strong></span>
+                      <span>Custom content management system designed with <strong>SEO best practices</strong></span>
                     </li>
                     <li className="flex items-start gap-2 text-sm">
                       <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -632,12 +626,6 @@ export default function SEOWebsiteDevelopmentUSAPage() {
                       <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                       </svg>
-                      <span>Database optimization techniques refined through <strong>years of high-traffic website management</strong></span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                      </svg>
                       <span>Advanced security protocols, spam prevention, and US privacy law compliance</span>
                     </li>
                     <li className="flex items-start gap-2 text-sm">
@@ -645,12 +633,6 @@ export default function SEOWebsiteDevelopmentUSAPage() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                       </svg>
                       <span>Built-in analytics dashboard tracking <strong>conversion-focused SEO metrics</strong> from extensive client reporting</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                      </svg>
-                      <span><strong>Comprehensive SEO training</strong> for your team based on proven methodologies</span>
                     </li>
                     <li className="flex items-start gap-2 text-sm">
                       <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -707,19 +689,7 @@ export default function SEOWebsiteDevelopmentUSAPage() {
                       <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
                       </svg>
-                      <span>Category and product page SEO using <strong>long-tail keyword strategies</strong> from extensive US market research</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                      </svg>
                       <span>Inventory management optimized for American shopping patterns (Black Friday, Cyber Monday, holiday seasons)</span>
-                    </li>
-                    <li className="flex items-start gap-2 text-sm">
-                      <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                      </svg>
-                      <span><strong>Conversion tracking and analytics</strong> based on proven eCommerce SEO methodologies and A/B testing</span>
                     </li>
                     <li className="flex items-start gap-2 text-sm">
                       <svg className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
