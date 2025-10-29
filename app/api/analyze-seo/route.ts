@@ -3439,6 +3439,10 @@ export async function POST(request: NextRequest) {
     // Get PageSpeed Insights data (optional)
     const pageSpeed = await getPageSpeedInsights(url);
 
+    if (!pageSpeed) {
+      console.warn('PageSpeed Insights data not available - API key may be missing');
+    }
+
     // Add PageSpeed data to technical SEO if available
     if (pageSpeed) {
       const mobileScore = pageSpeed.mobile.score;

@@ -62,7 +62,8 @@
       "WebFetch(domain:wattup.in)",
       "Bash(git check-ignore:*)",
       "Bash(npx shadcn@latest add tooltip)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(then grep -E \"GOOGLE_PAGESPEED_API_KEY\" .env.local)"
     ],
     "deny": [],
     "ask": []

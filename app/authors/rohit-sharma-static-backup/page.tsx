@@ -339,7 +339,7 @@ export default async function RohitSharmaAuthorPage() {
                   <div className="text-sm">
                     <div className="font-medium text-gray-900">SEO Manager</div>
                     <div className="text-gray-600">The Poised Media</div>
-                    <div className="text-gray-500">2022 - Present</div>
+                    <div className="text-gray-500">2022 - 2024</div>
                   </div>
                   <div className="text-sm">
                     <div className="font-medium text-gray-900">Senior SEO Account Manager</div>

@@ -102,7 +102,7 @@ export default function MeetTheExperts() {
               SEO Guy Who Ranks
             </span>
             <div className="bg-blue-50 px-4 py-2 rounded-xl font-semibold text-blue-900 mt-1 mb-1 text-[15px]">
-              Local SEO &bull; Global SEO &bull; eCommerce SEO
+              SEO Developer &bull; Local SEO &bull; Global SEO &bull; eCommerce SEO
             </div>
             <p className="text-gray-600 text-sm mt-2 mb-2">
               Built SEOShouts out of frustration. Now, I build growth engines for businesses with practical, battle-tested SEO. No magic. Just strategies that outlive Google updates.
@@ -141,7 +141,7 @@ export default function MeetTheExperts() {
               Ads & Social Guy
             </span>
             <div className="bg-blue-50 px-4 py-2 rounded-xl font-semibold text-blue-900 mt-1 mb-1 text-[15px]">
-              Local SEO &bull; Global SEO &bull; eCommerce SEO
+              Facebook Ads &bull; Google Ads
             </div>
             <p className="text-gray-700 text-sm mt-2 mb-2">
               Passionate about what truly makes people click. I run ads that perform, not just "spend," and turn social into a profit channel, not just a pretty page.

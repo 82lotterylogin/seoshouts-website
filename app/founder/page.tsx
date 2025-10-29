@@ -3,7 +3,7 @@ import { getAllStories } from '../lib/storyblok'
 
 export const metadata: Metadata = {
   title: 'Rohit Sharma — Founder & CEO | The Story Behind SEOShouts',
-  description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 12+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.',
+  description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 13+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.',
   keywords: 'Rohit Sharma founder, SEOShouts CEO, SEO industry leader, entrepreneur story, digital marketing founder, SEO agency founder, India SEO expert',
   authors: [{ name: 'Rohit Sharma' }],
   creator: 'Rohit Sharma',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Rohit Sharma — Founder & CEO | The Story Behind SEOShouts',
-    description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 12+ year journey from SEO trainee to industry leader.',
+    description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 13+ year journey from SEO trainee to industry leader.',
     url: '/founder',
     siteName: 'SEO Shouts',
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Rohit Sharma — Founder & CEO | The Story Behind SEOShouts',
-    description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 12+ year journey from SEO trainee to industry leader.',
+    description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 13+ year journey from SEO trainee to industry leader.',
     images: ['/images/team/rohit-sharma.jpg'],
   },
   robots: {
@@ -113,7 +113,7 @@ export default async function FounderPage() {
                 {/* Key Metrics */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-600">12+</div>
+                    <div className="text-3xl font-bold text-blue-600">13+</div>
                     <div className="text-sm text-gray-600 uppercase tracking-wide">Years Experience</div>
                   </div>
                   <div className="text-center">
@@ -141,8 +141,8 @@ export default async function FounderPage() {
                     </svg>
                     Read My Story
                   </a>
-                  <a 
-                    href="mailto:rohit@seoshouts.com"
+                  <a
+                    href="mailto:seoshouts@gmail.com"
                     className="inline-flex items-center justify-center gap-2 bg-white border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,9 +204,9 @@ export default async function FounderPage() {
               <div className="prose prose-lg max-w-none">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">The Spark of Innovation</h3>
                 <p className="text-gray-700 leading-relaxed mb-6">
-                  Rohit Sharma is the founder of SEOShouts and the primary author behind its research, playbooks, 
-                  and case notes. A results-driven SEO strategist with 10+ years of experience, he helps local, 
-                  eCommerce, and B2B brands turn search visibility into qualified leads and revenue. His work 
+                  Rohit Sharma is the founder of SEOShouts and the primary author behind its research, playbooks,
+                  and case notes. A results-driven SEO strategist with 13+ years of experience, he helps local,
+                  eCommerce, and B2B brands turn search visibility into qualified leads and revenue. His work
                   blends technical SEO, content strategy, and data-led execution.
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -231,14 +231,14 @@ export default async function FounderPage() {
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
                   <div>
                     <span className="font-semibold text-gray-900">Experience:</span>
-                    <span className="text-gray-700 ml-2">2013–2025 (agency and in-house)</span>
+                    <span className="text-gray-700 ml-2">2013–2024 (agency and in-house)</span>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
                   <div>
                     <span className="font-semibold text-gray-900">Specialties:</span>
-                    <span className="text-gray-700 ml-2">Technical SEO, Local SEO (GBP), Content Strategy, Authority Building</span>
+                    <span className="text-gray-700 ml-2">Technical SEO, Local SEO (GBP), eCommerce SEO, SEO Development, Content Strategy, Authority Building</span>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -262,7 +262,7 @@ export default async function FounderPage() {
               Areas of Expertise
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Specialized skills and services developed through 12+ years of hands-on SEO experience
+              Specialized skills and services developed through 13+ years of hands-on SEO experience
             </p>
           </div>
 
@@ -393,7 +393,7 @@ export default async function FounderPage() {
               Professional Journey
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From SEO trainee to industry leader - 12 years of continuous learning and growth
+              From SEO trainee to industry leader - 13 years of continuous learning and growth
             </p>
           </div>
 
@@ -404,7 +404,7 @@ export default async function FounderPage() {
             <div className="space-y-12">
               {[
                 {
-                  year: "2022-2025",
+                  year: "2022-2024",
                   title: "SEO Manager — The Poised Media",
                   description: "Leads technical, on-page, and off-page programs for B2B portfolios; aligns roadmaps with business outcomes; mentors teams; maintains rigorous reporting.",
                   side: "right",
@@ -496,7 +496,7 @@ export default async function FounderPage() {
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
               <h3 className="text-lg font-bold text-purple-900 mb-4">Development</h3>
               <div className="flex flex-wrap gap-2">
-                {['WordPress', 'Shopify', 'Wix', 'HTML/CSS'].map((tech) => (
+                {['WordPress', 'Shopify', 'Wix', 'HTML/CSS', 'Custom Development'].map((tech) => (
                   <span key={tech} className="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
                     {tech}
                   </span>
@@ -505,9 +505,9 @@ export default async function FounderPage() {
             </div>
 
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-6 border border-orange-200">
-              <h3 className="text-lg font-bold text-orange-900 mb-4">Management</h3>
+              <h3 className="text-lg font-bold text-orange-900 mb-4">Other Skills</h3>
               <div className="flex flex-wrap gap-2">
-                {['Photoshop', 'Canva', 'Asana'].map((tool) => (
+                {['Photoshop', 'Canva', 'Asana', 'Claude', 'Gemini', 'ChatGPT'].map((tool) => (
                   <span key={tool} className="bg-orange-200 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
                     {tool}
                   </span>
@@ -610,7 +610,7 @@ export default async function FounderPage() {
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-gray-700">Founded SEOShouts in 2024 to democratize access to professional SEO tools and insights.</p>
+                    <p className="text-gray-700">Founded SEOShouts in 2016 to democratize access to professional SEO tools and insights.</p>
                   </div>
                 </div>
               </div>
@@ -631,8 +631,8 @@ export default async function FounderPage() {
           </p>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
-            <a 
-              href="mailto:rohit@seoshouts.com"
+            <a
+              href="mailto:seoshouts@gmail.com"
               className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 group"
             >
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-all">
@@ -641,7 +641,7 @@ export default async function FounderPage() {
                 </svg>
               </div>
               <h3 className="font-bold text-xl mb-2">Email Me</h3>
-              <p className="text-blue-100">rohit@seoshouts.com</p>
+              <p className="text-blue-100">seoshouts@gmail.com</p>
             </a>
 
             <a 
@@ -697,7 +697,7 @@ export default async function FounderPage() {
             "foundingDate": "2024",
             "url": "https://seoshouts.com/founder",
             "image": "https://seoshouts.com/images/team/rohit-sharma.jpg",
-            "description": "Visionary founder and CEO behind SEOShouts. 12+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.",
+            "description": "Visionary founder and CEO behind SEOShouts. 13+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.",
             "knowsAbout": [
               "Search Engine Optimization",
               "Local SEO",
@@ -717,7 +717,7 @@ export default async function FounderPage() {
               }
             },
             "alumniOf": "Techno India NJR Institute of Technology, Udaipur",
-            "email": "rohit@seoshouts.com",
+            "email": "seoshouts@gmail.com",
             "telephone": "+918094888157",
             "address": {
               "@type": "PostalAddress",
@@ -729,7 +729,7 @@ export default async function FounderPage() {
               "https://seoshouts.com/authors/rohit-sharma"
             ],
             "award": [
-              "12+ Years SEO Excellence", 
+              "13+ Years SEO Excellence",
               "65+ Happy Clients Served",
               "150+ Projects Completed",
               "95% Client Success Rate"

@@ -63,6 +63,8 @@ export default function CoreWebVitalsQuickCheck() {
       if (response.ok && data.pageSpeed) {
         // Data is now in the correct format from the API
         setResult(data.pageSpeed)
+      } else if (response.ok && !data.pageSpeed) {
+        setError('Performance data unavailable. The PageSpeed API may be temporarily down or not configured.')
       } else {
         setError(data.error || 'Failed to analyze performance. Please try again.')
       }
