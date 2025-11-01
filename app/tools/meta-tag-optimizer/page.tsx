@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'meta tag generator, title tag optimizer, meta description tool, SERP preview, SEO meta tags',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/meta-tag-optimizer',
+    canonical: 'https://seoshouts.com/tools/meta-tag-optimizer/',
   },
   openGraph: {
     title: 'Free Meta Tag Generator and Optimizer Tool | SEO Shouts',
     description: 'Create compelling title tags and meta descriptions that get clicked. Free meta tag generator with real-time SERP preview and optimization tips.',
-    url: 'https://seoshouts.com/tools/meta-tag-optimizer',
+    url: 'https://seoshouts.com/tools/meta-tag-optimizer/',
     siteName: 'SEO Shouts',
     type: 'website',
   },

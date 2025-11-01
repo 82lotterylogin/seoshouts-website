@@ -361,7 +361,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     authors: [{ name: article.author.name }],
     metadataBase: new URL('https://seoshouts.com'),
     alternates: {
-      canonical: `https://seoshouts.com/blog/${slug}`,
+      canonical: `https://seoshouts.com/blog/${slug}/`,
     },
     openGraph: {
       title: article.meta_title || article.title,

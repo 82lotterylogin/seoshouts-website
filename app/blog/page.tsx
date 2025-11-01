@@ -16,12 +16,12 @@ export const metadata: Metadata = {
   category: 'SEO & Digital Marketing',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/blog',
+    canonical: 'https://seoshouts.com/blog/',
   },
   openGraph: {
     title: 'SEO Blog - Latest Insights, Tips & Strategies | SEO Shouts',
     description: 'Get the latest SEO insights, expert articles, and actionable tips from SEO professionals. Stay updated with cutting-edge SEO strategies and digital marketing trends.',
-    url: 'https://seoshouts.com/blog',
+    url: 'https://seoshouts.com/blog/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -246,11 +246,11 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             "@type": "Blog",
             name: "SEO Shouts Blog",
             description: "Latest SEO insights, tips, and strategies from industry experts",
-            url: "https://seoshouts.com/blog",
+            url: "https://seoshouts.com/blog/",
             publisher: {
               "@type": "Organization",
               name: "SEO Shouts",
-              url: "https://seoshouts.com",
+              url: "https://seoshouts.com/",
               logo: {
                 "@type": "ImageObject",
                 url: "https://seoshouts.com/logo.png"
@@ -260,7 +260,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
               "@type": "BlogPosting",
               headline: article.title,
               description: article.excerpt || extractExcerpt(article.content),
-              url: `https://seoshouts.com/blog/${article.slug}`,
+              url: `https://seoshouts.com/blog/${article.slug}/`,
               datePublished: article.published_at || article.created_at,
               dateModified: article.updated_at,
               author: {

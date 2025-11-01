@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Free Trending Hashtag Finder & Generator | SEOShouts',
     description: 'Discover trending hashtags across 15+ platforms with real-time analytics, difficulty scores & AI-powered generation. The most comprehensive free hashtag tool on the internet.',
     type: 'website',
-    url: 'https://seoshouts.com/tools/trending-hashtag-finder',
+    url: 'https://seoshouts.com/tools/trending-hashtag-finder/',
     images: [
       {
         url: 'https://seoshouts.com/og-image.jpg',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['https://seoshouts.com/og-image.jpg'],
   },
   alternates: {
-    canonical: 'https://seoshouts.com/tools/trending-hashtag-finder',
+    canonical: 'https://seoshouts.com/tools/trending-hashtag-finder/',
   },
 };
 
@@ -36,7 +36,7 @@ const jsonLd = {
   name: 'Trending Hashtag Finder & Generator',
   applicationCategory: 'Social Media Tool',
   description: 'Free tool to find trending hashtags and generate viral hashtags across 15+ social media platforms with real-time analytics.',
-  url: 'https://seoshouts.com/tools/trending-hashtag-finder',
+  url: 'https://seoshouts.com/tools/trending-hashtag-finder/',
   provider: {
     '@type': 'Organization',
     name: 'SEOShouts',

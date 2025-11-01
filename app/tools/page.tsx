@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   publisher: 'SEO Shouts',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools',
+    canonical: 'https://seoshouts.com/tools/',
   },
   openGraph: {
     title: 'Free SEO Tools - 15 Professional Tools | SEO Shouts',
     description: 'Access 15 professional SEO tools for free. Keyword research, technical SEO, content optimization, AI-powered tools, and schema generation.',
-    url: 'https://seoshouts.com/tools',
+    url: 'https://seoshouts.com/tools/',
     siteName: 'SEO Shouts',
     images: [
       {

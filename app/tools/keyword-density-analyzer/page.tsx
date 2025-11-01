@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'keyword density analyzer, keyword density checker, SEO content analysis, keyword optimization, content SEO tool',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/keyword-density-analyzer',
+    canonical: 'https://seoshouts.com/tools/keyword-density-analyzer/',
   },
   openGraph: {
     title: 'Free Keyword Density Analyzer Tool | SEO Shouts',
     description: 'Analyze keyword density and optimize your content for SEO. Free keyword density checker with detailed analysis, recommendations, and top keyword insights.',
-    url: 'https://seoshouts.com/tools/keyword-density-analyzer',
+    url: 'https://seoshouts.com/tools/keyword-density-analyzer/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [

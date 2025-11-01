@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   description: 'Professional eCommerce SEO services for Indian online stores. Product optimization, technical SEO, content marketing, and conversion optimization. 90-day performance guarantee.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/services/ecommerce-seo',
+    canonical: 'https://seoshouts.com/services/ecommerce-seo/',
   },
   openGraph: {
     title: 'eCommerce SEO Services India - Skyrocket Your Online Store Growth | SEO Shouts',
     description: 'Professional eCommerce SEO services for Indian online stores. Technical SEO, product optimization, content marketing, and link building for Shopify, WooCommerce, Magento.',
-    url: 'https://seoshouts.com/services/ecommerce-seo',
+    url: 'https://seoshouts.com/services/ecommerce-seo/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -59,19 +59,19 @@ export default function EcommerceSEOServicePage() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://seoshouts.com"
+                "item": "https://seoshouts.com/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Services",
-                "item": "https://seoshouts.com/services"
+                "item": "https://seoshouts.com/services/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "eCommerce SEO",
-                "item": "https://seoshouts.com/services/ecommerce-seo"
+                "item": "https://seoshouts.com/services/ecommerce-seo/"
               }
             ]
           })
@@ -90,7 +90,7 @@ export default function EcommerceSEOServicePage() {
             "provider": {
               "@type": "Organization",
               "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
+              "url": "https://seoshouts.com/"
             },
             "serviceType": "eCommerce SEO Services",
             "areaServed": {

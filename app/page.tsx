@@ -16,12 +16,12 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com',
+    canonical: 'https://seoshouts.com/',
   },
   openGraph: {
     title: 'SEO Shouts - Professional SEO Tools & Services',
     description: 'Professional SEO tools and services for businesses worldwide. Get free SEO analysis, keyword research, technical audits, and expert SEO consulting.',
-    url: 'https://seoshouts.com',
+    url: 'https://seoshouts.com/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -118,7 +118,7 @@ export default async function HomePage() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://seoshouts.com"
+                "item": "https://seoshouts.com/"
               }
             ]
           })
@@ -137,7 +137,7 @@ export default async function HomePage() {
             "provider": {
               "@type": "Organization",
               "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
+              "url": "https://seoshouts.com/"
             },
             "serviceType": "SEO Services",
             "offers": [
@@ -145,13 +145,13 @@ export default async function HomePage() {
                 "@type": "Offer",
                 "name": "Local SEO",
                 "description": "Dominate local search results and Google My Business optimization.",
-                "url": "https://seoshouts.com/services/local-seo"
+                "url": "https://seoshouts.com/services/local-seo/"
               },
               {
-                "@type": "Offer", 
+                "@type": "Offer",
                 "name": "eCommerce SEO",
                 "description": "Increase online sales with specialized eCommerce SEO strategies.",
-                "url": "https://seoshouts.com/services/ecommerce-seo"
+                "url": "https://seoshouts.com/services/ecommerce-seo/"
               }
             ]
           })

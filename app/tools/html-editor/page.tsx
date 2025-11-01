@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'HTML editor, online HTML editor, live preview HTML, code editor, HTML CSS JS editor, web development tool',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/html-editor',
+    canonical: 'https://seoshouts.com/tools/html-editor/',
   },
   openGraph: {
     title: 'Online HTML5 Editor - Free Online Editor & Preview Tool',
     description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview. Free web development tool.',
-    url: 'https://seoshouts.com/tools/html-editor',
+    url: 'https://seoshouts.com/tools/html-editor/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [

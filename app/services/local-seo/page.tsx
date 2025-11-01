@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   description: 'Professional Local SEO services for Indian businesses. Get found by local customers, dominate Google My Business, and increase foot traffic. 90-day performance guarantee.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/services/local-seo',
+    canonical: 'https://seoshouts.com/services/local-seo/',
   },
   openGraph: {
     title: 'Local SEO Services India - Dominate Your Local Market | SEO Shouts',
     description: 'Professional Local SEO services for Indian businesses. Google My Business optimization, local citations, review management, and multi-language SEO.',
-    url: 'https://seoshouts.com/services/local-seo',
+    url: 'https://seoshouts.com/services/local-seo/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -59,19 +59,19 @@ export default function LocalSEOServicePage() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://seoshouts.com"
+                "item": "https://seoshouts.com/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Services",
-                "item": "https://seoshouts.com/services"
+                "item": "https://seoshouts.com/services/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Local SEO",
-                "item": "https://seoshouts.com/services/local-seo"
+                "item": "https://seoshouts.com/services/local-seo/"
               }
             ]
           })
@@ -90,7 +90,7 @@ export default function LocalSEOServicePage() {
             "provider": {
               "@type": "Organization",
               "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
+              "url": "https://seoshouts.com/"
             },
             "serviceType": "Local SEO Services",
             "areaServed": {

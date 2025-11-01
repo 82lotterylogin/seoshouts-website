@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'internal link checker, anchor text analyzer, internal link analysis, internal linking tool, SEO analysis, anchor text distribution, internal link audit, link checker, anchor cloud, free SEO tool',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/internal-link-checker',
+    canonical: 'https://seoshouts.com/tools/internal-link-checker/',
   },
   openGraph: {
     title: 'Free Internal Link Checker - No Login - Upto 500 Pages Anchor Cloud | SEO Shouts',
     description: 'Free internal link checker with anchor cloud visualization. Analyze up to 500 pages without login. Check anchor text distribution and optimize your internal linking strategy.',
-    url: 'https://seoshouts.com/tools/internal-link-checker',
+    url: 'https://seoshouts.com/tools/internal-link-checker/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [

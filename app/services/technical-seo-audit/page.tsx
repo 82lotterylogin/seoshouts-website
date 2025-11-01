@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   description: 'Professional Technical SEO Audit services by SEOShouts. Site speed optimization, mobile SEO, Core Web Vitals, schema markup, and security audits. Get your custom quote today.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/services/technical-seo-audit',
+    canonical: 'https://seoshouts.com/services/technical-seo-audit/',
   },
   openGraph: {
     title: 'Technical SEO Audit Services - Uncover Hidden Issues Killing Your Rankings | SEO Shouts',
     description: 'Professional Technical SEO Audit services including site speed optimization, mobile SEO, Core Web Vitals, schema markup, and security audits for Indian websites.',
-    url: 'https://seoshouts.com/services/technical-seo-audit',
+    url: 'https://seoshouts.com/services/technical-seo-audit/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -59,19 +59,19 @@ export default function TechnicalSEOAuditServicePage() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://seoshouts.com"
+                "item": "https://seoshouts.com/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Services",
-                "item": "https://seoshouts.com/services"
+                "item": "https://seoshouts.com/services/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Technical SEO Audit",
-                "item": "https://seoshouts.com/services/technical-seo-audit"
+                "item": "https://seoshouts.com/services/technical-seo-audit/"
               }
             ]
           })
@@ -90,7 +90,7 @@ export default function TechnicalSEOAuditServicePage() {
             "provider": {
               "@type": "Organization",
               "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
+              "url": "https://seoshouts.com/"
             },
             "serviceType": "Technical SEO Audit Services",
             "areaServed": {

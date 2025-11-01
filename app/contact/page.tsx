@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   description: 'Ready to boost your search rankings? Contact SEO Shouts for a free SEO analysis. Call +91-809-488-8157 or email contact@seoshouts.com. Based in Rajasthan, serving globally.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/contact',
+    canonical: 'https://seoshouts.com/contact/',
   },
   openGraph: {
     title: 'Contact Us - Get Your Free SEO Analysis | SEO Shouts',
     description: 'Ready to boost your search rankings? Contact SEO Shouts for expert SEO services.',
-    url: 'https://seoshouts.com/contact',
+    url: 'https://seoshouts.com/contact/',
     siteName: 'SEO Shouts',
     images: [
       {

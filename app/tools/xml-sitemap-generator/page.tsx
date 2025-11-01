@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'XML sitemap generator, sitemap creator, SEO sitemap, website sitemap, search engine optimization',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/xml-sitemap-generator',
+    canonical: 'https://seoshouts.com/tools/xml-sitemap-generator/',
   },
   openGraph: {
     title: 'Free XML Sitemap Generator Tool | SEO Shouts',
     description: 'Generate XML sitemaps instantly for better search engine indexing. Free sitemap generator supports up to 500 URLs with custom priority and frequency settings.',
-    url: 'https://seoshouts.com/tools/xml-sitemap-generator',
+    url: 'https://seoshouts.com/tools/xml-sitemap-generator/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [

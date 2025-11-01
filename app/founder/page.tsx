@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: '/founder',
+    canonical: '/founder/',
   },
   openGraph: {
     title: 'Rohit Sharma — Founder & CEO | The Story Behind SEOShouts',
     description: 'Meet Rohit Sharma, the visionary founder and CEO behind SEOShouts. Discover his 13+ year journey from SEO trainee to industry leader.',
-    url: '/founder',
+    url: '/founder/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -695,7 +695,7 @@ export default async function FounderPage() {
               "foundingDate": "2024"
             },
             "foundingDate": "2024",
-            "url": "https://seoshouts.com/founder",
+            "url": "https://seoshouts.com/founder/",
             "image": "https://seoshouts.com/images/team/rohit-sharma.jpg",
             "description": "Visionary founder and CEO behind SEOShouts. 13+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.",
             "knowsAbout": [
@@ -726,7 +726,7 @@ export default async function FounderPage() {
             },
             "sameAs": [
               "https://linkedin.com/in/seowithrohitsharma/",
-              "https://seoshouts.com/authors/rohit-sharma"
+              "https://seoshouts.com/authors/rohit-sharma/"
             ],
             "award": [
               "13+ Years SEO Excellence",

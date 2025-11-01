@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'robots.txt generator, robots txt file, search engine crawling, website security, SEO tools',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/robots-txt-generator',
+    canonical: 'https://seoshouts.com/tools/robots-txt-generator/',
   },
   openGraph: {
     title: 'Free Robots.txt Generator Tool | SEO Shouts',
     description: 'Create perfect robots.txt files without breaking your website. Free generator with templates for WordPress, Shopify, and more.',
-    url: 'https://seoshouts.com/tools/robots-txt-generator',
+    url: 'https://seoshouts.com/tools/robots-txt-generator/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [

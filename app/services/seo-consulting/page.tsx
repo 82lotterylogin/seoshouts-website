@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   description: 'Professional SEO consulting services by SEOShouts. Strategic SEO planning, team training, technical consulting, and performance optimization. Transform your digital presence with expert guidance.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/services/seo-consulting',
+    canonical: 'https://seoshouts.com/services/seo-consulting/',
   },
   openGraph: {
     title: 'SEO Consulting Services - Strategic SEO Leadership & Expert Guidance | SEO Shouts',
     description: 'Professional SEO consulting services including strategic planning, team training, technical consulting, and performance optimization for businesses across India.',
-    url: 'https://seoshouts.com/services/seo-consulting',
+    url: 'https://seoshouts.com/services/seo-consulting/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -59,19 +59,19 @@ export default function SEOConsultingServicePage() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://seoshouts.com"
+                "item": "https://seoshouts.com/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Services",
-                "item": "https://seoshouts.com/services"
+                "item": "https://seoshouts.com/services/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "SEO Consulting",
-                "item": "https://seoshouts.com/services/seo-consulting"
+                "item": "https://seoshouts.com/services/seo-consulting/"
               }
             ]
           })
@@ -90,7 +90,7 @@ export default function SEOConsultingServicePage() {
             "provider": {
               "@type": "Organization",
               "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
+              "url": "https://seoshouts.com/"
             },
             "serviceType": "SEO Consulting Services",
             "areaServed": {

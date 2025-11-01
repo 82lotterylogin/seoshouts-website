@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'keyword difficulty checker, keyword competition analysis, SEO difficulty tool, keyword ranking difficulty',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/keyword-difficulty-checker',
+    canonical: 'https://seoshouts.com/tools/keyword-difficulty-checker/',
   },
   openGraph: {
     title: 'Free Keyword Difficulty Checker Tool | SEO Shouts',
     description: 'Stop wasting time on impossible keywords. Free keyword difficulty checker shows which keywords you can actually rank for with difficulty scores.',
-    url: 'https://seoshouts.com/tools/keyword-difficulty-checker',
+    url: 'https://seoshouts.com/tools/keyword-difficulty-checker/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [

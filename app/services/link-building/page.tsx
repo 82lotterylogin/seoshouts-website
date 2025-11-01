@@ -5,12 +5,12 @@ export const metadata: Metadata = {
   description: 'Professional link building services by SEOShouts. Earn high-quality, relevant backlinks through relationship building and strategic outreach. No spam, no penalties - just sustainable authority building.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/services/link-building',
+    canonical: 'https://seoshouts.com/services/link-building/',
   },
   openGraph: {
     title: 'Link Building Services - Earn High-Quality Backlinks | SEO Shouts',
     description: 'Professional link building services that focus on earning high-quality, relevant backlinks through relationship building and strategic outreach.',
-    url: 'https://seoshouts.com/services/link-building',
+    url: 'https://seoshouts.com/services/link-building/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -167,7 +167,7 @@ export default function LinkBuildingPage() {
             "provider": {
               "@type": "Organization",
               "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
+              "url": "https://seoshouts.com/"
             },
             "areaServed": {
               "@type": "Country",

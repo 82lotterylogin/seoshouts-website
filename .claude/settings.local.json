@@ -63,7 +63,9 @@
       "Bash(git check-ignore:*)",
       "Bash(npx shadcn@latest add tooltip)",
       "Bash(git log:*)",
-      "Bash(then grep -E \"GOOGLE_PAGESPEED_API_KEY\" .env.local)"
+      "Bash(then grep -E \"GOOGLE_PAGESPEED_API_KEY\" .env.local)",
+      "Bash(for dir in */)",
+      "Bash(do tool_name=\"$dir%/\")"
     ],
     "deny": [],
     "ask": []

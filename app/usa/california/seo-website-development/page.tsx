@@ -111,13 +111,13 @@ export default async function CaliforniaSEOWebsiteDevelopmentPage() {
                 "@type": "ListItem",
                 "position": 1,
                 "name": "Home",
-                "item": "https://seoshouts.com"
+                "item": "https://seoshouts.com/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "USA",
-                "item": "https://seoshouts.com/usa"
+                "item": "https://seoshouts.com/usa/"
               },
               {
                 "@type": "ListItem",
@@ -227,7 +227,7 @@ export default async function CaliforniaSEOWebsiteDevelopmentPage() {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "SEOShouts",
-            "url": "https://seoshouts.com",
+            "url": "https://seoshouts.com/",
             "logo": "https://seoshouts.com/logo.png",
             "description": "Professional SEO and website development services",
             "address": {
@@ -260,30 +260,7 @@ export default async function CaliforniaSEOWebsiteDevelopmentPage() {
             "isPartOf": {
               "@type": "WebSite",
               "name": "SEOShouts",
-              "url": "https://seoshouts.com"
-            },
-            "breadcrumb": {
-              "@type": "BreadcrumbList",
-              "itemListElement": [
-                {
-                  "@type": "ListItem",
-                  "position": 1,
-                  "name": "Home",
-                  "item": "https://seoshouts.com"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 2,
-                  "name": "USA",
-                  "item": "https://seoshouts.com/usa"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 3,
-                  "name": "California SEO Website Development",
-                  "item": "https://seoshouts.com/usa/california/seo-website-development/"
-                }
-              ]
+              "url": "https://seoshouts.com/"
             }
           })
         }}

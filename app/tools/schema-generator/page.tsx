@@ -7,12 +7,12 @@ export const metadata: Metadata = {
   keywords: 'schema generator, JSON-LD generator, structured data, schema markup, SEO schema, rich snippets',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: 'https://seoshouts.com/tools/schema-generator',
+    canonical: 'https://seoshouts.com/tools/schema-generator/',
   },
   openGraph: {
     title: 'Free Online Schema Generator - 39 Types - No Login - No Signup - SEOShouts',
     description: 'Free online schema generator with 39 schema types. Generate JSON-LD markup instantly - no login, no signup required. Organization, Article, Product, Event schemas & more.',
-    url: 'https://seoshouts.com/tools/schema-generator',
+    url: 'https://seoshouts.com/tools/schema-generator/',
     siteName: 'SEO Shouts',
     type: 'website',
     images: [
