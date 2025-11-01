@@ -66,7 +66,19 @@
       "Bash(then grep -E \"GOOGLE_PAGESPEED_API_KEY\" .env.local)",
       "Bash(for dir in */)",
       "Bash(do tool_name=\"$dir%/\")",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(/tmp/india_head.txt)",
+      "Bash(/tmp/usa_head.txt)",
+      "Bash(timeout 60 npm run dev:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(for file in app/usa/new-*/seo-website-development/page.tsx app/usa/*carolina/seo-website-development/page.tsx app/usa/*dakota/seo-website-development/page.tsx app/usa/*virginia/seo-website-development/page.tsx app/usa/rhode-island/seo-website-development/page.tsx)",
+      "Bash(do sed -i 's/export default async function New /export default async function New/g; s/export default async function North /export default async function North/g; s/export default async function South /export default async function South/g; s/export default async function West /export default async function West/g; s/export default async function Rhode /export default async function Rhode/g' \"$file\")",
+      "Bash(for state_dir in app/usa/*/seo-website-development)",
+      "Bash(do [ \"$state_dir\" != \"app/usa/california/seo-website-development\" ])",
+      "Bash(timeout 120 npx next build:*)",
+      "Bash(timeout 120 npm run build)",
+      "Bash(timeout 180 npm run build:*)"
     ],
     "deny": [],
     "ask": []
