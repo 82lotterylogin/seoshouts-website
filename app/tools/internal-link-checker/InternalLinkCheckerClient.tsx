@@ -915,13 +915,13 @@ export default function InternalLinkCheckerClient() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-gray-900">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 The Ultimate Tool for Anchor Text Optimization
               </span>
             </h2>
 
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+            <div className="space-y-6 text-lg text-gray-700 leading-relaxed text-center">
               <p>
                 In the world of SEO, a working link is not enough. You need the right link with the right context.
               </p>
@@ -932,45 +932,59 @@ export default function InternalLinkCheckerClient() {
                 Search engines like Google use "Anchor Text" to understand what a page is about. If you use the same keyword too many times, you risk a <strong>"Over-Optimization" penalty</strong>. If you use generic words like "Click Here," you waste a ranking opportunity. Our tool visualizes your data so you can balance your profile perfectly.
               </p>
 
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 mt-8">
-                <h3 className="text-2xl font-bold mb-6 text-gray-800">Key Features</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-1 text-xl">☁️</span>
-                    <div>
-                      <strong className="text-gray-900">Visual Anchor Cloud:</strong>
-                      <span className="text-gray-700"> Instantly see which words dominate your internal linking profile.</span>
+              <div className="mt-12">
+                <h3 className="text-2xl font-bold mb-8 text-gray-800">Key Features</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-6 border border-blue-200 text-left">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                        <span className="text-white text-xl">☁️</span>
+                      </div>
+                      <h4 className="font-bold text-gray-900">Visual Anchor Cloud</h4>
                     </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-1 text-xl">🔍</span>
-                    <div>
-                      <strong className="text-gray-900">Keyword Stuffing Detection:</strong>
-                      <span className="text-gray-700"> Identify if you are aggressively over-using specific keywords.</span>
+                    <p className="text-gray-700 text-sm leading-relaxed">Instantly see which words dominate your internal linking profile.</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-green-50 to-green-100/50 rounded-xl p-6 border border-green-200 text-left">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                        <span className="text-white text-xl">🔍</span>
+                      </div>
+                      <h4 className="font-bold text-gray-900">Keyword Stuffing Detection</h4>
                     </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-1 text-xl">🎯</span>
-                    <div>
-                      <strong className="text-gray-900">Generic Link Finder:</strong>
-                      <span className="text-gray-700"> Spot wasted opportunities like "read more" or "this post."</span>
+                    <p className="text-gray-700 text-sm leading-relaxed">Identify if you are aggressively over-using specific keywords.</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-6 border border-orange-200 text-left">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                        <span className="text-white text-xl">🎯</span>
+                      </div>
+                      <h4 className="font-bold text-gray-900">Generic Link Finder</h4>
                     </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-1 text-xl">🕷️</span>
-                    <div>
-                      <strong className="text-gray-900">Deep Crawl Analysis:</strong>
-                      <span className="text-gray-700"> Scan up to 500 URLs to get a complete picture of your site's semantic structure.</span>
+                    <p className="text-gray-700 text-sm leading-relaxed">Spot wasted opportunities like "read more" or "this post."</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-6 border border-purple-200 text-left">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                        <span className="text-white text-xl">🕷️</span>
+                      </div>
+                      <h4 className="font-bold text-gray-900">Deep Crawl Analysis</h4>
                     </div>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-1 text-xl">🚀</span>
-                    <div>
-                      <strong className="text-gray-900">Zero Barriers:</strong>
-                      <span className="text-gray-700"> No login, no credit card, just instant analysis.</span>
+                    <p className="text-gray-700 text-sm leading-relaxed">Scan up to 500 URLs to get a complete picture of your site's semantic structure.</p>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-pink-50 to-pink-100/50 rounded-xl p-6 border border-pink-200 text-left">
+                    <div className="flex items-center mb-3">
+                      <div className="w-10 h-10 bg-pink-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                        <span className="text-white text-xl">🚀</span>
+                      </div>
+                      <h4 className="font-bold text-gray-900">Zero Barriers</h4>
                     </div>
-                  </li>
-                </ul>
+                    <p className="text-gray-700 text-sm leading-relaxed">No login, no credit card, just instant analysis.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1087,7 +1101,7 @@ export default function InternalLinkCheckerClient() {
                 </p>
                 <div className="bg-blue-100 border border-blue-200 rounded-xl p-3">
                   <p className="text-gray-800 text-sm">
-                    <strong>The Opportunity:</strong> Our tool ensures you are sending clear signals to search engines.
+                    <strong>The Opportunity:</strong> If you use the wrong text (or no text), Google has to guess what the target page is about. Our tool ensures you are sending clear signals.
                   </p>
                 </div>
               </div>
@@ -1145,21 +1159,21 @@ export default function InternalLinkCheckerClient() {
                 <h3 className="text-xl font-bold mb-3 text-red-600">1. The "Click Here" Syndrome</h3>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Problem:</strong> Using generic calls like "Click here," "Read more," "Learn more."</p>
+                    <p className="text-gray-700 text-sm"><strong>The Problem:</strong> Using generic calls to action like "Click here," "Read more," "Learn more," or "This article."</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> Zero semantic value for Google.</p>
+                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> These words carry zero semantic value. They tell Google nothing about the destination page.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm mb-2"><strong>The Fix:</strong> Rewrite with descriptive text.</p>
+                    <p className="text-gray-700 text-sm mb-2"><strong>The Fix:</strong> Search your report for these generic terms. Locate the source pages and rewrite the links.</p>
                     <div className="bg-gray-50 rounded-lg p-3 border border-gray-200 text-sm">
                       <div className="flex items-start mb-1">
                         <span className="text-red-600 mr-2">✗</span>
-                        <span className="text-gray-700">"Click here to see our services."</span>
+                        <span className="text-gray-700">Bad: "Click here to see our services."</span>
                       </div>
                       <div className="flex items-start">
                         <span className="text-green-600 mr-2">✓</span>
-                        <span className="text-gray-700">"Explore our <strong>SEO audit services</strong>."</span>
+                        <span className="text-gray-700">Good: "Explore our <strong>SEO audit services</strong>."</span>
                       </div>
                     </div>
                   </div>
@@ -1170,13 +1184,13 @@ export default function InternalLinkCheckerClient() {
                 <h3 className="text-xl font-bold mb-3 text-orange-600">2. Aggressive Exact-Match Stuffing</h3>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Problem:</strong> Using the exact same keyword for every link.</p>
+                    <p className="text-gray-700 text-sm"><strong>The Problem:</strong> Using the exact same high-value keyword for every single link.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> Looks unnatural and robotic to search engines.</p>
+                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> It looks unnatural and robotic.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>The Fix:</strong> Use the Word Cloud. Diversify with synonyms, LSI keywords, or partial-match phrases.</p>
+                    <p className="text-gray-700 text-sm"><strong>The Fix:</strong> Use the Word Cloud. If your main keyword is the biggest word in the cloud, you need to diversify. Use synonyms, LSI keywords (Latent Semantic Indexing), or partial-match phrases.</p>
                   </div>
                 </div>
               </div>
@@ -1185,13 +1199,13 @@ export default function InternalLinkCheckerClient() {
                 <h3 className="text-xl font-bold mb-3 text-yellow-600">3. Irrelevant Anchors</h3>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Problem:</strong> Text that doesn't match destination content.</p>
+                    <p className="text-gray-700 text-sm"><strong>The Problem:</strong> Linking to a page using text that doesn't match the destination's content.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> Creates relevancy conflicts and frustrates users.</p>
+                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> It creates a "relevancy conflict" for Google and frustrates users who click expecting one thing but get another.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>The Fix:</strong> Review your table. Ensure anchor text aligns with Target URL.</p>
+                    <p className="text-gray-700 text-sm"><strong>The Fix:</strong> Review your table. Ensure the anchor text aligns with the Target URL.</p>
                   </div>
                 </div>
               </div>
@@ -1200,13 +1214,13 @@ export default function InternalLinkCheckerClient() {
                 <h3 className="text-xl font-bold mb-3 text-purple-600">4. Naked URLs as Anchors</h3>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Problem:</strong> Using raw URLs (e.g., https://mysite.com/blog/post-1) as visible text.</p>
+                    <p className="text-gray-700 text-sm"><strong>The Problem:</strong> Linking using the raw URL (e.g., https://mysite.com/blog/post-1) as the visible text.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> Wasted opportunity to use descriptive keywords.</p>
+                    <p className="text-gray-700 text-sm"><strong>Why it hurts:</strong> While not "harmful," it is a wasted opportunity. You are missing a chance to use a descriptive keyword.</p>
                   </div>
                   <div>
-                    <p className="text-gray-700 text-sm"><strong>The Fix:</strong> Replace with the post title or topic summary.</p>
+                    <p className="text-gray-700 text-sm"><strong>The Fix:</strong> Replace raw URL anchors with the title of the post or a summary of the topic.</p>
                   </div>
                 </div>
               </div>
