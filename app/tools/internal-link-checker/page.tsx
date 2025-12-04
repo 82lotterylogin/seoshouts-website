@@ -2,16 +2,16 @@ import { Metadata } from 'next'
 import InternalLinkCheckerClient from './InternalLinkCheckerClient'
 
 export const metadata: Metadata = {
-  title: 'Free Internal Link Checker - No Login - Upto 500 Pages Anchor Cloud | SEO Shouts',
-  description: 'Free internal link checker with anchor cloud visualization. Analyze up to 500 pages without login. Check anchor text distribution, internal link patterns, and optimize your SEO strategy instantly.',
-  keywords: 'internal link checker, anchor text analyzer, internal link analysis, internal linking tool, SEO analysis, anchor text distribution, internal link audit, link checker, anchor cloud, free SEO tool',
+  title: 'Internal Link Analyzer & Anchor Text Cloud (Free SEO Tool)',
+  description: 'The only free tool that creates a visual word cloud of your internal links. Audit 500 URLs instantly. No login required. Check your site now.',
+  keywords: 'internal link checker, anchor text analyzer, internal link analysis, internal linking tool, SEO analysis, anchor text distribution, internal link audit, link checker, anchor cloud, free SEO tool, anchor text cloud',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
     canonical: 'https://seoshouts.com/tools/internal-link-checker/',
   },
   openGraph: {
-    title: 'Free Internal Link Checker - No Login - Upto 500 Pages Anchor Cloud | SEO Shouts',
-    description: 'Free internal link checker with anchor cloud visualization. Analyze up to 500 pages without login. Check anchor text distribution and optimize your internal linking strategy.',
+    title: 'Internal Link Analyzer & Anchor Text Cloud (Free SEO Tool)',
+    description: 'The only free tool that creates a visual word cloud of your internal links. Audit 500 URLs instantly. No login required. Check your site now.',
     url: 'https://seoshouts.com/tools/internal-link-checker/',
     siteName: 'SEO Shouts',
     type: 'website',
@@ -20,14 +20,14 @@ export const metadata: Metadata = {
         url: 'https://seoshouts.com/images/internal-link-checker-og.jpg',
         width: 1200,
         height: 630,
-        alt: 'Free Internal Link Checker - Anchor Cloud Visualization - SEO Shouts',
+        alt: 'Internal Link Analyzer & Anchor Text Cloud - Free SEO Tool by SEO Shouts',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Internal Link Checker - No Login - Upto 500 Pages Anchor Cloud | SEO Shouts',
-    description: 'Free internal link checker with anchor cloud visualization. Analyze up to 500 pages without login and optimize your SEO strategy instantly.',
+    title: 'Internal Link Analyzer & Anchor Text Cloud (Free SEO Tool)',
+    description: 'The only free tool that creates a visual word cloud of your internal links. Audit 500 URLs instantly. No login required.',
     images: ['https://seoshouts.com/images/internal-link-checker-twitter.jpg'],
   },
   robots: {
