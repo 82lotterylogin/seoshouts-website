@@ -5,6 +5,7 @@ import FaqSection from './FaqSection'
 import CoreWebVitalsQuickCheck from './CoreWebVitalsQuickCheck'
 import CaliforniaCitiesSection from './CaliforniaCitiesSection'
 import CoreWebVitalsScore from './CoreWebVitalsScore'
+import StateInfoSection from './StateInfoSection'
 
 // Fetch latest blog posts from database
 async function fetchLatestBlogPosts() {
@@ -1039,6 +1040,9 @@ export default async function CaliforniaSEOWebsiteDevelopmentPage() {
 
         {/* On-Page SEO Checklist Section - Interactive Two-Column */}
         <SeoChecklist />
+
+        {/* State-Specific Information Section */}
+        <StateInfoSection stateSlug="california" />
 
         {/* FAQs Section with Form */}
         <FaqSection />

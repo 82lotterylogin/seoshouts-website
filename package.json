@@ -13,6 +13,7 @@
     "@distube/ytdl-core": "^4.16.12",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@google/generative-ai": "^0.24.1",
+    "@mirawision/usa-map-react": "^2.0.2",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@storyblok/react": "^5.4.1",
     "@storyblok/richtext": "^3.5.0",

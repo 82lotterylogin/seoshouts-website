@@ -78,7 +78,12 @@
       "Bash(do [ \"$state_dir\" != \"app/usa/california/seo-website-development\" ])",
       "Bash(timeout 120 npx next build:*)",
       "Bash(timeout 120 npm run build)",
-      "Bash(timeout 180 npm run build:*)"
+      "Bash(timeout 180 npm run build:*)",
+      "Bash(timeout 120 npm run dev:*)",
+      "Bash(timeout 5 sleep:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []
