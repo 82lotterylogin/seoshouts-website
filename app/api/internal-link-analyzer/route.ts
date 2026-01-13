@@ -478,7 +478,42 @@ export async function POST(request: NextRequest) {
 
     const { step } = body;
 
-    // Only apply daily rate limiting for new analyses (not follow-up steps)
+    // Parse request parameters first
+    const { url: inputUrl, recaptchaToken, sitemapUrl, manualUrls } = body;
+
+    // Validate inputs
+    if (!inputUrl || typeof inputUrl !== 'string') {
+      return NextResponse.json(
+        { error: 'Please provide a valid website URL' },
+        { status: 400 }
+      );
+    }
+
+    // Verify reCAPTCHA FIRST before any rate limiting
+    // This prevents failed reCAPTCHA from consuming daily usage
+    if (!recaptchaToken || typeof recaptchaToken !== 'string') {
+      return NextResponse.json(
+        { error: 'reCAPTCHA verification required' },
+        { status: 400 }
+      );
+    }
+
+    const recaptchaResponse = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+      { method: 'POST' }
+    );
+
+    const recaptchaResult = await recaptchaResponse.json();
+
+    if (!recaptchaResult.success) {
+      return NextResponse.json(
+        { error: 'reCAPTCHA verification failed. Please try again.' },
+        { status: 400 }
+      );
+    }
+
+    // NOW apply daily rate limiting only AFTER reCAPTCHA is verified
+    // This ensures failed reCAPTCHA doesn't consume daily usage
     let dailyLimitResult;
     console.log('Analysis step:', step || 'discover');
 
@@ -561,51 +596,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Additional short-term rate limiting to prevent abuse
+    // Increased from 2 to 5 requests per 5 minutes to accommodate multi-step workflows
     const rateLimitResult = await rateLimit(request, {
       windowMs: 5 * 60 * 1000, // 5 minutes
-      maxRequests: 2, // Only 2 requests per 5 minutes
-      message: 'Please wait 5 minutes between analysis requests.'
+      maxRequests: 5, // 5 requests per 5 minutes (was 2, now increased for multi-step workflow)
+      message: 'Too many requests. Please wait a few minutes before trying again.'
     });
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
         { error: rateLimitResult.error },
         { status: 429 }
-      );
-    }
-
-    // Body already parsed above in the rate limiting section
-
-    const { url: inputUrl, recaptchaToken, sitemapUrl, manualUrls } = body;
-    // step is already destructured above
-
-    // Validate inputs
-    if (!inputUrl || typeof inputUrl !== 'string') {
-      return NextResponse.json(
-        { error: 'Please provide a valid website URL' },
-        { status: 400 }
-      );
-    }
-
-    // Verify reCAPTCHA
-    if (!recaptchaToken || typeof recaptchaToken !== 'string') {
-      return NextResponse.json(
-        { error: 'reCAPTCHA verification required' },
-        { status: 400 }
-      );
-    }
-
-    const recaptchaResponse = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
-      { method: 'POST' }
-    );
-
-    const recaptchaResult = await recaptchaResponse.json();
-
-    if (!recaptchaResult.success) {
-      return NextResponse.json(
-        { error: 'reCAPTCHA verification failed. Please try again.' },
-        { status: 400 }
       );
     }
 

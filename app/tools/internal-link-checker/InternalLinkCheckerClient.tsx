@@ -224,6 +224,8 @@ export default function InternalLinkCheckerClient() {
       } else if (data.needsUserInput) {
         // Need user input for next step
         setUserInputRequest(data)
+        // Reset reCAPTCHA so it can be used for follow-up requests
+        recaptchaRef.current?.reset()
       } else {
         throw new Error(data.error || 'Analysis failed')
       }

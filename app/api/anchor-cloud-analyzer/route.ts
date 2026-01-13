@@ -460,20 +460,7 @@ async function discoverUrlsFromSitemap(baseUrl: string, providedSitemapUrl?: str
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting
-    const rateLimitResult = await rateLimit(request, {
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      maxRequests: 3, // Only 3 requests per 15 minutes
-      message: 'Too many anchor analysis requests. Please try again in 15 minutes.'
-    });
-
-    if (!rateLimitResult.success) {
-      return NextResponse.json(
-        { error: rateLimitResult.error },
-        { status: 429 }
-      );
-    }
-
+    // Parse request body first
     let body;
     try {
       const rawBody = await request.text();
@@ -501,7 +488,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify reCAPTCHA
+    // Verify reCAPTCHA FIRST before any rate limiting
+    // This prevents failed reCAPTCHA from consuming rate limit quota
     if (!recaptchaToken || typeof recaptchaToken !== 'string') {
       return NextResponse.json(
         { error: 'reCAPTCHA verification required' },
@@ -520,6 +508,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'reCAPTCHA verification failed. Please try again.' },
         { status: 400 }
+      );
+    }
+
+    // NOW apply rate limiting only AFTER reCAPTCHA is verified
+    // This ensures failed reCAPTCHA doesn't consume rate limit quota
+    const rateLimitResult = await rateLimit(request, {
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      maxRequests: 5, // Increased from 3 to 5 for better user experience
+      message: 'Too many anchor analysis requests. Please try again in 15 minutes.'
+    });
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: rateLimitResult.error },
+        { status: 429 }
       );
     }
 
