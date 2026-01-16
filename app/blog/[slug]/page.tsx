@@ -145,6 +145,84 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
   return (
     <div className="bg-white min-h-screen">
+      {/* Google Discover Optimization: Article Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": article.title,
+            "description": article.meta_description || article.excerpt || extractExcerpt(article.content, 160),
+            "image": article.featured_image ? [article.featured_image] : [],
+            "datePublished": article.published_at || article.created_at,
+            "dateModified": article.updated_at || article.published_at || article.created_at,
+            "author": {
+              "@type": "Person",
+              "name": article.author.name,
+              "url": `https://seoshouts.com/authors/${article.author.name.toLowerCase().replace(/\s+/g, '-')}/`,
+              "jobTitle": article.author.job_title,
+              "email": article.author.email
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "SEO Shouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png",
+                "width": 600,
+                "height": 60
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://seoshouts.com/blog/${slug}/`
+            },
+            "keywords": article.tags?.join(', '),
+            "articleSection": article.category.name,
+            "wordCount": article.content.split(/\s+/).length
+          })
+        }}
+      />
+
+      {/* Google Discover Optimization: Breadcrumb Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seoshouts.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog",
+                "item": "https://seoshouts.com/blog"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": article.category.name,
+                "item": `https://seoshouts.com/categories/${article.category.slug}/`
+              },
+              {
+                "@type": "ListItem",
+                "position": 4,
+                "name": article.title,
+                "item": `https://seoshouts.com/blog/${slug}/`
+              }
+            ]
+          })
+        }}
+      />
+
       {/* Fixed Elements */}
       <ReadingProgress />
       <ViewTracker articleSlug={slug} />
@@ -366,14 +444,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: article.meta_title || article.title,
       description: article.meta_description || article.excerpt || extractExcerpt(article.content, 160),
-      images: article.featured_image ? [{ 
+      images: article.featured_image ? [{
         url: article.featured_image,
-        alt: article.featured_image_alt || article.title 
+        alt: article.featured_image_alt || article.title,
+        width: 1200,
+        height: 630
       }] : [],
       type: 'article',
       publishedTime: article.published_at || article.created_at,
+      modifiedTime: article.updated_at || article.published_at || article.created_at,
       authors: [article.author.name],
       tags: article.tags,
+      section: article.category.name,
     },
     twitter: {
       card: 'summary_large_image',
@@ -393,6 +475,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'max-image-preview': 'large',
         'max-snippet': -1,
       },
+    },
+    other: {
+      // Explicit robots meta tag for Google Discover optimization
+      'robots': 'max-image-preview:large, max-snippet:-1, max-video-preview:-1',
     },
   };
 }
