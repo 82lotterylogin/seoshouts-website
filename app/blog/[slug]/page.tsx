@@ -3,6 +3,7 @@ import { calculateReadTime, extractExcerpt } from "../../lib/content-utils";
 import { getMultipleViewCounts } from "../../lib/firebase";
 import { getDatabase } from "../../lib/database";
 import { sanitizeHTML } from "../../lib/security";
+import { extractFAQs, generateFAQSchema } from "../../lib/faq-utils";
 import ViewTracker from "../../components/ViewTracker";
 import ReadingProgress from "../../components/ReadingProgress";
 import TableOfContents from "../../components/TableOfContents";
@@ -138,10 +139,14 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
   const relatedArticles = await fetchRelatedArticles(article.category_id, slug);
   const readTime = calculateReadTime(article.content);
-  
+
   // Get view counts
   const viewCounts = await getMultipleViewCounts([slug]);
   const viewCount = viewCounts[slug] || 0;
+
+  // Extract FAQs from content for dynamic FAQ schema generation
+  const faqs = extractFAQs(article.content);
+  const faqSchema = generateFAQSchema(faqs);
 
   return (
     <div className="bg-white min-h-screen">
@@ -222,6 +227,16 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           })
         }}
       />
+
+      {/* Dynamic FAQ Schema - Only renders if FAQs are detected in content */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema)
+          }}
+        />
+      )}
 
       {/* Fixed Elements */}
       <ReadingProgress />
