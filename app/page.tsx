@@ -334,7 +334,7 @@ export default async function HomePage() {
         </section>
 
         {/* Expertise Section - About SEOShouts */}
-        <section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 to-white">
+        <section className="py-16 sm:py-20 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="max-w-4xl mx-auto">
               <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 border border-gray-100">
