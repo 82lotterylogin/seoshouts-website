@@ -106,6 +106,31 @@ export default async function HomePage() {
   const blogPosts = await fetchLatestBlogPosts();
   return (
     <>
+      {/* Organization Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "SEOShouts",
+            "url": "https://seoshouts.com",
+            "logo": "https://seoshouts.com/logo.png",
+            "description": "Free SEO tools and professional SEO services. Founded by Rohit Sharma with 10+ years of SEO experience.",
+            "founder": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "jobTitle": "SEO Expert",
+              "description": "10+ years of experience in technical SEO, content strategy, and search optimization"
+            },
+            "sameAs": [
+              "https://twitter.com/seoshouts",
+              "https://linkedin.com/company/seoshouts"
+            ]
+          })
+        }}
+      />
+
       {/* Breadcrumb Schema */}
       <script
         type="application/ld+json"
@@ -308,10 +333,54 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* Expertise Section - About SEOShouts */}
+        <section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 to-white">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 border border-gray-100">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
+                    <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
+                    About SEOShouts
+                  </div>
+                  <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-900">
+                    Founded by SEO Expert <span className="text-primary">Rohit Sharma</span>
+                  </h2>
+                </div>
+
+                <div className="space-y-6 text-gray-700 leading-relaxed">
+                  <p className="text-lg sm:text-xl text-center">
+                    SEOShouts is founded by <strong>Rohit Sharma</strong>, an SEO expert with <strong className="text-primary">10+ years of experience</strong> in technical SEO, content strategy, and search optimization.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-8">
+                    <div className="text-center p-6 bg-gray-50 rounded-2xl">
+                      <div className="text-3xl font-bold text-primary mb-2">10+</div>
+                      <div className="text-sm text-gray-600 font-medium">Years Experience</div>
+                    </div>
+                    <div className="text-center p-6 bg-gray-50 rounded-2xl">
+                      <div className="text-3xl font-bold text-primary mb-2">15+</div>
+                      <div className="text-sm text-gray-600 font-medium">Free SEO Tools</div>
+                    </div>
+                    <div className="text-center p-6 bg-gray-50 rounded-2xl">
+                      <div className="text-3xl font-bold text-primary mb-2">#1</div>
+                      <div className="text-sm text-gray-600 font-medium">Internal Link Checker</div>
+                    </div>
+                  </div>
+
+                  <p className="text-center text-lg mt-8">
+                    SEOShouts provides the <strong className="text-primary">only free internal link checker with visual anchor text word cloud analysis</strong> — helping SEO professionals optimize their internal linking strategy with data-driven insights.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Professional SEO Services Section */}
         <section id="services" className="py-16 sm:py-24 bg-white relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          
+
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <div className="text-center mb-16 sm:mb-20">
               <div className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium mb-6">
@@ -528,28 +597,28 @@ export default async function HomePage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {/* Tool Card 1 */}
+              {/* Tool Card 1 - Internal Link Checker */}
               <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔍</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔗</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    Keyword Density Analyzer
+                    Internal Link Checker
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                    Advanced keyword analysis with density optimization, semantic suggestions, and competitor comparison insights.
+                    Unique anchor text word cloud visualization. Analyze internal link patterns across 500 pages. The only free tool of its kind.
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
                       <span className="w-2 h-2 bg-primary rounded-full"></span>
                       <span>Free Forever</span>
                     </div>
-                    <a 
-                      href="/tools/keyword-density-analyzer/"
+                    <a
+                      href="/tools/internal-link-checker/"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-                      aria-label="Launch Keyword Density Analyzer tool"
+                      aria-label="Launch Internal Link Checker tool"
                     >
                       Launch Tool
                     </a>
@@ -557,7 +626,7 @@ export default async function HomePage() {
                 </div>
               </article>
 
-              {/* Tool Card 2 */}
+              {/* Tool Card 2 - On-Page SEO Analyzer */}
               <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
@@ -565,20 +634,20 @@ export default async function HomePage() {
                     <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    Meta Tag Optimizer
+                    On-Page SEO Analyzer
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                    Intelligent meta tag analysis with SERP preview, character count optimization, and CTR improvement suggestions.
+                    Analyze 100+ ranking factors with real Google PageSpeed API. Check Core Web Vitals, technical SEO, and content optimization instantly.
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
                       <span className="w-2 h-2 bg-primary rounded-full"></span>
                       <span>Free Forever</span>
                     </div>
-                    <a 
-                      href="/tools/meta-tag-optimizer/"
+                    <a
+                      href="/tools/on-page-seo-analyzer/"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-                      aria-label="Launch Meta Tag Optimizer tool"
+                      aria-label="Launch On-Page SEO Analyzer tool"
                     >
                       Launch Tool
                     </a>
@@ -586,28 +655,28 @@ export default async function HomePage() {
                 </div>
               </article>
 
-              {/* Tool Card 3 */}
+              {/* Tool Card 3 - Schema Generator */}
               <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden md:col-span-2 lg:col-span-1">
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📋</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    Robots.txt Generator
+                    Schema Generator
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
-                    Professional robots.txt generator with advanced crawling directives, sitemap integration, and SEO best practices.
+                    Generate 39+ schema types for rich snippets. Most comprehensive free schema markup generator with JSON-LD validation.
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2 text-sm text-gray-500">
                       <span className="w-2 h-2 bg-primary rounded-full"></span>
                       <span>Free Forever</span>
                     </div>
-                    <a 
-                      href="/tools/robots-txt-generator/"
+                    <a
+                      href="/tools/schema-generator/"
                       className="px-4 sm:px-6 py-2 sm:py-3 bg-primary text-white rounded-lg sm:rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-sm sm:text-base"
-                      aria-label="Launch Robots.txt Generator tool"
+                      aria-label="Launch Schema Generator tool"
                     >
                       Launch Tool
                     </a>

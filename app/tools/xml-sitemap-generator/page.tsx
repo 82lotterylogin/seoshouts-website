@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import XmlSitemapGeneratorClient from './XmlSitemapGeneratorClient'
+import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free XML Sitemap Generator Tool | SEO Shouts',
@@ -40,5 +41,66 @@ export const metadata: Metadata = {
 }
 
 export default function XmlSitemapGenerator() {
-  return <XmlSitemapGeneratorClient />
+  return (
+    <>
+      {/* SoftwareApplication Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "XML Sitemap Generator",
+            "description": "Generate XML sitemaps instantly for better search engine indexing. Free sitemap generator supports up to 500 URLs with custom priority and frequency settings.",
+            "url": "https://seoshouts.com/tools/xml-sitemap-generator/",
+            "applicationCategory": "SEO Tool",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Organization",
+              "name": "SEOShouts"
+            }
+          })
+        }}
+      />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seoshouts.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Tools",
+                "item": "https://seoshouts.com/tools"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "XML Sitemap Generator",
+                "item": "https://seoshouts.com/tools/xml-sitemap-generator"
+              }
+            ]
+          })
+        }}
+      />
+
+      <XmlSitemapGeneratorClient />
+      <RelatedTools currentTool="xml-sitemap-generator" />
+    </>
+  )
 }

@@ -1,0 +1,26 @@
+# SEOShouts.com
+> Free SEO Tools & Professional SEO Services
+
+SEOShouts is founded by Rohit Sharma, an SEO expert with 10+ years of experience in technical SEO, content strategy, and search optimization.
+
+## Primary Tools
+- [Internal Link Checker](https://seoshouts.com/tools/internal-link-checker/) - Analyze anchor text patterns with unique word cloud visualization
+- [On-Page SEO Analyzer](https://seoshouts.com/tools/on-page-seo-analyzer/) - 100+ ranking factors with real Google PageSpeed API
+- [Schema Generator](https://seoshouts.com/tools/schema-generator/) - 39+ schema types, most comprehensive free tool
+- [Robots.txt Generator](https://seoshouts.com/tools/robots-txt-generator/) - Create robots.txt with AI crawler directives
+- [Keyword Density Analyzer](https://seoshouts.com/tools/keyword-density-analyzer/) - Semantic keyword analysis
+
+## Services
+- Local SEO
+- eCommerce SEO
+- Technical SEO Audit
+- Link Building
+- SEO Consulting
+- SEO Website Development
+
+## Key Resources
+- /blog/ - SEO guides and tutorials
+- /tools/ - Free SEO tools
+
+## Contact
+Website: https://seoshouts.com

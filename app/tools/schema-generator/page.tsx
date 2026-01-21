@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import SchemaGeneratorClient from './SchemaGeneratorClient'
+import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Online Schema Generator - 39 Types - No Login - No Signup - SEOShouts',
@@ -40,5 +41,66 @@ export const metadata: Metadata = {
 }
 
 export default function SchemaGenerator() {
-  return <SchemaGeneratorClient />
+  return (
+    <>
+      {/* SoftwareApplication Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Schema Generator",
+            "description": "Free online schema generator with 39 schema types. Generate JSON-LD markup instantly - no login, no signup required. Organization, Article, Product, Event schemas & more.",
+            "url": "https://seoshouts.com/tools/schema-generator/",
+            "applicationCategory": "SEO Tool",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Organization",
+              "name": "SEOShouts"
+            }
+          })
+        }}
+      />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seoshouts.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Tools",
+                "item": "https://seoshouts.com/tools"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Schema Generator",
+                "item": "https://seoshouts.com/tools/schema-generator"
+              }
+            ]
+          })
+        }}
+      />
+
+      <SchemaGeneratorClient />
+      <RelatedTools currentTool="schema-generator" />
+    </>
+  )
 }

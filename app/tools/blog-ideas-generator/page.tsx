@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import BlogIdeasGeneratorClient from './BlogIdeasGeneratorClient'
+import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Blog Ideas Generator Tool — Never Stare at a Blank Screen Again | SEO Shouts',
@@ -40,5 +41,66 @@ export const metadata: Metadata = {
 }
 
 export default function BlogIdeasGenerator() {
-  return <BlogIdeasGeneratorClient />
+  return (
+    <>
+      {/* SoftwareApplication Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Blog Ideas Generator",
+            "description": "Get unlimited AI-powered blog ideas instantly. Break through writer's block with creative topics and angles tailored to your niche. Free content idea generator.",
+            "url": "https://seoshouts.com/tools/blog-ideas-generator/",
+            "applicationCategory": "SEO Tool",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Organization",
+              "name": "SEOShouts"
+            }
+          })
+        }}
+      />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seoshouts.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Tools",
+                "item": "https://seoshouts.com/tools"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Blog Ideas Generator",
+                "item": "https://seoshouts.com/tools/blog-ideas-generator"
+              }
+            ]
+          })
+        }}
+      />
+
+      <BlogIdeasGeneratorClient />
+      <RelatedTools currentTool="blog-ideas-generator" />
+    </>
+  )
 }

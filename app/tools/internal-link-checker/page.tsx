@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import InternalLinkCheckerClient from './InternalLinkCheckerClient'
+import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Internal Link Analyzer & Anchor Text Cloud (Free SEO Tool)',
@@ -110,6 +111,7 @@ export default function InternalLinkCheckerPage() {
       />
 
       <InternalLinkCheckerClient />
+      <RelatedTools currentTool="internal-link-checker" />
     </>
   )
 }
