@@ -171,7 +171,7 @@ export default function RootLayout({
               "url": "https://seoshouts.com",
               "logo": "https://seoshouts.com/logo.png",
               "description": "Professional SEO tools and services for businesses worldwide. Free SEO analysis, keyword research, technical audits, and expert SEO consulting.",
-              "foundingDate": "2024",
+              "foundingDate": "2016",
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "+91-8094888157",

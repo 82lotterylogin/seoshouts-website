@@ -692,9 +692,9 @@ export default async function FounderPage() {
             "worksFor": {
               "@type": "Organization",
               "name": "SEOShouts",
-              "foundingDate": "2024"
+              "foundingDate": "2016"
             },
-            "foundingDate": "2024",
+            "foundingDate": "2016",
             "url": "https://seoshouts.com/founder/",
             "image": "https://seoshouts.com/images/team/rohit-sharma.jpg",
             "description": "Visionary founder and CEO behind SEOShouts. 13+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.",
