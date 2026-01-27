@@ -327,7 +327,14 @@ export default function InternalLinkCheckerClient() {
       {/* Analysis Form */}
       <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-6xl mx-auto">
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-center leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Free Internal Link Anchor Text Checker: Visualize & Optimize Site Structure
+              </span>
+            </h1>
 
             {!results ? (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:p-8">
@@ -581,7 +588,7 @@ export default function InternalLinkCheckerClient() {
                 {/* Feature Info */}
                 <div className="mt-12 pt-8 border-t border-gray-200">
                   <h3 className="text-lg font-semibold mb-6 text-gray-900 text-center">Key Features:</h3>
-                  <div className="max-w-4xl mx-auto">
+                  <div className="max-w-6xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                       <div className="flex items-start">
                         <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
@@ -866,21 +873,15 @@ export default function InternalLinkCheckerClient() {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
               <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
               Advanced SEO Analysis Tool
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Internal Link Anchor Text Checker: Visualize & Optimize Site Structure
-              </span>
-            </h1>
-
             <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
               <p className="font-semibold text-gray-800">
-                Audit your website's internal link anchors, detect over-optimization, and fix irrelevant keywords. Crawl up to 500 URLs for free—no login required.
+                An internal link checker analyzes anchor text patterns, link distribution, and site structure to identify over-optimization, wasted opportunities, and keyword stuffing across your website's internal linking profile.
               </p>
             </div>
 
@@ -916,7 +917,7 @@ export default function InternalLinkCheckerClient() {
       {/* The Ultimate Tool Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 The Ultimate Tool for Anchor Text Optimization
@@ -1117,22 +1118,30 @@ export default function InternalLinkCheckerClient() {
 
               <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100 md:col-span-2">
                 <h3 className="text-xl font-bold mb-3 text-gray-800">3. Protection Against "Penguin" Penalties</h3>
-                <p className="text-gray-700 leading-relaxed text-sm mb-3">
+                <p className="text-gray-700 leading-relaxed text-sm mb-4">
                   Years ago, Google released the "Penguin" algorithm update to punish sites that spammed exact-match keywords.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start">
-                    <span className="text-red-600 mr-2 mt-0.5">⚠️</span>
-                    <div className="text-sm">
-                      <strong className="text-gray-900">The Risk:</strong>
-                      <span className="text-gray-700"> If 100 pages link with "Cheap Laptops," Google may flag it as manipulative.</span>
+                  <div className="bg-purple-100/50 border border-purple-200 rounded-xl p-3">
+                    <div className="flex items-start">
+                      <span className="text-red-600 mr-2 mt-0.5 flex-shrink-0">⚠️</span>
+                      <div>
+                        <p className="text-gray-800 text-sm">
+                          <strong className="text-gray-900">The Risk:</strong>
+                          <span className="text-gray-700"> If 100 pages link with "Cheap Laptops," Google may flag it as manipulative.</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start">
-                    <span className="text-green-600 mr-2 mt-0.5">✓</span>
-                    <div className="text-sm">
-                      <strong className="text-gray-900">The Solution:</strong>
-                      <span className="text-gray-700"> Our tool spots keyword spikes so you can diversify them.</span>
+                  <div className="bg-purple-100/50 border border-purple-200 rounded-xl p-3">
+                    <div className="flex items-start">
+                      <span className="text-green-600 mr-2 mt-0.5 flex-shrink-0">✓</span>
+                      <div>
+                        <p className="text-gray-800 text-sm">
+                          <strong className="text-gray-900">The Solution:</strong>
+                          <span className="text-gray-700"> Our tool spots keyword spikes so you can diversify them.</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1234,7 +1243,7 @@ export default function InternalLinkCheckerClient() {
       {/* Perfect Ratio Table Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 The Perfect Internal Anchor Text Ratio
@@ -1312,6 +1321,9 @@ export default function InternalLinkCheckerClient() {
             </div>
 
             <div className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6">
+              <p className="text-gray-800 mb-4">
+                According to Zyppy's study of 23 million internal links, pages with 45-50 total internal links saw peak traffic performance. Beyond 50 links, traffic declined significantly. Their research also found that pages buried 4+ clicks deep from the homepage received 9x less traffic than pages within 3 clicks, emphasizing why anchor text optimization alone isn't enough—link placement matters equally.
+              </p>
               <p className="text-gray-800">
                 <strong>💡 Pro Tip:</strong> Use our tool to see if your percentages are skewed too heavily toward "Exact Match" or "Generic."
               </p>
@@ -1323,7 +1335,7 @@ export default function InternalLinkCheckerClient() {
       {/* AIO Strategy Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 Advanced Strategy: Optimizing for AI Overviews (AIO)
@@ -1335,24 +1347,34 @@ export default function InternalLinkCheckerClient() {
                 With the rise of AI search (Google AI Overviews, ChatGPT Search, Perplexity), internal linking is changing. AI models function on "Vector Embeddings"—they look for the relationship between concepts.
               </p>
 
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-100 mb-6">
-                <h3 className="text-xl font-bold mb-4 text-gray-800">How our tool helps you rank in AI:</h3>
-                <p className="text-gray-700 mb-4">
-                  AI models prefer Descriptive, Natural Language Anchors.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-start">
-                    <span className="text-red-600 mr-3 mt-1">✗</span>
-                    <div>
-                      <strong className="text-gray-900">Old SEO:</strong>
-                      <span className="text-gray-700"> "Best Pizza NYC"</span>
+              <div className="max-w-lg mx-auto">
+                <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-100 mb-6">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">How our tool helps you rank in AI:</h3>
+                  <p className="text-gray-700 mb-4 leading-relaxed">
+                    AI models prefer Descriptive, Natural Language Anchors.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="bg-white/60 border border-purple-200 rounded-lg p-3">
+                      <div className="flex items-start">
+                        <span className="text-red-600 mr-3 mt-0.5 flex-shrink-0">✗</span>
+                        <div>
+                          <p className="text-sm">
+                            <strong className="text-gray-900">Old SEO:</strong>
+                            <span className="text-gray-700"> "Best Pizza NYC"</span>
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start">
-                    <span className="text-green-600 mr-3 mt-1">✓</span>
-                    <div>
-                      <strong className="text-gray-900">AI SEO:</strong>
-                      <span className="text-gray-700"> "the top-rated pizza places in New York City"</span>
+                    <div className="bg-white/60 border border-purple-200 rounded-lg p-3">
+                      <div className="flex items-start">
+                        <span className="text-green-600 mr-3 mt-0.5 flex-shrink-0">✓</span>
+                        <div>
+                          <p className="text-sm">
+                            <strong className="text-gray-900">AI SEO:</strong>
+                            <span className="text-gray-700"> "the top-rated pizza places in New York City"</span>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1366,8 +1388,94 @@ export default function InternalLinkCheckerClient() {
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* Comparison Table Section */}
       <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                How Does SEO Shouts Compare to Other Internal Link Checkers?
+              </span>
+            </h2>
+
+            <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
+              Unlike other tools that show basic metrics, we provide visual word clouds, comprehensive anchor text grouping, and detailed destination URL analysis to help you optimize your internal linking strategy.
+            </p>
+
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-primary to-blue-600 text-white">
+                      <th className="px-6 py-4 text-left font-bold">Feature</th>
+                      <th className="px-6 py-4 text-center font-bold">SEO Shouts</th>
+                      <th className="px-6 py-4 text-center font-bold">Screaming Frog</th>
+                      <th className="px-6 py-4 text-center font-bold">Ahrefs</th>
+                      <th className="px-6 py-4 text-center font-bold">SEOptimer</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr className="hover:bg-blue-50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900">Visual Word Cloud</td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-800">
+                          ✓ Unique
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                    </tr>
+                    <tr className="hover:bg-blue-50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900">Free Crawl Limit</td>
+                      <td className="px-6 py-4 text-center text-gray-700">500 pages</td>
+                      <td className="px-6 py-4 text-center text-gray-700">500 pages</td>
+                      <td className="px-6 py-4 text-center text-gray-700">Paid only</td>
+                      <td className="px-6 py-4 text-center text-gray-700">Single page</td>
+                    </tr>
+                    <tr className="hover:bg-blue-50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900">Anchor Text Grouping</td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-green-600 font-bold">✓</span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-green-600 font-bold">✓</span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-green-600 font-bold">✓</span>
+                      </td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                    </tr>
+                    <tr className="hover:bg-blue-50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900">No Login Required</td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-green-600 font-bold">✓</span>
+                      </td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                      <td className="px-6 py-4 text-center text-gray-500">✗</td>
+                    </tr>
+                    <tr className="hover:bg-blue-50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900">Real-time Analysis</td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-green-600 font-bold">✓</span>
+                      </td>
+                      <td className="px-6 py-4 text-center text-gray-700">Desktop only</td>
+                      <td className="px-6 py-4 text-center text-gray-700">Cloud-based</td>
+                      <td className="px-6 py-4 text-center">
+                        <span className="text-green-600 font-bold">✓</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-3 text-gray-800">
@@ -1452,7 +1560,7 @@ export default function InternalLinkCheckerClient() {
                   <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
                 </summary>
                 <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Monthly or after adding significant content to maintain healthy anchor text distribution.
+                  Use our Internal Link Checker tool monthly to monitor your internal linking patterns. Look for sudden spikes in exact-match anchor texts, identify orphaned content that needs more internal links, and ensure your most important pages receive adequate link equity through strategic anchor text usage.
                 </div>
               </details>
 
@@ -1475,13 +1583,33 @@ export default function InternalLinkCheckerClient() {
                   No. All analysis is performed in real-time with complete privacy—nothing is stored.
                 </div>
               </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Is there such thing as too many internal links?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  Yes. According to Zyppy's analysis of 23 million links, pages with more than 50 internal links saw traffic declines. The optimal range is 45-50 links per page. Our tool helps you identify pages that exceed this threshold so you can optimize link distribution.
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How does this tool help with AI search optimization?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  AI models like ChatGPT and Perplexity prefer descriptive, natural language anchors over keyword-stuffed exact matches. Our tool crawls your actual website content through sitemaps and analyzes real HTML anchor elements, providing accurate insights into your internal linking patterns and anchor text distribution that help you optimize for AI answer engines.
+                </div>
+              </details>
             </div>
           </div>
         </div>
       </section>
 
       {/* Explore Other Tools Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
@@ -1539,7 +1667,7 @@ export default function InternalLinkCheckerClient() {
       {/* Call to Action Section - Final Section */}
       <section className="py-16 bg-gradient-to-br from-primary to-blue-600 text-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">Start Your Semantic Audit Now</h2>
             <p className="text-lg mb-8 opacity-90 leading-relaxed">
               Don't let poor keyword choices hide your best content from Google. Use the <strong>SEO Shouts Internal Link Anchor Text Checker</strong> to visualize your site's vocabulary and create a perfectly balanced linking structure.
@@ -1741,6 +1869,22 @@ export default function InternalLinkCheckerClient() {
                     "acceptedAnswer": {
                       "@type": "Answer",
                       "text": "No, we don't store or save any data from your website analysis. Each analysis is performed in real-time and results are only shown to you during the session for complete privacy."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Is there such thing as too many internal links?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes. According to Zyppy's analysis of 23 million links, pages with more than 50 internal links saw traffic declines. The optimal range is 45-50 links per page. Our tool helps you identify pages that exceed this threshold so you can optimize link distribution."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How does this tool help with AI search optimization?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "AI models like ChatGPT and Perplexity prefer descriptive, natural language anchors over keyword-stuffed exact matches. Our tool crawls your actual website content through sitemaps and analyzes real HTML anchor elements, providing accurate insights into your internal linking patterns and anchor text distribution that help you optimize for AI answer engines."
                     }
                   }
                 ]
