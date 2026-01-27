@@ -378,7 +378,7 @@ export default async function HomePage() {
         </section>
 
         {/* Professional SEO Services Section */}
-        <section id="services" className="py-16 sm:py-24 bg-white relative overflow-hidden">
+        <section id="services" className="py-16 sm:py-24 bg-gray-50 relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -573,7 +573,7 @@ export default async function HomePage() {
         <NewsletterFormSection />
 
         {/* Ultra-Modern Tools Section */}
-        <section id="tools" className="py-16 sm:py-24 bg-gray-50 relative overflow-hidden">
+        <section id="tools" className="py-16 sm:py-24 bg-white relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           
           <div className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -701,7 +701,7 @@ export default async function HomePage() {
         </section>
 
         {/* Modern Blog Section */}
-        <section id="blog" className="py-16 sm:py-24 bg-white">
+        <section id="blog" className="py-16 sm:py-24 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center mb-16 sm:mb-20">
               <div className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium mb-6">
