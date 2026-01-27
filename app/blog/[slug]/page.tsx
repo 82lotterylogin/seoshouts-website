@@ -391,20 +391,23 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
             </main>
 
-            {/* Right Sidebar - TOC and Newsletter (Floating/Sticky) */}
-            <aside className="lg:col-span-4 hidden lg:block h-fit">
-              <div className="sticky top-8 space-y-6">
-                {/* Table of Contents */}
-                <TableOfContents content={article.content} />
-
-                {/* Stay Ahead in SEO Card - Same as /blog/ page */}
-                <BlogSidebarSubscription />
-              </div>
+            {/* Right Sidebar - Placeholder for grid spacing */}
+            <aside className="lg:col-span-4 hidden lg:block">
+              {/* Empty placeholder - actual content is fixed positioned below */}
             </aside>
           </div>
         </div>
       </div>
       
+      {/* Desktop Fixed Sidebar - Always visible when scrolling */}
+      <div className="hidden lg:block fixed top-8 right-8 w-80 xl:w-96 z-40 space-y-6 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        {/* Table of Contents */}
+        <TableOfContents content={article.content} />
+
+        {/* Stay Ahead in SEO Card */}
+        <BlogSidebarSubscription />
+      </div>
+
       {/* Mobile Floating Table of Contents */}
       <div className="lg:hidden">
         <TableOfContents content={article.content} />
