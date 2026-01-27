@@ -93,12 +93,12 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
     publisher: 'SEO Shouts',
     metadataBase: new URL('https://seoshouts.com'),
     alternates: {
-      canonical: `https://seoshouts.com/authors/${slug}`,
+      canonical: `https://seoshouts.com/authors/${slug}/`,
     },
     openGraph: {
       title,
       description,
-      url: `https://seoshouts.com/authors/${slug}`,
+      url: `https://seoshouts.com/authors/${slug}/`,
       siteName: 'SEO Shouts',
       locale: 'en_US',
       type: 'profile',
@@ -181,7 +181,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               "@type": "Organization",
               "name": author.company || "SEO Shouts"
             },
-            "url": `https://seoshouts.com/authors/${slug}`,
+            "url": `https://seoshouts.com/authors/${slug}/`,
             ...(author.avatar_url && {
               "image": {
                 "@type": "ImageObject",
