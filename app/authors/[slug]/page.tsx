@@ -366,40 +366,67 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               </div>
 
               {articles.length > 0 ? (
-                <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {articles.map((article, index) => (
-                    <article key={article.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-                      <div className="p-6">
-                        <div className="flex items-center gap-4 mb-3">
-                          {index === 0 && (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                              Latest
-                            </span>
-                          )}
-                          {(article as any).category_name && (
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
-                              {(article as any).category_name}
-                            </span>
-                          )}
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-600 transition-colors">
-                          <Link href={`/blog/${article.slug}`}>{article.title}</Link>
-                        </h3>
-                        {article.excerpt && (
-                          <p className="text-gray-600 mb-4 leading-relaxed">
-                            {article.excerpt}
-                          </p>
+                    <article key={article.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">
+                      <Link href={`/blog/${article.slug}`} className="block">
+                        {/* Featured Image */}
+                        {article.featured_image && (
+                          <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
+                            <Image
+                              src={article.featured_image}
+                              alt={article.featured_image_alt || article.title}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                            {index === 0 && (
+                              <div className="absolute top-4 left-4">
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-600 text-white shadow-lg">
+                                  Latest
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         )}
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <time dateTime={article.published_at || article.created_at}>
-                            {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', { 
-                              year: 'numeric', 
-                              month: 'long', 
-                              day: 'numeric' 
-                            })}
-                          </time>
+
+                        <div className="p-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            {!article.featured_image && index === 0 && (
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                                Latest
+                              </span>
+                            )}
+                            {(article as any).category_name && (
+                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
+                                {(article as any).category_name}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors line-clamp-2">
+                            {article.title}
+                          </h3>
+                          {article.excerpt && (
+                            <p className="text-gray-600 mb-4 leading-relaxed text-sm line-clamp-3">
+                              {article.excerpt}
+                            </p>
+                          )}
+                          <div className="flex items-center justify-between text-sm text-gray-500">
+                            <time dateTime={article.published_at || article.created_at}>
+                              {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </time>
+                            <span className="text-purple-600 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                              Read more
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </span>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     </article>
                   ))}
                 </div>
