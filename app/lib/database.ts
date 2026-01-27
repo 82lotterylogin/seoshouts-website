@@ -162,8 +162,8 @@ function initializeTables() {
   const authorExists = db.prepare('SELECT COUNT(*) as count FROM authors').get() as { count: number };
   if (authorExists.count === 0) {
     db.prepare(`
-      INSERT INTO authors (name, email, bio) 
-      VALUES ('SEOShouts Team', 'team@seoshouts.com', 'Expert SEO professionals providing valuable insights and strategies.')
+      INSERT INTO authors (name, email, bio)
+      VALUES ('SEOShouts Team', 'seoshouts@gmail.com', 'Expert SEO professionals providing valuable insights and strategies.')
     `).run();
   }
 

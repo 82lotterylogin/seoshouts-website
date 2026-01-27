@@ -85,7 +85,8 @@
       "Bash(ls:*)",
       "Bash(python3:*)",
       "Bash(tree:*)",
-      "Bash(del:*)"
+      "Bash(del:*)",
+      "Bash(npx:*)"
     ],
     "deny": [],
     "ask": []
