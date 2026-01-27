@@ -390,11 +390,35 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
             </main>
 
-            {/* Right Sidebar - Only TOC */}
+            {/* Right Sidebar - TOC and Newsletter */}
             <aside className="lg:col-span-4 hidden lg:block">
-              <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <div className="sticky top-8 space-y-6">
                 {/* Table of Contents */}
                 <TableOfContents content={article.content} />
+
+                {/* Stay Ahead in SEO Card */}
+                <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg p-6 text-white shadow-lg">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                    </div>
+                    <h3 className="font-bold text-xl">Stay Ahead in SEO</h3>
+                  </div>
+                  <p className="text-blue-100 mb-6 leading-relaxed">
+                    Get weekly insights, proven strategies, and actionable tips delivered to your inbox.
+                  </p>
+                  <Link
+                    href="/newsletter/"
+                    className="block w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-center hover:bg-blue-50 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    Subscribe Now
+                  </Link>
+                  <p className="text-xs text-blue-200 mt-4 text-center">
+                    Join 10,000+ SEO professionals
+                  </p>
+                </div>
               </div>
             </aside>
           </div>
