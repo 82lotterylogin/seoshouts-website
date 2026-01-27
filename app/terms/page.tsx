@@ -266,7 +266,7 @@ export default function TermsAndConditionsPage() {
             <p className="text-gray-700">
               <strong>SEOShouts</strong><br />
               Udaipur, Rajasthan, India<br />
-              Email: contact@seoshouts.com<br />
+              Email: seoshouts@gmail.com<br />
               Phone: +91 8094888157
             </p>
             <p className="text-gray-700 mt-4">

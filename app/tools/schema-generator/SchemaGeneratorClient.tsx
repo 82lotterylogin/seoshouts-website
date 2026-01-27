@@ -81,7 +81,7 @@ export default function SchemaGeneratorClient() {
         { name: 'logo', type: 'url', required: false, description: 'Organization logo URL', example: 'https://seoshouts.com/logo.png' },
         { name: 'description', type: 'textarea', required: false, description: 'Organization description', example: 'Leading SEO services provider' },
         { name: 'telephone', type: 'text', required: false, description: 'Phone number', example: '+1-555-123-4567' },
-        { name: 'email', type: 'email', required: false, description: 'Contact email', example: 'contact@seoshouts.com' },
+        { name: 'email', type: 'email', required: false, description: 'Contact email', example: 'seoshouts@gmail.com' },
         { name: 'address', type: 'address', required: false, description: 'Business address' },
         { name: 'sameAs', type: 'textarea', required: false, description: 'Social media URLs (one per line)' }
       ]

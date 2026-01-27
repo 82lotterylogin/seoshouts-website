@@ -223,7 +223,7 @@ export default function MeetTheExperts() {
               🎯 Book a Strategy Call
             </a>
             <a
-              href="mailto:contact@seoshouts.com"
+              href="mailto:seoshouts@gmail.com"
               className="font-bold px-7 py-3 bg-white/20 border border-white rounded-xl text-white hover:bg-white hover:text-blue-700 transition"
               target="_blank" rel="noopener noreferrer"
             >

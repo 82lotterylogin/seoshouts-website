@@ -3,7 +3,7 @@ import ContactForm from '../components/ContactForm'
 
 export const metadata: Metadata = {
   title: 'Contact Us - Get Your Free SEO Analysis | SEO Shouts',
-  description: 'Ready to boost your search rankings? Contact SEO Shouts for a free SEO analysis. Call +91-809-488-8157 or email contact@seoshouts.com. Based in Rajasthan, serving globally.',
+  description: 'Ready to boost your search rankings? Contact SEO Shouts for a free SEO analysis. Call +91-809-488-8157 or email seoshouts@gmail.com. Based in Rajasthan, serving globally.',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
     canonical: 'https://seoshouts.com/contact/',
@@ -160,8 +160,8 @@ export default function ContactPage() {
                       <h4 className="font-semibold text-gray-900">Email Us</h4>
                       <div className="space-y-1">
                         <div>
-                          <a href="mailto:contact@seoshouts.com" className="text-blue-600 hover:text-blue-800 font-medium text-sm">
-                            contact@seoshouts.com
+                          <a href="mailto:seoshouts@gmail.com" className="text-blue-600 hover:text-blue-800 font-medium text-sm">
+                            seoshouts@gmail.com
                           </a>
                         </div>
                       </div>

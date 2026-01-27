@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     // Send test email
     const mailOptions = {
       from: `"SEO Shouts Test" <${process.env.SMTP_USER}>`,
-      to: 'contact@seoshouts.com',
+      to: 'seoshouts@gmail.com',
       subject: '🧪 SMTP Test Email',
       html: `
         <h1>SMTP Test Successful</h1>

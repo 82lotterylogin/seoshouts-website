@@ -875,7 +875,7 @@ export default function LocalSEOServicePage() {
                       <span className="text-2xl">📧</span>
                     </div>
                     <div className="text-left">
-                      <p className="text-white font-semibold">Email: contact@seoshouts.com</p>
+                      <p className="text-white font-semibold">Email: seoshouts@gmail.com</p>
                       <p className="text-white/80 text-sm">Discuss your local SEO goals with our Indian market specialists</p>
                     </div>
                   </div>

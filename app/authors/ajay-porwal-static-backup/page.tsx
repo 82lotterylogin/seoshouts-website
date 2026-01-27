@@ -129,7 +129,7 @@ export default async function AjayPorwalAuthorPage() {
                 {/* Contact Links */}
                 <div className="flex flex-wrap gap-4">
                   <a 
-                    href="mailto:ajay@seoshouts.com"
+                    href="mailto:seoshouts@gmail.com"
                     className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -320,7 +320,7 @@ export default async function AjayPorwalAuthorPage() {
                 </p>
                 <div className="space-y-3">
                   <a 
-                    href="mailto:ajay@seoshouts.com"
+                    href="mailto:seoshouts@gmail.com"
                     className="flex items-center justify-center gap-2 w-full bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -371,7 +371,7 @@ export default async function AjayPorwalAuthorPage() {
               "ROI Analysis",
               "Digital Marketing Strategy"
             ],
-            "email": "ajay@seoshouts.com",
+            "email": "seoshouts@gmail.com",
             "telephone": "+918094888157",
             "address": {
               "@type": "PostalAddress",

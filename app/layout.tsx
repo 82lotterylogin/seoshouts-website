@@ -176,7 +176,7 @@ export default function RootLayout({
                 "@type": "ContactPoint",
                 "telephone": "+91-8094888157",
                 "contactType": "customer service",
-                "email": "contact@seoshouts.com"
+                "email": "seoshouts@gmail.com"
               },
               "sameAs": [
                 "https://www.facebook.com/seoshouts/",
@@ -688,7 +688,7 @@ export default function RootLayout({
                     <div>
                       <p className="text-gray-300 font-medium">Email</p>
                       <div className="space-y-1">
-                        <div><a href="mailto:contact@seoshouts.com" className="text-white hover:text-primary transition-colors text-sm sm:text-base">contact@seoshouts.com</a></div>
+                        <div><a href="mailto:seoshouts@gmail.com" className="text-white hover:text-primary transition-colors text-sm sm:text-base">seoshouts@gmail.com</a></div>
                       </div>
                     </div>
                   </div>

@@ -191,7 +191,7 @@ export default function PrivacyPolicyPage() {
               <li><strong>Withdrawal of Consent:</strong> Revoke consent at any time (this won't affect prior lawful processing).</li>
             </ul>
             <p className="text-gray-700 mt-4">
-              To exercise these rights, contact us at contact@seoshouts.com. We will respond within 30 days (extendable under DPDPA or GDPR if complex). For complaints, you may approach the Data Protection Authority in your jurisdiction.
+              To exercise these rights, contact us at seoshouts@gmail.com. We will respond within 30 days (extendable under DPDPA or GDPR if complex). For complaints, you may approach the Data Protection Authority in your jurisdiction.
             </p>
           </section>
 
@@ -263,7 +263,7 @@ export default function PrivacyPolicyPage() {
             <p className="text-gray-700">
               <strong>SEOShouts</strong><br />
               Udaipur, Rajasthan, India<br />
-              Email: contact@seoshouts.com<br />
+              Email: seoshouts@gmail.com<br />
               Phone: +91 8094888157
             </p>
             <p className="text-gray-700 mt-4">

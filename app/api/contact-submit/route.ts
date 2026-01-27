@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
         console.log('✅ SMTP connection verified');
         
         await transporter.sendMail(mailOptions);
-        console.log('✅ Contact email sent successfully to:', 'contact@seoshouts.com');
+        console.log('✅ Contact email sent successfully to:', 'seoshouts@gmail.com');
       } catch (emailError) {
         console.error('❌ Email sending failed:', emailError);
         // Don't fail the request if email fails

@@ -804,7 +804,7 @@ export default function EcommerceSEOServicePage() {
                       <span className="text-2xl">📧</span>
                     </div>
                     <div className="text-left">
-                      <p className="text-white font-semibold">Email: contact@seoshouts.com</p>
+                      <p className="text-white font-semibold">Email: seoshouts@gmail.com</p>
                       <p className="text-white/80 text-sm">Discuss your eCommerce SEO goals with our specialists</p>
                     </div>
                   </div>

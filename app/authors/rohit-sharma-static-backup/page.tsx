@@ -171,7 +171,7 @@ export default async function RohitSharmaAuthorPage() {
                 {/* Contact Links */}
                 <div className="flex flex-wrap gap-4">
                   <a 
-                    href="mailto:rohit@seoshouts.com"
+                    href="mailto:seowithrohitsharma@gmail.com"
                     className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -362,7 +362,7 @@ export default async function RohitSharmaAuthorPage() {
                 </p>
                 <div className="space-y-3">
                   <a 
-                    href="mailto:rohit@seoshouts.com"
+                    href="mailto:seowithrohitsharma@gmail.com"
                     className="flex items-center justify-center gap-2 w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -413,7 +413,7 @@ export default async function RohitSharmaAuthorPage() {
               "Authority Building"
             ],
             "alumniOf": "Techno India NJR Institute of Technology, Udaipur",
-            "email": "rohit@seoshouts.com",
+            "email": "seowithrohitsharma@gmail.com",
             "telephone": "+918094888157",
             "address": {
               "@type": "PostalAddress",
