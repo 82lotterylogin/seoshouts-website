@@ -83,7 +83,9 @@
       "Bash(timeout 5 sleep:*)",
       "Bash(cat:*)",
       "Bash(ls:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(tree:*)",
+      "Bash(del:*)"
     ],
     "deny": [],
     "ask": []
