@@ -120,21 +120,16 @@ const TableOfContents = ({ content }: { content: any }) => {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      console.log('Button clicked for:', heading.id);
                       scrollToHeading(heading.id);
                     }}
-                    className={`block text-sm py-1.5 px-3 rounded-lg transition-colors duration-200 w-full text-left flex items-start gap-2 ${
+                    className={`block py-2 px-3 rounded-lg transition-colors duration-200 w-full text-left ${
                       activeId === heading.id
                         ? 'text-blue-600 font-semibold bg-blue-50 border-l-2 border-blue-600'
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                     }`}
+                    style={{ fontSize: '18px' }}
                   >
-                    <span className={`text-xs font-mono mt-0.5 flex-shrink-0 ${
-                      activeId === heading.id ? 'text-blue-500' : 'text-gray-400'
-                    }`}>
-                      {(index + 1).toString().padStart(2, '0')}.
-                    </span>
-                    <span className="flex-1">{heading.title}</span>
+                    {heading.title}
                   </button>
                 </li>
               ))}
