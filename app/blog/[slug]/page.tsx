@@ -210,7 +210,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Blog",
-                "item": "https://seoshouts.com/blog"
+                "item": "https://seoshouts.com/blog/"
               },
               {
                 "@type": "ListItem",
