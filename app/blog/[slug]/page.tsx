@@ -391,8 +391,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
             </main>
 
             {/* Right Sidebar - Only TOC */}
-            <aside className="lg:col-span-4 hidden lg:block">
-              <div className="sticky top-8 space-y-3 z-40 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <aside className="lg:col-span-4 hidden lg:block self-start sticky top-8">
+              <div className="max-h-[calc(100vh-4rem)] overflow-y-auto">
                 {/* Table of Contents */}
                 <TableOfContents content={article.content} />
               </div>
