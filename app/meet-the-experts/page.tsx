@@ -14,12 +14,12 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
-    canonical: '/meet-the-experts',
+    canonical: '/meet-the-experts/',
   },
   openGraph: {
     title: 'Meet Our SEO Experts - Rohit & Ajay | SEO Shouts Team',
     description: 'Meet Rohit Sharma and Ajay Porwal, the SEO experts behind SEO Shouts. Real results, honest advice, and proven digital marketing strategies.',
-    url: '/meet-the-experts',
+    url: '/meet-the-experts/',
     siteName: 'SEO Shouts',
     images: [
       {
@@ -61,7 +61,33 @@ export const metadata: Metadata = {
 
 export default function MeetTheExperts() {
   return (
-    <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen pb-16 pt-12">
+    <>
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seoshouts.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Meet Our Experts",
+                "item": "https://seoshouts.com/meet-the-experts/"
+              }
+            ]
+          })
+        }}
+      />
+
+      <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen pb-16 pt-12">
       <div className="max-w-5xl mx-auto px-4">
 
         {/* HERO */}
@@ -244,5 +270,6 @@ export default function MeetTheExperts() {
         </div>
       </div>
     </div>
+    </>
   );
 }

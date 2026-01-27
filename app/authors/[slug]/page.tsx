@@ -168,7 +168,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         />
       )}
 
-      {/* Default Schema */}
+      {/* Person Schema */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -204,6 +204,37 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               ...(author.twitter_url ? [author.twitter_url] : []),
               ...(author.website_url ? [author.website_url] : [])
             ].filter(Boolean)
+          })
+        }}
+      />
+
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seoshouts.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Meet Our Experts",
+                "item": "https://seoshouts.com/meet-the-experts/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": author.name,
+                "item": `https://seoshouts.com/authors/${slug}/`
+              }
+            ]
           })
         }}
       />
