@@ -353,10 +353,10 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
       {/* Main Content Layout */}
       <div className="bg-white">
         <div className="container mx-auto px-4 lg:px-8 pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 lg:items-start">
 
             {/* Main Article Content */}
-            <main className="lg:col-span-8 min-w-0 overflow-hidden">
+            <main className="lg:col-span-8 min-w-0">
               
               {/* NEWSLETTER FORM - Moved from bottom */}
               <div className="mb-2">
@@ -364,7 +364,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
               </div>
               
               {/* Enhanced Article Content with Better Typography */}
-              <article className="prose prose-lg max-w-none overflow-hidden">
+              <article className="prose prose-lg max-w-none">
                 <div className="prose-headings:text-gray-900 prose-h1:text-4xl prose-h1:font-bold prose-h1:leading-tight prose-h1:mb-6 prose-h1:mt-8 prose-h2:text-3xl prose-h2:font-bold prose-h2:text-gray-900 prose-h2:leading-tight prose-h2:mb-4 prose-h2:mt-8 prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-gray-800 prose-h3:leading-tight prose-h3:mb-3 prose-h3:mt-6 prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-p:mb-4 prose-ul:my-4 prose-ol:my-4 prose-li:mb-2 prose-li:text-lg prose-li:leading-relaxed prose-blockquote:border-l-4 prose-blockquote:border-blue-600 prose-blockquote:bg-blue-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:my-6 prose-blockquote:italic prose-a:text-blue-600 prose-a:hover:text-blue-800 prose-a:font-medium prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-img:max-w-full prose-img:h-auto prose-code:bg-gray-100 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:text-red-600 prose-pre:bg-gray-900 prose-pre:text-white prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6 prose-table:border-collapse prose-table:my-6 prose-table:overflow-x-auto prose-table:block prose-table:max-w-full prose-th:border prose-th:border-gray-300 prose-th:bg-gray-50 prose-th:p-3 prose-th:text-left prose-th:font-semibold prose-td:border prose-td:border-gray-300 prose-td:p-3 prose-strong:font-semibold prose-strong:text-gray-900 overflow-hidden break-words">
                   
                   <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(article.content) }} />
@@ -391,8 +391,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
             </main>
 
             {/* Right Sidebar - Only TOC */}
-            <aside className="lg:col-span-4 hidden lg:block self-start sticky top-8">
-              <div className="max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <aside className="lg:col-span-4 hidden lg:block">
+              <div className="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
                 {/* Table of Contents */}
                 <TableOfContents content={article.content} />
               </div>
