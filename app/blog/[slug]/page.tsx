@@ -353,8 +353,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
       {/* Main Content Layout */}
       <div className="bg-white">
-        <div className="container mx-auto px-4 lg:px-8 pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 lg:items-start">
+        <div className="container mx-auto px-4 lg:px-8 pt-8 pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-start">
 
             {/* Main Article Content */}
             <main className="lg:col-span-8 min-w-0">
@@ -391,9 +391,9 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
 
             </main>
 
-            {/* Right Sidebar - TOC and Newsletter */}
-            <aside className="lg:col-span-4 hidden lg:block relative">
-              <div className="lg:sticky lg:top-8 space-y-6">
+            {/* Right Sidebar - TOC and Newsletter (Floating/Sticky) */}
+            <aside className="lg:col-span-4 hidden lg:block h-fit">
+              <div className="sticky top-8 space-y-6">
                 {/* Table of Contents */}
                 <TableOfContents content={article.content} />
 

@@ -83,7 +83,7 @@ const TableOfContents = ({ content }: { content: any }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-lg fixed bottom-4 left-4 right-4 lg:relative lg:static z-40 lg:z-auto lg:w-full mx-auto lg:mx-0">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-2xl fixed bottom-4 left-4 right-4 lg:relative z-40 lg:z-auto lg:w-full mx-auto lg:mx-0">
       {/* Header with Toggle Button */}
       <div className="p-4 border-b border-gray-200 flex justify-between items-center">
         <h3 className="font-bold text-gray-800 flex items-center gap-2">
