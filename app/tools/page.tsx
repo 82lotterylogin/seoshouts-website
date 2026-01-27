@@ -84,43 +84,6 @@ export default function ToolsPage() {
       />
 
 
-      {/* FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Are your SEO tools really free?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, all 15 SEO tools are completely free to use with no registration required. You can access keyword analyzers, meta tag optimizers, AI-powered content creators, schema generators, and more without any cost."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Do I need to register to use the tools?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No registration is required. All tools are accessible immediately without creating an account or providing personal information."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What types of SEO tools do you offer?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "We offer tools in 4 main categories: Keyword Research (density analyzer, difficulty checker, long-tail generator), Technical SEO (meta tags, robots.txt, XML sitemap, schema generator), Content & AI Tools (word counter, AI copywriter, blog ideas generator, SEO meta writer), and Developer Tools (HTML editor)."
-                }
-              }
-            ]
-          })
-        }}
-      />
-
       <div>
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 py-16 sm:py-24 lg:py-32">

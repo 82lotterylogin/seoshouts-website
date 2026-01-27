@@ -183,35 +183,6 @@ export default async function HomePage() {
         }}
       />
 
-      {/* FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "What SEO tools do you offer for free?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "We offer 15+ free SEO tools including keyword density analyzer, meta tag optimizer, website speed test, robots.txt generator, XML sitemap generator, content analyzer, and more."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Do you provide professional SEO services?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, we provide professional SEO services including local SEO, eCommerce SEO, link building, technical SEO audits, and SEO consulting for businesses worldwide."
-                }
-              }
-            ]
-          })
-        }}
-      />
-
       <div>
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-8 sm:py-12 lg:py-16">
