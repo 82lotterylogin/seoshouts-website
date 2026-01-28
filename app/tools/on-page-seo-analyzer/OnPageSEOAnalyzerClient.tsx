@@ -2058,7 +2058,7 @@ DETAILED ANALYSIS:
       {/* Hero Tool Section */}
       <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             
             {/* Tool Title */}
             <div className="text-center mb-8">
@@ -2333,7 +2333,7 @@ DETAILED ANALYSIS:
       {analysisResult && (
         <section id="seo-report-section" className="py-16 bg-white">
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               <div className="space-y-8">
 
                 {/* Complete Report Display - Works for both regular and shared reports */}
@@ -3325,7 +3325,7 @@ DETAILED ANALYSIS:
       {/* Header Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
               <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
               Professional SEO Analysis Tool
@@ -3336,23 +3336,23 @@ DETAILED ANALYSIS:
                 Advanced On-Page SEO Analyzer
               </span>
               <br />
-              <span className="text-primary">Complete Website Analysis with 100+ Factors</span>
+              <span className="text-primary">Complete Website Analysis with 150+ Factors</span>
             </h1>
             
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">The Most Comprehensive SEO Analysis Tool Online</h2>
+            <div className="max-w-6xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">What is an On-Page SEO Analyzer?</h2>
               <p>
-                Get detailed insights into your website's SEO performance with our advanced analyzer. Check content quality, technical SEO, Core Web Vitals, user experience, and get actionable recommendations.
+                An <strong>on-page SEO analyzer</strong> is a comprehensive tool that evaluates all optimization elements directly on your web pages that influence search engine rankings. Unlike off-page factors like backlinks, on-page SEO focuses on what you can control: your content, HTML structure, meta tags, images, internal links, and technical elements.
               </p>
               <p>
-                Perfect for SEO professionals, marketers, and website owners who want to improve their search engine rankings with data-driven optimization strategies.
+                Our advanced analyzer examines <strong>150+ critical ranking factors</strong> including content quality, keyword optimization, Core Web Vitals, mobile responsiveness, structured data, accessibility, and security. Get instant, actionable insights to improve your search visibility, user experience, and organic traffic with data-driven recommendations tailored to your website.
               </p>
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
               <div className="flex items-center">
                 <span className="text-green-500 mr-2">✓</span>
-                100+ SEO Factors
+                150+ SEO Factors
               </div>
               <div className="flex items-center">
                 <span className="text-green-500 mr-2">✓</span>
@@ -3388,7 +3388,7 @@ DETAILED ANALYSIS:
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
                 <div className="text-3xl mb-3">📊</div>
-                <h3 className="font-semibold text-gray-900 mb-2">100+ SEO Factors</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">150+ SEO Factors</h3>
                 <p className="text-sm text-gray-600">
                   Comprehensive analysis covering content, technical SEO, Core Web Vitals, and more
                 </p>
@@ -3422,7 +3422,7 @@ DETAILED ANALYSIS:
       {/* What is On-Page SEO Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
               What is On-Page SEO Analysis and Why It Matters in 2025
             </h2>
@@ -3521,7 +3521,7 @@ DETAILED ANALYSIS:
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 text-center">
                   <div className="text-3xl mb-4">🔬</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">100+ SEO Factors</h3>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800">150+ SEO Factors</h3>
                   <p className="text-gray-600">
                     Most comprehensive analysis available covering every aspect of on-page SEO optimization
                   </p>
@@ -3576,7 +3576,7 @@ DETAILED ANALYSIS:
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-              Complete Guide: 100+ SEO Factors We Analyze
+              Complete Guide: 150+ SEO Factors We Analyze
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -3803,7 +3803,7 @@ DETAILED ANALYSIS:
             <div className="mt-12 text-center">
               <div className="bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 rounded-2xl p-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4">Why These Factors Matter</h3>
-                <p className="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto">
+                <p className="text-lg text-gray-700 leading-relaxed max-w-6xl mx-auto">
                   Google uses over 200 ranking factors to determine search positions. Our tool analyzes the most critical on-page elements 
                   that directly impact your rankings. From technical fundamentals like HTTPS and Core Web Vitals to content quality signals 
                   and user experience indicators, each factor contributes to your overall SEO success. By addressing these elements systematically, 
@@ -3816,42 +3816,364 @@ DETAILED ANALYSIS:
         </div>
       </section>
 
+      {/* Comparison Table Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">
+              SEO Shouts vs. Other On-Page SEO Analyzers
+            </h2>
+            <p className="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+              Compare our advanced analyzer with other popular tools. See why SEO Shouts provides the most comprehensive and actionable SEO analysis.
+            </p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full bg-white rounded-xl shadow-sm border border-gray-200">
+                <thead>
+                  <tr className="bg-gradient-to-r from-primary/10 to-blue-600/10 border-b border-gray-200">
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-800">Feature</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-primary">SEO Shouts</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">SEOptimer</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Seobility</th>
+                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Sitechecker</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Number of SEO Factors Analyzed</td>
+                    <td className="px-6 py-4 text-center text-sm">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold">150+</span>
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">50+</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">70+</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">80+</td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Core Web Vitals Analysis</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Real PageSpeed Insights Data</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-red-600 text-lg">✗</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Keyword Density Analysis</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Structured Data Validation</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Mobile UX Analysis</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Local SEO Factors</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-red-600 text-lg">✗</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Accessibility Audit</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Security Analysis</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Detailed How-to-Fix Guides</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-yellow-600 text-lg">~</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-green-600 text-lg">✓</span>
+                    </td>
+                  </tr>
+
+                  <tr className="hover:bg-gray-50 transition-colors bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
+                    <td className="px-6 py-4 text-sm text-gray-700 font-semibold">100% Free (No Limits)</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold text-sm">Yes</span>
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-8 text-center">
+              <div className="bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 rounded-xl p-6">
+                <p className="text-gray-700 text-lg">
+                  <span className="font-semibold">Legend:</span> <span className="text-green-600 mx-2">✓ = Full support</span>
+                  <span className="text-yellow-600 mx-2">~ = Partial support</span>
+                  <span className="text-red-600 mx-2">✗ = Not available</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How to Use Target Keyword Feature Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+              How to Use the Target Keyword Feature for Better Analysis
+            </h2>
+
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 mb-8">
+              <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                The <strong>Target Keyword</strong> feature is one of the most powerful aspects of our on-page SEO analyzer. By specifying your target keyword,
+                our tool provides keyword-specific analysis that helps you optimize your content for better rankings on that exact search term.
+              </p>
+
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">What the Target Keyword Feature Analyzes:</h3>
+
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-gray-700">
+                    <span className="font-semibold text-gray-900">Keyword Placement:</span> Checks if your target keyword appears in critical SEO locations including the title tag, meta description, H1 heading, first paragraph, URL, and image alt text.
+                  </p>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-gray-700">
+                    <span className="font-semibold text-gray-900">Keyword Density Analysis:</span> Calculates the keyword density to ensure it's within the optimal 1-3% range. Detects both keyword stuffing (over-optimization) and under-optimization issues.
+                  </p>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-gray-700">
+                    <span className="font-semibold text-gray-900">Keyword Variations & LSI Keywords:</span> Identifies related keywords and semantic variations that support your target keyword, helping you create more comprehensive, topically-relevant content.
+                  </p>
+                </div>
+
+                <div className="flex items-start space-x-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-gray-700">
+                    <span className="font-semibold text-gray-900">Competitive Keyword Insights:</span> Compares your keyword optimization against typical patterns for well-ranking pages, showing where you're ahead or behind competitors.
+                  </p>
+                </div>
+              </div>
+
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">How to Get the Best Results:</h3>
+
+              <div className="bg-white rounded-xl p-6 border border-blue-200">
+                <ol className="space-y-3 list-decimal list-inside text-gray-700">
+                  <li><strong>Use Specific Keywords:</strong> Instead of "shoes", use "men's running shoes size 12" for more targeted analysis.</li>
+                  <li><strong>Match Search Intent:</strong> Make sure your keyword matches what users are actually searching for when they visit your page.</li>
+                  <li><strong>Optimize Iteratively:</strong> Run the analysis, make improvements, then analyze again to see your progress.</li>
+                  <li><strong>Focus on Natural Integration:</strong> Don't force keywords. The tool will show you opportunities to naturally include your target keyword.</li>
+                  <li><strong>Check Related Keywords:</strong> Review the keyword suggestions to expand your content with semantic variations.</li>
+                </ol>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 rounded-xl p-6 text-center">
+              <p className="text-gray-700 text-lg">
+                <span className="font-semibold">Pro Tip:</span> Always enter your target keyword for the most accurate and actionable SEO analysis.
+                Pages optimized for specific keywords rank 67% higher than generic pages according to industry studies.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is this on-page SEO analyzer free?</h3>
-                <p className="text-gray-600">Yes, our comprehensive SEO analyzer is completely free to use. Get detailed analysis of 100+ SEO factors without any registration or hidden fees.</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">How accurate is the SEO analysis?</h3>
-                <p className="text-gray-600">Our tool uses real data from Google PageSpeed Insights API and analyzes actual HTML content from your website, providing accurate and actionable SEO insights.</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">What makes this tool different?</h3>
-                <p className="text-gray-600">Unlike other tools that show generic advice, we provide specific, actionable recommendations based on your actual website analysis with real Core Web Vitals data.</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I analyze any website?</h3>
-                <p className="text-gray-600">Yes, you can analyze any public website URL. Our tool works with all types of websites including blogs, e-commerce sites, and business websites.</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">How often should I run SEO analysis?</h3>
-                <p className="text-gray-600">We recommend running analysis monthly or after making significant changes to your website. Regular monitoring helps maintain and improve your search rankings.</p>
-              </div>
-              
-              <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border border-pink-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Do you store or save my website data?</h3>
-                <p className="text-gray-600">No, we don't store or save any data from your website analysis. Each analysis is performed in real-time and results are only shown to you during the session.</p>
-              </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:grid-flow-row-dense">
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What is on-page SEO and why does it matter?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  On-page SEO refers to all optimization techniques applied directly on your website pages to improve search engine rankings. This includes optimizing content, HTML tags, images, internal links, URL structure, and technical elements. Unlike off-page SEO (backlinks, social signals), on-page factors are completely within your control. Studies show that proper on-page optimization can improve rankings by 25-50% and significantly increase organic traffic, making it one of the most cost-effective SEO strategies available.
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Is this on-page SEO analyzer completely free?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  Yes, our advanced on-page SEO analyzer is 100% free with no hidden costs, subscriptions, or premium upsells. You get full access to analyze 150+ SEO factors including Core Web Vitals, keyword density, technical SEO, mobile optimization, and detailed recommendations. Unlike other tools that limit features or require paid upgrades, we provide comprehensive analysis without any restrictions. No credit card required, no registration needed, and no analysis limits.
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How accurate is the SEO analysis provided by this tool?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  Our analyzer uses real-time data from Google PageSpeed Insights API for Core Web Vitals and performance metrics, ensuring you get the same data Google uses for ranking decisions. We fetch and analyze your actual HTML, CSS, and page structure in real-time. The tool evaluates 150+ ranking factors based on Google's documented best practices and proven SEO principles. Each recommendation is backed by SEO research and aligned with current algorithm updates, making our analysis highly accurate and actionable.
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What makes SEO Shouts analyzer better than other tools?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  Unlike generic SEO tools that provide surface-level analysis, we examine 150+ specific factors—more than most premium tools. We integrate real Google PageSpeed Insights data, provide detailed how-to-fix guides for each issue, and offer keyword-specific optimization when you enter a target keyword. Our tool analyzes local SEO factors, accessibility compliance, structured data validation, security headers, and modern performance metrics that many competitors ignore. Plus, every recommendation includes implementation guidance, not just "what's wrong" but "exactly how to fix it."
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Can I analyze competitor websites with this tool?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  Absolutely! You can analyze any publicly accessible website URL, including your competitors' sites. This is an excellent way to conduct competitive SEO analysis, understand what they're doing right, identify their weaknesses, and discover optimization opportunities for your own site. Many SEO professionals use our tool to benchmark their sites against top-ranking competitors, reverse-engineer successful SEO strategies, and identify content gaps or technical advantages that contribute to higher rankings.
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How often should I run on-page SEO analysis?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  We recommend analyzing your pages at least monthly to monitor SEO health and catch issues early. Additionally, run analysis whenever you make significant changes like redesigns, content updates, template modifications, or after Google algorithm updates. For competitive industries or active content sites, weekly analysis of key pages helps maintain optimal performance. Regular monitoring ensures you catch and fix issues before they impact rankings, and helps you track improvement progress over time.
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Do you store or share my website data?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  No, we take privacy seriously. We don't store, save, or share any data from your website analysis. Each analysis is performed in real-time, and results are only displayed to you during your active session. Once you close or refresh the page, all data is cleared. We don't create accounts, track users across sessions, or collect personal information. The only data transmitted is your URL to our analysis engine and to Google's PageSpeed API (which is also temporary and not stored by Google for user tracking purposes).
+                </div>
+              </details>
+
+              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
+                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
+                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What should I do after getting my SEO analysis report?</span>
+                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
+                </summary>
+                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
+                  Start by addressing critical issues first (shown in red), as these have the most significant impact on rankings. Then tackle warnings (yellow), and finally optimize the good items that can be made excellent. Prioritize technical issues like HTTPS, Core Web Vitals, and mobile-friendliness, then move to content optimization (title tags, headings, keyword placement), and finally enhance user experience elements. Make changes incrementally, re-analyze after each major fix, and monitor your ranking improvements over 2-4 weeks.
+                </div>
+              </details>
             </div>
           </div>
         </div>
@@ -3873,7 +4195,7 @@ DETAILED ANALYSIS:
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🔬</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Complete website analysis with 100+ SEO factors and Core Web Vitals.</p>
+                <p className="text-sm text-gray-600 mb-4">Complete website analysis with 150+ SEO factors and Core Web Vitals.</p>
                 <span className="text-green-600 font-medium">✓ Current Tool</span>
               </div>
 
@@ -3916,10 +4238,10 @@ DETAILED ANALYSIS:
       {/* Call to Action Section - Final Section */}
       <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-6xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Start Your Complete SEO Analysis Today</h2>
             <p className="text-lg mb-8 opacity-90">
-              Stop guessing what's wrong with your website's SEO. Get a comprehensive analysis of 100+ factors that directly impact your search rankings, user experience, and organic traffic.
+              Stop guessing what's wrong with your website's SEO. Get a comprehensive analysis of 150+ factors that directly impact your search rankings, user experience, and organic traffic.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -3938,7 +4260,7 @@ DETAILED ANALYSIS:
               </div>
               <div className="flex items-center justify-center space-x-2">
                 <span>🎯</span>
-                <span>100+ SEO factors analyzed</span>
+                <span>150+ SEO factors analyzed</span>
               </div>
               <div className="flex items-center justify-center space-x-2">
                 <span>📊</span>
@@ -3965,50 +4287,66 @@ DETAILED ANALYSIS:
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "Is this on-page SEO analyzer free?",
+                "name": "What is on-page SEO and why does it matter?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, our comprehensive SEO analyzer is completely free to use. Get detailed analysis of 100+ SEO factors without any registration or hidden fees."
-                }
-              },
-              {
-                "@type": "Question", 
-                "name": "How accurate is the SEO analysis?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Our tool uses real data from Google PageSpeed Insights API and analyzes actual HTML content from your website, providing accurate and actionable SEO insights."
+                  "text": "On-page SEO refers to all optimization techniques applied directly on your website pages to improve search engine rankings. This includes optimizing content, HTML tags, images, internal links, URL structure, and technical elements. Unlike off-page SEO (backlinks, social signals), on-page factors are completely within your control. Studies show that proper on-page optimization can improve rankings by 25-50% and significantly increase organic traffic, making it one of the most cost-effective SEO strategies available."
                 }
               },
               {
                 "@type": "Question",
-                "name": "What makes this tool different?",
+                "name": "Is this on-page SEO analyzer completely free?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Unlike other tools that show generic advice, we provide specific, actionable recommendations based on your actual website analysis with real Core Web Vitals data."
+                  "text": "Yes, our advanced on-page SEO analyzer is 100% free with no hidden costs, subscriptions, or premium upsells. You get full access to analyze 150+ SEO factors including Core Web Vitals, keyword density, technical SEO, mobile optimization, and detailed recommendations. Unlike other tools that limit features or require paid upgrades, we provide comprehensive analysis without any restrictions. No credit card required, no registration needed, and no analysis limits."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Can I analyze any website?",
+                "name": "How accurate is the SEO analysis provided by this tool?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Yes, you can analyze any public website URL. Our tool works with all types of websites including blogs, e-commerce sites, and business websites."
+                  "text": "Our analyzer uses real-time data from Google PageSpeed Insights API for Core Web Vitals and performance metrics, ensuring you get the same data Google uses for ranking decisions. We fetch and analyze your actual HTML, CSS, and page structure in real-time. The tool evaluates 150+ ranking factors based on Google's documented best practices and proven SEO principles. Each recommendation is backed by SEO research and aligned with current algorithm updates, making our analysis highly accurate and actionable."
                 }
               },
               {
                 "@type": "Question",
-                "name": "How often should I run SEO analysis?",
+                "name": "What makes SEO Shouts analyzer better than other tools?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "We recommend running analysis monthly or after making significant changes to your website. Regular monitoring helps maintain and improve your search rankings."
+                  "text": "Unlike generic SEO tools that provide surface-level analysis, we examine 150+ specific factors—more than most premium tools. We integrate real Google PageSpeed Insights data, provide detailed how-to-fix guides for each issue, and offer keyword-specific optimization when you enter a target keyword. Our tool analyzes local SEO factors, accessibility compliance, structured data validation, security headers, and modern performance metrics that many competitors ignore. Plus, every recommendation includes implementation guidance, not just what's wrong but exactly how to fix it."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Do you store or save my website data?",
+                "name": "Can I analyze competitor websites with this tool?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "No, we don't store or save any data from your website analysis. Each analysis is performed in real-time and results are only shown to you during the session."
+                  "text": "Absolutely! You can analyze any publicly accessible website URL, including your competitors' sites. This is an excellent way to conduct competitive SEO analysis, understand what they're doing right, identify their weaknesses, and discover optimization opportunities for your own site. Many SEO professionals use our tool to benchmark their sites against top-ranking competitors, reverse-engineer successful SEO strategies, and identify content gaps or technical advantages that contribute to higher rankings."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How often should I run on-page SEO analysis?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We recommend analyzing your pages at least monthly to monitor SEO health and catch issues early. Additionally, run analysis whenever you make significant changes like redesigns, content updates, template modifications, or after Google algorithm updates. For competitive industries or active content sites, weekly analysis of key pages helps maintain optimal performance. Regular monitoring ensures you catch and fix issues before they impact rankings, and helps you track improvement progress over time."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do you store or share my website data?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No, we take privacy seriously. We don't store, save, or share any data from your website analysis. Each analysis is performed in real-time, and results are only displayed to you during your active session. Once you close or refresh the page, all data is cleared. We don't create accounts, track users across sessions, or collect personal information. The only data transmitted is your URL to our analysis engine and to Google's PageSpeed API (which is also temporary and not stored by Google for user tracking purposes)."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What should I do after getting my SEO analysis report?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Start by addressing critical issues first (shown in red), as these have the most significant impact on rankings. Then tackle warnings (yellow), and finally optimize the good items that can be made excellent. Prioritize technical issues like HTTPS, Core Web Vitals, and mobile-friendliness, then move to content optimization (title tags, headings, keyword placement), and finally enhance user experience elements. Make changes incrementally, re-analyze after each major fix, and monitor your ranking improvements over 2-4 weeks."
                 }
               }
             ]
@@ -4024,7 +4362,7 @@ DETAILED ANALYSIS:
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
             "name": "Advanced On-Page SEO Analyzer",
-            "description": "Professional on-page SEO analysis tool that analyzes 100+ ranking factors including content quality, technical SEO, Core Web Vitals, user experience, and provides actionable optimization recommendations.",
+            "description": "Professional on-page SEO analysis tool that analyzes 150+ ranking factors including content quality, technical SEO, Core Web Vitals, user experience, and provides actionable optimization recommendations.",
             "url": "https://seoshouts.com/tools/on-page-seo-analyzer",
             "applicationCategory": "BusinessApplication",
             "operatingSystem": "Any",
@@ -4039,7 +4377,7 @@ DETAILED ANALYSIS:
               "url": "https://seoshouts.com"
             },
             "featureList": [
-              "100+ SEO factor analysis",
+              "150+ SEO factor analysis",
               "Core Web Vitals analysis",
               "Technical SEO audit",
               "Content quality assessment",

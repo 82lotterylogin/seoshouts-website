@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import OnPageSEOAnalyzerClient from './OnPageSEOAnalyzerClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Website Page SEO Checker - On-page SEO Checker - No Sign Up',
@@ -84,7 +83,6 @@ export default function OnPageSEOAnalyzer() {
       />
 
       <OnPageSEOAnalyzerClient />
-      <RelatedTools currentTool="on-page-seo-analyzer" />
     </>
   )
 }
