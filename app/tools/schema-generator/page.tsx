@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import SchemaGeneratorClient from './SchemaGeneratorClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Online Schema Generator - 39 Types - No Login - No Signup - SEOShouts',
@@ -100,7 +99,6 @@ export default function SchemaGenerator() {
       />
 
       <SchemaGeneratorClient />
-      <RelatedTools currentTool="schema-generator" />
     </>
   )
 }
