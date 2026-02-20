@@ -86,7 +86,14 @@
       "Bash(python3:*)",
       "Bash(tree:*)",
       "Bash(del:*)",
-      "Bash(npx:*)"
+      "Bash(npx:*)",
+      "Bash(npm run lint:*)",
+      "Bash(claude plugin marketplace add thedotmack/claude-mem)",
+      "Bash(claude plugin list:*)",
+      "Bash(claude plugin install thedotmack/claude-mem)",
+      "Bash(claude plugin marketplace list:*)",
+      "Bash(claude plugin search:*)",
+      "Bash(claude plugin install:*)"
     ],
     "deny": [],
     "ask": []
