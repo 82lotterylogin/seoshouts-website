@@ -1136,165 +1136,6 @@ ${generatedSchema}
   return (
     <div className="min-h-screen bg-gray-50">
 
-      {/* Website Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "SEO Shouts",
-            "alternateName": "SEOShouts",
-            "url": "https://seoshouts.com",
-            "description": "Professional SEO tools and services to boost your website's search engine rankings",
-            "publisher": {
-              "@type": "Organization",
-              "name": "SEO Shouts"
-            },
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://seoshouts.com/search?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
-          })
-        }}
-      />
-
-      {/* BreadcrumbList Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://seoshouts.com"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "SEO Tools",
-                "item": "https://seoshouts.com/tools"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Schema Generator",
-                "item": "https://seoshouts.com/tools/schema-generator"
-              }
-            ]
-          })
-        }}
-      />
-
-      {/* Software Application Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Free Schema Markup Generator",
-            "description": "Generate JSON-LD schema markup for any schema.org type. Free comprehensive schema generator with 39 essential schema types, validation, and export functionality.",
-            "url": "https://seoshouts.com/tools/schema-generator",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
-            },
-            "featureList": [
-              "39 Popular Schema.org types",
-              "JSON-LD format generation",
-              "Real-time validation",
-              "Export functionality",
-              "Smart form builder",
-              "Rich snippets optimization",
-              "Category-based organization",
-              "Custom field builders"
-            ],
-            "keywords": "schema generator, JSON-LD generator, structured data, schema markup, SEO schema, rich snippets",
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.9",
-              "bestRating": "5",
-              "ratingCount": "1247"
-            },
-            "softwareVersion": "2.0",
-            "datePublished": "2024-09-07",
-            "dateModified": "2024-09-07",
-            "author": {
-              "@type": "Organization",
-              "name": "SEO Shouts"
-            }
-          })
-        }}
-      />
-      
-      {/* FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "How many schema types does this generator support?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Our schema generator currently supports 39 of the most popular and essential schema.org types, organized by category. These cover all the schemas you need for SEO, including business, content, e-commerce, events, and more."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Is the generated schema markup valid?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, all generated schema markup follows schema.org standards and Google's structured data guidelines. We also provide built-in validation to ensure your markup is error-free."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I customize schema types?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Absolutely! Our advanced schema builder allows you to create custom schema types and add specific properties tailored to your industry or use case."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How do I implement the generated schema?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Simply copy the generated JSON-LD code and paste it into the <head> section of your HTML page, or use our export features to download the schema files."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Does this tool help with rich snippets?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes! Our schema generator creates markup that's optimized for Google's rich snippets, helping improve your search result appearance and click-through rates."
-                }
-              }
-            ]
-          })
-        }}
-      />
-
       {/* Tool Section */}
       <section className="py-8 sm:py-12 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
@@ -2511,32 +2352,46 @@ ${generatedSchema}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔧</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Markup Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect JSON-LD schema markup with 39+ types and advanced property builders.</p>
+                <div className="text-3xl mb-3">🏗️</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types with advanced property builders.</p>
                 <span className="text-green-600 font-medium">✓ Current Tool</span>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🔬</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
+                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.</p>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🔗</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
-                <p className="text-sm text-gray-600 mb-4">Analyze anchor text distribution with unique word cloud visualization.</p>
+                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
                 <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit 150+ SEO factors with real Google PageSpeed API data.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <div className="text-3xl mb-3">🤖</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.</p>
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏷️</div>
+                <div className="text-3xl mb-3">🚫</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">📝</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
+                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better click-through rates.</p>
                 <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
             </div>

@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 // dummy comment to force deploy
 
 export const metadata: Metadata = {
-  title: 'Free SEO Tools - 15 Professional Tools | SEO Shouts',
-  description: 'Access 15 professional free SEO tools for keyword research, technical optimization, content creation, AI-powered assistance, and schema generation. No registration required.',
+  title: 'Free SEO Tools - 18 Professional Tools | SEO Shouts',
+  description: 'Access 18 professional free SEO tools for keyword research, technical optimization, content creation, AI-powered assistance, and schema generation. No registration required.',
   keywords: 'free SEO tools, keyword density analyzer, meta tag optimizer, long tail keywords, robots txt generator, xml sitemap generator, word counter, AI copywriter, blog ideas generator, HTML editor',
   authors: [{ name: 'SEO Shouts' }],
   creator: 'SEO Shouts',
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/',
   },
   openGraph: {
-    title: 'Free SEO Tools - 15 Professional Tools | SEO Shouts',
-    description: 'Access 15 professional SEO tools for free. Keyword research, technical SEO, content optimization, AI-powered tools, and schema generation.',
+    title: 'Free SEO Tools - 18 Professional Tools | SEO Shouts',
+    description: 'Access 18 professional SEO tools for free. Keyword research, technical SEO, content optimization, AI-powered tools, and schema generation.',
     url: 'https://seoshouts.com/tools/',
     siteName: 'SEO Shouts',
     images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free SEO Tools - 15 Professional Tools | SEO Shouts',
-    description: 'Access 15 professional SEO tools for free. All tools available without registration.',
+    title: 'Free SEO Tools - 18 Professional Tools | SEO Shouts',
+    description: 'Access 18 professional SEO tools for free. All tools available without registration.',
     site: '@seo_shouts',
     creator: '@seo_shouts',
     images: ['https://seoshouts.com/tools-twitter-image.jpg'],
@@ -98,7 +98,7 @@ export default function ToolsPage() {
             <div className="max-w-5xl mx-auto text-center">
               <div className="inline-flex items-center px-4 py-2 bg-white/50 backdrop-blur-sm rounded-full border border-gray-200 mb-6 sm:mb-8">
                 <span className="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></span>
-                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 15 Professional Free SEO Tools</span>
+                <span className="text-xs sm:text-sm font-medium text-gray-700">✨ 18 Professional Free SEO Tools</span>
               </div>
               
               <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
@@ -118,7 +118,7 @@ export default function ToolsPage() {
               {/* Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
-                  <div className="text-2xl font-bold text-primary mb-1">15</div>
+                  <div className="text-2xl font-bold text-primary mb-1">18</div>
                   <div className="text-sm text-gray-600">Free SEO Tools</div>
                 </div>
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
@@ -132,23 +132,23 @@ export default function ToolsPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
-                <a 
+                <a
                   href="#tools"
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="Explore all free SEO tools"
                 >
-                  🚀 Explore All Tools
+                  ðŸš€ Explore All Tools
                   <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </a>
                 
-                <a 
+                <a
                   href="#categories"
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="Browse free SEO tools by category"
                 >
-                  📋 Browse by Category
+                  ðŸ“‹ Browse by Category
                   <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -188,7 +188,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔍</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Keyword Research
@@ -205,7 +205,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">⚙️</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">âš™ï¸</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Technical SEO
@@ -213,7 +213,7 @@ export default function ToolsPage() {
                   <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                     Optimize technical aspects of your website for search engines.
                   </p>
-                  <div className="text-sm text-primary font-medium">6 Tools Available</div>
+                  <div className="text-sm text-primary font-medium">8 Tools Available</div>
                 </div>
               </div>
 
@@ -222,7 +222,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📄</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“„</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Content & AI Tools
@@ -239,7 +239,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ’»</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Developer Tools
@@ -282,7 +282,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">🔍</span>
+                  <span className="text-primary text-xl" aria-hidden="true">ðŸ”</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Keyword Research Tools</h3>
               </div>
@@ -293,7 +293,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“Š</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Keyword Density Analyzer
@@ -306,7 +306,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Keyword distribution mapping</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Optimization recommendations</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/keyword-density-analyzer/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Keyword Density Analyzer tool"
@@ -321,7 +321,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🎯</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸŽ¯</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Keyword Difficulty Checker
@@ -334,7 +334,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Difficulty scoring</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Alternative suggestions</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/keyword-difficulty-checker/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Keyword Difficulty Checker tool"
@@ -349,7 +349,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🏷️</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ·ï¸</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Long Tail Keyword Generator
@@ -362,7 +362,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Search volume data</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/long-tail-keyword-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Long Tail Keyword Generator tool"
@@ -371,6 +371,7 @@ export default function ToolsPage() {
                     </a>
                   </div>
                 </article>
+
               </div>
             </div>
 
@@ -378,7 +379,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">⚙️</span>
+                  <span className="text-primary text-xl" aria-hidden="true">âš™ï¸</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Technical SEO Tools</h3>
               </div>
@@ -389,7 +390,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Meta Tag Optimizer
@@ -402,7 +403,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Character count optimization</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>CTR improvement tips</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/meta-tag-optimizer/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Meta Tag Optimizer tool"
@@ -417,7 +418,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ¤–</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Robots.txt Generator
@@ -430,7 +431,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Syntax validation</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Testing functionality</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/robots-txt-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Robots.txt Generator tool"
@@ -445,7 +446,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🗺️</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ—ºï¸</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       XML Sitemap Generator
@@ -458,7 +459,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Priority & frequency settings</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multi-format support</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/xml-sitemap-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch XML Sitemap Generator tool"
@@ -468,12 +469,40 @@ export default function ToolsPage() {
                   </div>
                 </article>
 
-                {/* Technical Tool 4 - Schema Generator */}
+                {/* Technical Tool 4 - .htaccess Generator */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🏗️</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">âš™ï¸</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      .htaccess Generator
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Generate Apache .htaccess files for redirects, security headers, GZIP compression, browser caching, error pages, and CMS presets.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>301/302/307/308 redirect builder</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Security, GZIP & caching rules</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>WordPress, Shopify, Laravel & Joomla presets</li>
+                    </ul>
+                    <a
+                      href="/tools/htaccess-generator/"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch .htaccess Generator tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
+
+                {/* Technical Tool 5 - Schema Generator */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ—ï¸</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Schema Generator
@@ -486,7 +515,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>JSON-LD format</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Rich snippets optimization</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/schema-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Schema Generator tool"
@@ -496,12 +525,12 @@ export default function ToolsPage() {
                   </div>
                 </article>
 
-                {/* Technical Tool 5 - On-Page SEO Analyzer */}
+                {/* Technical Tool 6 - On-Page SEO Analyzer */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔬</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”¬</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       On-Page SEO Analyzer
@@ -524,12 +553,12 @@ export default function ToolsPage() {
                   </div>
                 </article>
 
-                {/* Technical Tool 6 - Internal Link Checker */}
+                {/* Technical Tool 7 - Internal Link Checker */}
                 <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔗</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”—</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Internal Link Checker
@@ -551,6 +580,62 @@ export default function ToolsPage() {
                     </a>
                   </div>
                 </article>
+
+                {/* Technical Tool 8 - Disavow File Generator */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🚫</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      Disavow File Generator
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Generate Google-compliant disavow files from backlink exports. Auto-extract domains, remove duplicates, whitelist trusted domains, and download ready-to-upload output.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Domain and URL disavow modes</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Smart deduplication and whitelist filtering</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Download ready disavow.txt file</li>
+                    </ul>
+                    <a
+                      href="/tools/disavow-file-generator/"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch Disavow File Generator tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
+
+                {/* Technical Tool 9 - GEO & AEO Score Checker */}
+                <article className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-primary/20 overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
+                    </div>
+                    <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                      GEO & AEO Score Checker
+                    </h4>
+                    <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
+                      Audit your page&apos;s AI search readiness across 7 categories — schema markup, AI crawler access, E-E-A-T signals, FAQ readiness & more. Get a 0–100 score with specific fixes.
+                    </p>
+                    <ul className="space-y-2 mb-6 text-sm text-gray-600">
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>7-category AI readiness audit</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>0–100 weighted composite score</li>
+                      <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Per-check fix recommendations</li>
+                    </ul>
+                    <a
+                      href="/tools/geo-aeo-checker/"
+                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
+                      aria-label="Launch GEO & AEO Score Checker tool"
+                    >
+                      Launch Tool
+                    </a>
+                  </div>
+                </article>
               </div>
             </div>
 
@@ -558,7 +643,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">📄</span>
+                  <span className="text-primary text-xl" aria-hidden="true">ðŸ“„</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Content & AI Tools</h3>
               </div>
@@ -569,7 +654,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔢</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”¢</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Word Counter
@@ -582,7 +667,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Reading time estimation</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multiple metrics tracking</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/word-counter/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Word Counter tool"
@@ -597,7 +682,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">✍️</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">âœï¸</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       AI Copywriter
@@ -610,7 +695,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multiple content types</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Instant results</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/ai-copywriter/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch AI Copywriter tool"
@@ -625,7 +710,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ¤–</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       AI Blog Ideas Generator
@@ -638,7 +723,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Niche-specific ideas</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO-friendly suggestions</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/blog-ideas-generator/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch AI Blog Ideas Generator tool"
@@ -653,7 +738,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       SEO Meta Writer
@@ -666,7 +751,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO optimization</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Character count compliance</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/seo-meta-writer/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch SEO Meta Writer tool"
@@ -681,7 +766,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“Š</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Word Counter
@@ -694,7 +779,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Reading time estimation</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Paragraph & sentence analysis</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/word-counter/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch Word Counter tool"
@@ -710,7 +795,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">💻</span>
+                  <span className="text-primary text-xl" aria-hidden="true">ðŸ’»</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Developer Tools</h3>
               </div>
@@ -721,7 +806,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ’»</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       HTML Editor
@@ -734,7 +819,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Syntax highlighting</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
-                    <a 
+                    <a
                       href="/tools/html-editor/"
                       className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
                       aria-label="Launch HTML Editor tool"
@@ -772,26 +857,26 @@ export default function ToolsPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
-                <a 
+                <a
                   href="#tools"
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-xl hover:shadow-2xl hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="Start using free SEO tools"
                 >
                   <span className="flex items-center">
-                    🚀 Start Using Tools
+                    ðŸš€ Start Using Tools
                     <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </span>
                 </a>
                 
-                <a 
+                <a
                   href="/services/"
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-transparent border-2 border-white text-white rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg hover:bg-white hover:text-primary transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="View professional SEO services"
                 >
                   <span className="flex items-center">
-                    💼 View SEO Services
+                    ðŸ’¼ View SEO Services
                     <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>

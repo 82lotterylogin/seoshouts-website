@@ -53,9 +53,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Tool pages
   const toolPages: MetadataRoute.Sitemap = [
     'internal-link-checker',
+    'disavow-file-generator',
+    'geo-aeo-checker',
     'on-page-seo-analyzer',
     'schema-generator',
     'robots-txt-generator',
+    'htaccess-generator',
     'keyword-density-analyzer',
     'xml-sitemap-generator',
     'meta-tag-optimizer',

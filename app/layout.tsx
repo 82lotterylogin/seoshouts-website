@@ -160,38 +160,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Global Organization Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com",
-              "logo": "https://seoshouts.com/logo.png",
-              "description": "Professional SEO tools and services for businesses worldwide. Free SEO analysis, keyword research, technical audits, and expert SEO consulting.",
-              "foundingDate": "2016",
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+91-8094888157",
-                "contactType": "customer service",
-                "email": "seoshouts@gmail.com"
-              },
-              "sameAs": [
-                "https://www.facebook.com/seoshouts/",
-                "https://www.linkedin.com/company/seoshouts/",
-                "https://x.com/seo_shouts",
-                "https://www.reddit.com/r/seoshouts/"
-              ],
-              "address": {
-                "@type": "PostalAddress",
-                "addressCountry": "IN"
-              }
-            })
-          }}
-        />
-        
         {/* Website Schema */}
         <script
           type="application/ld+json"
@@ -382,7 +350,7 @@ export default function RootLayout({
                   
                   {/* Free Tools Mega Menu */}
                   <div 
-                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[1200px] max-w-[98vw] max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
+                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[1400px] max-w-[98vw] max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
                       isToolsOpen 
                         ? 'opacity-100 visible translate-y-0 z-[70]' 
                         : 'opacity-0 invisible translate-y-2 z-[-1]'
@@ -392,7 +360,7 @@ export default function RootLayout({
                     <div className="p-6">
                       <div className="text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wide">Free SEO Tools</div>
                       
-                      <div className="grid grid-cols-4 gap-6">
+                      <div className="grid grid-cols-5 gap-6">
                         {/* Content & AI Tools */}
                         <div>
                           <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
@@ -468,6 +436,15 @@ export default function RootLayout({
                                 <div className="text-xs text-gray-500">Generate & validate robots.txt files</div>
                               </div>
                             </a>
+                            <a href="/tools/htaccess-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">HT</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">.htaccess Generator</div>
+                                <div className="text-xs text-gray-500">Generate Apache redirects, security & caching rules</div>
+                              </div>
+                            </a>
                             <a href="/tools/xml-sitemap-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
                               <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
                                 <span className="text-gray-600 text-xs">🗺️</span>
@@ -502,6 +479,15 @@ export default function RootLayout({
                               <div>
                                 <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Internal Link Checker</div>
                                 <div className="text-xs text-gray-500">Analyze internal links & anchor text</div>
+                              </div>
+                            </a>
+                            <a href="/tools/disavow-file-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">🚫</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Disavow File Generator</div>
+                                <div className="text-xs text-gray-500">Create Google-compliant disavow.txt files</div>
                               </div>
                             </a>
                           </div>
@@ -566,11 +552,32 @@ export default function RootLayout({
                             </a>
                           </div>
                         </div>
+
+                        {/* AI SEO Tools */}
+                        <div>
+                          <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
+                            <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
+                              <span className="text-primary text-sm">🤖</span>
+                            </span>
+                            AI SEO Tools
+                          </h4>
+                          <div className="space-y-2">
+                            <a href="/tools/geo-aeo-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
+                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
+                                <span className="text-gray-600 text-xs">🤖</span>
+                              </div>
+                              <div>
+                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">GEO & AEO Score Checker</div>
+                                <div className="text-xs text-gray-500">Audit AI search readiness in 7 categories</div>
+                              </div>
+                            </a>
+                          </div>
+                        </div>
                       </div>
                       {/* View All Tools CTA */}
                       <div className="pt-4 mt-4 border-t border-gray-100">
                         <a href="/tools/" className="flex items-center justify-center w-full p-3 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All 15 Free Tools
+                          View All 18 Free Tools
                           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
@@ -768,6 +775,14 @@ export default function RootLayout({
                   <li><a href="/tools/schema-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                     Schema Generator
+                  </a></li>
+                  <li><a href="/tools/htaccess-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    .htaccess Generator
+                  </a></li>
+                  <li><a href="/tools/disavow-file-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                    Disavow File Generator
                   </a></li>
                   <li><a href="/tools/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
                     <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>

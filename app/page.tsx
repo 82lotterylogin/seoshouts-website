@@ -106,26 +106,43 @@ export default async function HomePage() {
   const blogPosts = await fetchLatestBlogPosts();
   return (
     <>
-      {/* Organization Schema */}
+      {/* Organization Schema — home page only */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "SEOShouts",
+            "name": "SEO Shouts",
             "url": "https://seoshouts.com",
             "logo": "https://seoshouts.com/logo.png",
-            "description": "Free SEO tools and professional SEO services. Founded by Rohit Sharma with 10+ years of SEO experience.",
+            "description": "Professional SEO tools and services for businesses worldwide. Founded by Rohit Sharma with 13+ years of SEO experience.",
+            "foundingDate": "2016",
             "founder": {
               "@type": "Person",
               "name": "Rohit Sharma",
               "jobTitle": "SEO Expert",
-              "description": "10+ years of experience in technical SEO, content strategy, and search optimization"
+              "description": "13+ years of experience in technical SEO, content strategy, and search optimization"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+91-8094888157",
+              "contactType": "customer service",
+              "email": "seoshouts@gmail.com"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "12, New Ahinapuri, Fatehpura",
+              "addressLocality": "Udaipur",
+              "addressRegion": "Rajasthan",
+              "postalCode": "313001",
+              "addressCountry": "IN"
             },
             "sameAs": [
-              "https://twitter.com/seoshouts",
-              "https://linkedin.com/company/seoshouts"
+              "https://www.facebook.com/seoshouts/",
+              "https://www.linkedin.com/company/seoshouts/",
+              "https://x.com/seo_shouts",
+              "https://www.reddit.com/r/seoshouts/"
             ]
           })
         }}

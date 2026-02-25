@@ -171,56 +171,6 @@ export default function RobotsTxtGeneratorClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Software Application Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Robots.txt Generator",
-            "description": "Generate and validate robots.txt files to control how search engines crawl your website. Includes syntax validation and testing.",
-            "url": "https://seoshouts.com/tools/robots-txt-generator",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
-            },
-            "featureList": [
-              "Automated generation",
-              "Syntax validation",
-              "Testing functionality",
-              "Custom rules creation",
-              "Download functionality",
-              "Template library",
-              "Crawl control"
-            ],
-            "keywords": "robots.txt, crawler control, search engine crawling, SEO technical",
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.5",
-              "bestRating": "5",
-              "ratingCount": "687"
-            },
-            "softwareVersion": "1.8",
-            "datePublished": "2024-02-05",
-            "dateModified": "2024-08-19",
-            "author": {
-              "@type": "Organization",
-              "name": "SEO Shouts"
-            }
-          })
-        }}
-      />
-      
 
       {/* Tool Section */}
       <section className="py-8 sm:py-12">
@@ -818,28 +768,45 @@ Disallow: /*.pdf$`}
             {/* Featured Tools Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏷️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create perfect robots.txt files without breaking your website.</p>
+                <p className="text-sm text-gray-600 mb-4">Create robots.txt files with directives for all crawlers including AI bots like GPTBot and ClaudeBot.</p>
                 <span className="text-green-600 font-medium">✓ Current Tool</span>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🔬</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
+                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.</p>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🔗</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
+                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
+                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🏗️</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🚫</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">📊</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
+                <p className="text-sm text-gray-600 mb-4">Analyze keyword frequency and optimize content for target keywords without over-optimization.</p>
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
             </div>
 

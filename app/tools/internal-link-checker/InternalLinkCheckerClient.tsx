@@ -1950,57 +1950,45 @@ export default function InternalLinkCheckerClient() {
             {/* Featured Tools Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
+                <div className="text-3xl mb-3">🔗</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
+                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
+                <span className="text-green-600 font-medium">✓ Current Tool</span>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🔬</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit any page for 100+ ranking factors with real Google PageSpeed API data. Covers technical SEO, content quality, and competitive benchmarks.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">
-                  Analyze your on-page SEO factors →
-                </a>
+                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and competitive benchmarks.</p>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🏗️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Markup Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types. Add the markup search engines need to understand your content.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">
-                  Generate schema markup for your pages →
-                </a>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create and validate robots.txt files — including directives for AI crawlers like GPTBot, ClaudeBot, and PerplexityBot.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">
-                  Configure your robots.txt for AI crawlers →
-                </a>
+                <p className="text-sm text-gray-600 mb-4">Create robots.txt rules including directives for AI crawlers like GPTBot and ClaudeBot.</p>
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Check keyword frequency and semantic density across any page. Ensure your content hits target keywords without over-optimization.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Check keyword density in your content →
-                </a>
+                <div className="text-3xl mb-3">🚫</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">📝</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Craft perfect title tags and meta descriptions optimized for click-through rate and search relevance.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Optimize your meta tags for better CTR →
-                </a>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🗺️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">XML Sitemap Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create XML sitemaps that help search engines discover and index every important page on your site.</p>
-                <a href="/tools/xml-sitemap-generator/" className="text-primary font-medium hover:underline">
-                  Create an XML sitemap for your site →
-                </a>
+                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better click-through rates.</p>
+                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
             </div>
 
@@ -2011,7 +1999,7 @@ export default function InternalLinkCheckerClient() {
                 className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <span className="mr-2">🛠️</span>
-                Browse All 15 Free SEO Tools
+                Browse All 17 Free SEO Tools
               </a>
               <p className="text-sm text-gray-500 mt-3">
                 All tools are 100% free · No signup required · Instant results

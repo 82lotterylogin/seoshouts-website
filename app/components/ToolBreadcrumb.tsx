@@ -8,37 +8,6 @@ interface ToolBreadcrumbProps {
 export default function ToolBreadcrumb({ toolName, toolSlug }: ToolBreadcrumbProps) {
   return (
     <>
-      {/* BreadcrumbList Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://seoshouts.com/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "SEO Tools",
-                "item": "https://seoshouts.com/tools/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": toolName,
-                "item": `https://seoshouts.com/tools/${toolSlug}/`
-              }
-            ]
-          })
-        }}
-      />
-
       {/* Modern Breadcrumb Navigation */}
       <section className="pt-0 pb-8 bg-gradient-to-r from-gray-50 to-blue-50/30">
         <div className="container mx-auto px-2 sm:px-4 lg:px-6">

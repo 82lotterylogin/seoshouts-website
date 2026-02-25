@@ -2005,55 +2005,6 @@ DETAILED ANALYSIS:
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Software Application Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "On-Page SEO Analyzer Tool",
-            "description": "Complete on-page SEO analysis with 100+ factors. Analyze content quality, technical SEO, Core Web Vitals, user experience, and get actionable recommendations.",
-            "url": "https://seoshouts.com/tools/on-page-seo-analyzer",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Web",
-            "browserRequirements": "Requires JavaScript. Compatible with Chrome, Firefox, Safari, Edge.",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
-            },
-            "featureList": [
-              "100+ SEO factors analysis",
-              "Core Web Vitals analysis",
-              "Content quality evaluation",
-              "Technical SEO audit",
-              "PageSpeed Insights integration",
-              "Real-time analysis",
-              "Actionable recommendations"
-            ],
-            "keywords": "on-page SEO analyzer, website SEO audit, SEO analysis tool, Core Web Vitals, technical SEO, content optimization",
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.9",
-              "bestRating": "5",
-              "ratingCount": "2847"
-            },
-            "softwareVersion": "2.0",
-            "datePublished": "2024-12-01",
-            "dateModified": "2025-01-15",
-            "author": {
-              "@type": "Organization",
-              "name": "SEO Shouts"
-            }
-          })
-        }}
-      />
 
       {/* Hero Tool Section */}
       <section className="py-8 sm:py-12">
@@ -4195,26 +4146,43 @@ DETAILED ANALYSIS:
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🔬</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Complete website analysis with 150+ SEO factors and Core Web Vitals.</p>
+                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.</p>
                 <span className="text-green-600 font-medium">✓ Current Tool</span>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🔗</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
+                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
+                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🏗️</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🤖</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.</p>
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                <div className="text-3xl mb-3">🚫</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
+                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">📊</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Analyze keyword density and optimize content for target keywords.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏷️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                <p className="text-sm text-gray-600 mb-4">Analyze keyword frequency and optimize content for target keywords without over-optimization.</p>
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
               </div>
             </div>
 
@@ -4277,152 +4245,6 @@ DETAILED ANALYSIS:
         </div>
       </section>
 
-      {/* FAQ Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "What is on-page SEO and why does it matter?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "On-page SEO refers to all optimization techniques applied directly on your website pages to improve search engine rankings. This includes optimizing content, HTML tags, images, internal links, URL structure, and technical elements. Unlike off-page SEO (backlinks, social signals), on-page factors are completely within your control. Studies show that proper on-page optimization can improve rankings by 25-50% and significantly increase organic traffic, making it one of the most cost-effective SEO strategies available."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Is this on-page SEO analyzer completely free?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, our advanced on-page SEO analyzer is 100% free with no hidden costs, subscriptions, or premium upsells. You get full access to analyze 150+ SEO factors including Core Web Vitals, keyword density, technical SEO, mobile optimization, and detailed recommendations. Unlike other tools that limit features or require paid upgrades, we provide comprehensive analysis without any restrictions. No credit card required, no registration needed, and no analysis limits."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How accurate is the SEO analysis provided by this tool?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Our analyzer uses real-time data from Google PageSpeed Insights API for Core Web Vitals and performance metrics, ensuring you get the same data Google uses for ranking decisions. We fetch and analyze your actual HTML, CSS, and page structure in real-time. The tool evaluates 150+ ranking factors based on Google's documented best practices and proven SEO principles. Each recommendation is backed by SEO research and aligned with current algorithm updates, making our analysis highly accurate and actionable."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What makes SEO Shouts analyzer better than other tools?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Unlike generic SEO tools that provide surface-level analysis, we examine 150+ specific factors—more than most premium tools. We integrate real Google PageSpeed Insights data, provide detailed how-to-fix guides for each issue, and offer keyword-specific optimization when you enter a target keyword. Our tool analyzes local SEO factors, accessibility compliance, structured data validation, security headers, and modern performance metrics that many competitors ignore. Plus, every recommendation includes implementation guidance, not just what's wrong but exactly how to fix it."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I analyze competitor websites with this tool?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Absolutely! You can analyze any publicly accessible website URL, including your competitors' sites. This is an excellent way to conduct competitive SEO analysis, understand what they're doing right, identify their weaknesses, and discover optimization opportunities for your own site. Many SEO professionals use our tool to benchmark their sites against top-ranking competitors, reverse-engineer successful SEO strategies, and identify content gaps or technical advantages that contribute to higher rankings."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How often should I run on-page SEO analysis?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "We recommend analyzing your pages at least monthly to monitor SEO health and catch issues early. Additionally, run analysis whenever you make significant changes like redesigns, content updates, template modifications, or after Google algorithm updates. For competitive industries or active content sites, weekly analysis of key pages helps maintain optimal performance. Regular monitoring ensures you catch and fix issues before they impact rankings, and helps you track improvement progress over time."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Do you store or share my website data?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No, we take privacy seriously. We don't store, save, or share any data from your website analysis. Each analysis is performed in real-time, and results are only displayed to you during your active session. Once you close or refresh the page, all data is cleared. We don't create accounts, track users across sessions, or collect personal information. The only data transmitted is your URL to our analysis engine and to Google's PageSpeed API (which is also temporary and not stored by Google for user tracking purposes)."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What should I do after getting my SEO analysis report?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Start by addressing critical issues first (shown in red), as these have the most significant impact on rankings. Then tackle warnings (yellow), and finally optimize the good items that can be made excellent. Prioritize technical issues like HTTPS, Core Web Vitals, and mobile-friendliness, then move to content optimization (title tags, headings, keyword placement), and finally enhance user experience elements. Make changes incrementally, re-analyze after each major fix, and monitor your ranking improvements over 2-4 weeks."
-                }
-              }
-            ]
-          })
-        }}
-      />
-
-      {/* Tool Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Advanced On-Page SEO Analyzer",
-            "description": "Professional on-page SEO analysis tool that analyzes 150+ ranking factors including content quality, technical SEO, Core Web Vitals, user experience, and provides actionable optimization recommendations.",
-            "url": "https://seoshouts.com/tools/on-page-seo-analyzer",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Any",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "provider": {
-              "@type": "Organization",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com"
-            },
-            "featureList": [
-              "150+ SEO factor analysis",
-              "Core Web Vitals analysis",
-              "Technical SEO audit",
-              "Content quality assessment",
-              "User experience evaluation",
-              "Social optimization check",
-              "Local SEO analysis",
-              "Advanced analytics review",
-              "Actionable recommendations",
-              "PageSpeed Insights integration"
-            ],
-            "screenshot": "https://seoshouts.com/tools/on-page-seo-analyzer/screenshot.jpg"
-          })
-        }}
-      />
-
-      {/* Breadcrumb Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://seoshouts.com"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "SEO Tools",
-                "item": "https://seoshouts.com/tools"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "On-Page SEO Analyzer",
-                "item": "https://seoshouts.com/tools/on-page-seo-analyzer"
-              }
-            ]
-          })
-        }}
-      />
     </div>
   )
 }
