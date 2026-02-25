@@ -116,14 +116,10 @@ export default function ToolsPage() {
               </p>
 
               {/* Stats */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-sm mx-auto mb-12">
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
                   <div className="text-2xl font-bold text-primary mb-1">18</div>
                   <div className="text-sm text-gray-600">Free SEO Tools</div>
-                </div>
-                <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
-                  <div className="text-2xl font-bold text-primary mb-1">10K+</div>
-                  <div className="text-sm text-gray-600">Monthly Users</div>
                 </div>
                 <div className="bg-white/70 backdrop-blur-lg rounded-xl p-4 shadow-lg border border-gray-200">
                   <div className="text-2xl font-bold text-primary mb-1">100%</div>
@@ -137,7 +133,7 @@ export default function ToolsPage() {
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg shadow-xl hover:shadow-2xl hover:bg-primary/90 transform hover:scale-105 transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="Explore all free SEO tools"
                 >
-                  ðŸš€ Explore All Tools
+                  🚀 Explore All Tools
                   <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
@@ -148,7 +144,7 @@ export default function ToolsPage() {
                   className="group px-6 sm:px-8 py-3 sm:py-4 bg-white/70 backdrop-blur-sm text-gray-700 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg border-2 border-gray-200 hover:border-primary hover:text-primary transition-all duration-300 flex items-center w-full sm:w-auto justify-center"
                   aria-label="Browse free SEO tools by category"
                 >
-                  ðŸ“‹ Browse by Category
+                  📋 Browse by Category
                   <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -188,7 +184,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔍</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Keyword Research
@@ -205,7 +201,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">âš™ï¸</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">⚙️</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Technical SEO
@@ -222,7 +218,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“„</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Content & AI Tools
@@ -239,7 +235,7 @@ export default function ToolsPage() {
                 <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ’»</span>
+                    <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
                   </div>
                   <h3 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                     Developer Tools
@@ -282,7 +278,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">ðŸ”</span>
+                  <span className="text-primary text-xl" aria-hidden="true">🔍</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Keyword Research Tools</h3>
               </div>
@@ -293,7 +289,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“Š</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Keyword Density Analyzer
@@ -321,7 +317,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸŽ¯</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🎯</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Keyword Difficulty Checker
@@ -349,7 +345,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ·ï¸</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🏷️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Long Tail Keyword Generator
@@ -379,7 +375,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">âš™ï¸</span>
+                  <span className="text-primary text-xl" aria-hidden="true">⚙️</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Technical SEO Tools</h3>
               </div>
@@ -390,7 +386,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Meta Tag Optimizer
@@ -418,7 +414,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ¤–</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Robots.txt Generator
@@ -446,7 +442,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ—ºï¸</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🗺️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       XML Sitemap Generator
@@ -474,7 +470,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">âš™ï¸</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">⚙️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       .htaccess Generator
@@ -502,7 +498,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ—ï¸</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🏗️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Schema Generator
@@ -530,7 +526,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”¬</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔬</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       On-Page SEO Analyzer
@@ -558,7 +554,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”—</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔗</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Internal Link Checker
@@ -643,7 +639,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">ðŸ“„</span>
+                  <span className="text-primary text-xl" aria-hidden="true">📝</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Content & AI Tools</h3>
               </div>
@@ -654,7 +650,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ”¢</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔢</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Word Counter
@@ -682,7 +678,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">âœï¸</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">✍️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       AI Copywriter
@@ -710,7 +706,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ¤–</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       AI Blog Ideas Generator
@@ -738,7 +734,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       SEO Meta Writer
@@ -766,7 +762,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ“Š</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       Word Counter
@@ -795,7 +791,7 @@ export default function ToolsPage() {
             <div className="mb-16">
               <div className="flex items-center mb-8">
                 <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                  <span className="text-primary text-xl" aria-hidden="true">ðŸ’»</span>
+                  <span className="text-primary text-xl" aria-hidden="true">💻</span>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Developer Tools</h3>
               </div>
@@ -806,7 +802,7 @@ export default function ToolsPage() {
                   <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
                     <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary rounded-xl sm:rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">ðŸ’»</span>
+                      <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
                       HTML Editor
@@ -863,7 +859,7 @@ export default function ToolsPage() {
                   aria-label="Start using free SEO tools"
                 >
                   <span className="flex items-center">
-                    ðŸš€ Start Using Tools
+                    🚀 Start Using Tools
                     <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
@@ -876,7 +872,7 @@ export default function ToolsPage() {
                   aria-label="View professional SEO services"
                 >
                   <span className="flex items-center">
-                    ðŸ’¼ View SEO Services
+                    💼 View SEO Services
                     <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
