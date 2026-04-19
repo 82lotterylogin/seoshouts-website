@@ -68,17 +68,6 @@ const SocialShare = ({ title, slug }: { title: string; slug: string }) => {
         </svg>
       )
     },
-    {
-      name: 'RSS Feed',
-      color: 'bg-orange-400 hover:bg-orange-500',
-      url: '/rss.xml',
-      isExternal: false,
-      icon: (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248S0 22.546 0 20.752s1.456-3.248 3.252-3.248 3.251 1.454 3.251 3.248zM1.677 6.082v4.15c6.425 0 11.663 5.238 11.663 11.663h4.15c0-8.735-7.078-15.813-15.813-15.813zM1.677.901v4.15C9.26 5.051 15.2 11.001 15.2 18.584h4.15C19.35 9.334 10.927.901 1.677.901z"/>
-        </svg>
-      )
-    }
   ];
 
   const copyToClipboard = async () => {

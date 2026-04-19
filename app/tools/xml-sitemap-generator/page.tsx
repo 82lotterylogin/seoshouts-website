@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import XmlSitemapGeneratorClient from './XmlSitemapGeneratorClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free XML Sitemap Generator Tool | SEO Shouts',
@@ -100,7 +99,6 @@ export default function XmlSitemapGenerator() {
       />
 
       <XmlSitemapGeneratorClient />
-      <RelatedTools currentTool="xml-sitemap-generator" />
     </>
   )
 }

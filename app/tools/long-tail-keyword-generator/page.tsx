@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import LongTailKeywordGeneratorClient from './LongTailKeywordGeneratorClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Long Tail Keyword Generator Tool - No Signup - No Login - 100% Free - SEOShouts',
@@ -100,7 +99,6 @@ export default function LongTailKeywordGenerator() {
       />
 
       <LongTailKeywordGeneratorClient />
-      <RelatedTools currentTool="long-tail-keyword-generator" />
     </>
   )
 }

@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import BlogIdeasGeneratorClient from './BlogIdeasGeneratorClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Blog Ideas Generator Tool — Never Stare at a Blank Screen Again | SEO Shouts',
@@ -100,7 +99,6 @@ export default function BlogIdeasGenerator() {
       />
 
       <BlogIdeasGeneratorClient />
-      <RelatedTools currentTool="blog-ideas-generator" />
     </>
   )
 }

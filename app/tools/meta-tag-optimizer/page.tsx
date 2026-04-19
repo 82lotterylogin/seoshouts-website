@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import MetaTagOptimizerClient from './MetaTagOptimizerClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Meta Tag Generator and Optimizer Tool | SEO Shouts',
@@ -70,13 +69,13 @@ export default function MetaTagOptimizer() {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Tools",
-                "item": "https://seoshouts.com/tools"
+                "item": "https://seoshouts.com/tools/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Meta Tag Optimizer",
-                "item": "https://seoshouts.com/tools/meta-tag-optimizer"
+                "item": "https://seoshouts.com/tools/meta-tag-optimizer/"
               }
             ]
           })
@@ -84,7 +83,6 @@ export default function MetaTagOptimizer() {
       />
 
       <MetaTagOptimizerClient />
-      <RelatedTools currentTool="meta-tag-optimizer" />
     </>
   )
 }

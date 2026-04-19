@@ -16,6 +16,11 @@ const REDIRECTIONS: { [key: string]: { to: string; statusCode: number } } = {
   "/link-building-email-outreach-templates/": { to: "/blog/link-building-email-outreach-templates-from-experts-that-actually-works/", statusCode: 301 },
   "/terms-and-conditions/": { to: "/terms/", statusCode: 301 },
   "/about-us/": { to: "/meet-the-experts/", statusCode: 301 },
+  "/blog/best-free-internal-link-checkers/": { to: "https://seoshouts.com/blog/best-internal-link-checker-tools/", statusCode: 301 },
+  "/blog/orphan-pages-seo-guide/": { to: "https://seoshouts.com/blog/orphan-pages-seo/", statusCode: 301 },
+  "/blog/dofollow-vs-nofollow-internal-links/": { to: "/blog/nofollow-vs-dofollow-internal-links/", statusCode: 301 },
+  "/blog/semantic-anchor-text-guide/": { to: "https://seoshouts.com/blog/semantic-anchor-text-guide-2026/", statusCode: 301 },
+  "/blog/internal-linking-for-ai-answer-engines-the-ultimate-guide-2026-strategy/": { to: "https://seoshouts.com/blog/internal-linking-ai-search/", statusCode: 301 },
 };
 
 // Function to check for redirections

@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import AICopywriterClient from './AICopywriterClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free AI Copywriting Tool for Web Copy, Ads & More — Write Like a Pro in Seconds',
@@ -70,13 +69,13 @@ export default function AICopywriter() {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Tools",
-                "item": "https://seoshouts.com/tools"
+                "item": "https://seoshouts.com/tools/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "AI Copywriter",
-                "item": "https://seoshouts.com/tools/ai-copywriter"
+                "item": "https://seoshouts.com/tools/ai-copywriter/"
               }
             ]
           })
@@ -84,7 +83,6 @@ export default function AICopywriter() {
       />
 
       <AICopywriterClient />
-      <RelatedTools currentTool="ai-copywriter" />
     </>
   )
 }

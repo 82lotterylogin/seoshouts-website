@@ -272,19 +272,19 @@ export default function RedirectionsManagement() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[35%]">
                     From Path
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[35%]">
                     To Path
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[12%]">
                     Status Code
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[10%]">
                     Created
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[8%]">
                     Actions
                   </th>
                 </tr>
@@ -299,13 +299,13 @@ export default function RedirectionsManagement() {
                 ) : (
                   redirections.map((redirection) => (
                     <tr key={redirection.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-mono text-gray-900">
+                      <td className="px-6 py-4 max-w-0 w-[35%]">
+                        <div className="text-sm font-mono text-gray-900 truncate" title={redirection.from_path}>
                           {redirection.from_path}
                         </div>
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm font-mono text-gray-900 max-w-md truncate">
+                      <td className="px-6 py-4 max-w-0 w-[35%]">
+                        <div className="text-sm font-mono text-gray-900 truncate" title={redirection.to_path}>
                           {redirection.to_path}
                         </div>
                       </td>

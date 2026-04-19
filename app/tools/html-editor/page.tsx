@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import HTMLEditorClient from './HTMLEditorClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Online HTML5 Editor - Free Online Editor & Preview Tool',
@@ -100,7 +99,6 @@ export default function HTMLEditor() {
       />
 
       <HTMLEditorClient />
-      <RelatedTools currentTool="html-editor" />
     </>
   )
 }

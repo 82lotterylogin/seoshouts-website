@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import WordCounterClient from './WordCounterClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Words and Character Counter Tool | SEO Shouts',
@@ -70,13 +69,13 @@ export default function WordCounter() {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Tools",
-                "item": "https://seoshouts.com/tools"
+                "item": "https://seoshouts.com/tools/"
               },
               {
                 "@type": "ListItem",
                 "position": 3,
                 "name": "Word Counter",
-                "item": "https://seoshouts.com/tools/word-counter"
+                "item": "https://seoshouts.com/tools/word-counter/"
               }
             ]
           })
@@ -84,7 +83,6 @@ export default function WordCounter() {
       />
 
       <WordCounterClient />
-      <RelatedTools currentTool="word-counter" />
     </>
   )
 }

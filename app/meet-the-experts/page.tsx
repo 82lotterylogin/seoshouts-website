@@ -185,7 +185,7 @@ export default function MeetTheExperts() {
             </ul>
             <p className="text-gray-400 italic text-xs">Udaipur, Rajasthan</p>
             <a
-              href="/authors/ajay-porwal"
+              href="/authors/ajay-porwal/"
               className="mt-4 inline-flex items-center text-purple-700 hover:text-blue-700 text-sm font-semibold underline"
             >
               Know more about Ajay <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>

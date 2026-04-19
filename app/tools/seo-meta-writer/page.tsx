@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import SeoMetaWriterClient from './SeoMetaWriterClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Online AI SEO Meta Title and Description Generator - No Sign - No Login',
@@ -100,7 +99,6 @@ export default function SeoMetaWriter() {
       />
 
       <SeoMetaWriterClient />
-      <RelatedTools currentTool="seo-meta-writer" />
     </>
   )
 }

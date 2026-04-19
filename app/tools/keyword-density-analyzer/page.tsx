@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import KeywordDensityAnalyzerClient from './KeywordDensityAnalyzerClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Keyword Density Analyzer Tool | SEO Shouts',
@@ -100,7 +99,6 @@ export default function KeywordDensityAnalyzer() {
       />
 
       <KeywordDensityAnalyzerClient />
-      <RelatedTools currentTool="keyword-density-analyzer" />
     </>
   )
 }

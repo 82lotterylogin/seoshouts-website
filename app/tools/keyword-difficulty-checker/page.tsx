@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import KeywordDifficultyCheckerClient from './KeywordDifficultyCheckerClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Keyword Difficulty Checker Tool | SEO Shouts',
@@ -100,7 +99,6 @@ export default function KeywordDifficultyChecker() {
       />
 
       <KeywordDifficultyCheckerClient />
-      <RelatedTools currentTool="keyword-difficulty-checker" />
     </>
   )
 }

@@ -600,7 +600,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="text-3xl mb-4">📊</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">On-Page SEO Analyzer</h3>
                 <p className="text-gray-600 mb-4">Comprehensive analysis of your webpage's SEO elements including meta tags, headings, content structure, and technical factors.</p>
-                <a href="/tools/on-page-seo-analyzer" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <a href="/tools/on-page-seo-analyzer/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
                   Try Tool →
                 </a>
               </div>
@@ -609,7 +609,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="text-3xl mb-4">🔍</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-gray-600 mb-4">Analyze keyword density and frequency in your content to optimize for target keywords without over-optimization.</p>
-                <a href="/tools/keyword-density-analyzer" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <a href="/tools/keyword-density-analyzer/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
                   Try Tool →
                 </a>
               </div>
@@ -618,7 +618,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="text-3xl mb-4">🏗️</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Schema Generator</h3>
                 <p className="text-gray-600 mb-4">Generate structured data markup for better search engine understanding and rich snippet opportunities.</p>
-                <a href="/tools/schema-generator" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <a href="/tools/schema-generator/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
                   Try Tool →
                 </a>
               </div>
@@ -627,7 +627,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="text-3xl mb-4">🤖</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Robots.txt Generator</h3>
                 <p className="text-gray-600 mb-4">Create and optimize your robots.txt file to control how search engines crawl your website.</p>
-                <a href="/tools/robots-txt-generator" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <a href="/tools/robots-txt-generator/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
                   Try Tool →
                 </a>
               </div>
@@ -636,7 +636,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="text-3xl mb-4">🗺️</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">XML Sitemap Generator</h3>
                 <p className="text-gray-600 mb-4">Generate XML sitemaps to help search engines discover and index all your important pages.</p>
-                <a href="/tools/xml-sitemap-generator" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <a href="/tools/xml-sitemap-generator/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
                   Try Tool →
                 </a>
               </div>
@@ -645,7 +645,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="text-3xl mb-4">✍️</div>
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">AI Copywriter</h3>
                 <p className="text-gray-600 mb-4">Generate compelling copy for ads, product descriptions, and marketing content using AI technology.</p>
-                <a href="/tools/ai-copywriter" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                <a href="/tools/ai-copywriter/" className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
                   Try Tool →
                 </a>
               </div>
@@ -653,7 +653,7 @@ export default function MetaTagOptimizerClient() {
             
             <div className="text-center mt-12">
               <a 
-                href="/tools" 
+                href="/tools/"
                 className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg"
               >
                 View All SEO Tools
@@ -700,7 +700,7 @@ export default function MetaTagOptimizerClient() {
                 Start Optimizing Now
               </a>
               <a
-                href="/contact"
+                href="/contact/"
                 className="px-8 py-4 bg-white/20 border border-white text-white rounded-xl font-bold hover:bg-white/30 transition"
               >
                 Get Free Consultation

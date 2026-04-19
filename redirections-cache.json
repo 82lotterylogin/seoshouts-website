@@ -14,5 +14,25 @@
   "/about-us/": {
     "to": "/meet-the-experts/",
     "statusCode": 301
+  },
+  "/blog/best-free-internal-link-checkers/": {
+    "to": "https://seoshouts.com/blog/best-internal-link-checker-tools/",
+    "statusCode": 301
+  },
+  "/blog/orphan-pages-seo-guide/": {
+    "to": "https://seoshouts.com/blog/orphan-pages-seo/",
+    "statusCode": 301
+  },
+  "/blog/dofollow-vs-nofollow-internal-links/": {
+    "to": "/blog/nofollow-vs-dofollow-internal-links/",
+    "statusCode": 301
+  },
+  "/blog/semantic-anchor-text-guide/": {
+    "to": "https://seoshouts.com/blog/semantic-anchor-text-guide-2026/",
+    "statusCode": 301
+  },
+  "/blog/internal-linking-for-ai-answer-engines-the-ultimate-guide-2026-strategy/": {
+    "to": "https://seoshouts.com/blog/internal-linking-ai-search/",
+    "statusCode": 301
   }
 }

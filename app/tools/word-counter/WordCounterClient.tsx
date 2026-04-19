@@ -424,7 +424,7 @@ export default function WordCounterClient() {
                 <div className="text-3xl mb-3">🎯</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">SEO Meta Writer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate compelling meta titles and descriptions for better CTR.</p>
-                <a href="/tools/seo-meta-writer" className="text-primary font-medium hover:underline">
+                <a href="/tools/seo-meta-writer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -433,7 +433,7 @@ export default function WordCounterClient() {
                 <div className="text-3xl mb-3">📊</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Analyze keyword density and optimize content for target keywords.</p>
-                <a href="/tools/keyword-density-analyzer" className="text-primary font-medium hover:underline">
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -442,7 +442,7 @@ export default function WordCounterClient() {
                 <div className="text-3xl mb-3">🏷️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer" className="text-primary font-medium hover:underline">
+                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -451,7 +451,7 @@ export default function WordCounterClient() {
                 <div className="text-3xl mb-3">💻</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">HTML Editor</h3>
                 <p className="text-sm text-gray-600 mb-4">Professional HTML5 editor with live preview and syntax highlighting.</p>
-                <a href="/tools/html-editor" className="text-primary font-medium hover:underline">
+                <a href="/tools/html-editor/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -460,7 +460,7 @@ export default function WordCounterClient() {
                 <div className="text-3xl mb-3">🔧</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Create JSON-LD structured data markup for better search rankings.</p>
-                <a href="/tools/schema-generator" className="text-primary font-medium hover:underline">
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>
@@ -469,7 +469,7 @@ export default function WordCounterClient() {
             {/* CTA Button */}
             <div className="text-center">
               <a 
-                href="/tools"
+                href="/tools/"
                 className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 <span className="mr-2">🛠️</span>
@@ -505,13 +505,13 @@ export default function WordCounterClient() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="/services" 
+                href="/services/"
                 className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg"
               >
                 View SEO Services
               </a>
               <a 
-                href="/contact" 
+                href="/contact/"
                 className="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-primary transition-all duration-300"
               >
                 Get Free Consultation

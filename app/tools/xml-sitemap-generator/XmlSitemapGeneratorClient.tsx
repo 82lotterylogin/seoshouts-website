@@ -1036,10 +1036,10 @@ export default function XmlSitemapGeneratorClient() {
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">⚡</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Page Speed Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Check your website's loading speed and get optimization tips.</p>
-                <a href="/tools/page-speed-analyzer/" className="text-primary font-medium hover:underline">
+                <div className="text-3xl mb-3">📊</div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
+                <p className="text-sm text-gray-600 mb-4">Audit your page's SEO health and fix issues that hurt your rankings.</p>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">
                   Try Tool →
                 </a>
               </div>

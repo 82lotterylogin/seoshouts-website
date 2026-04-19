@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import RobotsTxtGeneratorClient from './RobotsTxtGeneratorClient'
-import RelatedTools from '../../components/RelatedTools'
 
 export const metadata: Metadata = {
   title: 'Free Robots.txt Generator Tool | SEO Shouts',
@@ -100,7 +99,6 @@ export default function RobotsTxtGenerator() {
       />
 
       <RobotsTxtGeneratorClient />
-      <RelatedTools currentTool="robots-txt-generator" />
     </>
   )
 }
