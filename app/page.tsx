@@ -67,7 +67,7 @@ async function fetchLatestBlogPosts() {
     const db = getDatabase();
     
     const articles = db.prepare(`
-      SELECT 
+      SELECT
         a.id,
         a.title,
         a.slug,
@@ -75,14 +75,17 @@ async function fetchLatestBlogPosts() {
         a.featured_image,
         a.published_at,
         a.created_at,
-        auth.name as author_name
+        auth.name as author_name,
+        c.name as category_name,
+        c.slug as category_slug
       FROM articles a
       JOIN authors auth ON a.author_id = auth.id
+      LEFT JOIN categories c ON a.category_id = c.id
       WHERE a.status = 'published'
       ORDER BY a.published_at DESC
       LIMIT 3
     `).all() as any[];
-    
+
     return articles.map(article => ({
       id: article.id,
       title: article.title,
@@ -93,7 +96,11 @@ async function fetchLatestBlogPosts() {
       created_at: article.created_at,
       author: {
         name: article.author_name
-      }
+      },
+      category: article.category_name ? {
+        name: article.category_name,
+        slug: article.category_slug
+      } : null
     }));
   } catch (error) {
     console.error('Error fetching blog posts:', error);
@@ -736,10 +743,12 @@ export default async function HomePage() {
                     
                     {/* Content */}
                     <div className="p-6 sm:p-8">
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 leading-tight line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                      <a href={`/blog/${post.slug}/`} className="block mb-3">
+                        <h3 className="text-lg sm:text-xl font-bold group-hover:text-primary transition-colors duration-300 leading-snug">
+                          {post.title}
+                        </h3>
+                      </a>
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-2">
                         {post.excerpt || 'Expert SEO insights and strategies to help your business grow online.'}
                       </p>
                       <div className="flex items-center justify-between">
@@ -754,21 +763,26 @@ export default async function HomePage() {
                               {post.author?.name || 'SEO Expert'}
                             </p>
                             <p className="text-xs text-gray-500">
-                              {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { 
-                                year: 'numeric', 
-                                month: 'short', 
-                                day: 'numeric' 
+                              {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
                               })}
                             </p>
                           </div>
                         </div>
-                        <a 
-                          href={`/blog/${post.slug}/`}
-                          className="px-4 py-2 bg-white text-primary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm"
-                          aria-label={`Read ${post.title}`}
-                        >
-                          Read More
-                        </a>
+                        {post.category ? (
+                          <a
+                            href={`/categories/${post.category.slug}/`}
+                            className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-semibold hover:bg-primary hover:text-white transition-all duration-200"
+                          >
+                            {post.category.name}
+                          </a>
+                        ) : (
+                          <span className="px-3 py-1.5 bg-gray-100 text-gray-500 rounded-full text-xs font-semibold">
+                            SEO
+                          </span>
+                        )}
                       </div>
                     </div>
                   </article>
@@ -784,10 +798,10 @@ export default async function HomePage() {
                       </div>
                     </div>
                     <div className="p-6 sm:p-8">
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 leading-tight">
+                      <h3 className="text-lg sm:text-xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 leading-snug">
                         Expert SEO Insights Coming Soon
                       </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-2">
                         Master the latest SEO techniques with our comprehensive guides covering technical optimization and content strategy.
                       </p>
                       <div className="flex items-center justify-between">
@@ -800,13 +814,7 @@ export default async function HomePage() {
                             <p className="text-xs text-gray-500">Publishing Soon</p>
                           </div>
                         </div>
-                        <a 
-                          href="/blog/"
-                          className="px-4 py-2 bg-white text-primary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-primary/20 text-sm"
-                          aria-label="Visit our blog"
-                        >
-                          Visit Blog
-                        </a>
+                        <span className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-semibold">SEO Tips</span>
                       </div>
                     </div>
                   </article>
@@ -819,10 +827,10 @@ export default async function HomePage() {
                       </div>
                     </div>
                     <div className="p-6 sm:p-8">
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-secondary transition-colors duration-300 leading-tight">
+                      <h3 className="text-lg sm:text-xl font-bold mb-3 group-hover:text-secondary transition-colors duration-300 leading-snug">
                         SEO Strategies & Tips
                       </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-2">
                         Discover the latest SEO strategies that are driving organic traffic and conversions for businesses worldwide.
                       </p>
                       <div className="flex items-center justify-between">
@@ -835,13 +843,7 @@ export default async function HomePage() {
                             <p className="text-xs text-gray-500">Publishing Soon</p>
                           </div>
                         </div>
-                        <a 
-                          href="/blog/"
-                          className="px-4 py-2 bg-white text-secondary rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-secondary/20 text-sm"
-                          aria-label="Visit our blog"
-                        >
-                          Visit Blog
-                        </a>
+                        <span className="px-3 py-1.5 bg-secondary/10 text-secondary rounded-full text-xs font-semibold">Strategy</span>
                       </div>
                     </div>
                   </article>
@@ -854,10 +856,10 @@ export default async function HomePage() {
                       </div>
                     </div>
                     <div className="p-6 sm:p-8">
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-3 group-hover:text-accent transition-colors duration-300 leading-tight">
+                      <h3 className="text-lg sm:text-xl font-bold mb-3 group-hover:text-accent transition-colors duration-300 leading-snug">
                         Technical SEO Guide
                       </h3>
-                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-3">
+                      <p className="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base line-clamp-2">
                         Learn how to optimize your website's technical foundation for better search engine performance and user experience.
                       </p>
                       <div className="flex items-center justify-between">
@@ -870,13 +872,7 @@ export default async function HomePage() {
                             <p className="text-xs text-gray-500">Publishing Soon</p>
                           </div>
                         </div>
-                        <a 
-                          href="/blog/"
-                          className="px-4 py-2 bg-white text-accent rounded-lg font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 border border-accent/20 text-sm"
-                          aria-label="Visit our blog"
-                        >
-                          Visit Blog
-                        </a>
+                        <span className="px-3 py-1.5 bg-accent/10 text-accent rounded-full text-xs font-semibold">Technical</span>
                       </div>
                     </div>
                   </article>

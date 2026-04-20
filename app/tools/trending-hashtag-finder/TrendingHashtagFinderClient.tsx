@@ -827,8 +827,7 @@ export default function TrendingHashtagFinderClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect JSON-LD schema markup for any website type.</p>
                 <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Schema Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -836,8 +835,7 @@ export default function TrendingHashtagFinderClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Long Tail Keyword Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Find hidden keywords that actually convert and drive traffic.</p>
                 <a href="/tools/long-tail-keyword-generator/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Long Tail Keyword Generator</a> →
               </div>
             </div>
 

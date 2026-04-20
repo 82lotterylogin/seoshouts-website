@@ -778,35 +778,35 @@ Disallow: /*.pdf$`}
                 <div className="text-3xl mb-3">🔬</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try On-Page SEO Analyzer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🔗</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
                 <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
-                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Internal Link Checker</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🏗️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🚫</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">📊</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Analyze keyword frequency and optimize content for target keywords without over-optimization.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Keyword Density Analyzer</a> →
               </div>
             </div>
 

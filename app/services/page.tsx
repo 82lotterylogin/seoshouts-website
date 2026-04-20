@@ -167,26 +167,6 @@ const services = [
   }
 ]
 
-const testimonials = [
-  {
-    name: "Priya Mehta",
-    business: "Mehta Electronics, Mumbai",
-    text: "Our local search traffic increased by 200% in just 3 months. Now we get calls directly from Google searches every day!",
-    service: "Local SEO"
-  },
-  {
-    name: "Rajesh Kumar",
-    business: "Kumar Fashion Store",
-    text: "SEOShouts transformed our online store. Sales from organic search increased by 150% in 6 months.",
-    service: "eCommerce SEO"
-  },
-  {
-    name: "Anjali Sharma",
-    business: "Digital Marketing Agency",
-    text: "The technical audit revealed issues we never knew existed. After fixes, our rankings improved significantly.",
-    service: "Technical SEO Audit"
-  }
-]
 
 export default function ServicesPage() {
   return (
@@ -361,38 +341,6 @@ export default function ServicesPage() {
                 <p className="text-gray-600">Monthly reports, regular calls, and honest communication always.</p>
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section className="container mx-auto px-4 sm:px-6 mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our Clients Say
-            </h2>
-            <p className="text-xl text-gray-600">
-              Real results from real businesses across India
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.business}</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4 italic">"{testimonial.text}"</p>
-                <div className="text-sm text-blue-600 font-semibold">
-                  Service: {testimonial.service}
-                </div>
-              </div>
-            ))}
           </div>
         </section>
 

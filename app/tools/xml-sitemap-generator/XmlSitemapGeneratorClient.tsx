@@ -997,8 +997,7 @@ export default function XmlSitemapGeneratorClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
                 <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Keyword Density Analyzer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1006,8 +1005,7 @@ export default function XmlSitemapGeneratorClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
                 <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Meta Tag Optimizer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1015,8 +1013,7 @@ export default function XmlSitemapGeneratorClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Create perfect robots.txt files without breaking your website.</p>
                 <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Robots.txt Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1031,8 +1028,7 @@ export default function XmlSitemapGeneratorClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Long Tail Keyword Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Find hidden keywords that actually convert and drive traffic.</p>
                 <a href="/tools/long-tail-keyword-generator/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Long Tail Keyword Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1040,8 +1036,7 @@ export default function XmlSitemapGeneratorClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Audit your page's SEO health and fix issues that hurt your rankings.</p>
                 <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try On-Page SEO Analyzer</a> →
               </div>
             </div>
 

@@ -1478,8 +1478,7 @@ ${htmlContent}
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
                 <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Keyword Density Analyzer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1487,8 +1486,7 @@ ${htmlContent}
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
                 <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Meta Tag Optimizer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1503,8 +1501,7 @@ ${htmlContent}
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Blog Ideas Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate compelling blog topics with AI-powered content suggestions.</p>
                 <a href="/tools/blog-ideas-generator/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Blog Ideas Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1512,8 +1509,7 @@ ${htmlContent}
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Copywriter</h3>
                 <p className="text-sm text-gray-600 mb-4">Create persuasive copy and marketing content with AI assistance.</p>
                 <a href="/tools/ai-copywriter/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try AI Copywriter</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -1521,8 +1517,7 @@ ${htmlContent}
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Word Counter</h3>
                 <p className="text-sm text-gray-600 mb-4">Count words, characters, and analyze readability of your content.</p>
                 <a href="/tools/word-counter/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Word Counter</a> →
               </div>
             </div>
 

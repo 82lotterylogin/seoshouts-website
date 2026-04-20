@@ -4154,35 +4154,35 @@ DETAILED ANALYSIS:
                 <div className="text-3xl mb-3">🔗</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
                 <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
-                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Internal Link Checker</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🏗️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🚫</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">📊</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Analyze keyword frequency and optimize content for target keywords without over-optimization.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Keyword Density Analyzer</a> →
               </div>
             </div>
 

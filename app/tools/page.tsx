@@ -292,7 +292,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Keyword Density Analyzer
+                      <a href="/tools/keyword-density-analyzer/" className="hover:text-primary transition-colors">Keyword Density Analyzer</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Analyze keyword density, distribution, and optimization opportunities in your content. Get insights on how to improve keyword balance.
@@ -302,13 +302,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Keyword distribution mapping</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Optimization recommendations</li>
                     </ul>
-                    <a
-                      href="/tools/keyword-density-analyzer/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Keyword Density Analyzer tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -320,7 +314,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🎯</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Keyword Difficulty Checker
+                      <a href="/tools/keyword-difficulty-checker/" className="hover:text-primary transition-colors">Keyword Difficulty Checker</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Evaluate keyword competition and difficulty scores. Make informed decisions about which keywords to target in your SEO strategy.
@@ -330,13 +324,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Difficulty scoring</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Alternative suggestions</li>
                     </ul>
-                    <a
-                      href="/tools/keyword-difficulty-checker/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Keyword Difficulty Checker tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -348,7 +336,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🏷️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Long Tail Keyword Generator
+                      <a href="/tools/long-tail-keyword-generator/" className="hover:text-primary transition-colors">Long Tail Keyword Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate hundreds of long-tail keyword variations from your seed keywords. Find less competitive, high-converting keyword opportunities.
@@ -358,13 +346,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Search volume data</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
-                    <a
-                      href="/tools/long-tail-keyword-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Long Tail Keyword Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -389,7 +371,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Meta Tag Optimizer
+                      <a href="/tools/meta-tag-optimizer/" className="hover:text-primary transition-colors">Meta Tag Optimizer</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Create and optimize meta titles and descriptions with real-time SERP preview, character count, and CTR improvement suggestions.
@@ -399,13 +381,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Character count optimization</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>CTR improvement tips</li>
                     </ul>
-                    <a
-                      href="/tools/meta-tag-optimizer/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Meta Tag Optimizer tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -417,7 +393,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Robots.txt Generator
+                      <a href="/tools/robots-txt-generator/" className="hover:text-primary transition-colors">Robots.txt Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate and validate robots.txt files to control how search engines crawl your website. Includes syntax validation and testing.
@@ -427,13 +403,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Syntax validation</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Testing functionality</li>
                     </ul>
-                    <a
-                      href="/tools/robots-txt-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Robots.txt Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -445,7 +415,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🗺️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      XML Sitemap Generator
+                      <a href="/tools/xml-sitemap-generator/" className="hover:text-primary transition-colors">XML Sitemap Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Create comprehensive XML sitemaps for search engines. Supports various content types and includes priority and frequency settings.
@@ -455,13 +425,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Priority & frequency settings</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multi-format support</li>
                     </ul>
-                    <a
-                      href="/tools/xml-sitemap-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch XML Sitemap Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -473,7 +437,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">⚙️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      .htaccess Generator
+                      <a href="/tools/htaccess-generator/" className="hover:text-primary transition-colors">.htaccess Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate Apache .htaccess files for redirects, security headers, GZIP compression, browser caching, error pages, and CMS presets.
@@ -483,13 +447,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Security, GZIP & caching rules</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>WordPress, Shopify, Laravel & Joomla presets</li>
                     </ul>
-                    <a
-                      href="/tools/htaccess-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch .htaccess Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -501,7 +459,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🏗️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Schema Generator
+                      <a href="/tools/schema-generator/" className="hover:text-primary transition-colors">Schema Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate JSON-LD schema markup for 39+ schema types. Perfect structured data for rich snippets and better SEO performance.
@@ -511,13 +469,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>JSON-LD format</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Rich snippets optimization</li>
                     </ul>
-                    <a
-                      href="/tools/schema-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Schema Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -529,7 +481,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔬</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      On-Page SEO Analyzer
+                      <a href="/tools/on-page-seo-analyzer/" className="hover:text-primary transition-colors">On-Page SEO Analyzer</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Complete website analysis with 150+ SEO factors including technical SEO, content quality, Core Web Vitals, and actionable optimization recommendations.
@@ -539,13 +491,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Core Web Vitals data</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Actionable recommendations</li>
                     </ul>
-                    <a
-                      href="/tools/on-page-seo-analyzer/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch On-Page SEO Analyzer tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -557,7 +503,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔗</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Internal Link Checker
+                      <a href="/tools/internal-link-checker/" className="hover:text-primary transition-colors">Internal Link Checker</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Comprehensive internal link analysis with interactive visualization. Analyze anchor text distribution, link patterns, and discover optimization opportunities across your site.
@@ -567,13 +513,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Anchor text analysis</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Detailed reporting & export</li>
                     </ul>
-                    <a
-                      href="/tools/internal-link-checker/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Internal Link Checker tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -585,7 +525,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🚫</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Disavow File Generator
+                      <a href="/tools/disavow-file-generator/" className="hover:text-primary transition-colors">Disavow File Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate Google-compliant disavow files from backlink exports. Auto-extract domains, remove duplicates, whitelist trusted domains, and download ready-to-upload output.
@@ -595,13 +535,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Smart deduplication and whitelist filtering</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Download ready disavow.txt file</li>
                     </ul>
-                    <a
-                      href="/tools/disavow-file-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Disavow File Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -613,7 +547,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      GEO & AEO Score Checker
+                      <a href="/tools/geo-aeo-checker/" className="hover:text-primary transition-colors">GEO & AEO Score Checker</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Audit your page&apos;s AI search readiness across 7 categories — schema markup, AI crawler access, E-E-A-T signals, FAQ readiness & more. Get a 0–100 score with specific fixes.
@@ -623,13 +557,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>0–100 weighted composite score</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Per-check fix recommendations</li>
                     </ul>
-                    <a
-                      href="/tools/geo-aeo-checker/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch GEO & AEO Score Checker tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
               </div>
@@ -653,7 +581,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🔢</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Word Counter
+                      <a href="/tools/word-counter/" className="hover:text-primary transition-colors">Word Counter</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Count words, characters, paragraphs, and sentences in your content. Track reading time and optimize for target word counts.
@@ -663,13 +591,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Reading time estimation</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multiple metrics tracking</li>
                     </ul>
-                    <a
-                      href="/tools/word-counter/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Word Counter tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -681,7 +603,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">✍️</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      AI Copywriter
+                      <a href="/tools/ai-copywriter/" className="hover:text-primary transition-colors">AI Copywriter</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate compelling copy and marketing content with AI assistance. Create headlines, descriptions, and engaging content in seconds.
@@ -691,13 +613,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Multiple content types</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Instant results</li>
                     </ul>
-                    <a
-                      href="/tools/ai-copywriter/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch AI Copywriter tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -709,7 +625,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">🤖</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      AI Blog Ideas Generator
+                      <a href="/tools/blog-ideas-generator/" className="hover:text-primary transition-colors">AI Blog Ideas Generator</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Generate compelling blog topics and content ideas with AI assistance. Get inspired with hundreds of topic suggestions tailored to your niche.
@@ -719,13 +635,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Niche-specific ideas</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO-friendly suggestions</li>
                     </ul>
-                    <a
-                      href="/tools/blog-ideas-generator/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch AI Blog Ideas Generator tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -737,7 +647,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📝</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      SEO Meta Writer
+                      <a href="/tools/seo-meta-writer/" className="hover:text-primary transition-colors">SEO Meta Writer</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       AI-powered meta content writer that creates optimized titles, descriptions, and meta tags for better search engine visibility.
@@ -747,13 +657,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>SEO optimization</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Character count compliance</li>
                     </ul>
-                    <a
-                      href="/tools/seo-meta-writer/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch SEO Meta Writer tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
 
@@ -765,7 +669,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">📊</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      Word Counter
+                      <a href="/tools/word-counter/" className="hover:text-primary transition-colors">Word Counter</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Count words, characters, paragraphs, and reading time for your content with detailed analytics and insights.
@@ -775,13 +679,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Reading time estimation</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Paragraph & sentence analysis</li>
                     </ul>
-                    <a
-                      href="/tools/word-counter/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch Word Counter tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
               </div>
@@ -805,7 +703,7 @@ export default function ToolsPage() {
                       <span className="text-xl sm:text-2xl text-white" aria-hidden="true">💻</span>
                     </div>
                     <h4 className="text-xl sm:text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                      HTML Editor
+                      <a href="/tools/html-editor/" className="hover:text-primary transition-colors">HTML Editor</a>
                     </h4>
                     <p className="text-gray-600 mb-6 leading-relaxed text-sm sm:text-base">
                       Online HTML, CSS, and JavaScript editor with live preview. Code, test, and debug web pages instantly in your browser.
@@ -815,13 +713,7 @@ export default function ToolsPage() {
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Syntax highlighting</li>
                       <li className="flex items-center"><span className="w-1.5 h-1.5 bg-primary rounded-full mr-2 flex-shrink-0" aria-hidden="true"></span>Export functionality</li>
                     </ul>
-                    <a
-                      href="/tools/html-editor/"
-                      className="w-full px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 inline-flex items-center justify-center"
-                      aria-label="Launch HTML Editor tool"
-                    >
-                      Launch Tool
-                    </a>
+                    
                   </div>
                 </article>
               </div>

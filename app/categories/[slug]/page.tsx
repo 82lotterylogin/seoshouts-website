@@ -84,6 +84,7 @@ async function fetchCategoryArticles(categoryId: number, searchParams?: { [key: 
         a.created_at,
         a.updated_at,
         auth.name as author_name,
+        auth.slug as author_slug,
         auth.bio as author_bio,
         auth.avatar_url as author_avatar_url,
         c.name as category_name,
@@ -127,6 +128,7 @@ async function fetchCategoryArticles(categoryId: number, searchParams?: { [key: 
         updated_at: article.updated_at,
         author: {
           name: article.author_name,
+          slug: article.author_slug,
           bio: article.author_bio,
           avatar_url: article.author_avatar_url,
         },
@@ -324,57 +326,54 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                         <div className="p-6">
                           <div className="flex items-center gap-4 mb-3">
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                              {category.name}
+                              <Link href={`/categories/${article.category.slug}/`} className="hover:underline">
+                                {article.category.name}
+                              </Link>
                             </span>
                             <time className="text-sm text-gray-500" dateTime={article.published_at || article.created_at}>
-                              {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', { 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
+                              {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
                               })}
                             </time>
                           </div>
-                          
+
                           <h2 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                            <Link href={`/blog/${article.slug}`}>
+                            <Link href={`/blog/${article.slug}/`}>
                               {article.title}
                             </Link>
                           </h2>
-                          
+
                           <p className="text-gray-600 mb-4 leading-relaxed line-clamp-3">
                             {article.excerpt || extractExcerpt(article.content)}
                           </p>
-                          
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-2">
-                                {article.author?.avatar_url && (
-                                  <Image
-                                    src={article.author.avatar_url}
-                                    alt={article.author.name}
-                                    width={32}
-                                    height={32}
-                                    className="w-8 h-8 rounded-full"
-                                  />
-                                )}
+
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-2">
+                              {article.author?.avatar_url && (
+                                <Image
+                                  src={article.author.avatar_url}
+                                  alt={article.author.name}
+                                  width={32}
+                                  height={32}
+                                  className="w-8 h-8 rounded-full"
+                                />
+                              )}
+                              {article.author?.slug ? (
+                                <Link href={`/authors/${article.author.slug}/`} className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors">
+                                  {article.author.name}
+                                </Link>
+                              ) : (
                                 <span className="text-sm font-medium text-gray-900">
                                   {article.author?.name || 'SEO Shouts Team'}
                                 </span>
-                              </div>
-                              <span className="text-gray-300">•</span>
-                              <span className="text-sm text-gray-500">
-                                {calculateReadTime(article.content)} min read
-                              </span>
+                              )}
                             </div>
-                            <Link
-                              href={`/blog/${article.slug}`}
-                              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
-                            >
-                              Read More
-                              <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </Link>
+                            <span className="text-gray-300">•</span>
+                            <span className="text-sm text-gray-500">
+                              {calculateReadTime(article.content)} min read
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -415,30 +414,32 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                   </h3>
                   <div className="space-y-2">
                     {allCategories.map((cat: any) => (
-                      <Link
+                      <div
                         key={cat.id}
-                        href={`/categories/${cat.slug}`}
-                        className={`flex items-center justify-between p-3 rounded-lg border transition-all duration-200 group ${
+                        className={`flex items-center justify-between p-3 rounded-lg border ${
                           cat.id === category.id
-                            ? 'border-blue-200 bg-blue-50 text-blue-700'
-                            : 'border-gray-100 hover:border-blue-200 hover:bg-blue-50'
+                            ? 'border-blue-200 bg-blue-50'
+                            : 'border-gray-100'
                         }`}
                       >
-                        <span className={`font-medium ${
-                          cat.id === category.id
-                            ? 'text-blue-700'
-                            : 'text-gray-700 group-hover:text-blue-700'
-                        }`}>
+                        <Link
+                          href={`/categories/${cat.slug}/`}
+                          className={`font-medium transition-colors duration-200 ${
+                            cat.id === category.id
+                              ? 'text-blue-700'
+                              : 'text-gray-700 hover:text-blue-700'
+                          }`}
+                        >
                           {cat.name}
-                        </span>
+                        </Link>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           cat.id === category.id
                             ? 'bg-blue-100 text-blue-600'
-                            : 'bg-gray-100 group-hover:bg-blue-100 text-gray-600 group-hover:text-blue-600'
+                            : 'bg-gray-100 text-gray-600'
                         }`}>
                           {cat.article_count}
                         </span>
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </div>

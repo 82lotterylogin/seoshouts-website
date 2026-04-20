@@ -1027,13 +1027,13 @@ function BlogIdeasGeneratorClient() {
                 <div className="text-3xl mb-3">🏷️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Meta Tag Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect meta titles and descriptions with AI power.</p>
-                <a href="/tools/seo-meta-writer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/seo-meta-writer/" className="text-primary font-medium hover:underline">Try SEO Meta Writer</a> →
               </div>
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">✍️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Copywriter</h3>
                 <p className="text-sm text-gray-600 mb-4">Create compelling copy for ads, emails, and websites with AI.</p>
-                <a href="/tools/ai-copywriter/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/ai-copywriter/" className="text-primary font-medium hover:underline">Try AI Copywriter</a> →
               </div>
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">💡</div>

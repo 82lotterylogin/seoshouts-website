@@ -578,35 +578,35 @@ function LongFormContent() {
                 <div className="text-3xl mb-3">🔬</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Audit redirects, status codes, crawlability, and 150+ technical SEO factors after deploying .htaccess rules.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try On-Page SEO Analyzer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Pair server-level Apache rules with crawler directives for a complete technical SEO setup.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🗺️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">XML Sitemap Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Rebuild your XML sitemap after migrations so redirected or removed URLs are handled correctly.</p>
-                <a href="/tools/xml-sitemap-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/xml-sitemap-generator/" className="text-primary font-medium hover:underline">Try XML Sitemap Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🚫</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🏗️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Combine server optimization with structured data to improve how search engines understand your pages.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
               </div>
             </div>
 

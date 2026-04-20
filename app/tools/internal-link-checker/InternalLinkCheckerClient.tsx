@@ -1960,35 +1960,35 @@ export default function InternalLinkCheckerClient() {
                 <div className="text-3xl mb-3">🔬</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and competitive benchmarks.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try On-Page SEO Analyzer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🏗️</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🤖</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Create robots.txt rules including directives for AI crawlers like GPTBot and ClaudeBot.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">🚫</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                 <div className="text-3xl mb-3">📝</div>
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better click-through rates.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">Try Tool →</a>
+                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">Try Meta Tag Optimizer</a> →
               </div>
             </div>
 

@@ -400,8 +400,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {articles.map((article, index) => (
                     <article key={article.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">
-                      <Link href={`/blog/${article.slug}`} className="block">
-                        {/* Featured Image */}
+                        {/* Featured Image — no link */}
                         {article.featured_image && (
                           <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
                             <Image
@@ -429,19 +428,23 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                             )}
                             {(article as any).category_name && (
                               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
-                                {(article as any).category_name}
+                                <Link href={`/categories/${(article as any).category_slug}/`} className="hover:underline">
+                                  {(article as any).category_name}
+                                </Link>
                               </span>
                             )}
                           </div>
-                          <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors line-clamp-2">
-                            {article.title}
+                          <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
+                            <Link href={`/blog/${article.slug}/`}>
+                              {article.title}
+                            </Link>
                           </h3>
                           {article.excerpt && (
-                            <p className="text-gray-600 mb-4 leading-relaxed text-sm line-clamp-3">
+                            <p className="text-gray-600 mb-4 leading-relaxed text-sm line-clamp-2">
                               {article.excerpt}
                             </p>
                           )}
-                          <div className="flex items-center justify-between text-sm text-gray-500">
+                          <div className="flex items-center text-sm text-gray-500">
                             <time dateTime={article.published_at || article.created_at}>
                               {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
                                 year: 'numeric',
@@ -449,15 +452,8 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
                                 day: 'numeric'
                               })}
                             </time>
-                            <span className="text-purple-600 font-medium group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                              Read more
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </span>
                           </div>
                         </div>
-                      </Link>
                     </article>
                   ))}
                 </div>

@@ -660,8 +660,7 @@ export default function AICopywriterClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">SEO Meta Writer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate compelling meta titles and descriptions for better CTR.</p>
                 <a href="/tools/seo-meta-writer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try SEO Meta Writer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -669,8 +668,7 @@ export default function AICopywriterClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
                 <p className="text-sm text-gray-600 mb-4">Analyze keyword density and optimize content for target keywords.</p>
                 <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Keyword Density Analyzer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -678,8 +676,7 @@ export default function AICopywriterClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
                 <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
                 <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Meta Tag Optimizer</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -687,8 +684,7 @@ export default function AICopywriterClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">HTML Editor</h3>
                 <p className="text-sm text-gray-600 mb-4">Professional HTML5 editor with live preview and syntax highlighting.</p>
                 <a href="/tools/html-editor/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try HTML Editor</a> →
               </div>
 
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
@@ -696,8 +692,7 @@ export default function AICopywriterClient() {
                 <h3 className="text-lg font-semibold mb-2 text-gray-800">Word Counter</h3>
                 <p className="text-sm text-gray-600 mb-4">Real-time word and character counting with reading time estimates.</p>
                 <a href="/tools/word-counter/" className="text-primary font-medium hover:underline">
-                  Try Tool →
-                </a>
+                  Try Word Counter</a> →
               </div>
             </div>
 

@@ -1715,12 +1715,12 @@ export default function GeoAeoCheckerClient() {
                 { emoji: '🤖', name: 'Robots.txt Generator', desc: 'Create robots.txt rules including directives for AI crawlers.', href: '/tools/robots-txt-generator/' },
                 { emoji: '🚫', name: 'Disavow File Generator', desc: 'Google-compliant disavow files from any backlink export format.', href: '/tools/disavow-file-generator/' },
               ].map((tool) => (
-                <a key={tool.href} href={tool.href} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 block">
+                <div key={tool.href} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
                   <div className="text-3xl mb-3">{tool.emoji}</div>
                   <h3 className="text-lg font-semibold mb-2 text-gray-800">{tool.name}</h3>
                   <p className="text-sm text-gray-600 mb-4">{tool.desc}</p>
-                  <span className="text-primary font-medium">Try Tool →</span>
-                </a>
+                  <a href={tool.href} className="text-primary font-medium">Try {tool.name}</a> →
+                </div>
               ))}
             </div>
             <div className="text-center">

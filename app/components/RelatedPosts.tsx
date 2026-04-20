@@ -47,14 +47,12 @@ const RelatedPosts = async ({ currentSlug, category, categorySlug, categoryId }:
           {relatedPosts.map((post: any) => (
             <article key={post.id} className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100">
               <div className="relative h-40 overflow-hidden">
-                <Link href={`/blog/${post.slug}`}>
-                  <Image
-                    src={post.featured_image || '/placeholder-blog.jpg'}
-                    alt={post.featured_image_alt || post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </Link>
+                <Image
+                  src={post.featured_image || '/placeholder-blog.jpg'}
+                  alt={post.featured_image_alt || post.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
                 <div className="absolute top-3 left-3">
                   <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
                     {post.category_name}
