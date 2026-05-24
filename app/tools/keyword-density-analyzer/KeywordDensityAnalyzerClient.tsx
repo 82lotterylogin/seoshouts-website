@@ -15,7 +15,7 @@ export default function KeywordDensityAnalyzerClient() {
   // Usage tracking
   const [usageCount, setUsageCount] = useState(0)
   const [usageLimit] = useState(10)
-  
+
   // Input mode selection
   const [inputMode, setInputMode] = useState<'text' | 'url'>('text')
   const [url, setUrl] = useState('')
@@ -92,7 +92,7 @@ export default function KeywordDensityAnalyzerClient() {
     }
 
     let contentToAnalyze = ''
-    
+
     if (inputMode === 'text') {
       if (!form.content.trim()) {
         alert('Please enter some content to analyze')
@@ -125,14 +125,14 @@ export default function KeywordDensityAnalyzerClient() {
       const content = contentToAnalyze
       const cleanedContent = cleanText(content)
       const words = cleanedContent.split(' ').filter(word => word.length > 0)
-      
+
       const totalWords = words.length
       const totalCharacters = content.length
-      
+
       const targetKeyword = form.targetKeyword.toLowerCase().trim()
       let keywordCount = 0
       let keywordDensity = 0
-      
+
       if (targetKeyword) {
         const keywordRegex = new RegExp(`\\b${targetKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi')
         const matches = content.match(keywordRegex)
@@ -161,7 +161,7 @@ export default function KeywordDensityAnalyzerClient() {
         .slice(0, 10)
 
       const recommendations: string[] = []
-      
+
       if (targetKeyword) {
         if (keywordDensity < 0.5) {
           recommendations.push(`Your target keyword "${targetKeyword}" appears ${keywordCount} times (${keywordDensity.toFixed(2)}%). Consider adding it 2-3 more times naturally.`)
@@ -185,7 +185,7 @@ export default function KeywordDensityAnalyzerClient() {
       const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0).length
       const avgWordsPerSentence = totalWords / Math.max(sentences, 1)
       const avgCharsPerWord = totalCharacters / Math.max(totalWords, 1)
-      
+
       let readabilityScore = 100 - (avgWordsPerSentence * 1.5) - (avgCharsPerWord * 2)
       readabilityScore = Math.max(0, Math.min(100, readabilityScore))
 
@@ -230,343 +230,23 @@ export default function KeywordDensityAnalyzerClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+
       {/* Tool Section */}
       <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-2 sm:px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Input Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">Content Analysis</h2>
-                
-                {/* Usage Counter Display */}
-                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className="text-blue-600 mr-2">📊</span>
-                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-blue-700">
-                        {usageLimit - usageCount} / {usageLimit}
-                      </div>
-                      <div className="text-xs text-blue-600">analyses remaining</div>
-                    </div>
-                  </div>
-                  {usageCount >= usageLimit && (
-                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
-                      <p className="text-orange-800 text-xs font-medium">
-                        ⚠️ Session limit reached. Refresh page to continue.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="space-y-6">
-                  {/* Input Mode Selection */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Choose Analysis Method *
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div
-                        onClick={() => setInputMode('text')}
-                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                          inputMode === 'text'
-                            ? 'border-primary bg-primary/5'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center mb-2">
-                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
-                            inputMode === 'text' ? 'border-primary bg-primary' : 'border-gray-300'
-                          }`}>
-                            {inputMode === 'text' && (
-                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
-                            )}
-                          </div>
-                          <h3 className="font-semibold text-gray-800">📝 Text Content</h3>
-                        </div>
-                        <p className="text-sm text-gray-600 ml-7">
-                          Paste your content directly for analysis
-                        </p>
-                      </div>
-
-                      <div
-                        onClick={() => setInputMode('url')}
-                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                          inputMode === 'url'
-                            ? 'border-primary bg-primary/5'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center mb-2">
-                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
-                            inputMode === 'url' ? 'border-primary bg-primary' : 'border-gray-300'
-                          }`}>
-                            {inputMode === 'url' && (
-                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
-                            )}
-                          </div>
-                          <h3 className="font-semibold text-gray-800">🌐 Website URL</h3>
-                        </div>
-                        <p className="text-sm text-gray-600 ml-7">
-                          Analyze content from any webpage
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="targetKeyword" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Target Keyword (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      id="targetKeyword"
-                      value={form.targetKeyword}
-                      onChange={(e) => setForm(prev => ({ ...prev, targetKeyword: e.target.value }))}
-                      placeholder="e.g., SEO tips, digital marketing"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                      disabled={form.isAnalyzing}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Enter your main keyword to check its density</p>
-                  </div>
-
-                  {/* URL Input (for URL mode) */}
-                  {inputMode === 'url' && (
-                    <div>
-                      <label htmlFor="url" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Website URL to Analyze *
-                      </label>
-                      <input
-                        type="url"
-                        id="url"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="https://example.com/your-page"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                        disabled={form.isAnalyzing}
-                      />
-                      <p className="text-xs text-gray-500 mt-1">
-                        Enter the URL of the webpage you want to analyze for keyword density
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Text Content Input (for text mode) */}
-                  {inputMode === 'text' && (
-                    <div>
-                      <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
-                        Content to Analyze *
-                      </label>
-                    <textarea
-                      id="content"
-                      value={form.content}
-                      onChange={(e) => setForm(prev => ({ ...prev, content: e.target.value }))}
-                      placeholder="Paste your article, blog post, or web page content here..."
-                      rows={12}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
-                      disabled={form.isAnalyzing}
-                      required
-                    />
-                      <p className="text-xs text-gray-500 mt-1">
-                        {form.content.length} characters • {form.content.trim().split(/\s+/).filter(word => word.length > 0).length} words
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Human Verification Section */}
-                  <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
-                    <div className="flex items-center mb-3">
-                      <span className="text-blue-600 mr-2">🛡️</span>
-                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
-                    </div>
-                    <p className="text-sm text-blue-700 mb-4">
-                      Please verify that you're not a robot to analyze your content.
-                    </p>
-                    
-                    <div className="mb-4">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                        onChange={handleCaptchaChange}
-                        theme="light"
-                      />
-                    </div>
-
-                    {isVerified && (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
-                        <span className="text-green-600 mr-2">✅</span>
-                        <span className="text-sm font-medium text-green-800">Verification successful! You can now analyze your content.</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex gap-4">
-                    <button
-                      onClick={analyzeContent}
-                      disabled={form.isAnalyzing || (inputMode === 'text' && !form.content.trim()) || (inputMode === 'url' && !url.trim()) || !isVerified || usageCount >= usageLimit}
-                      className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
-                    >
-                      {form.isAnalyzing ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Analyzing...
-                        </>
-                      ) : (
-                        '🔍 Analyze Content'
-                      )}
-                    </button>
-                    
-                    {analysis && (
-                      <button
-                        onClick={resetAnalysis}
-                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-                      >
-                        Reset
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Analysis Results</h2>
-                
-                {!analysis ? (
-                  <div className="text-center py-12">
-                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-3xl">📊</span>
-                    </div>
-                    <p className="text-gray-500">Enter your content and click "Analyze Content" to see detailed keyword density analysis</p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-gray-50 rounded-xl p-4">
-                        <div className="text-2xl font-bold text-primary">{analysis.totalWords}</div>
-                        <div className="text-sm text-gray-600">Total Words</div>
-                      </div>
-                      <div className="bg-gray-50 rounded-xl p-4">
-                        <div className="text-2xl font-bold text-primary">{analysis.totalCharacters}</div>
-                        <div className="text-sm text-gray-600">Characters</div>
-                      </div>
-                    </div>
-
-                    {form.targetKeyword && (
-                      <div className="border border-gray-200 rounded-xl p-4">
-                        <h3 className="font-semibold text-gray-800 mb-3">Target Keyword Analysis</h3>
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Keyword:</span>
-                            <span className="font-semibold text-primary">"{form.targetKeyword}"</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Count:</span>
-                            <span className="font-semibold">{analysis.keywordCount}</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Density:</span>
-                            <span className={`font-semibold ${
-                              analysis.keywordDensity >= 0.5 && analysis.keywordDensity <= 3 
-                                ? 'text-green-600' 
-                                : 'text-orange-600'
-                            }`}>
-                              {analysis.keywordDensity.toFixed(2)}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="border border-gray-200 rounded-xl p-4">
-                      <h3 className="font-semibold text-gray-800 mb-3">Readability Score</h3>
-                      <div className="flex items-center space-x-3">
-                        <div className="flex-1 bg-gray-200 rounded-full h-3">
-                          <div 
-                            className={`h-3 rounded-full ${
-                              analysis.readabilityScore >= 70 ? 'bg-green-500' :
-                              analysis.readabilityScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-                            }`}
-                            style={{ width: `${Math.max(analysis.readabilityScore, 10)}%` }}
-                          ></div>
-                        </div>
-                        <span className="font-semibold text-gray-800">
-                          {analysis.readabilityScore.toFixed(0)}/100
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="border border-gray-200 rounded-xl p-4">
-                      <h3 className="font-semibold text-gray-800 mb-3">Top Keywords</h3>
-                      <div className="space-y-2 max-h-48 overflow-y-auto">
-                        {analysis.topKeywords.map((keyword, index) => (
-                          <div key={index} className="flex justify-between items-center py-1">
-                            <span className="text-gray-800 font-medium">{keyword.word}</span>
-                            <div className="text-right">
-                              <span className="text-sm text-gray-600">{keyword.count}x</span>
-                              <span className="text-sm text-primary ml-2">{keyword.density.toFixed(2)}%</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="border border-gray-200 rounded-xl p-4">
-                      <h3 className="font-semibold text-gray-800 mb-3">SEO Recommendations</h3>
-                      <div className="space-y-2">
-                        {analysis.recommendations.map((rec, index) => (
-                          <div key={index} className="flex items-start space-x-2">
-                            <span className="text-primary mt-1">•</span>
-                            <span className="text-sm text-gray-700">{rec}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tool Breadcrumb */}
-      <ToolBreadcrumb toolName="Keyword Density Analyzer" toolSlug="keyword-density-analyzer" />
-
-      {/* Header Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-6 leading-tight">
+          <div className="max-w-7xl mx-auto">
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 Keyword Density
-              </span>
-              <br />
+              </span>{' '}
               <span className="text-primary">Analyzer</span>
             </h1>
-            
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <p>
-                Stop guessing about your keyword usage. Our <strong className="text-gray-800">Free Keyword Density Analyzer</strong> gives you instant insights into how often keywords appear in your content, helping you strike the perfect balance between optimization and natural readability.
-              </p>
-              <p>
-                Whether you're writing blog posts, product descriptions, or web pages, this tool ensures your content is optimized without risking keyword stuffing penalties.
-              </p>
-            </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
               <div className="flex items-center">
                 <span className="text-green-500 mr-2">✓</span>
                 Instant Analysis
@@ -584,20 +264,363 @@ export default function KeywordDensityAnalyzerClient() {
                 100% Free
               </div>
             </div>
+
+            {/* Answer Capsule */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                Stop guessing about your keyword usage. Our <strong>Free Keyword Density Analyzer</strong> gives you instant insights into how often keywords appear in your content, helping you strike the perfect balance between optimization and natural readability. Whether you're writing blog posts, product descriptions, or web pages, this tool ensures your content is optimized without risking keyword stuffing penalties.
+              </p>
+            </div>
+
+            {/* Two-column tool */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+              {/* Input Section */}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:p-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-900">Content Analysis</h2>
+
+                {/* Usage Counter */}
+                {(usageCount > 0 || usageCount >= usageLimit) && (
+                  <div className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium mb-4 ${
+                    usageCount >= usageLimit
+                      ? 'bg-orange-100 text-orange-800 border border-orange-200'
+                      : 'bg-green-100 text-green-800 border border-green-200'
+                  }`}>
+                    <span className="mr-2">📊</span>
+                    {usageCount >= usageLimit
+                      ? 'Session limit reached. Refresh page to continue.'
+                      : `${usageLimit - usageCount} of ${usageLimit} session analyses remaining`
+                    }
+                  </div>
+                )}
+
+                <div className="space-y-5">
+
+                  {/* Input Mode Selection */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Choose Analysis Method *
+                    </label>
+                    <div className="flex border border-gray-200 rounded-xl overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setInputMode('text')}
+                        className={`flex-1 py-2.5 px-4 text-sm font-medium transition-colors ${
+                          inputMode === 'text'
+                            ? 'bg-primary text-white'
+                            : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                        }`}
+                      >
+                        📝 Text Content
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setInputMode('url')}
+                        className={`flex-1 py-2.5 px-4 text-sm font-medium transition-colors border-l border-gray-200 ${
+                          inputMode === 'url'
+                            ? 'bg-primary text-white'
+                            : 'text-gray-600 hover:text-primary hover:bg-gray-50'
+                        }`}
+                      >
+                        🌐 Website URL
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {inputMode === 'text'
+                        ? 'Paste your content directly for analysis'
+                        : 'Analyze content from any webpage'}
+                    </p>
+                  </div>
+
+                  {/* Target Keyword */}
+                  <div>
+                    <label htmlFor="targetKeyword" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Target Keyword (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      id="targetKeyword"
+                      value={form.targetKeyword}
+                      onChange={(e) => setForm(prev => ({ ...prev, targetKeyword: e.target.value }))}
+                      placeholder="e.g., SEO tips, digital marketing"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base placeholder-gray-400"
+                      disabled={form.isAnalyzing}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Enter your main keyword to check its density</p>
+                  </div>
+
+                  {/* URL Input */}
+                  {inputMode === 'url' && (
+                    <div>
+                      <label htmlFor="url" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Website URL to Analyze *
+                      </label>
+                      <input
+                        type="url"
+                        id="url"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        placeholder="https://example.com/your-page"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base placeholder-gray-400"
+                        disabled={form.isAnalyzing}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Enter the URL of the webpage you want to analyze for keyword density
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Text Content Input */}
+                  {inputMode === 'text' && (
+                    <div>
+                      <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Content to Analyze *
+                      </label>
+                      <textarea
+                        id="content"
+                        value={form.content}
+                        onChange={(e) => setForm(prev => ({ ...prev, content: e.target.value }))}
+                        placeholder="Paste your article, blog post, or web page content here..."
+                        rows={10}
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none text-base placeholder-gray-400"
+                        disabled={form.isAnalyzing}
+                        required
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        {form.content.length} characters • {form.content.trim().split(/\s+/).filter(word => word.length > 0).length} words
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Human Verification */}
+                  <div className="p-4 border-2 border-blue-200 bg-blue-50 rounded-xl">
+                    <div className="flex items-center mb-3">
+                      <span className="text-blue-600 mr-2">🛡️</span>
+                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
+                    </div>
+                    <p className="text-sm text-blue-700 mb-4">
+                      Please verify that you're not a robot to analyze your content.
+                    </p>
+                    <div className="mb-3">
+                      <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                        onChange={handleCaptchaChange}
+                        theme="light"
+                      />
+                    </div>
+                    {isVerified && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
+                        <span className="text-green-600 mr-2">✅</span>
+                        <span className="text-sm font-medium text-green-800">Verification successful! You can now analyze your content.</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3">
+                    <button
+                      onClick={analyzeContent}
+                      disabled={form.isAnalyzing || (inputMode === 'text' && !form.content.trim()) || (inputMode === 'url' && !url.trim()) || !isVerified || usageCount >= usageLimit}
+                      className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-primary to-blue-600 text-white font-bold text-base rounded-xl hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 shadow-lg"
+                    >
+                      {form.isAnalyzing ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Analyzing...
+                        </>
+                      ) : (
+                        '🔍 Analyze Content'
+                      )}
+                    </button>
+                    {analysis && (
+                      <button
+                        onClick={resetAnalysis}
+                        className="px-5 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors text-sm"
+                      >
+                        🔄 Reset
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Feature Info */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <h3 className="text-sm font-semibold mb-4 text-gray-900 text-center">Key Features:</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-start">
+                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                        <span className="text-white text-xs">✓</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">Real-time Density</div>
+                        <div className="text-gray-600">Instant calculations for text or URL</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                        <span className="text-white text-xs">✓</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">Top Keywords Report</div>
+                        <div className="text-gray-600">See top 10 keywords by frequency</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                        <span className="text-white text-xs">✓</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">Readability Score</div>
+                        <div className="text-gray-600">Measure content complexity</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                        <span className="text-white text-xs">✓</span>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">Stop Word Filtering</div>
+                        <div className="text-gray-600">Focus only on meaningful keywords</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Results Section */}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:p-8">
+                <h2 className="text-xl sm:text-2xl font-bold mb-6 text-gray-900">Analysis Results</h2>
+
+                {!analysis ? (
+                  <div className="text-center py-12">
+                    <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <span className="text-3xl">📊</span>
+                    </div>
+                    <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
+                      Enter your content and click "Analyze Content" to see detailed keyword density analysis
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-5">
+
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div className="text-2xl font-bold text-primary mb-1">{analysis.totalWords.toLocaleString()}</div>
+                        <div className="text-xs text-gray-600">Total Words</div>
+                      </div>
+                      <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div className="text-2xl font-bold text-primary mb-1">{analysis.totalCharacters.toLocaleString()}</div>
+                        <div className="text-xs text-gray-600">Characters</div>
+                      </div>
+                    </div>
+
+                    {/* Target Keyword Analysis */}
+                    {form.targetKeyword && (
+                      <div className="border border-gray-200 rounded-xl p-4">
+                        <h3 className="font-semibold text-gray-800 mb-3">Target Keyword Analysis</h3>
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600 text-sm">Keyword:</span>
+                            <span className="font-semibold text-primary text-sm">"{form.targetKeyword}"</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600 text-sm">Count:</span>
+                            <span className="font-semibold text-sm">{analysis.keywordCount}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600 text-sm">Density:</span>
+                            <span className={`font-semibold text-sm ${
+                              analysis.keywordDensity >= 0.5 && analysis.keywordDensity <= 3
+                                ? 'text-green-600'
+                                : 'text-orange-600'
+                            }`}>
+                              {analysis.keywordDensity.toFixed(2)}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Readability Score */}
+                    <div className="border border-gray-200 rounded-xl p-4">
+                      <h3 className="font-semibold text-gray-800 mb-3">Readability Score</h3>
+                      <div className="flex items-center space-x-3">
+                        <div className="flex-1 bg-gray-200 rounded-full h-3">
+                          <div
+                            className={`h-3 rounded-full transition-all duration-500 ${
+                              analysis.readabilityScore >= 70 ? 'bg-green-500' :
+                              analysis.readabilityScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'
+                            }`}
+                            style={{ width: `${Math.max(analysis.readabilityScore, 10)}%` }}
+                          ></div>
+                        </div>
+                        <span className="font-semibold text-gray-800 text-sm w-16 text-right">
+                          {analysis.readabilityScore.toFixed(0)}/100
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Top Keywords */}
+                    <div className="border border-gray-200 rounded-xl p-4">
+                      <h3 className="font-semibold text-gray-800 mb-3">Top Keywords</h3>
+                      <div className="space-y-1 max-h-48 overflow-y-auto">
+                        {analysis.topKeywords.map((keyword, index) => (
+                          <div key={index} className="flex justify-between items-center py-1.5 border-b border-gray-100 last:border-0">
+                            <div className="flex items-center gap-2">
+                              <span className="w-5 h-5 bg-primary/10 text-primary text-xs font-bold rounded flex items-center justify-center flex-shrink-0">
+                                {index + 1}
+                              </span>
+                              <span className="text-gray-800 font-medium text-sm">{keyword.word}</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="text-xs text-gray-500">{keyword.count}x</span>
+                              <span className="text-xs text-primary ml-2 font-medium">{keyword.density.toFixed(2)}%</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* SEO Recommendations */}
+                    <div className="border border-gray-200 rounded-xl p-4">
+                      <h3 className="font-semibold text-gray-800 mb-3">SEO Recommendations</h3>
+                      <div className="space-y-2">
+                        {analysis.recommendations.map((rec, index) => (
+                          <div key={index} className="flex items-start space-x-2">
+                            <span className="text-primary mt-0.5 flex-shrink-0 text-sm">•</span>
+                            <span className="text-sm text-gray-700">{rec}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Breadcrumb */}
+      <ToolBreadcrumb toolName="Keyword Density Analyzer" toolSlug="keyword-density-analyzer" />
+
       {/* Introduction Section */}
-      <section className="py-16 bg-white">
+      <section className="py-8 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-primary/5 border border-primary/10 rounded-2xl p-8">
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 sm:p-8">
               <p className="text-lg text-gray-700 leading-relaxed mb-4">
                 <strong>Ready to optimize your content?</strong> Try the Keyword Density Analyzer now and get instant recommendations to improve your SEO performance.
               </p>
               <div className="flex justify-center">
-                <button 
+                <button
                   onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
                   className="bg-primary text-white px-8 py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300"
                 >
@@ -613,8 +636,12 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-gray-800 text-center">What is Keyword Density and Why Does It Matter?</h2>
-            
+            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                What is Keyword Density and Why Does It Matter?
+              </span>
+            </h2>
+
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
                 Keyword density is the percentage of times a target keyword appears in your content compared to the total word count. While there's no "perfect" density percentage, maintaining the right balance is crucial for SEO success.
@@ -624,19 +651,27 @@ export default function KeywordDensityAnalyzerClient() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
                   <span className="text-gray-700"><strong>Search engines need context</strong> to understand what your content is about</span>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
                   <span className="text-gray-700"><strong>Over-optimization can trigger penalties</strong> and hurt your rankings</span>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
                   <span className="text-gray-700"><strong>Under-optimization means missed opportunities</strong> for relevant traffic</span>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
                   <span className="text-gray-700"><strong>Natural keyword distribution</strong> improves user experience and readability</span>
                 </div>
               </div>
@@ -655,100 +690,74 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Key Features of Our Keyword Density Analyzer</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Comprehensive Analysis */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">📊 Comprehensive Keyword Analysis</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">✓</span>
-                    <span><strong>Real-time density calculations</strong> for any text or webpage URL</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">✓</span>
-                    <span><strong>Primary and secondary keyword tracking</strong> to monitor all target terms</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">✓</span>
-                    <span><strong>Phrase density analysis</strong> for long-tail keywords and key phrases</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">✓</span>
-                    <span><strong>Word count statistics</strong> to understand content length and structure</span>
-                  </li>
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Key Features of Our Keyword Density Analyzer
+              </span>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white text-xl">📊</span>
+                  </div>
+                  <h3 className="font-bold text-gray-900">Comprehensive Keyword Analysis</h3>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">✓</span><span><strong>Real-time density calculations</strong> for any text or webpage URL</span></li>
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">✓</span><span><strong>Primary and secondary keyword tracking</strong> to monitor all target terms</span></li>
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">✓</span><span><strong>Phrase density analysis</strong> for long-tail keywords and key phrases</span></li>
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">✓</span><span><strong>Word count statistics</strong> to understand content length and structure</span></li>
                 </ul>
               </div>
 
-              {/* Advanced Analytics */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">🔍 Advanced Analytics and Insights</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">✓</span>
-                    <span><strong>Keyword frequency charts</strong> showing exact occurrence counts</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">✓</span>
-                    <span><strong>Density percentage breakdowns</strong> for every keyword and phrase</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">✓</span>
-                    <span><strong>Stop word filtering</strong> to focus on meaningful content words</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">✓</span>
-                    <span><strong>Keyword distribution mapping</strong> throughout your content</span>
-                  </li>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white text-xl">🔍</span>
+                  </div>
+                  <h3 className="font-bold text-gray-900">Advanced Analytics and Insights</h3>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">✓</span><span><strong>Keyword frequency charts</strong> showing exact occurrence counts</span></li>
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">✓</span><span><strong>Density percentage breakdowns</strong> for every keyword and phrase</span></li>
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">✓</span><span><strong>Stop word filtering</strong> to focus on meaningful content words</span></li>
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">✓</span><span><strong>Keyword distribution mapping</strong> throughout your content</span></li>
                 </ul>
               </div>
 
-              {/* User-Friendly Interface */}
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">🎨 User-Friendly Interface</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">✓</span>
-                    <span><strong>Simple copy-paste functionality</strong> for quick text analysis</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">✓</span>
-                    <span><strong>URL analysis capability</strong> to check live webpages</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">✓</span>
-                    <span><strong>Clean, easy-to-read reports</strong> that anyone can understand</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">✓</span>
-                    <span><strong>Mobile-responsive design</strong> for analysis on any device</span>
-                  </li>
+              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-200 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white text-xl">🎨</span>
+                  </div>
+                  <h3 className="font-bold text-gray-900">User-Friendly Interface</h3>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start"><span className="text-purple-600 mr-2 mt-0.5">✓</span><span><strong>Simple copy-paste functionality</strong> for quick text analysis</span></li>
+                  <li className="flex items-start"><span className="text-purple-600 mr-2 mt-0.5">✓</span><span><strong>URL analysis capability</strong> to check live webpages</span></li>
+                  <li className="flex items-start"><span className="text-purple-600 mr-2 mt-0.5">✓</span><span><strong>Clean, easy-to-read reports</strong> that anyone can understand</span></li>
+                  <li className="flex items-start"><span className="text-purple-600 mr-2 mt-0.5">✓</span><span><strong>Mobile-responsive design</strong> for analysis on any device</span></li>
                 </ul>
               </div>
 
-              {/* Professional Features */}
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-100">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">⚡ Professional SEO Features</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-accent mr-2 mt-1">✓</span>
-                    <span><strong>Keyword highlighting</strong> to visualize distribution patterns</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-accent mr-2 mt-1">✓</span>
-                    <span><strong>Export functionality</strong> for detailed reporting and client presentations</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-accent mr-2 mt-1">✓</span>
-                    <span><strong>Bulk keyword tracking</strong> for comprehensive content audits</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-accent mr-2 mt-1">✓</span>
-                    <span><strong>Historical comparison</strong> to track optimization improvements</span>
-                  </li>
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white text-xl">⚡</span>
+                  </div>
+                  <h3 className="font-bold text-gray-900">Professional SEO Features</h3>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start"><span className="text-orange-600 mr-2 mt-0.5">✓</span><span><strong>Keyword highlighting</strong> to visualize distribution patterns</span></li>
+                  <li className="flex items-start"><span className="text-orange-600 mr-2 mt-0.5">✓</span><span><strong>Export functionality</strong> for detailed reporting and client presentations</span></li>
+                  <li className="flex items-start"><span className="text-orange-600 mr-2 mt-0.5">✓</span><span><strong>Bulk keyword tracking</strong> for comprehensive content audits</span></li>
+                  <li className="flex items-start"><span className="text-orange-600 mr-2 mt-0.5">✓</span><span><strong>Historical comparison</strong> to track optimization improvements</span></li>
                 </ul>
               </div>
+
             </div>
           </div>
         </div>
@@ -758,12 +767,21 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">How to Use the Keyword Density Analyzer</h2>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* For Text Content */}
+            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                How to Use the Keyword Density Analyzer
+              </span>
+            </h2>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">📝 For Text Content</h3>
+                <h3 className="text-lg font-bold mb-6 text-gray-800 flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white font-bold text-sm">📝</span>
+                  </div>
+                  For Text Content
+                </h3>
                 <div className="space-y-4">
                   {[
                     'Copy your content from your document or CMS',
@@ -773,18 +791,22 @@ export default function KeywordDensityAnalyzerClient() {
                     'Adjust your content based on the recommendations'
                   ].map((step, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <span className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                      <span className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-sm font-semibold flex-shrink-0 text-white">
                         {index + 1}
                       </span>
-                      <span className="text-gray-700">{step}</span>
+                      <span className="text-gray-700 text-sm leading-relaxed">{step}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* For Live Webpages */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">🌐 For Live Webpages</h3>
+                <h3 className="text-lg font-bold mb-6 text-gray-800 flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white font-bold text-sm">🌐</span>
+                  </div>
+                  For Live Webpages
+                </h3>
                 <div className="space-y-4">
                   {[
                     'Enter the webpage URL you want to analyze',
@@ -794,42 +816,47 @@ export default function KeywordDensityAnalyzerClient() {
                     'Optimize your content for better performance'
                   ].map((step, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <span className="bg-secondary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                      <span className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center text-sm font-semibold flex-shrink-0 text-white">
                         {index + 1}
                       </span>
-                      <span className="text-gray-700">{step}</span>
+                      <span className="text-gray-700 text-sm leading-relaxed">{step}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Understanding Results */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">📊 Understanding Results</h3>
+                <h3 className="text-lg font-bold mb-6 text-gray-800 flex items-center">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white font-bold text-sm">📊</span>
+                  </div>
+                  Understanding Results
+                </h3>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3">
                     <span className="w-4 h-4 bg-green-500 rounded-full mt-1 flex-shrink-0"></span>
                     <div>
-                      <strong className="text-gray-800">Green indicators:</strong>
+                      <strong className="text-gray-800 text-sm">Green indicators:</strong>
                       <p className="text-sm text-gray-600">Optimal keyword density (1-3%)</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <span className="w-4 h-4 bg-yellow-500 rounded-full mt-1 flex-shrink-0"></span>
                     <div>
-                      <strong className="text-gray-800">Yellow indicators:</strong>
+                      <strong className="text-gray-800 text-sm">Yellow indicators:</strong>
                       <p className="text-sm text-gray-600">Slightly high density (3-5%) - monitor closely</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <span className="w-4 h-4 bg-red-500 rounded-full mt-1 flex-shrink-0"></span>
                     <div>
-                      <strong className="text-gray-800">Red indicators:</strong>
+                      <strong className="text-gray-800 text-sm">Red indicators:</strong>
                       <p className="text-sm text-gray-600">Potential over-optimization (5%+) - reduce usage</p>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -839,78 +866,76 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">SEO Best Practices for Keyword Density</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              {/* Primary Keywords */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🎯 Primary Keywords</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Keep density between <strong>1-3%</strong> for main target keywords</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Use variations and synonyms naturally throughout content</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Focus on user intent rather than strict percentage targets</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Ensure keywords appear in key locations (title, headings, first paragraph)</span>
-                  </li>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                SEO Best Practices for Keyword Density
+              </span>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 border border-blue-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white text-xl">🎯</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">Primary Keywords</h3>
+                </div>
+                <ul className="space-y-3 text-sm text-gray-700">
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">•</span><span>Keep density between <strong>1-3%</strong> for main target keywords</span></li>
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">•</span><span>Use variations and synonyms naturally throughout content</span></li>
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">•</span><span>Focus on user intent rather than strict percentage targets</span></li>
+                  <li className="flex items-start"><span className="text-primary mr-2 mt-0.5">•</span><span>Ensure keywords appear in key locations (title, headings, first paragraph)</span></li>
                 </ul>
               </div>
 
-              {/* Secondary Keywords */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🔗 Secondary Keywords</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Maintain <strong>0.5-2%</strong> density for supporting keywords</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Use semantic variations to cover related search terms</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Balance keyword usage with natural language flow</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Include long-tail variations for comprehensive coverage</span>
-                  </li>
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 border border-green-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                    <span className="text-white text-xl">🔗</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800">Secondary Keywords</h3>
+                </div>
+                <ul className="space-y-3 text-sm text-gray-700">
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">•</span><span>Maintain <strong>0.5-2%</strong> density for supporting keywords</span></li>
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">•</span><span>Use semantic variations to cover related search terms</span></li>
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">•</span><span>Balance keyword usage with natural language flow</span></li>
+                  <li className="flex items-start"><span className="text-green-600 mr-2 mt-0.5">•</span><span>Include long-tail variations for comprehensive coverage</span></li>
                 </ul>
               </div>
+
             </div>
 
-            {/* Content Optimization Tips */}
             <div className="bg-primary/10 border border-primary/20 rounded-2xl p-8">
               <h3 className="text-xl font-semibold mb-6 text-gray-800 text-center">💡 Content Optimization Tips</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-start space-x-3">
-                  <span className="text-primary mr-2 mt-1">✓</span>
-                  <span><strong>Write for humans first,</strong> optimize for search engines second</span>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-gray-700"><strong>Write for humans first,</strong> optimize for search engines second</span>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-primary mr-2 mt-1">✓</span>
-                  <span><strong>Use keywords naturally</strong> in context rather than forcing them</span>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-gray-700"><strong>Use keywords naturally</strong> in context rather than forcing them</span>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-primary mr-2 mt-1">✓</span>
-                  <span><strong>Vary your vocabulary</strong> with synonyms and related terms</span>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-gray-700"><strong>Vary your vocabulary</strong> with synonyms and related terms</span>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <span className="text-primary mr-2 mt-1">✓</span>
-                  <span><strong>Focus on topic coverage</strong> rather than keyword repetition</span>
+                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                  <span className="text-gray-700"><strong>Focus on topic coverage</strong> rather than keyword repetition</span>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -919,60 +944,40 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Common Keyword Density Mistakes to Avoid</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Over-Optimization */}
+            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Common Keyword Density Mistakes to Avoid
+              </span>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
               <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
                 <h3 className="text-xl font-semibold mb-4 text-red-800 flex items-center">
                   <span className="text-2xl mr-2">⚠️</span>
                   Over-Optimization Red Flags
                 </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-red-500 mr-2 mt-1">✗</span>
-                    <span>Repeating the same keyword phrase excessively</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-red-500 mr-2 mt-1">✗</span>
-                    <span>Forcing keywords into every paragraph unnaturally</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-red-500 mr-2 mt-1">✗</span>
-                    <span>Using exact-match keywords when variations would flow better</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-red-500 mr-2 mt-1">✗</span>
-                    <span>Ignoring readability for the sake of keyword density</span>
-                  </li>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start"><span className="text-red-500 mr-2 mt-0.5">✗</span><span className="text-gray-700">Repeating the same keyword phrase excessively</span></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-2 mt-0.5">✗</span><span className="text-gray-700">Forcing keywords into every paragraph unnaturally</span></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-2 mt-0.5">✗</span><span className="text-gray-700">Using exact-match keywords when variations would flow better</span></li>
+                  <li className="flex items-start"><span className="text-red-500 mr-2 mt-0.5">✗</span><span className="text-gray-700">Ignoring readability for the sake of keyword density</span></li>
                 </ul>
               </div>
 
-              {/* Under-Optimization */}
               <div className="bg-orange-50 border-2 border-orange-200 rounded-2xl p-8">
                 <h3 className="text-xl font-semibold mb-4 text-orange-800 flex items-center">
                   <span className="text-2xl mr-2">❗</span>
                   Under-Optimization Issues
                 </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-orange-500 mr-2 mt-1">!</span>
-                    <span>Failing to use target keywords in important sections</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-orange-500 mr-2 mt-1">!</span>
-                    <span>Not including keyword variations and synonyms</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-orange-500 mr-2 mt-1">!</span>
-                    <span>Missing opportunities for natural keyword placement</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-orange-500 mr-2 mt-1">!</span>
-                    <span>Ignoring search intent in favor of unrelated keywords</span>
-                  </li>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start"><span className="text-orange-500 mr-2 mt-0.5">!</span><span className="text-gray-700">Failing to use target keywords in important sections</span></li>
+                  <li className="flex items-start"><span className="text-orange-500 mr-2 mt-0.5">!</span><span className="text-gray-700">Not including keyword variations and synonyms</span></li>
+                  <li className="flex items-start"><span className="text-orange-500 mr-2 mt-0.5">!</span><span className="text-gray-700">Missing opportunities for natural keyword placement</span></li>
+                  <li className="flex items-start"><span className="text-orange-500 mr-2 mt-0.5">!</span><span className="text-gray-700">Ignoring search intent in favor of unrelated keywords</span></li>
                 </ul>
               </div>
+
             </div>
           </div>
         </div>
@@ -982,58 +987,64 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Why Choose SEO Shouts' Keyword Density Analyzer?</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Why Choose SEO Shouts' Keyword Density Analyzer?
+              </span>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
                 <div className="flex items-start space-x-4">
-                  <div className="text-3xl">✅</div>
+                  <div className="text-3xl flex-shrink-0">✅</div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Completely Free to Use</h3>
-                    <p className="text-gray-600">No hidden fees, no registration required. Just paste your content and get instant analysis.</p>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Completely Free to Use</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">No hidden fees, no registration required. Just paste your content and get instant analysis.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
                 <div className="flex items-start space-x-4">
-                  <div className="text-3xl">✅</div>
+                  <div className="text-3xl flex-shrink-0">✅</div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Accurate and Reliable</h3>
-                    <p className="text-gray-600">Built by SEO experts with 13+ years of experience in keyword optimization and content analysis.</p>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Accurate and Reliable</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Built by SEO experts with 13+ years of experience in keyword optimization and content analysis.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100">
+              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-200">
                 <div className="flex items-start space-x-4">
-                  <div className="text-3xl">✅</div>
+                  <div className="text-3xl flex-shrink-0">✅</div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Regular Updates</h3>
-                    <p className="text-gray-600">Our tool evolves with Google's algorithm changes and SEO best practices.</p>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Regular Updates</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Our tool evolves with Google's algorithm changes and SEO best practices.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100">
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-200">
                 <div className="flex items-start space-x-4">
-                  <div className="text-3xl">✅</div>
+                  <div className="text-3xl flex-shrink-0">✅</div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Privacy-Focused</h3>
-                    <p className="text-gray-600">Your content is analyzed locally and not stored on our servers.</p>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Privacy-Focused</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">Your content is analyzed locally and not stored on our servers.</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-6 border border-gray-100 md:col-span-2">
+              <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-6 border border-gray-200 md:col-span-2">
                 <div className="flex items-start space-x-4">
-                  <div className="text-3xl">✅</div>
+                  <div className="text-3xl flex-shrink-0">✅</div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">Professional-Grade Results</h3>
-                    <p className="text-gray-600">The same quality analysis that we use for client campaigns, available free to everyone.</p>
+                    <h3 className="text-lg font-semibold mb-2 text-gray-900">Professional-Grade Results</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">The same quality analysis that we use for client campaigns, available free to everyone.</p>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -1043,38 +1054,44 @@ export default function KeywordDensityAnalyzerClient() {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-gray-900">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Frequently Asked Questions
+              </span>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold mb-3 text-gray-800">What's the ideal keyword density percentage?</h3>
-                <p className="text-gray-600">There's no universal perfect percentage, but <strong>1-3% for primary keywords</strong> is generally recommended. Focus more on natural usage and user value than hitting exact percentages.</p>
+                <p className="text-gray-600 text-sm leading-relaxed">There's no universal perfect percentage, but <strong>1-3% for primary keywords</strong> is generally recommended. Focus more on natural usage and user value than hitting exact percentages.</p>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold mb-3 text-gray-800">Can high keyword density hurt my rankings?</h3>
-                <p className="text-gray-600">Yes, keyword stuffing (excessive keyword repetition) can result in penalties. Our tool helps you identify when density is too high.</p>
+                <p className="text-gray-600 text-sm leading-relaxed">Yes, keyword stuffing (excessive keyword repetition) can result in penalties. Our tool helps you identify when density is too high.</p>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold mb-3 text-gray-800">Should I analyze just my main content or include navigation?</h3>
-                <p className="text-gray-600">For best results, analyze just your main content (body text) rather than including navigation, footers, or sidebar elements.</p>
+                <p className="text-gray-600 text-sm leading-relaxed">For best results, analyze just your main content (body text) rather than including navigation, footers, or sidebar elements.</p>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold mb-3 text-gray-800">How often should I check keyword density?</h3>
-                <p className="text-gray-600">Check density during content creation and before publishing. Also analyze when updating existing content or if you notice ranking changes.</p>
+                <p className="text-gray-600 text-sm leading-relaxed">Check density during content creation and before publishing. Also analyze when updating existing content or if you notice ranking changes.</p>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold mb-3 text-gray-800">Does the tool work for non-English content?</h3>
-                <p className="text-gray-600">Yes, our analyzer works with content in multiple languages, though optimal density ranges may vary by language.</p>
+                <p className="text-gray-600 text-sm leading-relaxed">Yes, our analyzer works with content in multiple languages, though optimal density ranges may vary by language.</p>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I analyze competitor content?</h3>
-                <p className="text-gray-600">Yes, you can analyze any publicly accessible webpage using the URL analysis feature.</p>
+                <p className="text-gray-600 text-sm leading-relaxed">Yes, you can analyze any publicly accessible webpage using the URL analysis feature.</p>
               </div>
+
             </div>
           </div>
         </div>
@@ -1088,9 +1105,9 @@ export default function KeywordDensityAnalyzerClient() {
             <p className="text-lg mb-8 opacity-90">
               Stop leaving your keyword optimization to chance. Use our <strong>Free Keyword Density Analyzer</strong> to ensure your content hits the sweet spot between optimization and readability.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button 
+              <button
                 onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
                 className="bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
               >
@@ -1112,7 +1129,7 @@ export default function KeywordDensityAnalyzerClient() {
                 <span>Contact our SEO experts for personalized guidance</span>
               </div>
             </div>
-            
+
             <p className="text-sm mt-6 opacity-80">
               <strong>Perfect your keyword optimization with SEO Shouts' free tools and expert guidance!</strong>
               <br />
@@ -1121,6 +1138,7 @@ export default function KeywordDensityAnalyzerClient() {
           </div>
         </div>
       </section>
+
     </div>
   )
 }

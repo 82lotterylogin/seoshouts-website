@@ -178,11 +178,47 @@ function SEOMetaWriterClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
       {/* Main Tool Section */}
       <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-2 sm:px-4">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                AI SEO Meta
+              </span>{' '}
+              <span className="text-primary">Title & Description Writer</span>
+            </h1>
+
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                AI-Powered Generation
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Content-Type Aware
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Character Optimization
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+
+            {/* Answer Capsule */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                Generate AI-powered meta titles and descriptions that actually get clicks. Our <strong>Free SEO Meta Writer</strong> creates perfectly optimized, character-aware meta tags tailored to your content type — for better click-through rates from search results.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Form */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
@@ -563,39 +599,20 @@ function SEOMetaWriterClient() {
       {/* Tool Breadcrumb */}
       <ToolBreadcrumb toolName="SEO Meta Writer" toolSlug="seo-meta-writer" />
 
-      {/* Hero Section - Minimal Intro Only */}
+      {/* About Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free AI SEO Tool
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Online AI SEO Meta Title and Description Generator — Write Perfect Meta Tags in Seconds
+                Write Perfect Meta Tags in Seconds
               </span>
-            </h1>
-            
+            </h2>
+
             <div className="max-w-3xl mx-auto">
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl text-gray-600 leading-relaxed">
                 Generate AI-powered meta titles and descriptions that actually get clicks. Perfect for content creators, agencies, and businesses who want better search results.
               </p>
-              
-              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>AI-Powered Generation
-                </div>
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>Content-Type Aware
-                </div>
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>Character Optimization
-                </div>
-                <div className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>100% Free
-                </div>
-              </div>
             </div>
           </div>
         </div>

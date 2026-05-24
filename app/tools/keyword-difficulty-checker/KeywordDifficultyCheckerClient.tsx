@@ -336,11 +336,48 @@ export default function KeywordDifficultyCheckerClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+
       {/* Tool Section */}
       <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-2 sm:px-4">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Keyword Difficulty
+              </span>{' '}
+              <span className="text-primary">Checker</span>
+            </h1>
+
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Instant Difficulty Scores
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Competition Analysis
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Search Volume Data
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+
+            {/* Answer Capsule */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                Stop targeting keywords you can&apos;t rank for. Our <strong>Free Keyword Difficulty Checker</strong> gives you instant difficulty scores, competition data, and search volume — so you can prioritize winnable keywords and build an SEO strategy that actually delivers results.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Input Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
@@ -677,25 +714,18 @@ export default function KeywordDifficultyCheckerClient() {
         </div>
       </section>
 
-      {/* Header Section */}
+      {/* About Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Keyword Difficulty Checker Tool
+                Stop Wasting Time on Impossible Keywords
               </span>
-              <br />
-              <span className="text-primary">Stop Wasting Time on Impossible Keywords</span>
-            </h1>
-            
+            </h2>
+
             <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Find Out Which Keywords You Can Actually Rank For</h2>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Find Out Which Keywords You Can Actually Rank For</h3>
               <p>
                 Ever spent months trying to rank for a keyword, only to realize later that you needed the SEO budget of Amazon to compete? Yeah, we've all been there.
               </p>
@@ -707,24 +737,6 @@ export default function KeywordDifficultyCheckerClient() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Instant Difficulty Scores
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Bulk Analysis
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                CSV Export
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
           </div>
         </div>
       </section>

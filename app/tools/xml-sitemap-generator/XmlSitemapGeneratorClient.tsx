@@ -301,12 +301,48 @@ export default function XmlSitemapGeneratorClient() {
   const urlCount = inputMode === 'manual' ? manualUrls.split('\n').filter(url => url.trim().length > 0).length : 0
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
 
       {/* Tool Section */}
       <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-2 sm:px-4">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                XML Sitemap
+              </span>{' '}
+              <span className="text-primary">Generator</span>
+            </h1>
+
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Up to 2,000 URLs
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Google-Approved Format
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Instant Download
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+
+            {/* Answer Capsule */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                Make sure Google finds every page on your site. Our <strong>Free XML Sitemap Generator</strong> creates professional, search-engine-approved sitemaps in seconds — no coding required. Add your URLs, set priorities, and download a ready-to-submit sitemap file instantly.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Input Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
@@ -732,25 +768,18 @@ export default function XmlSitemapGeneratorClient() {
       {/* Tool Breadcrumb */}
       <ToolBreadcrumb toolName="XML Sitemap Generator" toolSlug="xml-sitemap-generator" />
 
-      {/* Header Section */}
+      {/* About Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free XML Sitemap Generator Tool
+                Help Search Engines Find Every Page on Your Website
               </span>
-              <br />
-              <span className="text-primary">Help Search Engines Find Every Page on Your Website</span>
-            </h1>
-            
+            </h2>
+
             <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Create Professional Sitemaps in Seconds (No Coding Required)</h2>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Create Professional Sitemaps in Seconds (No Coding Required)</h3>
               <p>
                 Here's a story that'll make you appreciate sitemaps: A friend launched her online store last year with 500 products. Three months later, she discovered that Google had only indexed 47 of her product pages. The rest? Invisible to search engines.
               </p>
@@ -768,24 +797,6 @@ export default function XmlSitemapGeneratorClient() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Manual URL Input
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Up to 2,000 URLs
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Google-Approved Format
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
           </div>
         </div>
       </section>

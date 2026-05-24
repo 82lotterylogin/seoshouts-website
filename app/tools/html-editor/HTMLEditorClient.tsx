@@ -563,7 +563,7 @@ ${htmlContent}
   const btnSolid = 'shrink-0 px-1.5 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-sm rounded-lg';
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
       {/* Global styles for the visual editor */}
       <style dangerouslySetInnerHTML={{
         __html: `
@@ -727,8 +727,43 @@ ${htmlContent}
         `
       }} />
       
+      {/* Tool Header */}
+      <div className="container mx-auto px-4 sm:px-6 pt-8 sm:pt-12">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
+            <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+              Online HTML
+            </span>{' '}
+            <span className="text-primary">Editor</span>
+          </h1>
+          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
+            <div className="flex items-center">
+              <span className="text-green-500 mr-2">✓</span>
+              Live Preview
+            </div>
+            <div className="flex items-center">
+              <span className="text-green-500 mr-2">✓</span>
+              Syntax Highlighting
+            </div>
+            <div className="flex items-center">
+              <span className="text-green-500 mr-2">✓</span>
+              HTML, CSS &amp; JavaScript
+            </div>
+            <div className="flex items-center">
+              <span className="text-green-500 mr-2">✓</span>
+              100% Free
+            </div>
+          </div>
+          <div className="max-w-4xl mx-auto mb-6">
+            <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+              Test HTML, CSS, and JavaScript instantly in your browser. Our <strong>Free Online HTML Editor</strong> gives you a live split-screen preview with syntax highlighting — no downloads, no setup, just open and start coding.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Main Tool Section */}
-      <section id="tool-section" className="py-8 sm:py-12">
+      <section id="tool-section" className="py-4 sm:py-6">
         <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
             {/* Global actions */}
@@ -934,25 +969,18 @@ ${htmlContent}
       {/* Tool Breadcrumb */}
       <ToolBreadcrumb toolName="HTML Editor" toolSlug="html-editor" />
 
-      {/* Header Section */}
+      {/* About Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free Online Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free HTML5 Editor - Online Code Editor
+                Write HTML, CSS &amp; JavaScript Instantly
               </span>
-              <br />
-              <span className="text-primary">Write HTML, CSS & JavaScript Instantly</span>
-            </h1>
-            
+            </h2>
+
             <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Code Without the Complicated Setup</h2>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Code Without the Complicated Setup</h3>
               <p>
                 Ever wanted to quickly test some HTML code but didn't want to open your entire development setup? Or maybe you're learning web development and need a simple way to practice without complicated software?
               </p>
@@ -964,24 +992,6 @@ ${htmlContent}
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Live Preview
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Syntax Highlighting
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                HTML, CSS & JavaScript
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
           </div>
         </div>
       </section>

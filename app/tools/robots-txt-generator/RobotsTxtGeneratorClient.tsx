@@ -170,12 +170,48 @@ export default function RobotsTxtGeneratorClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
 
       {/* Tool Section */}
       <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-6xl mx-auto">
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Robots.txt
+              </span>{' '}
+              <span className="text-primary">Generator</span>
+            </h1>
+
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Multi-Agent Support
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                AI Bot Control
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Real-time Preview
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+
+            {/* Answer Capsule */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                Tell search engines exactly where they can and can&apos;t go. Our <strong>Free Robots.txt Generator</strong> creates bulletproof robots.txt files with a simple click interface — no syntax errors, no accidentally blocking your entire site from Google.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Input Section */}
               <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
@@ -487,25 +523,18 @@ export default function RobotsTxtGeneratorClient() {
       {/* Tool Breadcrumb */}
       <ToolBreadcrumb toolName="Robots.txt Generator" toolSlug="robots-txt-generator" />
 
-      {/* Hero Section */}
+      {/* About Section */}
       <section className="py-16 sm:py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Robots.txt Generator Tool
+                Tell Search Engines Where They Can (And Can&apos;t) Go
               </span>
-              <br />
-              <span className="text-primary">Tell Search Engines Where They Can (And Can't) Go</span>
-            </h1>
-            
+            </h2>
+
             <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Create Perfect Robots.txt Files Without Breaking Your Website</h2>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Create Perfect Robots.txt Files Without Breaking Your Website</h3>
               <p>
                 Last month, a small business owner called me in a panic. "Google isn't showing any of my pages!" he said. Turns out, he'd tried to create a robots.txt file himself and accidentally blocked his entire website. One tiny typo cost him three weeks of lost traffic.
               </p>
@@ -520,24 +549,6 @@ export default function RobotsTxtGeneratorClient() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Multi-Agent Support
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                AI Bot Control
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Real-time Preview
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
           </div>
         </div>
       </section>

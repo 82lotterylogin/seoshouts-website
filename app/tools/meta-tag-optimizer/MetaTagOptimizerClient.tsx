@@ -97,13 +97,48 @@ export default function MetaTagOptimizerClient() {
   const descriptionStatus = getDescriptionStatus()
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
 
       {/* Tool Section */}
-      <section className="py-8 sm:py-12 bg-gray-50">
+      <section className="py-8 sm:py-12">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-7xl mx-auto">
-            
+
+            {/* H1 Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Meta Tag
+              </span>{' '}
+              <span className="text-primary">Generator & Optimizer</span>
+            </h1>
+
+            {/* Feature badges */}
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Live SERP Preview
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Character Count Validation
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                Complete Meta Tag Code
+              </div>
+              <div className="flex items-center">
+                <span className="text-green-500 mr-2">✓</span>
+                100% Free
+              </div>
+            </div>
+
+            {/* Answer Capsule */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
+                Craft title tags and meta descriptions that get clicked. Our <strong>Free Meta Tag Optimizer</strong> delivers real-time SERP preview, smart character count guidance, and ready-to-paste meta tag code — so every page you publish is search-engine ready from day one.
+              </p>
+            </div>
+
             <div className="grid lg:grid-cols-2 gap-8">
               
               {/* Input Form */}
@@ -299,25 +334,18 @@ export default function MetaTagOptimizerClient() {
       {/* Tool Breadcrumb */}
       <ToolBreadcrumb toolName="Meta Tag Optimizer" toolSlug="meta-tag-optimizer" />
 
-      {/* Header Section */}
+      {/* About Section */}
       <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free SEO Tool
-            </div>
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Meta Tag Generator & Optimizer
+                Create SEO-Perfect Meta Tags
               </span>
-              <br />
-              <span className="text-primary">Create SEO-Perfect Meta Tags</span>
-            </h1>
-            
+            </h2>
+
             <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Generate Optimized Meta Tags for Better SEO</h2>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Generate Optimized Meta Tags for Better SEO</h3>
               <p>
                 Create compelling title tags and meta descriptions that get clicked. Our free tool includes real-time SERP preview, character count validation, and generates complete meta tag code for your website.
               </p>
@@ -326,24 +354,6 @@ export default function MetaTagOptimizerClient() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Live SERP Preview
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Character Count Validation
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Complete Meta Tag Code
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
           </div>
         </div>
       </section>
