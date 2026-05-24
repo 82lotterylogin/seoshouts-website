@@ -6,6 +6,7 @@ import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 import InternalLinkVisualization from './InternalLinkVisualization'
 import InternalLinkDataTable from './InternalLinkDataTable'
 import ExportOptions from './ExportOptions'
+import ShapeGrid from '../../components/ShapeGrid'
 
 interface AnchorData {
   text: string;
@@ -72,6 +73,7 @@ export default function InternalLinkCheckerClient() {
   const [error, setError] = useState('')
   const [progress, setProgress] = useState('')
   const [activeTab, setActiveTab] = useState<'cloud' | 'table' | 'pages' | 'no-links'>('cloud')
+  const resultsPanelRef = useRef<HTMLDivElement>(null)
 
   // State for multi-step workflow
   const [userInputRequest, setUserInputRequest] = useState<UserInputRequest | null>(null)
@@ -211,6 +213,9 @@ export default function InternalLinkCheckerClient() {
         // Analysis completed successfully
         setResults(data.data)
         setProgress('Analysis completed!')
+        setTimeout(() => {
+          resultsPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
         recaptchaRef.current?.reset()
 
         // Update usage info from successful response
@@ -321,1731 +326,760 @@ export default function InternalLinkCheckerClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+    <>
+      {/* ─── TOOL HERO ─── */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, transparent 30%, rgba(8,9,10,0.9) 100%)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Internal Link Checker</span>
+          </nav>
+          <div className="tool-hero-badge">🔗 Technical SEO Tool — Free Forever</div>
+          <h1 className="tool-hero-h1">
+            Free Internal Link Checker: <span>Audit Anchor Text</span>, Link Distribution &amp; Site Architecture
+          </h1>
+          <p className="tool-hero-sub">
+            An internal link checker crawls your website to analyze anchor text patterns, link distribution, and site structure — identifying over-optimization, wasted generic anchors, and keyword stuffing across your internal linking profile. SEOShouts&apos; free tool scans up to 500 URLs and generates a{' '}
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>visual word cloud</strong>{' '}
+            showing which anchor phrases dominate your link structure, a feature no other free tool offers.
+          </p>
+        </div>
+      </div>
 
+      {/* ─── TOOL INPUT SECTION ─── */}
+      <div className="tool-input-section">
+        <div className="tool-input-inner">
+          <div className="tool-box">
+            <h2 className="tool-box-heading">Analyze Your Website&apos;s Internal Link Structure</h2>
+            <p className="tool-box-sub">
+              Enter your website URL below to start crawling and analyzing{' '}
+              <span>internal anchor text patterns</span>.
+            </p>
 
-      {/* Analysis Form */}
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-
-            {/* H1 Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-center leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free Internal Link Checker: Audit Anchor Text, Link Distribution & Site Architecture
-              </span>
-            </h1>
-
-            {/* Answer Capsule */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                An internal link checker crawls your website to analyze anchor text patterns, link distribution, and site structure — identifying over-optimization, wasted generic anchors, and keyword stuffing across your internal linking profile. SEOShouts' free tool scans up to 500 URLs and generates a <strong>visual word cloud</strong> showing which anchor phrases dominate your link structure, a feature no other free tool offers.
-              </p>
-            </div>
-
-            {!results ? (
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:p-8">
-                <form onSubmit={handleAnalyze}>
-                  <div className="text-center mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">
-                      Analyze Your Website's Internal Link Structure
-                    </h2>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-3">
-                      Enter your website URL below to start crawling and analyzing internal anchor text patterns.
-                    </p>
-
-                    {/* Usage Counter */}
-                    {(usageInfo.remainingRequests !== undefined || usageInfo.isLimitReached) && (
-                      <div className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium ${
-                        usageInfo.isLimitReached
-                          ? 'bg-red-100 text-red-800 border border-red-200'
-                          : usageInfo.remainingRequests === 0
-                          ? 'bg-orange-100 text-orange-800 border border-orange-200'
-                          : 'bg-green-100 text-green-800 border border-green-200'
-                      }`}>
-                        {usageInfo.isLimitReached ? (
-                          <>
-                            <span className="mr-2">🚫</span>
-                            Daily limit reached. Resets: {usageInfo.resetTime}
-                          </>
-                        ) : (
-                          <>
-                            <span className="mr-2">📊</span>
-                            {usageInfo.remainingRequests} of 5 daily uses remaining
-                            {usageInfo.resetTime && (
-                              <span className="ml-1 text-xs opacity-75">
-                                (Resets: {usageInfo.resetTime})
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-6">
-                    <div className="max-w-md mx-auto">
-                      <label htmlFor="url" className="block text-sm font-semibold text-gray-700 mb-3 text-center">
-                        Website URL
-                      </label>
-                      <input
-                        type="url"
-                        id="url"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="https://example.com"
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-base placeholder-gray-400"
-                        required
-                        disabled={isAnalyzing}
-                      />
-                    </div>
-
-                    {/* reCAPTCHA */}
-                    {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
-                      <div className="flex justify-center mb-4">
-                        <ReCAPTCHA
-                          ref={recaptchaRef}
-                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                        />
-                      </div>
-                    )}
-
-                    {/* Error Message */}
-                    {error && (
-                      <div className={`p-4 border rounded-2xl ${
-                        usageInfo.isLimitReached
-                          ? 'bg-orange-50 border-orange-200'
-                          : 'bg-red-50 border-red-200'
-                      }`}>
-                        <div className="flex items-start">
-                          <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0 ${
-                            usageInfo.isLimitReached
-                              ? 'bg-orange-100'
-                              : 'bg-red-100'
-                          }`}>
-                            <span className={`text-sm ${
-                              usageInfo.isLimitReached
-                                ? 'text-orange-600'
-                                : 'text-red-600'
-                            }`}>
-                              {usageInfo.isLimitReached ? '🚫' : '⚠️'}
-                            </span>
-                          </div>
-                          <div>
-                            <h4 className={`font-semibold mb-1 ${
-                              usageInfo.isLimitReached
-                                ? 'text-orange-800'
-                                : 'text-red-800'
-                            }`}>
-                              {usageInfo.isLimitReached ? 'Usage Limit Reached' : 'Analysis Error'}
-                            </h4>
-                            <p className={`text-sm ${
-                              usageInfo.isLimitReached
-                                ? 'text-orange-700'
-                                : 'text-red-700'
-                            }`}>
-                              {error}
-                            </p>
-                            {usageInfo.isLimitReached && (
-                              <div className="mt-2 text-xs text-orange-600">
-                                <p>📊 This tool is free and limited to 5 analyses per day to ensure fair usage for all users.</p>
-                                <p>🔄 Your usage limit will reset at midnight (your local time).</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Loading Indicator */}
-                    {isAnalyzing && (
-                      <div className="flex items-center justify-center py-4">
-                        <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent mr-3"></div>
-                        <span className="text-blue-700 font-medium">
-                          {progress || 'Analyzing website...'}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* User Input Request */}
-                    {userInputRequest && (
-                      <div className="p-6 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-2xl">
-                        <div className="flex items-start mb-4">
-                          <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                            <span className="text-yellow-600 text-lg">📝</span>
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-yellow-800 mb-2">User Input Required</h4>
-                            <p className="text-yellow-700 text-sm mb-4">{userInputRequest.message}</p>
-
-
-                            {/* Options for no sitemap found */}
-                            {userInputRequest.step === 'no_sitemap_found' && userInputRequest.options && (
-                              <div className="space-y-2">
-                                {userInputRequest.options.map((option) => (
-                                  <button
-                                    key={option.id}
-                                    onClick={() => handleUserChoice(option.id)}
-                                    className="w-full text-left p-3 bg-white hover:bg-yellow-50 border border-yellow-200 rounded-lg transition-colors text-sm font-medium text-gray-700 hover:text-yellow-800"
-                                  >
-                                    {option.label}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Manual Sitemap URL Input */}
-                            {userInputRequest.step === 'sitemap_input_needed' && (
-                              <div className="space-y-3">
-                                <input
-                                  type="url"
-                                  placeholder="Enter sitemap URL (e.g., https://example.com/sitemap.xml)"
-                                  value={manualSitemapUrl}
-                                  onChange={(e) => setManualSitemapUrl(e.target.value)}
-                                  className="w-full p-3 border border-yellow-200 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm"
-                                />
-                                <div className="flex gap-2">
-                                  <button
-                                    onClick={handleSitemapSubmit}
-                                    disabled={!manualSitemapUrl.trim()}
-                                    className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
-                                  >
-                                    Analyze Sitemap
-                                  </button>
-                                  <button
-                                    onClick={() => handleUserChoice('no_sitemap')}
-                                    className="px-4 py-2 text-yellow-700 border border-yellow-300 rounded-lg hover:bg-yellow-50 font-medium text-sm"
-                                  >
-                                    No Sitemap
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Manual URLs Input */}
-                            {userInputRequest.step === 'manual_urls_needed' && (
-                              <div className="space-y-3">
-                                <textarea
-                                  placeholder="Enter URLs to analyze (one per line)&#10;https://example.com/page1&#10;https://example.com/page2&#10;https://example.com/page3"
-                                  value={manualUrls}
-                                  onChange={(e) => setManualUrls(e.target.value)}
-                                  rows={6}
-                                  className="w-full p-3 border border-yellow-200 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm resize-none"
-                                />
-                                <div className="flex gap-2">
-                                  <button
-                                    onClick={handleManualUrlsSubmit}
-                                    disabled={!manualUrls.trim()}
-                                    className="flex-1 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
-                                  >
-                                    Analyze URLs
-                                  </button>
-                                  <button
-                                    onClick={() => handleUserChoice('provide_sitemap')}
-                                    className="px-4 py-2 text-yellow-700 border border-yellow-300 rounded-lg hover:bg-yellow-50 font-medium text-sm"
-                                  >
-                                    Try Sitemap
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-
-                            {/* URL Limit Exceeded */}
-                            {userInputRequest.step === 'url_limit_exceeded' && (
-                              <div className="space-y-3">
-                                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                                  <p className="text-red-700 text-sm">
-                                    <strong>Found {userInputRequest.urlCount} URLs</strong> - exceeds our limit of 500 URLs for optimal performance.
-                                  </p>
-                                </div>
-                                <button
-                                  onClick={() => handleUserChoice('no_sitemap')}
-                                  className="w-full px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 font-medium text-sm"
-                                >
-                                  Provide Specific URLs Instead
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Submit Button */}
-                    <div className="flex justify-center">
-                      <button
-                        type="submit"
-                        disabled={isAnalyzing || !url.trim() || usageInfo.isLimitReached}
-                        className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-primary to-blue-600 text-white font-bold text-lg rounded-xl hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 shadow-lg"
-                      >
-                        {isAnalyzing ? (
-                          'Analyzing Website...'
-                        ) : usageInfo.isLimitReached ? (
-                          'Daily Limit Reached'
-                        ) : (
-                          <>
-                            🔍 Analyze Internal Links
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </form>
-
-                {/* Feature Info */}
-                <div className="mt-12 pt-8 border-t border-gray-200">
-                  <h3 className="text-lg font-semibold mb-6 text-gray-900 text-center">Key Features:</h3>
-                  <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                      <div className="flex items-start">
-                        <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                          <span className="text-white text-xs">✓</span>
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">Visual Anchor Cloud</div>
-                          <div className="text-gray-600">Instantly see which words dominate your internal linking profile</div>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                          <span className="text-white text-xs">✓</span>
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">Keyword Stuffing Detection</div>
-                          <div className="text-gray-600">Identify if you are aggressively over-using specific keywords</div>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                          <span className="text-white text-xs">✓</span>
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">Generic Link Finder</div>
-                          <div className="text-gray-600">Spot wasted opportunities like "read more" or "this post"</div>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                          <span className="text-white text-xs">✓</span>
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900">Deep Crawl Analysis</div>
-                          <div className="text-gray-600">Scan up to 500 URLs to get a complete picture of your site's semantic structure</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              /* Results Section */
-              <div className="space-y-8">
-
-                {/* Results Header */}
-                <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-4 sm:p-6 lg:p-8 relative overflow-visible">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-transparent"></div>
-
-                  <div className="relative z-10 flex flex-col items-center text-center sm:flex-row sm:justify-between sm:items-center sm:text-left">
-                    <div className="mb-4 sm:mb-0">
-                      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 text-gray-900">
-                        Analysis Complete ✅
-                      </h2>
-                      <p className="text-sm sm:text-base text-gray-600 break-all sm:break-normal">
-                        <span className="font-medium">{results.baseUrl}</span>
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                      <ExportOptions results={results} />
-                      <button
-                        onClick={resetAnalysis}
-                        className="px-4 sm:px-6 py-2 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-colors w-full sm:w-auto text-sm sm:text-base"
-                      >
-                        🔄 New Analysis
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Summary Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 lg:gap-4">
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-lg border border-gray-100 text-center">
-                    <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary mb-1 sm:mb-2">
-                      {results.insights.totalUniqueAnchors.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-gray-600">Unique Anchors</div>
-                  </div>
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-lg border border-gray-100 text-center">
-                    <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary mb-1 sm:mb-2">
-                      {results.insights.totalInternalLinks.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-gray-600">Total Links</div>
-                  </div>
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-lg border border-gray-100 text-center">
-                    <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-blue-600 mb-1 sm:mb-2">
-                      {results.insights.pagesCrawled.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-gray-600">Pages Crawled</div>
-                  </div>
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-lg border border-gray-100 text-center">
-                    <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-green-600 mb-1 sm:mb-2">
-                      {results.insights.successfulPages.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-gray-600">With Anchor Text</div>
-                  </div>
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-lg border border-gray-100 text-center">
-                    <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-primary mb-1 sm:mb-2">
-                      {results.insights.averageLinksPerPage.toLocaleString()}
-                    </div>
-                    <div className="text-xs sm:text-sm text-gray-600">Avg Links/Page</div>
-                  </div>
-                </div>
-
-                {/* Tab Navigation */}
-                <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-                  <div className="border-b border-gray-200">
-                    <nav className="flex overflow-x-auto scrollbar-hide">
-                      <button
-                        onClick={() => setActiveTab('cloud')}
-                        className={`min-w-0 flex-1 py-3 px-3 sm:py-4 sm:px-6 text-center font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
-                          activeTab === 'cloud'
-                            ? 'bg-primary text-white border-b-2 border-primary'
-                            : 'text-gray-600 hover:text-primary hover:bg-gray-50'
-                        }`}
-                      >
-                        <span className="block sm:inline text-lg sm:text-base">☁️</span>
-                        <span className="hidden xs:inline sm:inline"> Word Cloud</span>
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('table')}
-                        className={`min-w-0 flex-1 py-3 px-3 sm:py-4 sm:px-6 text-center font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
-                          activeTab === 'table'
-                            ? 'bg-primary text-white border-b-2 border-primary'
-                            : 'text-gray-600 hover:text-primary hover:bg-gray-50'
-                        }`}
-                      >
-                        <span className="block sm:inline text-lg sm:text-base">📊</span>
-                        <span className="hidden xs:inline sm:inline"> Data Table</span>
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('pages')}
-                        className={`min-w-0 flex-1 py-3 px-3 sm:py-4 sm:px-6 text-center font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
-                          activeTab === 'pages'
-                            ? 'bg-primary text-white border-b-2 border-primary'
-                            : 'text-gray-600 hover:text-primary hover:bg-gray-50'
-                        }`}
-                      >
-                        <span className="block sm:inline text-lg sm:text-base">📄</span>
-                        <span className="hidden xs:inline sm:inline"> All Pages</span>
-                        <span className="hidden sm:inline"> ({results.insights.pagesCrawled})</span>
-                      </button>
-                      <button
-                        onClick={() => setActiveTab('no-links')}
-                        className={`min-w-0 flex-1 py-3 px-3 sm:py-4 sm:px-6 text-center font-medium transition-colors text-xs sm:text-sm whitespace-nowrap ${
-                          activeTab === 'no-links'
-                            ? 'bg-primary text-white border-b-2 border-primary'
-                            : 'text-gray-600 hover:text-primary hover:bg-gray-50'
-                        }`}
-                      >
-                        <span className="block sm:inline text-lg sm:text-base">❌</span>
-                        <span className="hidden xs:inline sm:inline"> No Links</span>
-                        <span className="hidden sm:inline"> ({results.pagesWithNoLinks?.length || 0})</span>
-                      </button>
-                    </nav>
-                  </div>
-
-                  <div className="p-3 sm:p-6 lg:p-8">
-                    {activeTab === 'cloud' && (
-                      <InternalLinkVisualization
-                        anchors={groupAnchors(results.anchors)}
-                        insights={results.insights}
-                      />
-                    )}
-                    {activeTab === 'table' && (
-                      <InternalLinkDataTable
-                        anchors={groupAnchors(results.anchors)}
-                        insights={results.insights}
-                      />
-                    )}
-                    {activeTab === 'pages' && (
-                      <div>
-                        <div className="flex justify-between items-center mb-6">
-                          <h3 className="text-xl font-bold">All Crawled Pages</h3>
-                          <div className="text-sm text-gray-600">
-                            {results.insights.pagesCrawled} total • {results.insights.successfulPages} with anchor text • {results.pagesWithNoLinks?.length || 0} without links
-                          </div>
-                        </div>
-                        <div className="space-y-3 max-h-96 overflow-y-auto">
-                          {results.crawledPages.map((page, index) => (
-                            <div
-                              key={index}
-                              className={`p-4 rounded-xl border ${
-                                page.error
-                                  ? 'bg-red-50 border-red-200'
-                                  : page.linkCount > 0
-                                  ? 'bg-green-50 border-green-200'
-                                  : 'bg-gray-50 border-gray-200'
-                              }`}
-                            >
-                              <div className="flex justify-between items-start">
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-2 mb-1">
-                                    {page.error ? (
-                                      <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0"></span>
-                                    ) : page.linkCount > 0 ? (
-                                      <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
-                                    ) : (
-                                      <span className="w-2 h-2 bg-gray-400 rounded-full flex-shrink-0"></span>
-                                    )}
-                                    <div className="font-medium text-sm text-gray-900 truncate">
-                                      {page.title || 'Untitled'}
-                                    </div>
-                                  </div>
-                                  <div className="text-xs text-gray-500 truncate ml-4">
-                                    {page.url}
-                                  </div>
-                                  {page.error && (
-                                    <div className="text-xs text-red-600 mt-1 ml-4">
-                                      Error: {page.error}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="text-right ml-4">
-                                  <div className={`text-sm font-medium ${
-                                    page.error ? 'text-red-600' :
-                                    page.linkCount > 0 ? 'text-green-600' : 'text-gray-500'
-                                  }`}>
-                                    {page.error ? 'Failed' : `${page.linkCount} links`}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    {activeTab === 'no-links' && (
-                      <div>
-                        <h3 className="text-xl font-bold mb-6">Pages with No Internal Links</h3>
-                        {results.pagesWithNoLinks && results.pagesWithNoLinks.length > 0 ? (
-                          <div className="space-y-3 max-h-96 overflow-y-auto">
-                            {results.pagesWithNoLinks.map((page, index) => (
-                              <div
-                                key={index}
-                                className="p-4 rounded-xl border bg-yellow-50 border-yellow-200"
-                              >
-                                <div className="flex justify-between items-start">
-                                  <div className="flex-1 min-w-0">
-                                    <div className="font-medium text-sm text-gray-900 truncate">
-                                      {page.title}
-                                    </div>
-                                    <div className="text-xs text-gray-500 truncate mt-1">
-                                      {page.url}
-                                    </div>
-                                    <div className="text-xs text-yellow-700 mt-2 flex items-center">
-                                      <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                                      {page.reason}
-                                    </div>
-                                  </div>
-                                  <div className="text-right ml-4">
-                                    <div className="text-xs font-medium text-yellow-600 bg-yellow-100 px-2 py-1 rounded">
-                                      No Links
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-center py-8">
-                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                              <span className="text-green-600 text-2xl">✅</span>
-                            </div>
-                            <h4 className="text-lg font-semibold text-gray-900 mb-2">Excellent!</h4>
-                            <p className="text-gray-600">All pages have internal links in their content.</p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
+            {/* Usage Counter */}
+            {(usageInfo.remainingRequests !== undefined || usageInfo.isLimitReached) && (
+              <div style={{
+                marginBottom: '1rem', padding: '8px 14px', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center',
+                background: usageInfo.isLimitReached ? 'rgba(220,38,38,0.08)' : usageInfo.remainingRequests === 0 ? 'rgba(217,119,6,0.08)' : 'rgba(22,163,74,0.08)',
+                border: `1px solid ${usageInfo.isLimitReached ? 'rgba(220,38,38,0.25)' : usageInfo.remainingRequests === 0 ? 'rgba(217,119,6,0.25)' : 'rgba(22,163,74,0.2)'}`,
+                color: usageInfo.isLimitReached ? 'var(--red)' : usageInfo.remainingRequests === 0 ? 'var(--amber)' : 'var(--green)',
+              }}>
+                {usageInfo.isLimitReached
+                  ? `Daily limit reached. Resets: ${usageInfo.resetTime}`
+                  : `${usageInfo.remainingRequests} of 5 daily uses remaining${usageInfo.resetTime ? ` (Resets: ${usageInfo.resetTime})` : ''}`
+                }
               </div>
             )}
-          </div>
-        </div>
-      </section>
 
-      {/* Breadcrumb */}
-      <ToolBreadcrumb toolName="Internal Link Checker" toolSlug="internal-link-checker" />
+            <form onSubmit={handleAnalyze}>
+              <label className="tool-box-label" htmlFor="url-input">Website URL</label>
+              <input
+                id="url-input"
+                className="tool-url-input"
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://example.com"
+                required
+                disabled={isAnalyzing}
+              />
 
-      {/* Author Expertise Block */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 sm:p-8">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-white text-2xl font-bold">RS</span>
-                  </div>
+              {/* reCAPTCHA */}
+              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                <div className="tool-captcha">
+                  <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} />
                 </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-                    Built by Rohit Sharma — 13+ Years in Technical SEO
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    "I built this internal link checker after auditing 500+ websites and finding the same pattern: site owners obsess over broken links but completely ignore what their anchor text tells Google. This tool doesn't just find links — it visualizes the words you're using and shows whether they're helping or hurting your rankings."
-                  </p>
-                  <p className="text-gray-800 font-medium">
-                    — Rohit Sharma, Founder of SEOShouts | <a href="/meet-the-experts/" className="text-primary hover:underline">Meet Our Experts</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What Is an Internal Link Checker Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                What Is an Internal Link Checker and Why Do You Need One?
-              </span>
-            </h2>
-
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-              <p>
-                An internal link checker is an SEO tool that crawls your website to map how pages connect to each other through hyperlinks. It analyzes anchor text (the clickable words in each link), tracks link distribution across your site, identifies broken or redirected links, and flags pages that receive too few or too many incoming links.
-              </p>
-
-              <p>
-                Most internal link tools stop at finding broken links and counting totals. That misses the point entirely. The real value lies in <strong>anchor text analysis</strong> — understanding what words you're using to link pages together, because those words directly tell Google what each destination page is about.
-              </p>
-
-              <p>
-                Google's John Mueller confirmed this in a Search Central session: <strong>"Internal linking is super critical for SEO. It's one of the biggest things that you can do on a website to guide Google and guide visitors to the pages that you think are important."</strong>
-              </p>
-
-              <p>
-                According to Semrush's site audit data, <strong>25% of all web pages have zero incoming internal links</strong> — effectively invisible to both search engines and users. Meanwhile, Zyppy's study of 23 million internal links found that pages with <strong>more anchor text variations receive significantly more clicks</strong> from Google, proving that diverse, descriptive anchor text directly impacts traffic.
-              </p>
-
-              <p>
-                The SEOShouts Internal Link Checker addresses both problems: it finds underlinked pages AND shows you exactly what anchor text you're using through a visual word cloud that no other free tool provides.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Key Features Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Key Features of Our Internal Link Checker
-              </span>
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-6 border border-blue-200 text-left">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white text-xl">☁️</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900">Visual Anchor Text Word Cloud</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">Instantly see which words and phrases dominate your internal linking profile. The word cloud sizes each term by frequency — if one keyword towers over everything else, you know your anchor profile is over-optimized. <strong>This feature is unique to SEOShouts — no other free tool offers it.</strong></p>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-50 to-green-100/50 rounded-xl p-6 border border-green-200 text-left">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white text-xl">🔍</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900">Keyword Stuffing Detection</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">Identify aggressive over-use of specific anchor keywords before Google's algorithms flag it. Sites with anchor text diversity below 30% have experienced ranking drops of up to 15 positions in competitive niches (Authority Hacker, 2025). Catch the problem early.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-6 border border-orange-200 text-left">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white text-xl">🎯</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900">Generic Link Finder</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">Spot wasted opportunities where you're using "click here," "read more," "learn more," or "this article" as anchor text. These words carry zero semantic value and tell search engines nothing about the destination page. Our tool highlights every instance so you can rewrite them with descriptive anchors.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-xl p-6 border border-purple-200 text-left">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white text-xl">🕷️</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900">Deep Crawl Analysis</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">Scan up to 500 URLs to get a complete picture of your site's internal linking structure. The crawler reads actual HTML anchor elements, extracting text between &lt;a&gt; and &lt;/a&gt; tags for accurate insights.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-pink-50 to-pink-100/50 rounded-xl p-6 border border-pink-200 text-left">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-pink-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white text-xl">📊</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900">Anchor Text Grouping & URL Mapping</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">See which anchor texts point to which destination URLs, grouped by frequency. Identify pages receiving too many exact-match anchors and pages receiving none at all.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-indigo-50 to-indigo-100/50 rounded-xl p-6 border border-indigo-200 text-left">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white text-xl">🚀</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900">Zero Barriers</h3>
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed">No login, no credit card, no account creation. Enter your URL and get results in minutes. Free for every analysis, every time.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* How to Audit Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                How to Audit Your Internal Link Anchors (Step-by-Step)
-              </span>
-            </h2>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-12 text-center">
-              Optimizing your internal linking structure is one of the fastest ways to improve rankings without building a single backlink. A study by Databox found that <strong>42% of SEO experts spend equal time on internal links as external links</strong> — and for good reason. Here's how to run a complete audit:
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
-                  <span className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white font-bold text-sm">1</span>
-                  </span>
-                  Enter Your Domain
-                </h3>
-                <p className="text-gray-700 leading-relaxed text-sm mb-3">
-                  Type your homepage URL into the input field above. Our crawler reads your website's HTML, specifically extracting the anchor text between &lt;a&gt; and &lt;/a&gt; tags. It follows internal links across up to 500 pages to build a comprehensive map of your site's linking vocabulary.
-                </p>
-                <p className="text-gray-700 leading-relaxed text-sm">
-                  <strong>Tip:</strong> For the most thorough analysis, enter your homepage URL rather than an inner page. This gives the crawler the broadest starting point to discover your internal link structure.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
-                  <span className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white font-bold text-sm">2</span>
-                  </span>
-                  Analyze the Word Cloud
-                </h3>
-                <p className="text-gray-700 leading-relaxed text-sm mb-3">
-                  Once the crawl completes, study the visual word cloud. This is your immediate health check.
-                </p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <span className="text-green-600 mr-2 mt-0.5 flex-shrink-0">✓</span>
-                    <span className="text-gray-700"><strong>What you want to see:</strong> A diverse mix of terms with natural variations. Multiple descriptive phrases at similar sizes means your anchor profile is healthy and balanced.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-red-600 mr-2 mt-0.5 flex-shrink-0">✗</span>
-                    <span className="text-gray-700"><strong>What signals a problem:</strong> A single keyword dominating the cloud (appears much larger than everything else). This indicates over-optimization that could trigger Google's spam detection algorithms.</span>
-                  </li>
-                </ul>
-                <p className="text-gray-700 leading-relaxed text-sm mt-3">
-                  According to Zyppy's research, <strong>pages with more unique anchor text variations receive significantly more organic clicks</strong>. Diversity isn't just safe — it directly drives traffic.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
-                  <span className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white font-bold text-sm">3</span>
-                  </span>
-                  Review the Data Table
-                </h3>
-                <p className="text-gray-700 leading-relaxed text-sm mb-3">
-                  Switch to the data view for granular insights:
-                </p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Total Links:</strong> Frequency count for each unique anchor text string</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Destination URLs:</strong> Which pages each anchor points to</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Context:</strong> Source pages using each anchor</span>
-                  </li>
-                </ul>
-                <p className="text-gray-700 leading-relaxed text-sm mt-3">
-                  Check your distribution against these benchmarks (covered in detail in the ratio section below). Flag any anchor that appears more than 15% of the time pointing to a single URL — that's a strong signal of over-optimization.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-lg font-bold mb-3 text-gray-800 flex items-center">
-                  <span className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                    <span className="text-white font-bold text-sm">4</span>
-                  </span>
-                  Fix and Optimize
-                </h3>
-                <p className="text-gray-700 leading-relaxed text-sm mb-3">
-                  Use the data to take action:
-                </p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Replace generic anchors</strong> ("click here," "read more") with descriptive phrases that include relevant keywords</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Diversify over-optimized anchors</strong> by using synonyms, partial matches, and longer natural phrases</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Add internal links to orphan pages</strong> — any page with fewer than 3 incoming internal links needs attention</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-2 mt-0.5">•</span>
-                    <span className="text-gray-700"><strong>Verify link placement</strong> — contextual in-content links pass more authority than navigation or footer links</span>
-                  </li>
-                </ul>
-                <p className="text-gray-700 leading-relaxed text-sm mt-3">
-                  After making changes, re-run the analysis to confirm your improvements. Monthly audits keep your anchor profile balanced as you publish new content.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Anchor Text Matters Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Why Anchor Text Is the Most Underrated Ranking Factor
-              </span>
-            </h2>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-12 text-center">
-              Many site owners chase backlinks while completely ignoring the text within those links. Here's why your internal anchor text strategy matters more than most SEOs realize:
-            </p>
-
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">It Directly Tells Google What Pages Are About</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Google's crawlers rely on anchor text to understand what the linked page covers. When you link from Page A to Page B using the anchor <strong>"technical SEO audit checklist"</strong>, you're explicitly signaling to Google that Page B is relevant for that topic.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Google's own documentation on <a href="https://developers.google.com/search/docs/crawling-indexing/links-crawlable" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">link best practices</a> states: "Good anchor text is descriptive, reasonably concise, and relevant to the page that it's on and to the page it links to." When you use vague text like "click here," Google has to guess what the target page is about — and guessing leads to weaker rankings.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  <strong>Industry data backs this up:</strong> 8% of SEO professionals rank internal links as the single most important ranking factor, and 42% of marketers invest equal effort in internal and external link building (Sure Oak, 2024).
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">It Builds Topical Authority Across Your Site</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Internal links don't just connect pages — they create <strong>topic clusters</strong> that prove expertise to search engines. When you consistently use relevant, descriptive anchors to link related pages within a topic cluster, you signal to Google that your site has depth and authority on that subject.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  For example, if your site has a pillar guide on <a href="/blog/internal-linking-strategy/" className="text-primary hover:underline">internal linking strategy</a>, and 10 supporting articles all link back to it using varied but topically relevant anchors, Google recognizes that cluster as authoritative content worth ranking.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  Yoast's 2025 internal linking guide puts it clearly: "In the age of AI-driven search and generative optimization, internal links are no longer mere SEO signals — they're context signals that shape how AI models understand your topics, your expertise, and your brand."
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">It Protects You from Algorithmic Penalties</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Google's Penguin algorithm specifically targets manipulative anchor text patterns — and it applies to internal links, not just backlinks.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                    <div className="flex items-start">
-                      <span className="text-red-600 mr-3 mt-0.5 flex-shrink-0 text-xl">⚠️</span>
-                      <div>
-                        <p className="text-gray-800">
-                          <strong className="text-gray-900">The Risk:</strong> If 100 pages on your site all link to your money page using the exact same keyword anchor, Google may interpret that as manipulation. Research shows sites with anchor text diversity below 30% have experienced ranking drops averaging 15 positions.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                    <div className="flex items-start">
-                      <span className="text-green-600 mr-3 mt-0.5 flex-shrink-0 text-xl">✓</span>
-                      <div>
-                        <p className="text-gray-800">
-                          <strong className="text-gray-900">The Solution:</strong> Use our word cloud to instantly spot keyword spikes, then diversify with synonyms, partial matches, and natural language variations. Your anchor profile should look like natural human writing, not a spreadsheet of repeated keywords.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">It Distributes Link Equity to Pages That Need It</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Every internal link passes a portion of the linking page's authority to the destination page. Pages with strong backlink profiles can "share" that authority with newer or weaker pages through strategic internal linking.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  This is why 51% of digital marketers believe every blog post should include at least 2-3 internal links (Databox). Those links aren't just for navigation — they're distributing ranking power across your site.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  The key insight: <strong>link from your strongest pages to the pages you most want to rank.</strong> Our internal link checker helps you identify which pages are over-linked (wasting equity on already-strong pages) and which are underlinked (missing out on authority they need).
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Ideal Anchor Text Ratio Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                The Ideal Internal Anchor Text Ratio
-              </span>
-            </h2>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
-              There's no single "perfect" formula, but analyzing top-ranking sites reveals a consistent healthy pattern. When reviewing your word cloud and data table, aim for this distribution:
-            </p>
-
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-primary to-blue-600 text-white">
-                      <th className="px-6 py-4 text-left font-bold">Anchor Type</th>
-                      <th className="px-6 py-4 text-left font-bold">Example</th>
-                      <th className="px-6 py-4 text-left font-bold">Target %</th>
-                      <th className="px-6 py-4 text-left font-bold">Risk Level</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-900">Descriptive / Partial Match</td>
-                      <td className="px-6 py-4 text-gray-700 italic">"check out our internal link audit guide"</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-800">
-                          50-60%
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">✅ Safest & Most Useful</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-900">Branded</td>
-                      <td className="px-6 py-4 text-gray-700 italic">"according to SEOShouts' analysis"</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-blue-100 text-blue-800">
-                          20-30%
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">✅ Builds Brand Entity</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-900">Exact Match</td>
-                      <td className="px-6 py-4 text-gray-700 italic">"internal link checker"</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-yellow-100 text-yellow-800">
-                          10-15%
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">⚠️ High Power, High Risk</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-900">Generic</td>
-                      <td className="px-6 py-4 text-gray-700 italic">"click here," "read more"</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-red-800">
-                          &lt; 5%
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">❌ Zero SEO Value</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-900">Naked URL</td>
-                      <td className="px-6 py-4 text-gray-700 italic">"seoshouts.com/tools/"</td>
-                      <td className="px-6 py-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-red-800">
-                          &lt; 5%
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">❌ Wasted Opportunity</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6">
-              <p className="text-gray-800 mb-4">
-                <strong>Critical rule:</strong> Never use the same anchor text twice for the same target URL. If 10 different pages link to your pricing page, each one should use a different anchor variation. Repetition is the fastest path to over-optimization.
-              </p>
-              <p className="text-gray-800 mb-4">
-                Zyppy's study of 23 million internal links confirmed that <strong>anchor text variety correlates directly with organic traffic</strong> — the more unique anchors pointing to a page, the more clicks it receives from Google.
-              </p>
-              <p className="text-gray-800">
-                <strong>Pro Tip:</strong> Use our word cloud to check if your percentages are skewed too heavily toward "Exact Match" or "Generic." A healthy cloud shows many terms at similar sizes, not one keyword dominating everything else.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5 Common Mistakes Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                5 Common Anchor Text Mistakes (And How to Fix Them)
-              </span>
-            </h2>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-12 text-center">
-              Run the SEOShouts Internal Link Checker to find these specific problems in your site structure:
-            </p>
-
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">1. The "Click Here" Problem</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>What it looks like:</strong> Anchors like "Click here," "Read more," "Learn more," "This article," or "This post" scattered throughout your content.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>Why it hurts:</strong> These words carry zero semantic value. They tell Google absolutely nothing about the destination page. Every generic anchor is a missed opportunity to send a topical relevance signal.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>How to fix it:</strong> Search your report for generic terms. Locate the source pages and rewrite each link.
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                  <div className="space-y-2">
-                    <div className="flex items-start">
-                      <span className="text-red-600 mr-3 flex-shrink-0">✗</span>
-                      <span className="text-gray-700">Bad: "Click here to see our services."</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-green-600 mr-3 flex-shrink-0">✓</span>
-                      <span className="text-gray-700">Good: "Explore our <a href="/services/technical-seo-audit/" className="text-primary hover:underline">technical SEO audit services</a>."</span>
-                    </div>
-                    <div className="flex items-start mt-3">
-                      <span className="text-red-600 mr-3 flex-shrink-0">✗</span>
-                      <span className="text-gray-700">Bad: "Read more about this topic."</span>
-                    </div>
-                    <div className="flex items-start">
-                      <span className="text-green-600 mr-3 flex-shrink-0">✓</span>
-                      <span className="text-gray-700">Good: "Learn how <a href="/blog/anchor-text-optimization/" className="text-primary hover:underline">anchor text optimization</a> impacts your rankings."</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">2. Exact-Match Keyword Stuffing</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>What it looks like:</strong> The same high-value keyword used as anchor text on dozens of internal links, all pointing to the same page.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>Why it hurts:</strong> It looks unnatural and robotic. Google's algorithms detect this pattern and may flag it as manipulative — even for internal links. The Penguin algorithm doesn't distinguish between internal and external anchor spam.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>How to fix it:</strong> Check the word cloud. If your main keyword is the largest word by far, you need to diversify immediately. Use synonyms, LSI variations, and longer natural phrases:
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                  <p className="text-gray-700">Instead of repeating "SEO audit" 20 times, use: "website audit checklist," "analyze your site's SEO health," "run a comprehensive site review," "check your on-page factors," etc.</p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">3. Mismatched Anchors</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>What it looks like:</strong> Linking to a page about "local SEO services" using anchor text about "website development" or some other unrelated topic.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>Why it hurts:</strong> It creates a relevancy conflict. Google expects the anchor text to accurately describe the destination. Mismatches confuse both algorithms and users who click expecting one thing but land on something else.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  <strong>How to fix it:</strong> Review your data table. For each anchor text, verify it aligns with the actual content of the target URL. If it doesn't match, rewrite the anchor to accurately reflect the destination.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">4. Naked URL Anchors</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>What it looks like:</strong> Using raw URLs as the visible link text: "Check out https://seoshouts.com/tools/on-page-seo-analyzer/ for more."
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>Why it hurts:</strong> While not harmful, it's a significant wasted opportunity. A naked URL passes no topical signal to Google about what the destination page covers.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>How to fix it:</strong> Replace every raw URL anchor with a descriptive phrase:
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                  <p className="text-gray-700">Check out our <a href="/tools/on-page-seo-analyzer/" className="text-primary hover:underline">on-page SEO analyzer with 100+ ranking factors</a> for a deeper audit.</p>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">5. Orphan Pages with Zero Internal Links</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>What it looks like:</strong> Important pages on your site that receive no internal links from any other page.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-3">
-                  <strong>Why it hurts:</strong> Search engines struggle to discover orphan pages. According to Semrush, 25% of all web pages have zero incoming internal links. These pages receive virtually no organic traffic regardless of their content quality.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  <strong>How to fix it:</strong> After running our tool, check which destination URLs appear least frequently. Cross-reference with your sitemap to find pages not appearing in the report at all. Add at least 3 internal links from relevant content pages to each orphan page, using varied descriptive anchors.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How Many Internal Links Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                How Many Internal Links Should a Page Have?
-              </span>
-            </h2>
-
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-              <p>
-                This is one of the most debated questions in SEO, and Zyppy answered it with data.
-              </p>
-
-              <p>
-                Their analysis of <strong>23 million internal links</strong> found clear patterns:
-              </p>
-
-              <ul className="space-y-3 ml-6">
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 mt-1 flex-shrink-0">•</span>
-                  <span><strong>40-44 internal links:</strong> The range where pages receive the most clicks from Google</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 mt-1 flex-shrink-0">•</span>
-                  <span><strong>45-50 internal links:</strong> Peak traffic performance</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 mt-1 flex-shrink-0">•</span>
-                  <span><strong>50+ internal links:</strong> Traffic declines — Google may discount the value of individual links when pages are link-saturated</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-primary mr-3 mt-1 flex-shrink-0">•</span>
-                  <span><strong>3-5 contextual links per 1,000 words:</strong> The recommended density for in-content links specifically (not including navigation)</span>
-                </li>
-              </ul>
-
-              <p>
-                <strong>Click depth matters too.</strong> The same study found that pages buried <strong>4 or more clicks deep</strong> from the homepage receive <strong>9x less traffic</strong> than pages within 3 clicks. Internal linking isn't just about anchor text — where you place links in your site hierarchy determines whether pages get found at all.
-              </p>
-
-              <p>
-                This is why a holistic internal link audit — anchor text quality AND link placement — delivers the biggest ranking improvements. Our tool handles the anchor text analysis; pair it with a <a href="/tools/on-page-seo-analyzer/" className="text-primary hover:underline">full on-page SEO analysis</a> to evaluate overall page structure and depth.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AI Search Optimization Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                How to Optimize Internal Links for AI Search Engines (2026)
-              </span>
-            </h2>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-12 text-center">
-              AI search is fundamentally changing how internal links function. Google AI Overviews, ChatGPT, Perplexity, Claude, and Gemini don't just follow links — they use them to build <strong>semantic maps</strong> of your site's knowledge structure.
-            </p>
-
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">How AI Models Interpret Your Internal Links</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  Traditional search engines follow links to crawl and index pages. AI models go further — they use internal link patterns to understand <strong>topical relationships</strong> between your content.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  When your blog post about "anchor text optimization" links to your tool page using the anchor "analyze your anchor text distribution," the AI model learns that these two pieces of content are semantically related and that your site has depth on this topic.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  seoClarity's 2025 research confirmed: <strong>"A strong internal linking structure gives AI engines clearer semantic signals, making it easier for AI search engines to surface your most authoritative and relevant pages in generative results."</strong>
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">Natural Language Anchors Beat Keywords for AI</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  AI models process language as vectors — mathematical representations of meaning. Short, robotic keyword anchors provide weak semantic signals. Longer, natural language anchors provide rich context.
-                </p>
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="bg-gradient-to-r from-primary to-blue-600 text-white">
-                          <th className="px-6 py-4 text-left font-bold">❌ Old SEO Anchors</th>
-                          <th className="px-6 py-4 text-left font-bold">✅ AI-Optimized Anchors</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        <tr className="hover:bg-blue-50 transition-colors">
-                          <td className="px-6 py-4 text-gray-700">"internal link checker"</td>
-                          <td className="px-6 py-4 text-gray-700">"use our free internal link checker to audit your anchor text"</td>
-                        </tr>
-                        <tr className="hover:bg-blue-50 transition-colors">
-                          <td className="px-6 py-4 text-gray-700">"best pizza NYC"</td>
-                          <td className="px-6 py-4 text-gray-700">"the top-rated pizza places across New York City"</td>
-                        </tr>
-                        <tr className="hover:bg-blue-50 transition-colors">
-                          <td className="px-6 py-4 text-gray-700">"SEO audit"</td>
-                          <td className="px-6 py-4 text-gray-700">"run a comprehensive technical SEO audit of your website"</td>
-                        </tr>
-                        <tr className="hover:bg-blue-50 transition-colors">
-                          <td className="px-6 py-4 text-gray-700">"link building"</td>
-                          <td className="px-6 py-4 text-gray-700">"proven strategies for building high-quality backlinks"</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <p className="text-gray-700 leading-relaxed mt-4">
-                  The shift is clear: <strong>write anchors as if you're explaining the destination to a human</strong>, not stuffing keywords for a crawler.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-2xl font-bold mb-4 text-gray-800">Testing Your AI Visibility</h3>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  We recommend testing your site's AI visibility weekly across ChatGPT, Perplexity, Claude, Gemini, Google AI Overviews, and Copilot. Ask each platform questions about your topic area and track whether your brand appears, what content gets cited, and which competitors show up instead.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  The sites getting cited most in AI responses share three characteristics: descriptive internal anchor text, deep topical clusters, and clear expertise signals. Our internal link checker directly addresses the first requirement — use it alongside proper <a href="/tools/schema-generator/" className="text-primary hover:underline">schema markup</a> and <a href="/tools/robots-txt-generator/" className="text-primary hover:underline">robots.txt configuration for AI crawlers</a> to cover all three.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Comparison Table Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                SEOShouts vs Other Internal Link Checkers
-              </span>
-            </h2>
-
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden mb-8">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-primary to-blue-600 text-white">
-                      <th className="px-4 py-4 text-left font-bold text-sm">Feature</th>
-                      <th className="px-4 py-4 text-center font-bold text-sm">SEOShouts</th>
-                      <th className="px-4 py-4 text-center font-bold text-sm">Screaming Frog</th>
-                      <th className="px-4 py-4 text-center font-bold text-sm">Ahrefs</th>
-                      <th className="px-4 py-4 text-center font-bold text-sm">SEOptimer</th>
-                      <th className="px-4 py-4 text-center font-bold text-sm">Sitechecker</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Visual Word Cloud</td>
-                      <td className="px-4 py-3 text-center">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">
-                          ✅ Unique
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Free Crawl Limit</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">500 pages</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">500 pages</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">Paid only ($99+/mo)</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">Single page</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">14-day trial only</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Anchor Text Grouping</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">No Login Required</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌ (Desktop install)</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌ (Account required)</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌ (Trial signup)</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Browser-Based</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">❌ (Desktop only)</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅ (Cloud)</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Keyword Stuffing Alert</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Generic Anchor Detection</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">Manual only</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">Manual only</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Destination URL Mapping</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                      <td className="px-4 py-3 text-center text-gray-500">❌</td>
-                      <td className="px-4 py-3 text-center text-green-600 font-bold">✅</td>
-                    </tr>
-                    <tr className="hover:bg-blue-50 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-gray-900 text-sm">Cost</td>
-                      <td className="px-4 py-3 text-center">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">
-                          Free forever
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">Free (limited) / £199/yr</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">$99-$999/mo</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">Free (limited)</td>
-                      <td className="px-4 py-3 text-center text-gray-700 text-sm">$49+/mo</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
-                <h3 className="text-xl font-bold mb-3 text-gray-800">When to Choose SEOShouts</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  Use our tool when you need a <strong>fast, visual health check</strong> of your anchor text profile without installing software or paying for subscriptions. The word cloud gives you an insight in 2 seconds that would take 20 minutes to extract from a Screaming Frog data table.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
-                <h3 className="text-xl font-bold mb-3 text-gray-800">When You Might Need More</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  For enterprise sites with 10,000+ pages, full JavaScript rendering, or integration with backlink data, desktop crawlers like Screaming Frog or paid platforms like Ahrefs offer deeper capabilities. For most blogs, small businesses, and service websites under 500 pages, SEOShouts provides everything you need at zero cost.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Complete Audit Checklist Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Complete Internal Link Audit Checklist (2026)
-              </span>
-            </h2>
-
-            <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
-              Use this checklist after running your SEOShouts analysis. Bookmark it and revisit monthly.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-                  <span className="text-2xl mr-3">📊</span>
-                  Link Quantity & Distribution
-                </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Total internal links per page between 40-50 (not exceeding 50)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">All important pages within 3 clicks of homepage</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Zero orphan pages (every page has 3+ incoming internal links)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">3-5 contextual in-content links per 1,000 words</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">High-authority pages link to pages you most want to rank</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-                  <span className="text-2xl mr-3">🎯</span>
-                  Anchor Text Quality
-                </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Anchor ratio: 50-60% partial match, 10-15% exact, 20-30% branded, &lt;5% generic</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">No duplicate anchor text pointing to the same target URL</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Zero "click here," "read more," or "learn more" anchors</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">No naked URL anchors (raw URLs as link text)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Anchors include natural language for AI search parsing</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-                  <span className="text-2xl mr-3">🔧</span>
-                  Technical Health
-                </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">All internal links return 200 status codes</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">No redirect chains (301→301) in internal links</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">No internal links pointing to noindex pages</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Links use standard HTML &lt;a href&gt; elements (not JavaScript-only)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">No links with empty anchor text</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-                  <span className="text-2xl mr-3">🏗️</span>
-                  Content Architecture
-                </h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Topic clusters bidirectionally linked (pillar ↔ cluster ↔ cluster)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">New content receives 3-5 internal links from existing pages within 48 hours of publishing</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Content silos don't create isolated sections with no cross-links</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary mr-3 mt-0.5">•</span>
-                    <span className="text-gray-700 text-sm">Homepage links to most important category/tool pages directly</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-3 text-gray-800">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-center text-gray-600 mb-10">Everything you need to know about internal link auditing</p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:grid-flow-row-dense">
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What is an internal link checker?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  An internal link checker is an SEO tool that crawls your website to analyze how pages link to each other. It examines anchor text patterns, link distribution, follow/nofollow attributes, and identifies issues like broken links, orphan pages, and over-optimized anchor text. SEOShouts' version adds visual word cloud analysis to show which anchor phrases dominate your linking profile.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How many internal links should a page have?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  According to Zyppy's analysis of 23 million internal links, pages with 40-44 internal links receive the most Google clicks, with 45-50 being the peak traffic range. Beyond 50 internal links per page, traffic declines significantly. Aim for 3-5 contextual internal links per 1,000 words of content.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What is the ideal anchor text ratio for internal links?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  A healthy distribution is approximately: 50-60% descriptive or partial match anchors, 20-30% branded anchors, 10-15% exact match anchors, and less than 5% generic anchors like "click here." Never use the same anchor text repeatedly for the same target URL.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Can over-optimized anchor text hurt SEO rankings?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Yes. Google's Penguin algorithm specifically targets unnatural anchor text patterns. Sites with anchor text diversity below 30% — meaning the same anchor used more than 70% of the time — have experienced ranking drops of up to 15 positions in competitive niches. Our word cloud visualization makes it easy to spot over-optimization before it triggers penalties.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Is the SEOShouts internal link checker free?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Yes, completely free. The tool crawls up to 500 URLs per analysis with no registration, no credit card, and no usage limits. You get full anchor text analysis, word cloud visualization, keyword stuffing detection, and generic link identification at zero cost.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What makes SEOShouts different from other internal link checkers?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  SEOShouts is the only free internal link checker that generates visual word clouds of your anchor text profile. While tools like Screaming Frog, Ahrefs, and SEOptimer show data in tables, our word cloud gives you an instant visual health check. We also offer anchor text grouping, destination URL analysis, and keyword stuffing detection — all without login or payment.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How does internal linking affect AI search rankings?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  AI search engines like ChatGPT, Perplexity, and Google Gemini use internal links to understand topical relationships between your pages. Descriptive, natural language anchor text helps AI models map your site's semantic structure more effectively than short keyword anchors. A strong internal linking structure gives AI engines clearer signals about which pages are authoritative.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How often should I audit internal links?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Run a full internal link audit monthly. Check for sudden spikes in exact-match anchor text, identify orphan pages with zero incoming links, verify all links return 200 status codes, and ensure important pages receive adequate link equity. After publishing new content, immediately add 3-5 internal links from existing relevant pages.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What are orphan pages and why do they matter?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Orphan pages have zero internal links pointing to them. Search engines struggle to discover and index them, and they receive virtually no organic traffic. According to Semrush data, 25% of all web pages have zero incoming internal links. Every important page should have at least 3 incoming internal links from related content.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Does this tool analyze external links too?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  This tool focuses on internal links to help you control relevance flow within your domain. For external link analysis, use our <a href="/tools/on-page-seo-analyzer/" className="text-primary hover:underline">On-Page SEO Analyzer</a> which audits both internal and external links along with 100+ ranking factors.
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore Other Tools Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-800">
-                <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                  Explore Our Other Free SEO Tools
-                </span>
-              </h2>
-            </div>
-
-            {/* Featured Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔗</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
-                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔬</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and competitive benchmarks.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try On-Page SEO Analyzer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏗️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🤖</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create robots.txt rules including directives for AI crawlers like GPTBot and ClaudeBot.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🚫</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📝</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better click-through rates.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">Try Meta Tag Optimizer</a> →
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <a
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+              )}
+
+              <button
+                type="submit"
+                className="tool-analyze-btn"
+                disabled={isAnalyzing || !url.trim() || usageInfo.isLimitReached}
               >
-                <span className="mr-2">🛠️</span>
-                Browse All 17 Free SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free · No signup required · Instant results
+                <div className="tool-analyze-btn-dot" />
+                {isAnalyzing ? 'Analyzing...' : usageInfo.isLimitReached ? 'Limit Reached' : '🔍 Analyze Internal Links'}
+              </button>
+            </form>
+
+            {/* Error */}
+            {error && (
+              <div style={{
+                marginTop: '1rem', padding: '1rem 1.25rem',
+                background: usageInfo.isLimitReached ? 'rgba(217,119,6,0.06)' : 'rgba(220,38,38,0.06)',
+                border: `1px solid ${usageInfo.isLimitReached ? 'rgba(217,119,6,0.25)' : 'rgba(220,38,38,0.2)'}`,
+                borderLeft: `3px solid ${usageInfo.isLimitReached ? 'var(--amber)' : 'var(--red)'}`,
+              }}>
+                <div style={{ fontWeight: 600, color: usageInfo.isLimitReached ? 'var(--amber)' : 'var(--red)', marginBottom: 4, fontSize: '0.88rem' }}>
+                  {usageInfo.isLimitReached ? 'Usage Limit Reached' : 'Analysis Error'}
+                </div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--gray-5)', lineHeight: 1.6 }}>{error}</div>
+              </div>
+            )}
+
+            {/* User Input Request */}
+            {userInputRequest && (
+              <div style={{ marginTop: '1rem', padding: '1.25rem', background: 'rgba(217,119,6,0.05)', border: '1px solid rgba(217,119,6,0.2)' }}>
+                <div style={{ fontWeight: 600, color: 'var(--amber)', marginBottom: '0.5rem', fontSize: '0.88rem' }}>📝 User Input Required</div>
+                <p style={{ color: 'var(--gray-5)', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.6 }}>{userInputRequest.message}</p>
+
+                {userInputRequest.step === 'no_sitemap_found' && userInputRequest.options && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {userInputRequest.options.map((option) => (
+                      <button key={option.id} onClick={() => handleUserChoice(option.id)}
+                        style={{ width: '100%', textAlign: 'left', padding: '10px 14px', background: 'var(--white)', border: '1px solid var(--line)', color: 'var(--ink)', fontSize: '0.85rem', fontWeight: 500, cursor: 'pointer', borderRadius: 4 }}
+                        onMouseEnter={e => { (e.target as HTMLButtonElement).style.borderColor = 'var(--blue)' }}
+                        onMouseLeave={e => { (e.target as HTMLButtonElement).style.borderColor = 'var(--line)' }}
+                      >{option.label}</button>
+                    ))}
+                  </div>
+                )}
+
+                {userInputRequest.step === 'sitemap_input_needed' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <input type="url" placeholder="Enter sitemap URL (e.g., https://example.com/sitemap.xml)"
+                      value={manualSitemapUrl} onChange={(e) => setManualSitemapUrl(e.target.value)}
+                      className="tool-url-input" />
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={handleSitemapSubmit} disabled={!manualSitemapUrl.trim()}
+                        style={{ flex: 1, padding: '10px 16px', background: 'var(--blue)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.85rem', cursor: !manualSitemapUrl.trim() ? 'not-allowed' : 'pointer', opacity: !manualSitemapUrl.trim() ? 0.5 : 1, borderRadius: 4 }}>
+                        Analyze Sitemap
+                      </button>
+                      <button onClick={() => handleUserChoice('no_sitemap')}
+                        style={{ padding: '10px 16px', background: 'transparent', color: 'var(--gray-5)', border: '1px solid var(--line)', fontWeight: 500, fontSize: '0.85rem', cursor: 'pointer', borderRadius: 4 }}>
+                        No Sitemap
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {userInputRequest.step === 'manual_urls_needed' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <textarea placeholder={'Enter URLs to analyze (one per line)\nhttps://example.com/page1\nhttps://example.com/page2'}
+                      value={manualUrls} onChange={(e) => setManualUrls(e.target.value)} rows={6}
+                      style={{ width: '100%', padding: '10px 14px', background: 'var(--white)', border: '1px solid var(--gray-3)', color: 'var(--ink)', fontSize: '0.85rem', outline: 'none', resize: 'none', fontFamily: 'Inter, sans-serif', borderRadius: 6 }} />
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={handleManualUrlsSubmit} disabled={!manualUrls.trim()}
+                        style={{ flex: 1, padding: '10px 16px', background: 'var(--blue)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.85rem', cursor: !manualUrls.trim() ? 'not-allowed' : 'pointer', opacity: !manualUrls.trim() ? 0.5 : 1, borderRadius: 4 }}>
+                        Analyze URLs
+                      </button>
+                      <button onClick={() => handleUserChoice('provide_sitemap')}
+                        style={{ padding: '10px 16px', background: 'transparent', color: 'var(--gray-5)', border: '1px solid var(--line)', fontWeight: 500, fontSize: '0.85rem', cursor: 'pointer', borderRadius: 4 }}>
+                        Try Sitemap
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {userInputRequest.step === 'url_limit_exceeded' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <div style={{ padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', color: 'var(--red)', fontSize: '0.85rem', borderRadius: 4 }}>
+                      <strong>Found {userInputRequest.urlCount} URLs</strong> — exceeds our limit of 500 URLs for optimal performance.
+                    </div>
+                    <button onClick={() => handleUserChoice('no_sitemap')}
+                      style={{ width: '100%', padding: '10px 16px', background: 'var(--blue)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', borderRadius: 4 }}>
+                      Provide Specific URLs Instead
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Key Features */}
+            <div className="tool-key-features">
+              <div className="tool-key-features-title">Key Features:</div>
+              <div className="tool-features-grid">
+                {[
+                  { name: 'Visual Anchor Cloud', desc: 'Instantly see which words dominate your internal linking profile' },
+                  { name: 'Keyword Stuffing Detection', desc: 'Identify if you are over-using specific keywords' },
+                  { name: 'Generic Link Finder', desc: 'Spot wasted opportunities like "read more" or "this post"' },
+                  { name: 'Deep Crawl Analysis', desc: 'Scan up to 500 URLs for a complete site picture' },
+                ].map(f => (
+                  <div key={f.name} className="tool-feat-item">
+                    <div className="tool-feat-check">
+                      <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                    </div>
+                    <div>
+                      <div className="tool-feat-name">{f.name}</div>
+                      <div className="tool-feat-desc">{f.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── LOADING STATE ─── */}
+      {isAnalyzing && (
+        <div className="results-panel">
+          <div className="results-inner">
+            <div className="loading-state">
+              <div style={{ fontSize: '0.9rem', color: 'var(--gray-5)', fontWeight: 600 }}>Crawling {url}...</div>
+              <div className="loading-bar-track"><div className="loading-bar-fill" /></div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--gray-4)' }}>{progress || 'Analyzing website...'}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── RESULTS ─── */}
+      {results && (
+        <div className="results-panel" ref={resultsPanelRef}>
+          <div className="results-inner">
+            <div className="results-header">
+              <div className="results-site">
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--green)', flexShrink: 0 }} />
+                Analysis complete
+                <span className="results-site-url">— {results.baseUrl}</span>
+              </div>
+              <div className="results-actions">
+                <ExportOptions results={results} />
+                <button className="btn-sm" onClick={resetAnalysis}>New Analysis</button>
+              </div>
+            </div>
+
+            <div className="stats-strip">
+              {[
+                { val: results.insights.totalUniqueAnchors.toLocaleString(), label: 'Unique Anchors', cls: 'blue' },
+                { val: results.insights.totalInternalLinks.toLocaleString(), label: 'Total Links', cls: '' },
+                { val: results.insights.pagesCrawled.toLocaleString(), label: 'Pages Crawled', cls: '' },
+                { val: results.insights.successfulPages.toLocaleString(), label: 'With Anchor Text', cls: 'green' },
+                { val: results.insights.averageLinksPerPage.toLocaleString(), label: 'Avg Links/Page', cls: '' },
+              ].map((s) => (
+                <div key={s.label} className="stat-cell">
+                  <div className={`stat-cell-num ${s.cls}`}>{s.val}</div>
+                  <div className="stat-cell-label">{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="result-card result-card-full" style={{ marginTop: '1.25rem' }}>
+              <div className="tabs">
+                {[
+                  { key: 'cloud', label: 'Word Cloud' },
+                  { key: 'table', label: 'Data Table' },
+                  { key: 'pages', label: `All Pages (${results.insights.pagesCrawled})` },
+                  { key: 'no-links', label: `No Links (${results.pagesWithNoLinks?.length || 0})` },
+                ].map(tab => (
+                  <button key={tab.key}
+                    className={`tab${activeTab === tab.key ? ' active' : ''}`}
+                    onClick={() => setActiveTab(tab.key as any)}
+                  >{tab.label}</button>
+                ))}
+              </div>
+              <div style={{ padding: '1.5rem' }}>
+                {activeTab === 'cloud' && (
+                  <InternalLinkVisualization anchors={groupAnchors(results.anchors)} insights={results.insights} />
+                )}
+                {activeTab === 'table' && (
+                  <InternalLinkDataTable anchors={groupAnchors(results.anchors)} insights={results.insights} />
+                )}
+                {activeTab === 'pages' && (
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: 8 }}>
+                      <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, color: 'var(--ink)', fontSize: '1.05rem' }}>All Crawled Pages</h3>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--gray-4)' }}>
+                        {results.insights.pagesCrawled} total · {results.insights.successfulPages} with anchor text · {results.pagesWithNoLinks?.length || 0} without links
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 400, overflowY: 'auto' }}>
+                      {results.crawledPages.map((page, index) => (
+                        <div key={index} style={{ padding: '10px 14px', background: 'var(--gray-1)', border: `1px solid ${page.error ? 'rgba(220,38,38,0.2)' : page.linkCount > 0 ? 'rgba(22,163,74,0.2)' : 'var(--line)'}` }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                                <div style={{ width: 6, height: 6, background: page.error ? 'var(--red)' : page.linkCount > 0 ? 'var(--green)' : 'var(--gray-4)', flexShrink: 0 }} />
+                                <div style={{ fontWeight: 500, fontSize: '0.85rem', color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{page.title || 'Untitled'}</div>
+                              </div>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--gray-5)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingLeft: 14 }}>{page.url}</div>
+                              {page.error && <div style={{ fontSize: '0.72rem', color: 'var(--red)', marginTop: 2, paddingLeft: 14 }}>Error: {page.error}</div>}
+                            </div>
+                            <div style={{ fontSize: '0.8rem', fontWeight: 600, color: page.error ? 'var(--red)' : page.linkCount > 0 ? 'var(--green)' : 'var(--gray-4)', flexShrink: 0 }}>
+                              {page.error ? 'Failed' : `${page.linkCount} links`}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {activeTab === 'no-links' && (
+                  <div>
+                    <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, color: 'var(--ink)', fontSize: '1.05rem', marginBottom: '1.25rem' }}>Pages with No Internal Links</h3>
+                    {results.pagesWithNoLinks && results.pagesWithNoLinks.length > 0 ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 400, overflowY: 'auto' }}>
+                        {results.pagesWithNoLinks.map((page, index) => (
+                          <div key={index} style={{ padding: '10px 14px', background: 'var(--amber-bg)', border: '1px solid rgba(217,119,6,0.2)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ fontWeight: 500, fontSize: '0.85rem', color: 'var(--ink)', marginBottom: 2 }}>{page.title}</div>
+                                <div style={{ fontSize: '0.75rem', color: 'var(--gray-5)', marginBottom: 4 }}>{page.url}</div>
+                                <div style={{ fontSize: '0.72rem', color: 'var(--amber)' }}>{page.reason}</div>
+                              </div>
+                              <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--amber)', background: 'rgba(217,119,6,0.1)', padding: '3px 8px', flexShrink: 0, border: '1px solid rgba(217,119,6,0.2)' }}>No Links</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+                        <div style={{ width: 48, height: 48, background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                          <span style={{ fontSize: '1.25rem' }}>✅</span>
+                        </div>
+                        <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, color: 'var(--ink)', marginBottom: 6 }}>Excellent!</div>
+                        <div style={{ color: 'var(--gray-4)', fontSize: '0.88rem' }}>All pages have internal links in their content.</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── FOUNDER QUOTE ─── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in Technical SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;I built this internal link checker after auditing 500+ websites and finding the same pattern: site owners obsess over broken links but completely ignore what their anchor text tells Google. This tool doesn&apos;t just find links — it visualizes the words you&apos;re using and shows whether they&apos;re helping or hurting your rankings.&rdquo;
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section - Final Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-blue-600 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                Start Your Internal Link Audit Now
-              </span>
-            </h2>
-            <p className="text-lg mb-8 opacity-90 leading-relaxed">
-              Poor anchor text hides your best content from Google and AI search engines. Run your analysis in under 5 minutes, identify the problems, and fix them today.
-            </p>
-
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
-            >
-              🔗 Analyze Your Internal Links Now
-            </button>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-sm opacity-90">
-              <div className="flex items-center justify-center space-x-2">
-                <span>⚡</span>
-                <span>Complete analysis in under 5 minutes</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>🎯</span>
-                <span>Up to 500 pages crawled per analysis</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>☁️</span>
-                <span>Visual word cloud included — only at SEOShouts</span>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
               </div>
             </div>
           </div>
         </div>
       </section>
-    </div>
+
+      {/* ─── WHAT IS SECTION ─── */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Overview</div>
+            <h2 className="s-title">What is an internal link checker <span className="blue">and why do you need one?</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>An internal link checker is an SEO tool that crawls your website to map how pages connect to each other through hyperlinks. It analyzes anchor text (the clickable words in each link), tracks link distribution across your site, identifies broken or redirected links, and flags pages that receive too few or too many incoming links.</p>
+            <p>Most internal link tools stop at finding broken links and counting totals. That misses the point entirely. The real value lies in <strong>anchor text analysis</strong> — understanding what words you&apos;re using to link pages together, because those words directly tell Google what each destination page is about.</p>
+            <p>Google&apos;s John Mueller confirmed this in a Search Central session: <strong>&ldquo;Internal linking is super critical for SEO. It&apos;s one of the biggest things that you can do on a website to guide Google and guide visitors to the pages that you think are important.&rdquo;</strong></p>
+            <p>According to Semrush&apos;s site audit data, <strong>25% of all web pages have zero incoming internal links</strong> — effectively invisible to both search engines and users. Meanwhile, Zyppy&apos;s study of 23 million internal links found that pages with <strong>more anchor text variations receive significantly more clicks</strong> from Google, proving that diverse, descriptive anchor text directly impacts traffic.</p>
+            <p>The SEOShouts Internal Link Checker addresses both problems: it finds underlinked pages AND shows you exactly what anchor text you&apos;re using through a visual word cloud that no other free tool provides.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FEATURES SECTION ─── */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Key Features</div>
+            <h2 className="s-title">Key features of our <span className="blue">internal link checker</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              { icon: 'M3 3h18v18H3zM9 3v18M3 9h18', title: 'Visual Anchor Text Word Cloud', desc: 'Instantly see which words and phrases dominate your internal linking profile. The word cloud sizes each term by frequency — if one keyword towers over everything else, you know your anchor profile is over-optimized. This feature is unique to SEOShouts — no other free tool offers it.', unique: true },
+              { icon: 'M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0-3.42 0z M12 9v4 M12 17h.01', title: 'Keyword Stuffing Detection', desc: 'Identify aggressive over-use of specific anchor keywords before Google\'s algorithms flag it. Sites with anchor text diversity below 30% have experienced ranking drops of up to 15 positions in competitive niches. Catch the problem early.' },
+              { icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z', title: 'Generic Link Finder', desc: 'Spot wasted opportunities where you\'re using "click here," "read more," "learn more," or "this article" as anchor text. These words carry zero semantic value and tell search engines nothing about the destination page.' },
+              { icon: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0', title: 'Deep Crawl Analysis', desc: 'Scan up to 500 URLs to get a complete picture of your site\'s internal linking structure. The crawler reads actual HTML anchor elements for accurate insights.' },
+              { icon: 'M3 3h7v7H3z M14 3h7v7h-7z M14 14h7v7h-7z M3 14h7v7H3z', title: 'Anchor Text Grouping & URL Mapping', desc: 'See which anchor texts point to which destination URLs, grouped by frequency. Identify pages receiving too many exact-match anchors and pages receiving none at all.' },
+              { icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', title: 'Zero Barriers', desc: 'No login, no credit card, no account creation. Enter your URL and get results in minutes. Free for every analysis, every time.' },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.icon.split(' M').map((d, j) => <path key={j} d={j === 0 ? d : 'M' + d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <div className="feature-desc">{f.desc}</div>
+                {(f as any).unique && <div className="feature-unique">Unique to SEOShouts</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW TO SECTION ─── */}
+      <section className="section howto-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">How To Use</div>
+            <h2 className="s-title">How to audit your internal link anchors <span className="blue">(step-by-step)</span></h2>
+            <p className="s-sub">Optimizing your internal linking structure is one of the fastest ways to improve rankings without building a single backlink. A Databox study found that 42% of SEO experts spend equal time on internal links as external links.</p>
+          </div>
+          <div className="steps-grid">
+            {[
+              { n: '01', title: 'Enter Your Domain', desc: 'Type your homepage URL into the input field above. Our crawler reads your website\'s HTML, extracting anchor text across up to 500 pages to build a comprehensive map of your site\'s linking vocabulary.', tip: 'For the most thorough analysis, enter your homepage URL rather than an inner page. This gives the crawler the broadest starting point to discover your internal link structure.' },
+              { n: '02', title: 'Analyze the Word Cloud', desc: 'Once the crawl completes, study the visual word cloud. What you want: a diverse mix of terms at similar sizes. What signals a problem: a single keyword dominating the cloud — that indicates over-optimization that could trigger Google\'s spam detection.', tip: 'Zyppy: pages with more unique anchor text variations receive significantly more organic clicks. Diversity isn\'t just safe — it directly drives traffic.' },
+              { n: '03', title: 'Review the Data Table', desc: 'Switch to the data view for granular insights — frequency count for each unique anchor, which pages each anchor points to, and source pages. Flag any anchor that appears more than 15% of the time pointing to a single URL.', tip: 'Check your distribution against the benchmarks in the ratio section below.' },
+              { n: '04', title: 'Fix and Optimize', desc: 'Replace generic anchors ("click here," "read more") with descriptive phrases. Diversify over-optimized anchors using synonyms and partial matches. Add internal links to orphan pages — any page with fewer than 3 incoming internal links needs attention.', tip: 'After making changes, re-run the analysis to confirm your improvements. Monthly audits keep your anchor profile balanced.' },
+            ].map((s, i) => (
+              <div key={s.n} className="step-card">
+                {i < 3 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
+                  </div>
+                )}
+                <div className="step-num-big">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
+                {s.tip && <div className="step-tip">💡 Tip: {s.tip}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY SECTION ─── */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Why It Matters</div>
+            <h2 className="s-title">Why anchor text is the most <span className="blue">underrated ranking factor</span></h2>
+            <p className="s-sub">Many site owners chase backlinks while completely ignoring the text within those links. Here&apos;s why your internal anchor text strategy matters more than most SEOs realize.</p>
+          </div>
+          <div className="why-grid">
+            {[
+              { title: 'It Directly Tells Google What Pages Are About', icon: '📡', body: 'Google\'s crawlers rely on anchor text to understand what the linked page covers. When you link from Page A to Page B using "technical SEO audit checklist," you\'re explicitly signaling to Google that Page B is relevant for that topic. Industry data: 8% of SEO professionals rank internal links as the single most important ranking factor.' },
+              { title: 'It Builds Topical Authority Across Your Site', icon: '🏗️', body: 'Internal links don\'t just connect pages — they create topic clusters that prove expertise to search engines. When you consistently use relevant, descriptive anchors to link related pages within a topic cluster, you signal to Google that your site has depth and authority on that subject.' },
+              { title: 'It Protects You from Algorithmic Penalties', icon: '🛡️', body: 'Google\'s Penguin algorithm specifically targets manipulative anchor text patterns — and it applies to internal links, not just backlinks. Research shows sites with anchor text diversity below 30% have experienced ranking drops averaging 15 positions. Your anchor profile should look like natural human writing.' },
+              { title: 'It Distributes Link Equity to Pages That Need It', icon: '⚡', body: 'Every internal link passes a portion of the linking page\'s authority to the destination page. Pages with strong backlink profiles can "share" that authority with newer or weaker pages through strategic internal linking. The key insight: link from your strongest pages to the pages you most want to rank.' },
+            ].map((c) => (
+              <div key={c.title} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">{c.icon}</div>
+                  {c.title}
+                </div>
+                <div className="why-card-body">{c.body}</div>
+              </div>
+            ))}
+          </div>
+          <div className="alert-box">
+            <div className="alert-box-title">⚠️ The Risk of Ignoring Anchor Text</div>
+            <div className="alert-box-body">If 100 pages on your site all link to your money page using the exact same keyword anchor, Google may interpret that as manipulation. Research shows sites with anchor text diversity below 30% have experienced ranking drops averaging 15 positions. Use our word cloud to instantly spot keyword spikes, then diversify with synonyms, partial matches, and natural language variations.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── ANCHOR RATIO SECTION ─── */}
+      <section className="section ratio-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Anchor Text Ratio</div>
+            <h2 className="s-title">The ideal internal anchor text <span className="blue">distribution</span></h2>
+            <p className="s-sub">There&apos;s no single perfect formula, but analyzing top-ranking sites reveals a consistent healthy pattern. Aim for this distribution:</p>
+          </div>
+          <table className="ratio-table">
+            <thead>
+              <tr>
+                {['Anchor Type', 'Example', 'Target %', 'Risk Level'].map(h => <th key={h}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { type: 'Descriptive / Partial Match', example: '"check out our internal link audit guide"', pct: '50–60%', risk: 'Safest & Most Useful', cls: 'risk-safe' },
+                { type: 'Branded', example: '"according to SEOShouts\' analysis"', pct: '20–30%', risk: 'Builds Brand Entity', cls: 'risk-safe' },
+                { type: 'Exact Match', example: '"internal link checker"', pct: '10–15%', risk: 'High Power, High Risk', cls: 'risk-warn' },
+                { type: 'Generic', example: '"click here," "read more"', pct: '< 5%', risk: 'Zero SEO Value', cls: 'risk-bad' },
+                { type: 'Naked URL', example: '"seoshouts.com/tools/"', pct: '< 5%', risk: 'Wasted Opportunity', cls: 'risk-bad' },
+              ].map(r => (
+                <tr key={r.type}>
+                  <td className="ratio-anchor-type">{r.type}</td>
+                  <td style={{ fontStyle: 'italic' }}>{r.example}</td>
+                  <td className="ratio-pct">{r.pct}</td>
+                  <td><span className={`ratio-risk ${r.cls}`}>{r.risk}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="ratio-note">
+            <strong>Critical rule:</strong> Never use the same anchor text twice for the same target URL. If 10 different pages link to your pricing page, each one should use a different anchor variation. Repetition is the fastest path to over-optimization.<br /><br />
+            Zyppy&apos;s study of 23 million internal links confirmed that <strong>anchor text variety correlates directly with organic traffic</strong> — the more unique anchors pointing to a page, the more clicks it receives from Google.
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MISTAKES SECTION ─── */}
+      <section className="section mistakes-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Common Mistakes</div>
+            <h2 className="s-title">5 common anchor text mistakes <span className="blue">(and how to fix them)</span></h2>
+            <p className="s-sub">Run the SEOShouts Internal Link Checker to find these specific problems in your site structure.</p>
+          </div>
+          <div className="mistakes-grid">
+            {[
+              { n: '01', title: 'The "Click Here" Problem', body: 'Anchors like "Click here," "Read more," "Learn more," "This article," or "This post" carry zero semantic value. They tell Google absolutely nothing about the destination page. Every generic anchor is a missed opportunity to send a topical relevance signal.', bad: '"Click here to see our services."', good: '"Explore our technical SEO audit services."' },
+              { n: '02', title: 'Exact-Match Keyword Stuffing', body: 'The same high-value keyword used as anchor text on dozens of internal links, all pointing to the same page. It looks unnatural and robotic. Google\'s algorithms detect this pattern and may flag it as manipulative — the Penguin algorithm doesn\'t distinguish between internal and external anchor spam.', bad: '"SEO audit" repeated 20× linking to the same page', good: '"website audit checklist," "analyze your site\'s SEO health," "run a comprehensive site review"' },
+              { n: '03', title: 'Mismatched Anchors', body: 'Linking to a page about "local SEO services" using anchor text about "website development" creates a relevancy conflict. Google expects the anchor text to accurately describe the destination. Mismatches confuse both algorithms and users.', bad: '"website development" → /services/local-seo/', good: '"local SEO services" or "dominate local search" → /services/local-seo/' },
+              { n: '04', title: 'Naked URL Anchors', body: 'Using raw URLs as the visible link text. While not harmful, it\'s a significant wasted opportunity — a naked URL passes no topical signal to Google. Replace every raw URL anchor with a descriptive phrase.', bad: '"Check out https://seoshouts.com/tools/on-page-seo-analyzer/ for more."', good: '"Check out our on-page SEO analyzer with 100+ ranking factors for a deeper audit."' },
+              { n: '05', title: 'Orphan Pages with Zero Internal Links', body: 'Important pages that receive no internal links from any other page. Search engines struggle to discover orphan pages. According to Semrush, 25% of all web pages have zero incoming internal links and receive virtually no organic traffic.', bad: 'Key service page with 0 incoming internal links', good: 'Every important page has at least 3 incoming internal links from related content' },
+            ].map(m => (
+              <div key={m.n} className="mistake-card">
+                <div className="mistake-card-top">
+                  <div className="mistake-num">Mistake {m.n}</div>
+                  <div className="mistake-title">{m.title}</div>
+                  <div className="mistake-body-text">{m.body}</div>
+                </div>
+                <div className="code-example">
+                  <div className="code-bad"><span className="code-label">✗</span><span className="code-text">{m.bad}</span></div>
+                  <div className="code-good"><span className="code-label">✓</span><span className="code-text">{m.good}</span></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW MANY LINKS — PROSE ─── */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Link Quantity</div>
+            <h2 className="s-title">How many internal links should a page <span className="blue">actually have?</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>This is one of the most debated questions in SEO, and Zyppy answered it with data.</p>
+            <p>Their analysis of <strong>23 million internal links</strong> found clear patterns:</p>
+            <ul>
+              <li><strong>40–44 internal links:</strong> The range where pages receive the most clicks from Google</li>
+              <li><strong>45–50 internal links:</strong> Peak traffic performance</li>
+              <li><strong>50+ internal links:</strong> Traffic declines — Google may discount the value of individual links when pages are link-saturated</li>
+              <li><strong>3–5 contextual links per 1,000 words:</strong> The recommended density for in-content links specifically (not including navigation)</li>
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">Click depth matters too</div>
+              <p>The same study found that pages buried <strong>4 or more clicks deep</strong> from the homepage receive <strong>9× less traffic</strong> than pages within 3 clicks. Internal linking isn&apos;t just about anchor text — where you place links in your site hierarchy determines whether pages get found at all.</p>
+            </div>
+            <p>This is why a holistic internal link audit — anchor text quality AND link placement — delivers the biggest ranking improvements. Our tool handles the anchor text analysis; pair it with a <a href="/tools/on-page-seo-analyzer/" style={{ color: 'var(--blue)' }}>full on-page SEO analysis</a> to evaluate overall page structure and depth.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── AI SEARCH SECTION ─── */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">AI Search Optimization</div>
+            <h2 className="s-title">Optimizing internal links for <span className="blue">AI search engines (2026)</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>AI search is fundamentally changing how internal links function. Google AI Overviews, ChatGPT, Perplexity, Claude, and Gemini don&apos;t just follow links — they use them to build <strong>semantic maps</strong> of your site&apos;s knowledge structure.</p>
+            <h3>How AI models interpret your internal links</h3>
+            <p>Traditional search engines follow links to crawl and index pages. AI models go further — they use internal link patterns to understand <strong>topical relationships</strong> between your content. When your blog post about "anchor text optimization" links to your tool page using the anchor "analyze your anchor text distribution," the AI model learns that these two pieces of content are semantically related.</p>
+            <div className="prose-callout">
+              <div className="prose-callout-title">seoClarity, 2025</div>
+              <p>&ldquo;A strong internal linking structure gives AI engines clearer semantic signals, making it easier for AI search engines to surface your most authoritative and relevant pages in generative results.&rdquo;</p>
+            </div>
+            <h3>Natural language anchors beat keywords for AI</h3>
+            <p>AI models process language as vectors — mathematical representations of meaning. Short, robotic keyword anchors provide weak semantic signals. Longer, natural language anchors provide rich context.</p>
+            <div style={{ margin: '1.5rem 0', border: '1px solid var(--line)', background: 'var(--white)', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
+                <thead>
+                  <tr style={{ background: 'var(--ink)', color: '#fff' }}>
+                    <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.75rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>✗ Old SEO Anchors</th>
+                    <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.75rem', letterSpacing: '0.06em', textTransform: 'uppercase' }}>✓ AI-Optimized Anchors</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ['"internal link checker"', '"use our free internal link checker to audit your anchor text"'],
+                    ['"best pizza NYC"', '"the top-rated pizza places across New York City"'],
+                    ['"SEO audit"', '"run a comprehensive technical SEO audit of your website"'],
+                    ['"link building"', '"proven strategies for building high-quality backlinks"'],
+                  ].map(([bad, good], i) => (
+                    <tr key={i} style={{ borderTop: '1px solid var(--line)' }}>
+                      <td style={{ padding: '10px 16px', color: 'var(--red)', fontStyle: 'italic' }}>{bad}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--green)', fontStyle: 'italic' }}>{good}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p>The shift is clear: <strong>write anchors as if you&apos;re explaining the destination to a human</strong>, not stuffing keywords for a crawler.</p>
+            <p>We recommend testing your site&apos;s AI visibility weekly. Use our internal link checker alongside proper <a href="/tools/schema-generator/" style={{ color: 'var(--blue)' }}>schema markup</a> and <a href="/tools/robots-txt-generator/" style={{ color: 'var(--blue)' }}>robots.txt configuration for AI crawlers</a> to cover all three key AI visibility signals.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── COMPARISON SECTION ─── */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEOShouts vs other <span className="blue">internal link checkers</span></h2>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  {['Feature', 'SEOShouts', 'Screaming Frog', 'Ahrefs', 'SEOptimer', 'Sitechecker'].map((c, i) => (
+                    <th key={c} className={i === 1 ? 'highlight' : ''}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Visual Word Cloud', '✅ Unique', '❌', '❌', '❌', '❌'],
+                  ['Free Crawl Limit', '500 pages', '500 pages', 'Paid only ($99+/mo)', 'Single page', '14-day trial only'],
+                  ['Anchor Text Grouping', '✅', '✅', '✅', '❌', '✅'],
+                  ['No Login Required', '✅', '❌ (Desktop install)', '❌ (Account required)', '✅', '❌ (Trial signup)'],
+                  ['Browser-Based', '✅', '❌ (Desktop only)', '✅ (Cloud)', '✅', '✅'],
+                  ['Keyword Stuffing Alert', '✅', '❌', '❌', '❌', '❌'],
+                  ['Generic Anchor Detection', '✅', 'Manual only', 'Manual only', '❌', '❌'],
+                  ['Destination URL Mapping', '✅', '✅', '✅', '❌', '✅'],
+                  ['Cost', 'Free forever', 'Free (limited) / £199/yr', '$99–$999/mo', 'Free (limited)', '$49+/mo'],
+                ].map((row, ri) => (
+                  <tr key={ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className={ci === 1 ? 'highlight-col' : ''}>
+                        {cell === '✅' || cell === '✅ Unique' ? <span className="check-yes">{cell}</span> :
+                         cell === '❌' ? <span className="check-no">✗</span> :
+                         cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="comparison-cards">
+            <div style={{ background: 'var(--green-bg)', border: '1px solid #86efac', borderLeft: '4px solid var(--green)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: '#14532d', marginBottom: '0.6rem' }}>When to Choose SEOShouts</h3>
+              <p style={{ fontSize: '0.9rem', color: '#166534', lineHeight: 1.7 }}>Use our tool when you need a <strong>fast, visual health check</strong> of your anchor text profile without installing software or paying for subscriptions. The word cloud gives you an insight in 2 seconds that would take 20 minutes to extract from a Screaming Frog data table.</p>
+            </div>
+            <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: 'var(--blue-dark)', marginBottom: '0.6rem' }}>When You Might Need More</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--blue-dark)', lineHeight: 1.7 }}>For enterprise sites with 10,000+ pages, full JavaScript rendering, or integration with backlink data, desktop crawlers like Screaming Frog or paid platforms like Ahrefs offer deeper capabilities. For most blogs, small businesses, and service websites under 500 pages, SEOShouts provides everything you need at zero cost.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CHECKLIST SECTION ─── */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Audit Checklist</div>
+            <h2 className="s-title">Complete internal link audit checklist <span className="blue">(2026)</span></h2>
+            <p className="s-sub">Use this checklist after running your SEOShouts analysis. Bookmark it and revisit monthly.</p>
+          </div>
+          <div className="checklist-grid">
+            {[
+              { title: '📊 Link Quantity & Distribution', items: ['Total internal links per page between 40–50 (not exceeding 50)', 'All important pages within 3 clicks of homepage', 'Zero orphan pages (every page has 3+ incoming internal links)', '3–5 contextual in-content links per 1,000 words', 'High-authority pages link to pages you most want to rank'] },
+              { title: '🎯 Anchor Text Quality', items: ['Anchor ratio: 50–60% partial match, 10–15% exact, 20–30% branded, <5% generic', 'No duplicate anchor text pointing to the same target URL', 'Zero "click here," "read more," or "learn more" anchors', 'No naked URL anchors (raw URLs as link text)', 'Anchors include natural language for AI search parsing'] },
+              { title: '🔧 Technical Health', items: ['All internal links return 200 status codes', 'No redirect chains (301→301) in internal links', 'No internal links pointing to noindex pages', 'Links use standard HTML anchor elements (not JavaScript-only)', 'No links with empty anchor text'] },
+              { title: '🏗️ Content Architecture', items: ['Topic clusters bidirectionally linked (pillar ↔ cluster ↔ cluster)', 'New content receives 3–5 internal links within 48 hours of publishing', 'Content silos don\'t create isolated sections with no cross-links', 'Homepage links to most important category/tool pages directly'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FAQ SECTION ─── */}
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently asked questions</h2>
+            <p className="s-sub">Everything you need to know about internal link auditing.</p>
+          </div>
+          <div className="faq-list">
+            {[
+              { q: 'What is an internal link checker?', a: 'An internal link checker is an SEO tool that crawls your website to analyze how pages link to each other. It examines anchor text patterns, link distribution, and identifies issues like broken links, orphan pages, and over-optimized anchor text. SEOShouts\' version adds visual word cloud analysis to show which anchor phrases dominate your linking profile.' },
+              { q: 'How many internal links should a page have?', a: 'According to Zyppy\'s analysis of 23 million internal links, pages with 40–44 internal links receive the most Google clicks, with 45–50 being the peak traffic range. Beyond 50 internal links per page, traffic declines significantly. Aim for 3–5 contextual internal links per 1,000 words of content.' },
+              { q: 'What is the ideal anchor text ratio for internal links?', a: 'A healthy distribution is approximately: 50–60% descriptive or partial match anchors, 20–30% branded anchors, 10–15% exact match anchors, and less than 5% generic anchors like "click here." Never use the same anchor text repeatedly for the same target URL.' },
+              { q: 'Can over-optimized anchor text hurt SEO rankings?', a: 'Yes. Google\'s Penguin algorithm specifically targets unnatural anchor text patterns. Sites with anchor text diversity below 30% have experienced ranking drops of up to 15 positions in competitive niches. Our word cloud visualization makes it easy to spot over-optimization before it triggers penalties.' },
+              { q: 'Is the SEOShouts internal link checker free?', a: 'Yes, completely free. The tool crawls up to 500 URLs per analysis with no registration, no credit card, and no usage limits. You get full anchor text analysis, word cloud visualization, keyword stuffing detection, and generic link identification at zero cost.' },
+              { q: 'What makes SEOShouts different from other internal link checkers?', a: 'SEOShouts is the only free internal link checker that generates visual word clouds of your anchor text profile. While tools like Screaming Frog, Ahrefs, and SEOptimer show data in tables, our word cloud gives you an instant visual health check. We also offer anchor text grouping, destination URL analysis, and keyword stuffing detection — all without login or payment.' },
+              { q: 'How does internal linking affect AI search rankings?', a: 'AI search engines like ChatGPT, Perplexity, and Google Gemini use internal links to understand topical relationships between your pages. Descriptive, natural language anchor text helps AI models map your site\'s semantic structure more effectively than short keyword anchors.' },
+              { q: 'How often should I audit internal links?', a: 'Run a full internal link audit monthly. Check for sudden spikes in exact-match anchor text, identify orphan pages with zero incoming links, verify all links return 200 status codes, and ensure important pages receive adequate link equity.' },
+              { q: 'What are orphan pages and why do they matter?', a: 'Orphan pages have zero internal links pointing to them. Search engines struggle to discover and index them, and they receive virtually no organic traffic. According to Semrush data, 25% of all web pages have zero incoming internal links. Every important page should have at least 3 incoming internal links from related content.' },
+            ].map(faq => (
+              <details key={faq.q} className="faq-item">
+                <summary>{faq.q}</summary>
+                <div className="faq-answer">{faq.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── RELATED TOOLS ─── */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Tools</div>
+            <h2 className="s-title">More tools in the <span className="blue">SEOShouts suite</span></h2>
+          </div>
+          <div className="related-tools-grid">
+            {[
+              { name: 'Internal Link Checker', desc: 'Map your anchor text profile and uncover over-optimization risks', current: true, href: '/tools/internal-link-checker/', paths: ['M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71', 'M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'] },
+              { name: 'On-Page SEO Analyzer', desc: 'Score any URL across 150+ on-page ranking signals', href: '/tools/on-page-seo-analyzer/', paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'] },
+              { name: 'Schema Generator', desc: 'Build structured data markup for 39+ schema types', href: '/tools/schema-generator/', paths: ['M12 2L2 7l10 5 10-5-10-5', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'] },
+              { name: 'Robots.txt Generator', desc: 'Control how AI and web crawlers access your site', href: '/tools/robots-txt-generator/', paths: ['M12 2a3 3 0 0 0-3 3v1H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v4h10v-4h1a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3V5a3 3 0 0 0-3-3z', 'M9 12h.01', 'M15 12h.01'] },
+              { name: 'Disavow File Generator', desc: 'Create Google-compliant disavow files in seconds', href: '/tools/disavow-file-generator/', paths: ['M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636'] },
+            ].map(t => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FINAL CTA ─── */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Start your internal link audit <span>now</span></h2>
+          <p className="final-cta-sub">Poor anchor text hides your best content from Google and AI search engines. Run your analysis in under 5 minutes, identify the problems, and fix them today.</p>
+          <div className="final-cta-row">
+            <a href="#top" className="btn-primary">🔗 Analyze Internal Links Now</a>
+            <a href="/contact/" className="btn-outline">Get Expert Help</a>
+          </div>
+          <div className="final-cta-pills">
+            {['Complete analysis in under 5 minutes', 'Up to 500 pages crawled', 'Visual word cloud — only at SEOShouts'].map(p => (
+              <div key={p} className="final-pill">{p}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

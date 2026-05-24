@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
-import ToolBreadcrumb from '../../components/ToolBreadcrumb'
+import ShapeGrid from '../../components/ShapeGrid'
 
 interface KeywordResult {
   keyword: string
@@ -96,7 +96,7 @@ export default function KeywordDifficultyCheckerClient() {
   // Usage tracking
   const [usageCount, setUsageCount] = useState(0)
   const [usageLimit] = useState(8)
-  
+
   // CAPTCHA states
   const [isVerified, setIsVerified] = useState(false)
   const [captchaValue, setCaptchaValue] = useState<string | null>(null)
@@ -110,31 +110,31 @@ export default function KeywordDifficultyCheckerClient() {
   const calculateDifficulty = (keyword: string): KeywordResult => {
     // Simulate realistic difficulty calculation
     const baseScore = Math.floor(Math.random() * 100) + 1
-    
+
     // Add complexity based on keyword characteristics
     let difficulty = baseScore
     const wordCount = keyword.split(' ').length
     const keywordLower = keyword.toLowerCase()
-    
+
     // Brand keywords get higher difficulty
     const brandTerms = ['google', 'facebook', 'amazon', 'apple', 'microsoft', 'netflix', 'youtube', 'samsung', 'nike', 'coca cola']
     if (brandTerms.some(brand => keywordLower.includes(brand))) {
       difficulty = Math.min(100, difficulty + 25)
     }
-    
+
     // Commercial intent keywords are harder
     const commercialTerms = ['buy', 'purchase', 'price', 'cost', 'cheap', 'best', 'review', 'vs', 'compare']
     if (commercialTerms.some(term => keywordLower.includes(term))) {
       difficulty = Math.min(100, difficulty + 10)
     }
-    
+
     // Short keywords are typically harder
     if (wordCount === 1) {
       difficulty = Math.min(100, difficulty + 20)
     } else if (wordCount === 2) {
       difficulty = Math.min(100, difficulty + 10)
     }
-    
+
     // Long tail keywords are easier
     if (wordCount >= 4) {
       difficulty = Math.max(1, difficulty - 15)
@@ -251,14 +251,14 @@ export default function KeywordDifficultyCheckerClient() {
       }
 
       const analysisResults = keywordList.map(keyword => calculateDifficulty(keyword))
-      
+
       setResults(analysisResults)
-      
+
       // Increment usage count and save to session storage
       const newUsageCount = usageCount + 1
       setUsageCount(newUsageCount)
       sessionStorage.setItem('keywordDifficultyUsage', newUsageCount.toString())
-      
+
       setLoading(false)
     }, 2500)
   }
@@ -266,10 +266,10 @@ export default function KeywordDifficultyCheckerClient() {
   const copyToClipboard = async () => {
     if (results.length === 0) return
 
-    const resultText = results.map(item => 
+    const resultText = results.map(item =>
       `${item.keyword}: Difficulty ${item.difficulty}/100 (${item.difficultyLabel})`
     ).join('\n')
-    
+
     try {
       await navigator.clipboard.writeText(resultText)
       setCopied(true)
@@ -328,449 +328,430 @@ export default function KeywordDifficultyCheckerClient() {
     }
   })
 
-  const getDifficultyColor = (difficulty: number) => {
-    if (difficulty <= 30) return 'text-green-600 bg-green-100'
-    if (difficulty <= 50) return 'text-yellow-600 bg-yellow-100'
-    if (difficulty <= 70) return 'text-orange-600 bg-orange-100'
-    return 'text-red-600 bg-red-100'
+  const getDifficultyBadgeBg = (difficulty: number) => {
+    if (difficulty <= 30) return 'rgba(22,163,74,0.15)'
+    if (difficulty <= 50) return 'rgba(245,158,11,0.15)'
+    if (difficulty <= 70) return 'rgba(249,115,22,0.15)'
+    return 'rgba(220,38,38,0.15)'
+  }
+
+  const getDifficultyBadgeColor = (difficulty: number) => {
+    if (difficulty <= 30) return 'var(--green)'
+    if (difficulty <= 50) return 'var(--amber)'
+    if (difficulty <= 70) return '#f97316'
+    return 'var(--red)'
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+    <>
+      {/* ─── TOOL HERO ─── */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,9,10,0.35)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Keyword Difficulty Checker</span>
+          </nav>
+          <div className="tool-hero-badge">Free SEO Tool</div>
+          <h1 className="tool-hero-h1">
+            Free Keyword Difficulty Checker Tool<br />
+            <span>Stop Wasting Time on Impossible Keywords</span>
+          </h1>
+          <h2 style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 600, fontSize: '1.1rem', marginTop: '0.75rem', marginBottom: '0.75rem', fontFamily: 'Space Grotesk, sans-serif', maxWidth: '900px' }}>
+            Find Out Which Keywords You Can Actually Rank For
+          </h2>
+          <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
+            Ever spent months trying to rank for a keyword, only to realize later that you needed the SEO budget of Amazon to compete? Yeah, we&apos;ve all been there.
+          </p>
+          <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Here&apos;s the thing:</strong> Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks won&apos;t get you to page one. Others look hard but are actually achievable with the right strategy.
+          </p>
+          <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Our Keyword Difficulty Checker</strong> tells you exactly which category your target keywords fall into. No more guessing. No more wasted effort. Just clear data to help you pick battles you can actually win.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
+            {['Instant Difficulty Scores', 'Bulk Analysis', 'CSV Export', '100% Free'].map(label => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>✓</span>
+                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      {/* Tool Section */}
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto">
+      {/* ─── TOOL INPUT SECTION ─── */}
+      <div className="tool-input-section">
+        <div className="tool-input-inner" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'start' }}>
 
-            {/* H1 Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Keyword Difficulty
-              </span>{' '}
-              <span className="text-primary">Checker</span>
-            </h1>
+          {/* ── LEFT BOX — Input ── */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Keyword Difficulty Analysis</h2>
 
-            {/* Feature badges */}
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Instant Difficulty Scores
+            {/* Usage Counter */}
+            <div style={{
+              marginBottom: '1.25rem', padding: '12px 16px',
+              background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="var(--blue-light)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" />
+                  </svg>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--blue-light)' }}>Session Usage</span>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--blue-light)' }}>
+                    {usageLimit - usageCount} / {usageLimit}
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--gray-4)' }}>analyses remaining</div>
+                </div>
               </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Competition Analysis
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Search Volume Data
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
+              {usageCount >= usageLimit && (
+                <div style={{
+                  marginTop: '0.75rem', padding: '8px 12px',
+                  background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)',
+                  color: 'var(--amber)', fontSize: '0.78rem', fontWeight: 500
+                }}>
+                  Session limit reached. Refresh page to continue.
+                </div>
+              )}
             </div>
 
-            {/* Answer Capsule */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                Stop targeting keywords you can&apos;t rank for. Our <strong>Free Keyword Difficulty Checker</strong> gives you instant difficulty scores, competition data, and search volume — so you can prioritize winnable keywords and build an SEO strategy that actually delivers results.
+            {/* Keywords Input */}
+            <label className="tool-box-label" htmlFor="keywords">Enter Keywords *</label>
+            <textarea
+              id="keywords"
+              value={form.keywords}
+              onChange={(e) => setForm(prev => ({ ...prev, keywords: e.target.value }))}
+              placeholder={'Enter keywords separated by commas or new lines\ne.g., digital marketing, SEO tools, content writing'}
+              rows={4}
+              style={{
+                width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                borderRadius: 6, resize: 'none', fontFamily: 'Inter, sans-serif',
+                fontSize: '0.9rem', color: 'var(--ink)', outline: 'none', lineHeight: 1.6,
+                marginBottom: '0.35rem', background: 'var(--white)'
+              }}
+            />
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem' }}>Enter one keyword per line or separate by commas</p>
+
+            {/* Location Dropdown */}
+            <label className="tool-box-label" htmlFor="location">Target Country</label>
+            <select
+              id="location"
+              value={form.location}
+              onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
+              style={{
+                width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem',
+                color: 'var(--ink)', outline: 'none', background: 'var(--white)',
+                marginBottom: '0.35rem', cursor: 'pointer'
+              }}
+            >
+              {countries.map(country => (
+                <option key={country.code} value={country.code}>{country.name}</option>
+              ))}
+            </select>
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem' }}>Competition varies by country/region</p>
+
+            {/* Language Dropdown */}
+            <label className="tool-box-label" htmlFor="language">Target Language</label>
+            <select
+              id="language"
+              value={form.language}
+              onChange={(e) => setForm(prev => ({ ...prev, language: e.target.value }))}
+              style={{
+                width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem',
+                color: 'var(--ink)', outline: 'none', background: 'var(--white)',
+                marginBottom: '1.5rem', cursor: 'pointer'
+              }}
+            >
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Spanish">Spanish</option>
+              <option value="French">French</option>
+              <option value="German">German</option>
+              <option value="Portuguese">Portuguese</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Korean">Korean</option>
+              <option value="Arabic">Arabic</option>
+            </select>
+
+            {/* Human Verification */}
+            <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
+              <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Human Verification Required
+              </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
+                Please verify that you&apos;re not a robot to analyze keyword difficulty.
               </p>
+              <div style={{ marginBottom: '0.5rem' }}>
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                  onChange={handleCaptchaChange}
+                  theme="light"
+                />
+              </div>
+              {isVerified && (
+                <div style={{
+                  marginTop: '0.5rem', padding: '8px 12px',
+                  background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)',
+                  fontSize: '0.82rem', fontWeight: 600, color: 'var(--green)'
+                }}>
+                  <span style={{ marginRight: '0.4rem' }}>✓</span>
+                  Verification successful! You can now analyze keywords.
+                </div>
+              )}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Input Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">Keyword Difficulty Analysis</h2>
-                
-                {/* Usage Counter Display */}
-                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className="text-blue-600 mr-2">📊</span>
-                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-blue-700">
-                        {usageLimit - usageCount} / {usageLimit}
-                      </div>
-                      <div className="text-xs text-blue-600">analyses remaining</div>
-                    </div>
-                  </div>
-                  {usageCount >= usageLimit && (
-                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
-                      <p className="text-orange-800 text-xs font-medium">
-                        ⚠️ Session limit reached. Refresh page to continue.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="space-y-6">
-                  {/* Keywords Input */}
-                  <div>
-                    <label htmlFor="keywords" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Enter Keywords *
-                    </label>
-                    <textarea
-                      id="keywords"
-                      value={form.keywords}
-                      onChange={(e) => setForm(prev => ({ ...prev, keywords: e.target.value }))}
-                      placeholder="Enter keywords separated by commas or new lines&#10;e.g., digital marketing, SEO tools, content writing"
-                      rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">Enter one keyword per line or separate by commas</p>
-                  </div>
-
-                  {/* Location Dropdown */}
-                  <div>
-                    <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Target Country
-                    </label>
-                    <select
-                      id="location"
-                      value={form.location}
-                      onChange={(e) => setForm(prev => ({ ...prev, location: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                    >
-                      {countries.map(country => (
-                        <option key={country.code} value={country.code}>
-                          {country.name}
-                        </option>
-                      ))}
-                    </select>
-                    <p className="text-xs text-gray-500 mt-1">Competition varies by country/region</p>
-                  </div>
-
-                  {/* Language */}
-                  <div>
-                    <label htmlFor="language" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Target Language
-                    </label>
-                    <select
-                      id="language"
-                      value={form.language}
-                      onChange={(e) => setForm(prev => ({ ...prev, language: e.target.value }))}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                    >
-                      <option value="English">English</option>
-                      <option value="Hindi">Hindi</option>
-                      <option value="Spanish">Spanish</option>
-                      <option value="French">French</option>
-                      <option value="German">German</option>
-                      <option value="Portuguese">Portuguese</option>
-                      <option value="Chinese">Chinese</option>
-                      <option value="Japanese">Japanese</option>
-                      <option value="Korean">Korean</option>
-                      <option value="Arabic">Arabic</option>
-                    </select>
-                  </div>
-
-                  {/* Human Verification Section */}
-                  <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
-                    <div className="flex items-center mb-3">
-                      <span className="text-blue-600 mr-2">🛡️</span>
-                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
-                    </div>
-                    <p className="text-sm text-blue-700 mb-4">
-                      Please verify that you're not a robot to analyze keyword difficulty.
-                    </p>
-                    
-                    <div className="mb-4">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                        onChange={handleCaptchaChange}
-                        theme="light"
-                      />
-                    </div>
-
-                    {isVerified && (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
-                        <span className="text-green-600 mr-2">✅</span>
-                        <span className="text-sm font-medium text-green-800">Verification successful! You can now analyze keywords.</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Error Message */}
-                  {error && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-red-700 text-sm">{error}</p>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-4">
-                    <button
-                      onClick={analyzeKeywords}
-                      disabled={loading || !form.keywords.trim() || !isVerified || usageCount >= usageLimit}
-                      className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
-                    >
-                      {loading ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Analyzing Difficulty...
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                          </svg>
-                          Check Difficulty
-                        </>
-                      )}
-                    </button>
-                    
-                    <button
-                      onClick={resetForm}
-                      className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
+            {/* Error Message */}
+            {error && (
+              <div style={{
+                marginBottom: '1rem', padding: '10px 14px',
+                background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)',
+                fontSize: '0.85rem', color: 'var(--red)'
+              }}>
+                {error}
               </div>
+            )}
 
-              {/* Results Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">Difficulty Scores</h2>
-                
-                {results.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">📊</span>
-                    </div>
-                    <p>Enter keywords to check their ranking difficulty scores</p>
-                  </div>
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button
+                onClick={analyzeKeywords}
+                disabled={loading || !form.keywords.trim() || !isVerified || usageCount >= usageLimit}
+                className="tool-analyze-btn"
+                style={{ flex: 1 }}
+              >
+                <div className="tool-analyze-btn-dot" />
+                {loading ? (
+                  <>
+                    <svg className="animate-spin" style={{ width: 16, height: 16, marginRight: '0.4rem' }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Analyzing Difficulty...
+                  </>
                 ) : (
-                  <div className="space-y-4">
-                    {/* Export Buttons */}
-                    <div className="flex gap-2 mb-4">
-                      <button
-                        onClick={copyToClipboard}
-                        className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
-                      >
-                        {copied ? '✅ Copied!' : '📋 Copy Results'}
-                      </button>
-                      <button
-                        onClick={exportToCSV}
-                        className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                      >
-                        📊 Export CSV
-                      </button>
-                    </div>
-
-                    {/* Results List */}
-                    <div className="max-h-96 overflow-y-auto space-y-3">
-                      {results.map((item, index) => (
-                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                          <div className="flex justify-between items-center">
-                            <h3 className="font-semibold text-gray-800">{item.keyword}</h3>
-                            <div className="flex items-center space-x-2">
-                              <span className="text-lg font-bold text-gray-700">{item.difficulty}/100</span>
-                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(item.difficulty)}`}>
-                                {item.difficultyLabel}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-4 text-sm text-gray-500">
-                      Analyzed {results.length} keyword{results.length !== 1 ? 's' : ''} • Difficulty scores range from 1-100
-                    </div>
-                  </div>
+                  'Check Difficulty'
                 )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tool Breadcrumb */}
-      <ToolBreadcrumb toolName="Keyword Difficulty Checker" toolSlug="keyword-difficulty-checker" />
-
-      {/* What Is Keyword Difficulty Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What Is Keyword Difficulty (And Why It Can Make or Break Your SEO)</h2>
-            
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Keyword difficulty is basically a score that tells you how hard it'll be to rank on the first page of Google for a specific keyword. Think of it as your SEO reality check.
-              </p>
-
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Here's what the scores mean:</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-4 h-4 bg-green-500 rounded-full mt-1 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>0-30:</strong> Low competition - Good opportunities for new or smaller sites</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-4 h-4 bg-yellow-500 rounded-full mt-1 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>31-50:</strong> Medium competition - Achievable with solid content and some links</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-4 h-4 bg-orange-500 rounded-full mt-1 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>51-70:</strong> High competition - Need strong domain authority and great content</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-4 h-4 bg-red-500 rounded-full mt-1 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>71-100:</strong> Very high - Requires significant resources and time</span>
-                </div>
-              </div>
-
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Why this matters more than you think:</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Targeting easy keywords = faster results and early wins</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Going after impossible keywords = months of frustration</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Finding the sweet spot = steady traffic growth you can actually achieve</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Understanding competition = smarter resource allocation</span>
-                </div>
-              </div>
-
-              <div className="bg-primary/10 border border-primary/20 rounded-xl p-6">
-                <p className="text-gray-700 text-center">
-                  Most people pick keywords based on search volume alone. Smart marketers balance volume with difficulty.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore More SEO Tools Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-indigo/5">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
-              </p>
-            </div>
-
-            {/* Featured Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Keyword Density Analyzer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏷️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Meta Tag Optimizer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔍</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Long Tail Keyword Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Find hidden keywords that actually convert and drive traffic.</p>
-                <a href="/tools/long-tail-keyword-generator/" className="text-primary font-medium hover:underline">
-                  Try Long Tail Keyword Generator</a> →
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <a 
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
+              </button>
+              <button
+                onClick={resetForm}
+                style={{
+                  padding: '14px 20px', background: 'var(--gray-1)', color: 'var(--gray-5)',
+                  border: '1px solid var(--line)', fontWeight: 600, fontSize: '0.85rem',
+                  cursor: 'pointer', borderRadius: 6, fontFamily: 'Space Grotesk, sans-serif'
+                }}
               >
-                <span className="mr-2">🛠️</span>
-                Browse All SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free • No signup required • Instant results
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Stop Wasting Time on Impossible Keywords
-              </span>
-            </h2>
-
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Find Out Which Keywords You Can Actually Rank For</h3>
-              <p>
-                Ever spent months trying to rank for a keyword, only to realize later that you needed the SEO budget of Amazon to compete? Yeah, we've all been there.
-              </p>
-              <p>
-                <strong>Here's the thing:</strong> Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks won't get you to page one. Others look hard but are actually achievable with the right strategy.
-              </p>
-              <p>
-                <strong>Our Keyword Difficulty Checker</strong> tells you exactly which category your target keywords fall into. No more guessing. No more wasted effort. Just clear data to help you pick battles you can actually win.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Start Making Smarter Keyword Decisions Today</h2>
-            <p className="text-lg mb-8 opacity-90">
-              Stop shooting in the dark with your keyword strategy. Use our Keyword Difficulty Checker to target keywords you can actually rank for and see real results from your SEO efforts.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button 
-                onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
-                className="bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-              >
-                🎯 Use the Keyword Difficulty Checker →
+                Reset
               </button>
             </div>
+          </div>
 
-            <div className="text-center mb-6">
-              <p className="text-lg font-semibold mb-2">Analyze keyword competition in seconds - completely free</p>
-            </div>
-            
-            <p className="text-sm opacity-80">
-              <strong>Make smarter keyword choices with SEO Shouts' free Keyword Difficulty Checker!</strong>
-              <br />
-              <em>Built by SEO professionals for marketers and business owners who want to compete smart, not just hard.</em>
+          {/* ── RIGHT BOX — Results ── */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Difficulty Scores</h2>
+
+            {results.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+                <div style={{
+                  width: 56, height: 56, background: 'var(--gray-1)', border: '1px solid var(--line)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem'
+                }}>
+                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="var(--gray-4)" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" />
+                  </svg>
+                </div>
+                <p style={{ color: 'var(--gray-4)', fontSize: '0.88rem', lineHeight: 1.6, maxWidth: 260, margin: '0 auto' }}>
+                  Enter keywords to check their ranking difficulty scores
+                </p>
+              </div>
+            ) : (
+              <div>
+                {/* Export Buttons */}
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                  <button
+                    onClick={copyToClipboard}
+                    style={{
+                      padding: '7px 14px', background: 'var(--gray-1)', color: 'var(--gray-5)',
+                      border: '1px solid var(--line)', fontWeight: 600, fontSize: '0.78rem',
+                      cursor: 'pointer', borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif'
+                    }}
+                  >
+                    {copied ? '✓ Copied!' : 'Copy Results'}
+                  </button>
+                  <button
+                    onClick={exportToCSV}
+                    style={{
+                      padding: '7px 14px', background: 'var(--blue)', color: '#fff',
+                      border: 'none', fontWeight: 600, fontSize: '0.78rem',
+                      cursor: 'pointer', borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif'
+                    }}
+                  >
+                    Export CSV
+                  </button>
+                </div>
+
+                {/* Results List */}
+                <div style={{ maxHeight: '24rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {results.map((item, index) => (
+                    <div key={index} style={{ border: '1px solid var(--line)', padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--white)' }}>
+                      <span style={{ fontWeight: 600, color: 'var(--ink)', fontSize: '0.9rem' }}>{item.keyword}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--ink)' }}>{item.difficulty}/100</span>
+                        <span style={{
+                          padding: '2px 8px', fontSize: '0.75rem', fontWeight: 600, borderRadius: 3,
+                          background: getDifficultyBadgeBg(item.difficulty),
+                          color: getDifficultyBadgeColor(item.difficulty)
+                        }}>
+                          {item.difficultyLabel}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ marginTop: '1rem', fontSize: '0.78rem', color: 'var(--gray-4)' }}>
+                  Analyzed {results.length} keyword{results.length !== 1 ? 's' : ''} &bull; Difficulty scores range from 1-100
+                </div>
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {/* ─── WHAT IS KEYWORD DIFFICULTY ─── */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header center">
+            <h2 className="s-title">What Is Keyword Difficulty <span className="blue">(And Why It Can Make or Break Your SEO)</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>
+              Keyword difficulty is basically a score that tells you how hard it&apos;ll be to rank on the first page of Google for a specific keyword. Think of it as your SEO reality check.
             </p>
+
+            <h3>Here&apos;s what the scores mean:</h3>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem 2rem', margin: '1rem 0 1.5rem' }}>
+              {[
+                { color: '#16a34a', label: '0-30:', text: 'Low competition - Good opportunities for new or smaller sites' },
+                { color: '#ca8a04', label: '31-50:', text: 'Medium competition - Achievable with solid content and some links' },
+                { color: '#ea580c', label: '51-70:', text: 'High competition - Need strong domain authority and great content' },
+                { color: '#dc2626', label: '71-100:', text: 'Very high - Requires significant resources and time' },
+              ].map(item => (
+                <div key={item.label} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                  <div style={{ width: 14, height: 14, borderRadius: '50%', background: item.color, flexShrink: 0, marginTop: 3 }} />
+                  <span style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>
+                    <strong>{item.label}</strong> {item.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <h3>Why this matters more than you think:</h3>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {[
+                'Targeting easy keywords = faster results and early wins',
+                'Going after impossible keywords = months of frustration',
+                'Finding the sweet spot = steady traffic growth you can actually achieve',
+                'Understanding competition = smarter resource allocation',
+              ].map(item => (
+                <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                  <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, marginTop: 2 }}>✓</span>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
+              <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                Most people pick keywords based on search volume alone. Smart marketers balance volume with difficulty.
+              </p>
+            </div>
           </div>
         </div>
       </section>
-    </div>
+
+      {/* ─── EXPLORE OTHER SEO TOOLS ─── */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Tools</div>
+            <h2 className="s-title">Explore Our Other <span className="blue">SEO Tools</span></h2>
+            <p style={{ color: 'var(--gray-4)', fontSize: '0.95rem', maxWidth: 560, marginTop: '0.75rem', lineHeight: 1.6 }}>
+              Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
+            </p>
+          </div>
+          <div className="related-tools-grid">
+            {[
+              { name: 'Keyword Difficulty Checker', desc: 'Find out which keywords you can actually rank for with instant difficulty scores.', current: true, href: '/tools/keyword-difficulty-checker/', paths: ['M3 3v18h18', 'm19 9-5 5-4-4-3 3'] },
+              { name: 'Keyword Density Analyzer', desc: 'Optimize your keyword usage and avoid over-optimization penalties.', href: '/tools/keyword-density-analyzer/', paths: ['M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2', 'M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'] },
+              { name: 'Meta Tag Optimizer', desc: 'Generate perfect title tags and meta descriptions for better CTR.', href: '/tools/meta-tag-optimizer/', paths: ['M4 9h16', 'M4 15h16', 'M10 3 8 21', 'M16 3l-2 18'] },
+              { name: 'Long Tail Keyword Generator', desc: 'Find hidden keywords that actually convert and drive traffic.', href: '/tools/long-tail-keyword-generator/', paths: ['M21 21l-4.35-4.35', 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z'] },
+              { name: 'On-Page SEO Analyzer', desc: 'Score any URL across 150+ on-page ranking signals instantly.', href: '/tools/on-page-seo-analyzer/', paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'] },
+            ].map(t => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FINAL CTA ─── */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Start Making Smarter Keyword <span>Decisions Today</span></h2>
+          <p className="final-cta-sub">
+            Stop shooting in the dark with your keyword strategy. Use our Keyword Difficulty Checker to target keywords you can actually rank for and see real results from your SEO efforts.
+          </p>
+          <div className="final-cta-row">
+            <button
+              onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
+              className="btn-primary"
+            >
+              Use the Keyword Difficulty Checker →
+            </button>
+            <a href="/contact/" className="btn-outline">Get Expert Help</a>
+          </div>
+          <div className="final-cta-pills">
+            {[
+              'Analyze keyword competition in seconds - completely free',
+              'Make smarter keyword choices with SEO Shouts',
+              'Built by SEO professionals for marketers and business owners',
+            ].map(p => (
+              <div key={p} className="final-pill">{p}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

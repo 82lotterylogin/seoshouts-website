@@ -125,7 +125,7 @@ export default function InternalLinkVisualization({ anchors, insights }: Props) 
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
         if (ctx) {
-          ctx.font = `bold ${fontSize}px system-ui, -apple-system, sans-serif`
+          ctx.font = `700 ${fontSize}px 'Space Grotesk', sans-serif`
           const metrics = ctx.measureText(anchor.text)
           textWidth = metrics.width + 8 // More conservative buffer
           textHeight = fontSize * 1.4 // More conservative height
@@ -196,7 +196,7 @@ export default function InternalLinkVisualization({ anchors, insights }: Props) 
             const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
             if (ctx) {
-              ctx.font = `bold ${smallerFontSize}px system-ui, -apple-system, sans-serif`
+              ctx.font = `700 ${smallerFontSize}px 'Space Grotesk', sans-serif`
               const metrics = ctx.measureText(anchor.text)
               const smallerTextWidth = metrics.width + 6
               const smallerTextHeight = smallerFontSize * 1.4
@@ -319,10 +319,7 @@ export default function InternalLinkVisualization({ anchors, insights }: Props) 
     ctx.clearRect(0, 0, width, height)
 
     // Draw background
-    const gradient = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, Math.max(width, height)/2)
-    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.02)')
-    gradient.addColorStop(1, 'rgba(37, 99, 235, 0.08)')
-    ctx.fillStyle = gradient
+    ctx.fillStyle = '#f3f4f7'
     ctx.fillRect(0, 0, width, height)
 
     // Draw word cloud items
@@ -332,42 +329,21 @@ export default function InternalLinkVisualization({ anchors, insights }: Props) 
       const isHovered = hoveredItem === item
       const isSelected = selectedAnchor && selectedAnchor.text === item.text && selectedAnchor.href === item.href
 
-      ctx.font = `bold ${item.size}px system-ui, -apple-system, sans-serif`
+      ctx.font = `700 ${item.size}px 'Space Grotesk', sans-serif`
       ctx.textAlign = 'left'
       ctx.textBaseline = 'top'
 
       // Highlight hovered or selected items
       if (isSelected || isHovered) {
-        // Draw background highlight
         const padding = 4
-        ctx.fillStyle = isSelected ? 'rgba(37, 99, 235, 0.15)' : 'rgba(37, 99, 235, 0.1)'
+        ctx.fillStyle = isSelected ? 'rgba(37, 99, 235, 0.12)' : 'rgba(37, 99, 235, 0.06)'
         ctx.fillRect(item.x - padding, item.y - padding, item.width! + padding * 2, item.height! + padding * 2)
-
-        // Enhanced shadow for selected/hovered items
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)'
-        ctx.shadowOffsetX = 2
-        ctx.shadowOffsetY = 2
-        ctx.shadowBlur = 4
-
-        // Brighter color for selected/hovered
         ctx.fillStyle = isSelected ? '#1d4ed8' : '#2563EB'
       } else {
-        // Normal state
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.1)'
-        ctx.shadowOffsetX = 1
-        ctx.shadowOffsetY = 1
-        ctx.shadowBlur = 2
-
         ctx.fillStyle = item.color
       }
 
       ctx.fillText(item.text, item.x, item.y)
-
-      // Reset shadow
-      ctx.shadowColor = 'transparent'
-      ctx.shadowOffsetX = 0
-      ctx.shadowOffsetY = 0
-      ctx.shadowBlur = 0
     })
   }
 
@@ -482,22 +458,21 @@ export default function InternalLinkVisualization({ anchors, insights }: Props) 
   }, [])
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 text-center sm:text-left w-full sm:w-auto">Interactive Anchor Text Cloud</h3>
-
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+    <div className="viz-wrap">
+      <div className="viz-row">
+        <h3 className="viz-title">Interactive Anchor Text Cloud</h3>
+        <div className="viz-filters">
           <input
             type="text"
             placeholder="Filter anchor text..."
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="px-3 sm:px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm w-full sm:w-auto"
+            className="viz-input"
           />
           <select
             value={minCount}
             onChange={(e) => setMinCount(parseInt(e.target.value))}
-            className="px-3 sm:px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm w-full sm:w-auto"
+            className="viz-input"
           >
             <option value="1">Min 1 use</option>
             <option value="2">Min 2 uses</option>
@@ -508,235 +483,161 @@ export default function InternalLinkVisualization({ anchors, insights }: Props) 
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-        <div className="text-xs sm:text-sm font-medium text-gray-700 mb-2 text-center sm:text-left">Frequency Legend:</div>
-        <div className="flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-4 text-xs sm:text-sm">
-          <div className="flex items-center">
-            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#2563EB] rounded mr-1 sm:mr-2"></div>
-            <span>Highest</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#059669] rounded mr-1 sm:mr-2"></div>
-            <span>High</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#DC2626] rounded mr-1 sm:mr-2"></div>
-            <span>Medium-High</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#9333EA] rounded mr-1 sm:mr-2"></div>
-            <span>Medium</span>
-          </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 sm:w-4 sm:h-4 bg-[#6B7280] rounded mr-1 sm:mr-2"></div>
-            <span>Low</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Word Cloud Canvas */}
-      <div ref={containerRef} className="relative w-full">
-        <div className="bg-white rounded-xl sm:rounded-2xl border-2 border-gray-200 p-2 sm:p-4 min-h-[300px] sm:min-h-[400px] flex items-center justify-center">
-          {cloudItems.length > 0 ? (
-            <canvas
-              ref={canvasRef}
-              onClick={handleCanvasClick}
-              onMouseMove={handleCanvasMouseMove}
-              onMouseLeave={() => setHoveredItem(null)}
-              className="cursor-pointer max-w-full touch-manipulation"
-              style={{ width: '100%', height: `${Math.max(300, canvasHeight)}px` }}
-            />
-          ) : (
-            <div className="text-center py-8 sm:py-16">
-              <div className="text-3xl sm:text-4xl mb-4">☁️</div>
-              <div className="text-gray-500 text-sm sm:text-base">
-                {anchors.length === 0
-                  ? 'No anchor text data to display'
-                  : 'No anchors match your current filters'
-                }
-              </div>
-              {filter && (
-                <button
-                  onClick={() => {setFilter(''); setMinCount(1);}}
-                  className="mt-2 text-primary hover:text-primary/80 text-sm"
-                >
-                  Clear filters
-                </button>
-              )}
+      <div className="viz-legend">
+        <div className="viz-legend-label">Frequency Legend</div>
+        <div className="viz-legend-items">
+          {([
+            { color: '#2563EB', label: 'Highest' },
+            { color: '#059669', label: 'High' },
+            { color: '#DC2626', label: 'Medium-High' },
+            { color: '#9333EA', label: 'Medium' },
+            { color: '#6B7280', label: 'Low' },
+          ] as { color: string; label: string }[]).map(({ color, label }) => (
+            <div key={label} className="viz-legend-item">
+              <div className="viz-legend-dot" style={{ background: color }} />
+              <span>{label}</span>
             </div>
-          )}
+          ))}
         </div>
       </div>
 
-      {/* Modal Popup for Selected Anchor Details */}
+      <div ref={containerRef} className="viz-canvas-box">
+        {cloudItems.length > 0 ? (
+          <canvas
+            ref={canvasRef}
+            onClick={handleCanvasClick}
+            onMouseMove={handleCanvasMouseMove}
+            onMouseLeave={() => setHoveredItem(null)}
+            style={{ cursor: 'pointer', width: '100%', height: `${Math.max(300, canvasHeight)}px`, display: 'block' }}
+          />
+        ) : (
+          <div className="viz-empty">
+            <div className="viz-empty-icon">☁️</div>
+            <div className="viz-empty-text">
+              {anchors.length === 0
+                ? 'No anchor text data to display'
+                : 'No anchors match your current filters'}
+            </div>
+            {filter && (
+              <button
+                onClick={() => { setFilter(''); setMinCount(1); }}
+                className="viz-clear-btn"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+
       {isModalOpen && selectedAnchor && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setIsModalOpen(false)
-            }
-          }}
+          className="il-modal"
+          onClick={(e) => { if (e.target === e.currentTarget) setIsModalOpen(false) }}
         >
-          <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col">
-            {/* Modal Header */}
-            <div className="flex justify-between items-start p-4 sm:p-6 border-b border-gray-200">
-              <h4 className="text-lg sm:text-xl font-semibold text-gray-900">Anchor Text Details</h4>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-gray-600 text-xl sm:text-2xl leading-none ml-2"
-              >
-                ×
-              </button>
+          <div className="il-modal-inner">
+            <div className="il-modal-header">
+              <div className="il-modal-title">Anchor Text Details</div>
+              <button onClick={() => setIsModalOpen(false)} className="il-modal-close">×</button>
             </div>
-
-            {/* Modal Content */}
-            <div className="flex-1 overflow-y-auto">
-              <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-              {/* Anchor Info Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-                  <div className="text-xs sm:text-sm font-medium text-gray-600 mb-2">Anchor Text</div>
-                  <div className="font-semibold text-gray-900 break-words text-base sm:text-lg">{selectedAnchor.text}</div>
+            <div className="il-modal-body">
+              <div className="il-modal-grid">
+                <div className="il-modal-cell">
+                  <div className="il-modal-cell-label">Anchor Text</div>
+                  <div className="il-modal-cell-val">{selectedAnchor.text}</div>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-                  <div className="text-xs sm:text-sm font-medium text-gray-600 mb-2">Usage Count</div>
-                  <div className="font-semibold text-primary text-lg sm:text-xl">{selectedAnchor.count} times</div>
+                <div className="il-modal-cell">
+                  <div className="il-modal-cell-label">Usage Count</div>
+                  <div className="il-modal-cell-val accent">{selectedAnchor.count} times</div>
                 </div>
               </div>
-
-              {/* Destination URLs */}
-              <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-                <div className="text-xs sm:text-sm font-medium text-gray-600 mb-3">
-                  Destination URLs ({selectedAnchor.destinations?.length || 1})
-                </div>
-                <div className="space-y-2 sm:space-y-3 max-h-32 sm:max-h-40 overflow-y-auto">
+              <div className="il-modal-section">
+                <div className="il-modal-section-label">Destination URLs ({selectedAnchor.destinations?.length || 1})</div>
+                <div style={{ maxHeight: '160px', overflowY: 'auto', marginTop: '8px' }}>
                   {selectedAnchor.destinations && selectedAnchor.destinations.length > 0 ? (
                     selectedAnchor.destinations.map((dest, index) => (
-                      <div key={index} className="bg-white p-2 sm:p-3 rounded-lg border">
-                        <div className="font-mono text-xs sm:text-sm text-gray-900 break-all mb-1 sm:mb-2">
-                          {dest.href}
-                        </div>
-                        <div className="text-xs text-gray-600">
-                          Used {dest.count} time{dest.count !== 1 ? 's' : ''}
-                          ({((dest.count / selectedAnchor.count) * 100).toFixed(1)}% of total)
+                      <div key={index} className="il-modal-url-item">
+                        <div className="il-modal-mono">{dest.href}</div>
+                        <div className="il-modal-sub">
+                          Used {dest.count} time{dest.count !== 1 ? 's' : ''} ({((dest.count / selectedAnchor.count) * 100).toFixed(1)}% of total)
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className="bg-white p-2 sm:p-3 rounded-lg border">
-                      <div className="font-mono text-xs sm:text-sm text-gray-900 break-all">
-                        {selectedAnchor.href}
-                      </div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        Used {selectedAnchor.count} time{selectedAnchor.count !== 1 ? 's' : ''}
-                      </div>
+                    <div className="il-modal-url-item">
+                      <div className="il-modal-mono">{selectedAnchor.href}</div>
+                      <div className="il-modal-sub">Used {selectedAnchor.count} time{selectedAnchor.count !== 1 ? 's' : ''}</div>
                     </div>
                   )}
                 </div>
               </div>
-
-              {/* Found on Pages */}
-              <div className="bg-gray-50 rounded-xl p-3 sm:p-4">
-                <div className="text-xs sm:text-sm font-medium text-gray-600 mb-3">
-                  Found on Pages ({selectedAnchor.pages.length})
-                </div>
-                <div className="max-h-32 sm:max-h-48 overflow-y-auto space-y-1 sm:space-y-2">
+              <div className="il-modal-section">
+                <div className="il-modal-section-label">Found on Pages ({selectedAnchor.pages.length})</div>
+                <div style={{ maxHeight: '180px', overflowY: 'auto', marginTop: '8px' }}>
                   {selectedAnchor.pages.map((page, index) => (
-                    <div key={index} className="text-xs sm:text-sm font-mono text-gray-700 break-all bg-white p-2 rounded border">
-                      {page}
-                    </div>
+                    <div key={index} className="il-modal-page-item">{page}</div>
                   ))}
                 </div>
               </div>
-
-              {/* Usage Statistics */}
-              <div className="bg-gradient-to-r from-primary/5 to-blue-50 rounded-xl p-3 sm:p-4">
-                <div className="text-xs sm:text-sm font-medium text-gray-800 mb-2">Usage Statistics</div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
-                  <div>
-                    <span className="text-gray-600">Pages count: </span>
-                    <span className="font-semibold">{selectedAnchor.pages.length}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-600">Frequency: </span>
-                    <span className="font-semibold">{((selectedAnchor.count / insights.totalInternalLinks) * 100).toFixed(2)}%</span>
-                  </div>
+              <div className="il-modal-section">
+                <div className="il-modal-section-label">Usage Statistics</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '0.82rem', color: 'var(--gray-5)' }}>
+                  <div>Pages count: <strong style={{ color: 'var(--ink)' }}>{selectedAnchor.pages.length}</strong></div>
+                  <div>Frequency: <strong style={{ color: 'var(--ink)' }}>{((selectedAnchor.count / insights.totalInternalLinks) * 100).toFixed(2)}%</strong></div>
                 </div>
               </div>
             </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-6 border-t border-gray-200 text-center">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors"
-              >
-                Close
-              </button>
+            <div className="il-modal-footer">
+              <button onClick={() => setIsModalOpen(false)} className="il-btn">Close</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Quick Insights */}
-      <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl p-6">
-        <h4 className="text-lg font-semibold text-gray-900 mb-4">Quick Insights</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div className="flex items-start">
-            <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-              <span className="text-white text-xs">✓</span>
-            </div>
+      <div className="viz-insights">
+        <h4 className="viz-insights-title">Quick Insights</h4>
+        <div className="viz-insights-grid">
+          <div className="viz-insight">
+            <div className="viz-insight-badge" style={{ background: 'var(--green)' }}>✓</div>
             <div>
-              <div className="font-medium text-gray-900">Most Popular Anchor</div>
-              <div className="text-gray-600">
+              <div className="viz-insight-head">Most Popular Anchor</div>
+              <div className="viz-insight-body">
                 {insights.mostFrequentAnchor
                   ? `"${insights.mostFrequentAnchor.text}" (${insights.mostFrequentAnchor.count} uses)`
-                  : 'No anchor text found'
-                }
+                  : 'No anchor text found'}
               </div>
             </div>
           </div>
-          <div className="flex items-start">
-            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-              <span className="text-white text-xs">i</span>
-            </div>
+          <div className="viz-insight">
+            <div className="viz-insight-badge" style={{ background: 'var(--blue)' }}>i</div>
             <div>
-              <div className="font-medium text-gray-900">Single-Use Anchors</div>
-              <div className="text-gray-600">
+              <div className="viz-insight-head">Single-Use Anchors</div>
+              <div className="viz-insight-body">
                 {insights.singleUsageAnchors} anchors used only once ({((insights.singleUsageAnchors / insights.totalUniqueAnchors) * 100).toFixed(1)}%)
               </div>
             </div>
           </div>
-          <div className="flex items-start">
-            <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-              <span className="text-white text-xs">!</span>
-            </div>
+          <div className="viz-insight">
+            <div className="viz-insight-badge" style={{ background: 'var(--amber)' }}>!</div>
             <div>
-              <div className="font-medium text-gray-900">Optimization Opportunity</div>
-              <div className="text-gray-600">
+              <div className="viz-insight-head">Optimization Opportunity</div>
+              <div className="viz-insight-body">
                 {insights.singleUsageAnchors > insights.totalUniqueAnchors * 0.5
                   ? 'Consider consolidating similar anchor text variations'
-                  : 'Good anchor text diversity - consider adding more specific anchors'
-                }
+                  : 'Good anchor text diversity - consider adding more specific anchors'}
               </div>
             </div>
           </div>
-          <div className="flex items-start">
-            <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-              <span className="text-white text-xs">📊</span>
-            </div>
+          <div className="viz-insight">
+            <div className="viz-insight-badge" style={{ background: '#9333EA' }}>📊</div>
             <div>
-              <div className="font-medium text-gray-900">Distribution Health</div>
-              <div className="text-gray-600">
+              <div className="viz-insight-head">Distribution Health</div>
+              <div className="viz-insight-body">
                 {insights.averageLinksPerPage < 5
                   ? 'Low internal linking - consider adding more content links'
                   : insights.averageLinksPerPage > 20
                   ? 'High internal linking - ensure relevance and avoid over-optimization'
-                  : 'Healthy internal linking distribution'
-                }
+                  : 'Healthy internal linking distribution'}
               </div>
             </div>
           </div>

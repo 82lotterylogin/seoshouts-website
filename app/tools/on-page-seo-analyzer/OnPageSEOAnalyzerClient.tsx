@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
-import ToolBreadcrumb from '@/app/components/ToolBreadcrumb'
+import ShapeGrid from '@/app/components/ShapeGrid'
 import CoreWebVitalsCard from '@/app/components/seo-report/CoreWebVitalsCard'
 import SEOMetricCard from '@/app/components/seo-report/SEOMetricCard'
 
@@ -2004,252 +2004,201 @@ DETAILED ANALYSIS:
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+    <div>
 
-      {/* Hero Tool Section */}
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
+      {/* ── HERO ── */}
+      <section className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,9,10,0.35)', zIndex: 0 }} />
+        <ShapeGrid borderColor="rgba(37,99,235,0.18)" squareSize={48} speed={0.4} hoverFillColor="rgba(37,99,235,0.12)" />
+        <div className="tool-hero-inner">
+          <div className="tool-hero-badge">
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            Professional SEO Analysis Tool
+          </div>
+          <h1 className="tool-hero-h1">
+            Advanced On-Page SEO Analyzer<br />
+            <span>Complete Website Analysis with 150+ Factors</span>
+          </h1>
+          <h2 className="tool-hero-sub" style={{ maxWidth: '900px', fontWeight: 600, fontSize: '1.2rem', color: 'rgba(255,255,255,0.78)', marginBottom: '0.75rem' }}>
+            What is an On-Page SEO Analyzer?
+          </h2>
+          <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
+            An <strong>on-page SEO analyzer</strong> is a comprehensive tool that evaluates all optimization elements directly on your web pages that influence search engine rankings. Unlike off-page factors like backlinks, on-page SEO focuses on what you can control: your content, HTML structure, meta tags, images, internal links, and technical elements.
+          </p>
+          <p className="tool-hero-sub" style={{ maxWidth: '900px', marginTop: '0.75rem' }}>
+            Our advanced analyzer examines <strong>150+ critical ranking factors</strong> including content quality, keyword optimization, Core Web Vitals, mobile responsiveness, structured data, accessibility, and security. Get instant, actionable insights to improve your search visibility, user experience, and organic traffic with data-driven recommendations tailored to your website.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.75rem' }}>
+            {['150+ SEO Factors', 'Core Web Vitals', 'Real PageSpeed Data', '100% Free'].map(pill => (
+              <div key={pill} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(37,99,235,0.35)', padding: '5px 14px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' as const }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)', flexShrink: 0, display: 'inline-block' }} />
+                {pill}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* H1 Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                On-Page SEO
-              </span>{' '}
-              <span className="text-primary">Analyzer</span>
-            </h1>
+      {/* ── TOOL INPUT ── */}
+      <section className="tool-input-section">
+        <div className="tool-input-inner">
+          <div className="tool-box" style={{ maxWidth: '860px' }}>
+            <h2 className="tool-box-heading">Free Website Page SEO Checker</h2>
+            <p className="tool-box-sub">Enter an URL address and get a Free Website Analysis!</p>
 
-            {/* Feature badges */}
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                150+ SEO Factors
+            {/* URL and Keyword Inputs */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+              <div>
+                <label className="tool-box-label">Website URL</label>
+                <input
+                  type="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="Example.com"
+                  className="tool-url-input"
+                />
               </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Core Web Vitals
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Real PageSpeed Data
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
+              <div>
+                <label className="tool-box-label">Target Keyword (Optional)</label>
+                <input
+                  type="text"
+                  value={targetKeyword}
+                  onChange={(e) => setTargetKeyword(e.target.value)}
+                  placeholder="Target Keyword (Optional)"
+                  className="tool-url-input"
+                />
               </div>
             </div>
 
-            {/* Answer Capsule */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                Stop guessing why your pages don&apos;t rank. Our <strong>Free On-Page SEO Analyzer</strong> checks 150+ ranking factors — from meta tags and Core Web Vitals to structured data and mobile usability — and delivers a prioritized action plan to boost your search visibility.
-              </p>
+            {/* reCAPTCHA */}
+            <div className="tool-captcha">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                onChange={handleCaptchaChange}
+                theme="light"
+              />
             </div>
 
-            {/* Tool Interface */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 sm:p-12 border border-gray-100">
-              <div className="space-y-8">
-                
-                {/* URL and Keyword Inputs */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* URL Input */}
-                  <div>
-                    <input
-                      type="url"
-                      value={url}
-                      onChange={(e) => setUrl(e.target.value)}
-                      placeholder="Example.com"
-                      className="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-lg placeholder-gray-400"
-                    />
-                  </div>
+            {/* Usage Limit Info */}
+            {!loading && (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', margin: '0.75rem 0', fontSize: '0.82rem' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: usageLimit.remaining > 2 ? 'var(--green)' : usageLimit.remaining > 0 ? 'var(--amber)' : 'var(--red)', flexShrink: 0 }} />
+                <span style={{ color: 'var(--gray-4)' }}>
+                  {usageLimit.remaining} of {usageLimit.totalLimit} free analyses remaining today
+                </span>
+              </div>
+            )}
 
-                  {/* Keyword Input */}
-                  <div>
-                    <input
-                      type="text"
-                      value={targetKeyword}
-                      onChange={(e) => setTargetKeyword(e.target.value)}
-                      placeholder="Target Keyword (Optional)"
-                      className="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-lg placeholder-gray-400"
-                    />
-                  </div>
-                </div>
+            {/* Audit Button */}
+            <button
+              onClick={analyzeWebsite}
+              disabled={!url || !isVerified || loading || !usageLimit.canUse}
+              className="tool-analyze-btn"
+            >
+              {loading ? (
+                <>
+                  <div className="tool-analyze-btn-dot" style={{ animation: 'pulse 1s infinite' }} />
+                  Analyzing...
+                </>
+              ) : !usageLimit.canUse ? (
+                'Daily Limit Reached'
+              ) : (
+                'Audit'
+              )}
+            </button>
 
-                {/* reCAPTCHA */}
-                <div className="flex justify-center">
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                    onChange={handleCaptchaChange}
-                    theme="light"
-                  />
-                </div>
-
-                {/* Usage Limit Info */}
-                {!loading && (
-                  <div className="flex items-center justify-center space-x-4 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <div className={`w-2 h-2 rounded-full ${usageLimit.remaining > 2 ? 'bg-green-500' : usageLimit.remaining > 0 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
-                      <span className="text-gray-600">
-                        {usageLimit.remaining} of {usageLimit.totalLimit} free analyses remaining today
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Audit Button */}
-                <div className="text-center">
-                  <button
-                    onClick={analyzeWebsite}
-                    disabled={!url || !isVerified || loading || !usageLimit.canUse}
-                    className="inline-flex items-center px-12 py-4 bg-gradient-to-r from-primary to-blue-600 text-white font-bold text-xl rounded-xl hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 shadow-lg"
-                  >
-                    {loading ? (
-                      <div className="flex items-center">
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
-                        Analyzing...
-                      </div>
-                    ) : !usageLimit.canUse ? (
-                      'Daily Limit Reached'
-                    ) : (
-                      'Audit'
-                    )}
-                  </button>
-                  
-                  {!usageLimit.canUse && (
-                    <div className="mt-3 text-center">
-                      <p className="text-sm text-red-600 mb-2">
-                        You've reached your daily limit of {usageLimit.totalLimit} free analyses.
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Resets at: {new Date(usageLimit.resetTime).toLocaleString()}
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Subtitle */}
-                <p className="text-center text-gray-600">
-                  Enter an URL address and get a Free Website Analysis!
+            {!usageLimit.canUse && (
+              <div style={{ marginTop: '0.75rem', textAlign: 'center' }}>
+                <p style={{ fontSize: '0.82rem', color: 'var(--red)', marginBottom: '4px' }}>
+                  You&apos;ve reached your daily limit of {usageLimit.totalLimit} free analyses.
                 </p>
-
-                {/* Usage Warning */}
-                {showUsageWarning && usageLimit.remaining <= 1 && usageLimit.remaining > 0 && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-center">
-                    <div className="flex items-center justify-center mb-2">
-                      <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                      </svg>
-                      <span className="text-yellow-800 font-medium">Almost at your daily limit!</span>
-                    </div>
-                    <p className="text-sm text-yellow-700">
-                      You have {usageLimit.remaining} analysis remaining. Your limit will reset at {new Date(usageLimit.resetTime).toLocaleString()}.
-                    </p>
-                    <button
-                      onClick={() => setShowUsageWarning(false)}
-                      className="mt-2 text-xs text-yellow-600 hover:text-yellow-800 underline"
-                    >
-                      Dismiss
-                    </button>
-                  </div>
-                )}
-
-                {/* Error Display */}
-                {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-xl">
-                    <div className="flex items-center">
-                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                      </svg>
-                      {error}
-                    </div>
-                  </div>
-                )}
-
-                {/* New Analysis Button - shown after results */}
-                {analysisResult && (
-                  <div className="text-center">
-                    <button
-                      onClick={resetAnalysis}
-                      className="inline-flex items-center px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium transition-all duration-200"
-                    >
-                      🔄 New Analysis
-                    </button>
-                  </div>
-                )}
-
-                {/* Enhanced Analysis Progress */}
-                {loading && (
-                  <div className="mt-8 bg-gray-50 rounded-2xl p-6">
-                    <div className="text-center mb-6">
-                      <div className="text-lg font-medium text-gray-700 mb-3">
-                        {currentStep || 'Preparing analysis...'}
-                      </div>
-                      
-                      {/* Progress Bar */}
-                      <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
-                        <div 
-                          className="bg-gradient-to-r from-primary to-blue-600 h-3 rounded-full transition-all duration-300 ease-out"
-                          style={{ width: `${analysisProgress}%` }}
-                        ></div>
-                      </div>
-                      
-                      <div className="text-sm text-gray-600">
-                        {analysisProgress}% Complete
-                      </div>
-                    </div>
-                    
-                    {/* Animated Steps */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-3 h-3 rounded-full ${
-                            analysisProgress >= 10 ? 'bg-green-500' : 'bg-gray-300 animate-pulse'
-                          }`}></div>
-                          <span className="text-sm font-medium text-gray-700">Fetching Content</span>
-                        </div>
-                        {analysisProgress >= 10 && <span className="text-green-500 text-sm">✓</span>}
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-3 h-3 rounded-full ${
-                            analysisProgress >= 40 ? 'bg-green-500' : 
-                            analysisProgress >= 10 ? 'bg-blue-500 animate-pulse' : 'bg-gray-300'
-                          }`}></div>
-                          <span className="text-sm font-medium text-gray-700">Technical SEO Check</span>
-                        </div>
-                        {analysisProgress >= 40 && <span className="text-green-500 text-sm">✓</span>}
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-3 h-3 rounded-full ${
-                            analysisProgress >= 70 && !pageSpeedLoading ? 'bg-green-500' : 
-                            analysisProgress >= 40 || pageSpeedLoading ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'
-                          }`}></div>
-                          <span className="text-sm font-medium text-gray-700">
-                            PageSpeed Analysis {pageSpeedLoading ? '(Both Desktop & Mobile)' : ''}
-                          </span>
-                        </div>
-                        {analysisProgress >= 70 && !pageSpeedLoading && <span className="text-green-500 text-sm">✓</span>}
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-3 h-3 rounded-full ${
-                            analysisProgress >= 100 ? 'bg-green-500' : 
-                            analysisProgress >= 70 ? 'bg-purple-500 animate-pulse' : 'bg-gray-300'
-                          }`}></div>
-                          <span className="text-sm font-medium text-gray-700">Generating Report</span>
-                        </div>
-                        {analysisProgress >= 100 && <span className="text-green-500 text-sm">✓</span>}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <p style={{ fontSize: '0.75rem', color: 'var(--gray-4)' }}>
+                  Resets at: {new Date(usageLimit.resetTime).toLocaleString()}
+                </p>
               </div>
-            </div>
+            )}
+
+            {/* Usage Warning */}
+            {showUsageWarning && usageLimit.remaining <= 1 && usageLimit.remaining > 0 && (
+              <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--amber)', padding: '1rem 1.25rem', marginTop: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--amber)', flexShrink: 0 }}>
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                  <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--blue-dark)' }}>Almost at your daily limit!</span>
+                </div>
+                <p style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', lineHeight: 1.6 }}>
+                  You have {usageLimit.remaining} analysis remaining. Your limit will reset at {new Date(usageLimit.resetTime).toLocaleString()}.
+                </p>
+                <button
+                  onClick={() => setShowUsageWarning(false)}
+                  style={{ marginTop: '6px', fontSize: '0.75rem', color: 'var(--blue)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
+
+            {/* Error Display */}
+            {error && (
+              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderLeft: '4px solid var(--red)', padding: '0.875rem 1.25rem', marginTop: '1rem', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                <svg width={16} height={16} viewBox="0 0 20 20" fill="currentColor" style={{ color: 'var(--red)', flexShrink: 0, marginTop: '2px' }}>
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+                <span style={{ fontSize: '0.875rem', color: '#dc2626' }}>{error}</span>
+              </div>
+            )}
+
+            {/* New Analysis Button - shown after results */}
+            {analysisResult && (
+              <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+                <button
+                  onClick={resetAnalysis}
+                  style={{ background: 'var(--gray-2)', border: '1px solid var(--line)', color: 'var(--ink)', fontSize: '0.875rem', fontWeight: 600, padding: '10px 20px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/>
+                  </svg>
+                  New Analysis
+                </button>
+              </div>
+            )}
+
+            {/* Enhanced Analysis Progress */}
+            {loading && (
+              <div style={{ marginTop: '1.5rem', background: 'var(--gray-1)', border: '1px solid var(--line)', padding: '1.5rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--ink)', marginBottom: '0.75rem' }}>
+                    {currentStep || 'Preparing analysis...'}
+                  </div>
+                  <div style={{ width: '100%', height: '4px', background: 'var(--gray-2)', overflow: 'hidden', marginBottom: '0.5rem' }}>
+                    <div style={{ height: '100%', background: 'var(--blue)', width: `${analysisProgress}%`, transition: 'width 0.3s ease-out' }} />
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--gray-4)' }}>{analysisProgress}% Complete</div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  {[
+                    { label: 'Fetching Content', threshold: 10 },
+                    { label: 'Technical SEO Check', threshold: 40 },
+                    { label: `PageSpeed Analysis${pageSpeedLoading ? ' (Desktop & Mobile)' : ''}`, threshold: 70 },
+                    { label: 'Generating Report', threshold: 100 },
+                  ].map(({ label, threshold }) => (
+                    <div key={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--white)', border: '1px solid var(--line)', padding: '10px 12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: analysisProgress >= threshold ? 'var(--green)' : 'var(--gray-3)', flexShrink: 0 }} />
+                        <span style={{ fontSize: '0.82rem', fontWeight: 500, color: 'var(--ink)' }}>{label}</span>
+                      </div>
+                      {analysisProgress >= threshold && (
+                        <span style={{ fontSize: '0.78rem', color: 'var(--green)', fontWeight: 700 }}>✓</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -2310,9 +2259,8 @@ DETAILED ANALYSIS:
       )}
 
       {analysisResult && (
-        <section id="seo-report-section" className="py-16 bg-white">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
+        <section id="seo-report-section" style={{ background: 'var(--white)', borderTop: '1px solid var(--line)', padding: '4rem 2rem' }}>
+          <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
               <div className="space-y-8">
 
                 {/* Complete Report Display - Works for both regular and shared reports */}
@@ -3298,473 +3246,339 @@ DETAILED ANALYSIS:
       )}
 
 
-      {/* Tool Breadcrumb */}
-      <ToolBreadcrumb toolName="On-Page SEO Analyzer" toolSlug="on-page-seo-analyzer" />
-
-      {/* About Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Complete Website Analysis with 150+ Factors
-              </span>
-            </h2>
-
-            <div className="max-w-6xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">What is an On-Page SEO Analyzer?</h3>
-              <p>
-                An <strong>on-page SEO analyzer</strong> is a comprehensive tool that evaluates all optimization elements directly on your web pages that influence search engine rankings. Unlike off-page factors like backlinks, on-page SEO focuses on what you can control: your content, HTML structure, meta tags, images, internal links, and technical elements.
-              </p>
-              <p>
-                Our advanced analyzer examines <strong>150+ critical ranking factors</strong> including content quality, keyword optimization, Core Web Vitals, mobile responsiveness, structured data, accessibility, and security. Get instant, actionable insights to improve your search visibility, user experience, and organic traffic with data-driven recommendations tailored to your website.
-              </p>
-            </div>
-
+      {/* ── READY TO ANALYZE ── */}
+      <section className="prose-section section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">How It Works</div>
+            <h2 className="s-title">Ready to Analyze <span className="blue">Your Website?</span></h2>
+            <p className="s-sub">Enter your website URL above to get a comprehensive SEO analysis with actionable insights and detailed recommendations.</p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--line)', background: 'var(--line)', gap: '1px' }}>
+            {[
+              {
+                title: '150+ SEO Factors',
+                desc: 'Comprehensive analysis covering content, technical SEO, Core Web Vitals, and more',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />,
+              },
+              {
+                title: 'Actionable Insights',
+                desc: 'Get specific recommendations and step-by-step optimization guidance',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
+              },
+              {
+                title: 'Latest 2025 Standards',
+                desc: 'Analysis based on current Google algorithm and ranking factors',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />,
+              },
+              {
+                title: 'Detailed Scoring',
+                desc: 'Clear scoring system with priorities and impact assessment',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />,
+              },
+            ].map(card => (
+              <div key={card.title} className="feature-card" style={{ background: 'var(--white)' }}>
+                <div className="feature-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2}>
+                    {card.icon}
+                  </svg>
+                </div>
+                <div className="feature-title">{card.title}</div>
+                <p className="feature-desc">{card.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Ready to Analyze Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="text-6xl mb-6">🔍</div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Ready to Analyze Your Website?
-              </h2>
-              <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-                Enter your website URL above to get a comprehensive SEO analysis with actionable insights and detailed recommendations.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="font-semibold text-gray-900 mb-2">150+ SEO Factors</h3>
-                <p className="text-sm text-gray-600">
-                  Comprehensive analysis covering content, technical SEO, Core Web Vitals, and more
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-100">
-                <div className="text-3xl mb-3">⚡</div>
-                <h3 className="font-semibold text-gray-900 mb-2">Actionable Insights</h3>
-                <p className="text-sm text-gray-600">
-                  Get specific recommendations and step-by-step optimization guidance
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-100">
-                <div className="text-3xl mb-3">🎯</div>
-                <h3 className="font-semibold text-gray-900 mb-2">Latest 2025 Standards</h3>
-                <p className="text-sm text-gray-600">
-                  Analysis based on current Google algorithm and ranking factors
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border border-orange-100">
-                <div className="text-3xl mb-3">📈</div>
-                <h3 className="font-semibold text-gray-900 mb-2">Detailed Scoring</h3>
-                <p className="text-sm text-gray-600">
-                  Clear scoring system with priorities and impact assessment
-                </p>
-              </div>
-            </div>
+      {/* ── WHAT IS ON-PAGE SEO ── */}
+      <section className="features-section section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Industry Knowledge</div>
+            <h2 className="s-title">What is On-Page SEO Analysis <span className="blue">and Why It Matters in 2025</span></h2>
+            <p className="s-sub">In 2025, this includes traditional factors like content quality and meta tags, as well as modern considerations like Core Web Vitals, E-A-T signals, and AI-driven content analysis.</p>
           </div>
-        </div>
-      </section>
-
-      {/* What is On-Page SEO Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">
-              What is On-Page SEO Analysis and Why It Matters in 2025
-            </h2>
-              
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-                <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                  On-page SEO analysis is the comprehensive evaluation of all elements on your website that impact search engine rankings. 
-                  In 2025, this includes traditional factors like content quality and meta tags, as well as modern considerations like 
-                  Core Web Vitals, E-A-T signals, and AI-driven content analysis.
-                </p>
-
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">Our 2025 On-Page SEO Analysis Covers:</h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">Content Quality & E-A-T</span>
-                        <p className="text-sm text-gray-600">Expertise, authoritativeness, trustworthiness analysis</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">Core Web Vitals</span>
-                        <p className="text-sm text-gray-600">LCP, INP, CLS performance metrics</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">Technical SEO Audit</span>
-                        <p className="text-sm text-gray-600">HTTPS, mobile-friendliness, structured data</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">On-Page Optimization</span>
-                        <p className="text-sm text-gray-600">Title tags, meta descriptions, headers, URLs</p>
-                      </div>
+          <div className="prose-content" style={{ maxWidth: '100%' }}>
+            <p>On-page SEO analysis is the comprehensive evaluation of all elements on your website that impact search engine rankings. In 2025, this includes traditional factors like content quality and meta tags, as well as modern considerations like Core Web Vitals, E-A-T signals, and AI-driven content analysis.</p>
+            <h3>Our 2025 On-Page SEO Analysis Covers:</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1rem' }}>
+              <div>
+                {[
+                  { title: 'Content Quality & E-A-T', desc: 'Expertise, authoritativeness, trustworthiness analysis' },
+                  { title: 'Core Web Vitals', desc: 'LCP, INP, CLS performance metrics' },
+                  { title: 'Technical SEO Audit', desc: 'HTTPS, mobile-friendliness, structured data' },
+                  { title: 'On-Page Optimization', desc: 'Title tags, meta descriptions, headers, URLs' },
+                ].map(item => (
+                  <div key={item.title} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--blue)', marginTop: '6px', flexShrink: 0 }} />
+                    <div>
+                      <strong style={{ color: 'var(--ink)', fontSize: '0.92rem' }}>{item.title}</strong>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--gray-5)', marginTop: '2px', marginBottom: 0, lineHeight: 1.6 }}>{item.desc}</p>
                     </div>
                   </div>
-                  <div className="space-y-4">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">User Experience Analysis</span>
-                        <p className="text-sm text-gray-600">Navigation, accessibility, design quality</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">Social Media Optimization</span>
-                        <p className="text-sm text-gray-600">Open Graph, Twitter Cards, social sharing</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">Advanced Analytics</span>
-                        <p className="text-sm text-gray-600">Search intent, SERP features, voice search readiness</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <span className="font-semibold text-gray-900">Local SEO Factors</span>
-                        <p className="text-sm text-gray-600">NAP consistency, local schema, geo-targeting</p>
-                      </div>
+                ))}
+              </div>
+              <div>
+                {[
+                  { title: 'User Experience Analysis', desc: 'Navigation, accessibility, design quality' },
+                  { title: 'Social Media Optimization', desc: 'Open Graph, Twitter Cards, social sharing' },
+                  { title: 'Advanced Analytics', desc: 'Search intent, SERP features, voice search readiness' },
+                  { title: 'Local SEO Factors', desc: 'NAP consistency, local schema, geo-targeting' },
+                ].map(item => (
+                  <div key={item.title} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
+                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--blue)', marginTop: '6px', flexShrink: 0 }} />
+                    <div>
+                      <strong style={{ color: 'var(--ink)', fontSize: '0.92rem' }}>{item.title}</strong>
+                      <p style={{ fontSize: '0.85rem', color: 'var(--gray-5)', marginTop: '2px', marginBottom: 0, lineHeight: 1.6 }}>{item.desc}</p>
                     </div>
                   </div>
-                </div>
-
-                <div className="bg-primary/10 border border-primary/20 rounded-xl p-6">
-                  <p className="text-gray-700 text-center">
-                    <span className="font-semibold">Why it matters:</span> Proper on-page SEO can improve your search rankings by 25-50% 
-                    and significantly boost organic traffic, user engagement, and conversion rates.
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
-
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-              Advanced Features That Make Our Tool Stand Out
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 text-center">
-                  <div className="text-3xl mb-4">🔬</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">150+ SEO Factors</h3>
-                  <p className="text-gray-600">
-                    Most comprehensive analysis available covering every aspect of on-page SEO optimization
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100 text-center">
-                  <div className="text-3xl mb-4">⚡</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">Core Web Vitals Analysis</h3>
-                  <p className="text-gray-600">
-                    Real-time analysis of Google's Core Web Vitals with specific optimization recommendations
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100 text-center">
-                  <div className="text-3xl mb-4">🤖</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">AI-Powered Insights</h3>
-                  <p className="text-gray-600">
-                    Advanced AI analysis for content quality, E-A-T signals, and search intent matching
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100 text-center">
-                  <div className="text-3xl mb-4">📊</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">Visual Score Dashboard</h3>
-                  <p className="text-gray-600">
-                    Clear, color-coded scoring system with detailed breakdowns for each SEO category
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100 text-center">
-                  <div className="text-3xl mb-4">🎯</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">Actionable Recommendations</h3>
-                  <p className="text-gray-600">
-                    Specific, prioritized recommendations with step-by-step implementation guidance
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border border-teal-100 text-center">
-                  <div className="text-3xl mb-4">📈</div>
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">2025 Algorithm Ready</h3>
-                  <p className="text-gray-600">
-                    Analysis based on the latest Google algorithm updates and ranking factors for 2025
-                  </p>
-                </div>
+            <div className="prose-callout">
+              <p><strong>Why it matters:</strong> Proper on-page SEO can improve your search rankings by 25-50% and significantly boost organic traffic, user engagement, and conversion rates.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SEO Factors Analysis Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-              Complete Guide: 150+ SEO Factors We Analyze
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-              {/* Meta Tags & Title Optimization */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-blue-800 flex items-center">
-                  <span className="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">📝</span>
-                  </span>
-                  Meta Tags & Title Optimization
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Title Tag Length</strong> - Optimal 30-65 characters</span></li>
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Title Power Words</strong> - CTR-improving words</span></li>
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Meta Description</strong> - 120-170 characters optimal</span></li>
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Meta Description CTA</strong> - Call-to-action presence</span></li>
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Meta Keywords</strong> - Legacy tag analysis</span></li>
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Meta Robots</strong> - Index/follow directives</span></li>
-                  <li className="flex items-start"><span className="text-blue-600 mr-1 mt-0.5">✓</span><span><strong>Theme Color Meta</strong> - Mobile browser theming</span></li>
-                </ul>
+      {/* ── ADVANCED FEATURES ── */}
+      <section className="howto-section section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Capabilities</div>
+            <h2 className="s-title">Advanced Features That <span className="blue">Make Our Tool Stand Out</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              {
+                title: '150+ SEO Factors',
+                desc: 'Most comprehensive analysis available covering every aspect of on-page SEO optimization',
+                icon: <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></>,
+              },
+              {
+                title: 'Core Web Vitals Analysis',
+                desc: "Real-time analysis of Google's Core Web Vitals with specific optimization recommendations",
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
+              },
+              {
+                title: 'AI-Powered Insights',
+                desc: 'Advanced AI analysis for content quality, E-A-T signals, and search intent matching',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />,
+              },
+              {
+                title: 'Visual Score Dashboard',
+                desc: 'Clear, color-coded scoring system with detailed breakdowns for each SEO category',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />,
+              },
+              {
+                title: 'Actionable Recommendations',
+                desc: 'Specific, prioritized recommendations with step-by-step implementation guidance',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />,
+              },
+              {
+                title: '2025 Algorithm Ready',
+                desc: 'Analysis based on the latest Google algorithm updates and ranking factors for 2025',
+                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />,
+              },
+            ].map(card => (
+              <div key={card.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    {card.icon}
+                  </svg>
+                </div>
+                <div className="feature-title">{card.title}</div>
+                <p className="feature-desc">{card.desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              {/* Content Quality & Structure */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-green-800 flex items-center">
-                  <span className="w-7 h-7 bg-green-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">📄</span>
-                  </span>
-                  Content Quality & Structure
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Content Length</strong> - Word count analysis (300+ min)</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Content Depth</strong> - Comprehensiveness scoring</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Content Uniqueness</strong> - Duplicate content detection</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Content Freshness</strong> - Date indicators analysis</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Sentence Length</strong> - Readability optimization</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Paragraph Structure</strong> - Content organization</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>Reading Difficulty</strong> - Readability scoring</span></li>
-                  <li className="flex items-start"><span className="text-green-600 mr-1 mt-0.5">✓</span><span><strong>List Usage</strong> - Structured content detection</span></li>
-                </ul>
+      {/* ── 150+ FACTORS GUIDE ── */}
+      <section className="why-section section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Comprehensive Coverage</div>
+            <h2 className="s-title">Complete Guide: <span className="blue">150+ SEO Factors We Analyze</span></h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+            {[
+              {
+                title: 'Meta Tags & Title Optimization',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />,
+                items: [
+                  ['Title Tag Length', 'Optimal 30-65 characters'],
+                  ['Title Power Words', 'CTR-improving words'],
+                  ['Meta Description', '120-170 characters optimal'],
+                  ['Meta Description CTA', 'Call-to-action presence'],
+                  ['Meta Keywords', 'Legacy tag analysis'],
+                  ['Meta Robots', 'Index/follow directives'],
+                  ['Theme Color Meta', 'Mobile browser theming'],
+                ],
+              },
+              {
+                title: 'Content Quality & Structure',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />,
+                items: [
+                  ['Content Length', 'Word count analysis (300+ min)'],
+                  ['Content Depth', 'Comprehensiveness scoring'],
+                  ['Content Uniqueness', 'Duplicate content detection'],
+                  ['Content Freshness', 'Date indicators analysis'],
+                  ['Sentence Length', 'Readability optimization'],
+                  ['Paragraph Structure', 'Content organization'],
+                  ['Reading Difficulty', 'Readability scoring'],
+                  ['List Usage', 'Structured content detection'],
+                ],
+              },
+              {
+                title: 'Technical SEO',
+                svgPath: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></>,
+                items: [
+                  ['HTTPS Protocol', 'SSL/TLS security'],
+                  ['URL Structure', 'Clean URL analysis'],
+                  ['DOCTYPE Declaration', 'HTML5 validation'],
+                  ['Character Encoding', 'UTF-8 validation'],
+                  ['Canonical URL', 'Duplicate content prevention'],
+                  ['HTML5 Semantics', 'Semantic markup usage'],
+                  ['Structured Data', 'JSON-LD schema markup'],
+                  ['Robots.txt', 'Crawling directives'],
+                ],
+              },
+              {
+                title: 'Performance Optimization',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
+                items: [
+                  ['CSS Minification', 'Code optimization'],
+                  ['JS Minification', 'JavaScript optimization'],
+                  ['Image Lazy Loading', 'Performance enhancement'],
+                  ['Modern Image Formats', 'WebP/AVIF usage'],
+                  ['Content Compression', 'GZIP/Brotli detection'],
+                  ['Browser Caching', 'Cache headers analysis'],
+                  ['Core Web Vitals', 'Google performance metrics'],
+                ],
+              },
+              {
+                title: 'Social Media & Open Graph',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />,
+                items: [
+                  ['OG Title', 'Social media title optimization'],
+                  ['OG Description', 'Social sharing descriptions'],
+                  ['OG Image', 'Social media preview images'],
+                  ['Twitter Cards', 'Twitter-specific optimization'],
+                  ['Twitter Title', 'Platform-specific titles'],
+                  ['Twitter Description', 'Tweet preview text'],
+                  ['Twitter Image', 'Twitter card images'],
+                ],
+              },
+              {
+                title: 'Images & Media',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />,
+                items: [
+                  ['Image Usage', 'Visual content analysis'],
+                  ['Image Alt Text', 'Accessibility compliance'],
+                  ['Image Title Attributes', 'Additional image context'],
+                  ['Image Accessibility', 'Overall image SEO'],
+                  ['Image Size Optimization', 'File size analysis'],
+                  ['Image Format Analysis', 'Format optimization'],
+                ],
+              },
+              {
+                title: 'Security & Headers',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />,
+                items: [
+                  ['SSL/TLS Security', 'Certificate validation'],
+                  ['Security Headers', 'HTTP security headers'],
+                  ['Content Security Policy', 'CSP implementation'],
+                  ['Mixed Content', 'HTTPS compliance'],
+                  ['Security Features', 'Overall security assessment'],
+                ],
+              },
+              {
+                title: 'Mobile & User Experience',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />,
+                items: [
+                  ['Mobile Viewport', 'Responsive design validation'],
+                  ['Responsive Design', 'Mobile-friendly assessment'],
+                  ['Touch Elements', 'Mobile interaction optimization'],
+                  ['Apple Mobile Web App', 'iOS optimization'],
+                  ['Theme Color', 'Mobile browser theming'],
+                ],
+              },
+              {
+                title: 'Structured Data & Schema',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />,
+                items: [
+                  ['Local Schema Markup', 'Business schema validation'],
+                  ['Semantic SEO', 'Topic authority analysis'],
+                  ['Featured Snippet Optimization', 'SERP feature targeting'],
+                  ['Structured Data Detection', 'JSON-LD analysis'],
+                ],
+              },
+              {
+                title: 'Internal & External Links',
+                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />,
+                items: [
+                  ['Internal Links', 'Site architecture analysis'],
+                  ['Internal Navigation', 'Link structure assessment'],
+                  ['External Links', 'Outbound link analysis'],
+                  ['External Link Security', 'Link safety validation'],
+                  ['NoFollow Links', 'Link attribute analysis'],
+                  ['Link Equity Management', 'Link juice distribution'],
+                ],
+              },
+              {
+                title: 'Accessibility',
+                svgPath: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></>,
+                items: [
+                  ['ARIA Labels', 'Accessibility markup'],
+                  ['Form Accessibility', 'Form label compliance'],
+                  ['Language Declaration', 'International accessibility'],
+                ],
+              },
+              {
+                title: 'Local SEO',
+                svgPath: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></>,
+                items: [
+                  ['Address Information', 'Local business data'],
+                  ['Contact Phone', 'Phone number validation'],
+                  ['Click-to-Call', 'Mobile functionality'],
+                  ['Business Hours', 'Operating hours display'],
+                  ['Service Area', 'Geographic coverage'],
+                  ['Local Keywords', 'Location-based optimization'],
+                  ['Map Integration', 'Google Maps embedding'],
+                ],
+              },
+            ].map(cat => (
+              <div key={cat.title} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">
+                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      {cat.svgPath}
+                    </svg>
+                  </div>
+                  {cat.title}
+                </div>
+                <div className="why-card-body">
+                  <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+                    {cat.items.map(([bold, desc]) => (
+                      <li key={bold} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '6px', fontSize: '0.82rem', lineHeight: 1.5 }}>
+                        <span style={{ color: 'var(--blue)', fontWeight: 700, flexShrink: 0, marginTop: '1px' }}>✓</span>
+                        <span><strong style={{ color: 'var(--ink)' }}>{bold}</strong> — {desc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
+            ))}
+          </div>
 
-              {/* Technical SEO */}
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-purple-800 flex items-center">
-                  <span className="w-7 h-7 bg-purple-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">⚙️</span>
-                  </span>
-                  Technical SEO
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>HTTPS Protocol</strong> - SSL/TLS security</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>URL Structure</strong> - Clean URL analysis</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>DOCTYPE Declaration</strong> - HTML5 validation</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>Character Encoding</strong> - UTF-8 validation</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>Canonical URL</strong> - Duplicate content prevention</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>HTML5 Semantics</strong> - Semantic markup usage</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>Structured Data</strong> - JSON-LD schema markup</span></li>
-                  <li className="flex items-start"><span className="text-purple-600 mr-1 mt-0.5">✓</span><span><strong>Robots.txt</strong> - Crawling directives</span></li>
-                </ul>
-              </div>
-
-              {/* Performance Optimization */}
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-orange-800 flex items-center">
-                  <span className="w-7 h-7 bg-orange-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">⚡</span>
-                  </span>
-                  Performance Optimization
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>CSS Minification</strong> - Code optimization</span></li>
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>JS Minification</strong> - JavaScript optimization</span></li>
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>Image Lazy Loading</strong> - Performance enhancement</span></li>
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>Modern Image Formats</strong> - WebP/AVIF usage</span></li>
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>Content Compression</strong> - GZIP/Brotli detection</span></li>
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>Browser Caching</strong> - Cache headers analysis</span></li>
-                  <li className="flex items-start"><span className="text-orange-600 mr-1 mt-0.5">✓</span><span><strong>Core Web Vitals</strong> - Google performance metrics</span></li>
-                </ul>
-              </div>
-
-              {/* Social Media & Open Graph */}
-              <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border border-teal-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-teal-800 flex items-center">
-                  <span className="w-7 h-7 bg-teal-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">📱</span>
-                  </span>
-                  Social Media & Open Graph
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>OG Title</strong> - Social media title optimization</span></li>
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>OG Description</strong> - Social sharing descriptions</span></li>
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>OG Image</strong> - Social media preview images</span></li>
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>Twitter Cards</strong> - Twitter-specific optimization</span></li>
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>Twitter Title</strong> - Platform-specific titles</span></li>
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>Twitter Description</strong> - Tweet preview text</span></li>
-                  <li className="flex items-start"><span className="text-teal-600 mr-1 mt-0.5">✓</span><span><strong>Twitter Image</strong> - Twitter card images</span></li>
-                </ul>
-              </div>
-
-              {/* Images & Media */}
-              <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border border-pink-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-pink-800 flex items-center">
-                  <span className="w-7 h-7 bg-pink-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">🖼️</span>
-                  </span>
-                  Images & Media
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-pink-600 mr-1 mt-0.5">✓</span><span><strong>Image Usage</strong> - Visual content analysis</span></li>
-                  <li className="flex items-start"><span className="text-pink-600 mr-1 mt-0.5">✓</span><span><strong>Image Alt Text</strong> - Accessibility compliance</span></li>
-                  <li className="flex items-start"><span className="text-pink-600 mr-1 mt-0.5">✓</span><span><strong>Image Title Attributes</strong> - Additional image context</span></li>
-                  <li className="flex items-start"><span className="text-pink-600 mr-1 mt-0.5">✓</span><span><strong>Image Accessibility</strong> - Overall image SEO</span></li>
-                  <li className="flex items-start"><span className="text-pink-600 mr-1 mt-0.5">✓</span><span><strong>Image Size Optimization</strong> - File size analysis</span></li>
-                  <li className="flex items-start"><span className="text-pink-600 mr-1 mt-0.5">✓</span><span><strong>Image Format Analysis</strong> - Format optimization</span></li>
-                </ul>
-              </div>
-
-              {/* Security & Headers */}
-              <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-6 border border-red-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-red-800 flex items-center">
-                  <span className="w-7 h-7 bg-red-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">🔒</span>
-                  </span>
-                  Security & Headers
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-red-600 mr-1 mt-0.5">✓</span><span><strong>SSL/TLS Security</strong> - Certificate validation</span></li>
-                  <li className="flex items-start"><span className="text-red-600 mr-1 mt-0.5">✓</span><span><strong>Security Headers</strong> - HTTP security headers</span></li>
-                  <li className="flex items-start"><span className="text-red-600 mr-1 mt-0.5">✓</span><span><strong>Content Security Policy</strong> - CSP implementation</span></li>
-                  <li className="flex items-start"><span className="text-red-600 mr-1 mt-0.5">✓</span><span><strong>Mixed Content</strong> - HTTPS compliance</span></li>
-                  <li className="flex items-start"><span className="text-red-600 mr-1 mt-0.5">✓</span><span><strong>Security Features</strong> - Overall security assessment</span></li>
-                </ul>
-              </div>
-
-              {/* Mobile & User Experience */}
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-indigo-800 flex items-center">
-                  <span className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">📱</span>
-                  </span>
-                  Mobile & User Experience
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-indigo-600 mr-1 mt-0.5">✓</span><span><strong>Mobile Viewport</strong> - Responsive design validation</span></li>
-                  <li className="flex items-start"><span className="text-indigo-600 mr-1 mt-0.5">✓</span><span><strong>Responsive Design</strong> - Mobile-friendly assessment</span></li>
-                  <li className="flex items-start"><span className="text-indigo-600 mr-1 mt-0.5">✓</span><span><strong>Touch Elements</strong> - Mobile interaction optimization</span></li>
-                  <li className="flex items-start"><span className="text-indigo-600 mr-1 mt-0.5">✓</span><span><strong>Apple Mobile Web App</strong> - iOS optimization</span></li>
-                  <li className="flex items-start"><span className="text-indigo-600 mr-1 mt-0.5">✓</span><span><strong>Theme Color</strong> - Mobile browser theming</span></li>
-                </ul>
-              </div>
-
-              {/* Structured Data & Schema */}
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-yellow-800 flex items-center">
-                  <span className="w-7 h-7 bg-yellow-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">🏗️</span>
-                  </span>
-                  Structured Data & Schema
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-yellow-600 mr-1 mt-0.5">✓</span><span><strong>Local Schema Markup</strong> - Business schema validation</span></li>
-                  <li className="flex items-start"><span className="text-yellow-600 mr-1 mt-0.5">✓</span><span><strong>Semantic SEO</strong> - Topic authority analysis</span></li>
-                  <li className="flex items-start"><span className="text-yellow-600 mr-1 mt-0.5">✓</span><span><strong>Featured Snippet Optimization</strong> - SERP feature targeting</span></li>
-                  <li className="flex items-start"><span className="text-yellow-600 mr-1 mt-0.5">✓</span><span><strong>Structured Data Detection</strong> - JSON-LD analysis</span></li>
-                </ul>
-              </div>
-
-              {/* Internal & External Links */}
-              <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-gray-800 flex items-center">
-                  <span className="w-7 h-7 bg-gray-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">🔗</span>
-                  </span>
-                  Internal & External Links
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-gray-600 mr-1 mt-0.5">✓</span><span><strong>Internal Links</strong> - Site architecture analysis</span></li>
-                  <li className="flex items-start"><span className="text-gray-600 mr-1 mt-0.5">✓</span><span><strong>Internal Navigation</strong> - Link structure assessment</span></li>
-                  <li className="flex items-start"><span className="text-gray-600 mr-1 mt-0.5">✓</span><span><strong>External Links</strong> - Outbound link analysis</span></li>
-                  <li className="flex items-start"><span className="text-gray-600 mr-1 mt-0.5">✓</span><span><strong>External Link Security</strong> - Link safety validation</span></li>
-                  <li className="flex items-start"><span className="text-gray-600 mr-1 mt-0.5">✓</span><span><strong>NoFollow Links</strong> - Link attribute analysis</span></li>
-                  <li className="flex items-start"><span className="text-gray-600 mr-1 mt-0.5">✓</span><span><strong>Link Equity Management</strong> - Link juice distribution</span></li>
-                </ul>
-              </div>
-
-              {/* Accessibility */}
-              <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-6 border border-emerald-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-emerald-800 flex items-center">
-                  <span className="w-7 h-7 bg-emerald-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">♿</span>
-                  </span>
-                  Accessibility
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-emerald-600 mr-1 mt-0.5">✓</span><span><strong>ARIA Labels</strong> - Accessibility markup</span></li>
-                  <li className="flex items-start"><span className="text-emerald-600 mr-1 mt-0.5">✓</span><span><strong>Form Accessibility</strong> - Form label compliance</span></li>
-                  <li className="flex items-start"><span className="text-emerald-600 mr-1 mt-0.5">✓</span><span><strong>Language Declaration</strong> - International accessibility</span></li>
-                </ul>
-              </div>
-
-              {/* Local SEO */}
-              <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-6 border border-amber-100 hover:shadow-lg transition-shadow duration-300">
-                <h3 className="text-lg font-bold mb-4 text-amber-800 flex items-center">
-                  <span className="w-7 h-7 bg-amber-600 rounded-lg flex items-center justify-center mr-2">
-                    <span className="text-white text-xs">📍</span>
-                  </span>
-                  Local SEO
-                </h3>
-                <ul className="space-y-2 text-xs">
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Address Information</strong> - Local business data</span></li>
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Contact Phone</strong> - Phone number validation</span></li>
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Click-to-Call</strong> - Mobile functionality</span></li>
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Business Hours</strong> - Operating hours display</span></li>
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Service Area</strong> - Geographic coverage</span></li>
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Local Keywords</strong> - Location-based optimization</span></li>
-                  <li className="flex items-start"><span className="text-amber-600 mr-1 mt-0.5">✓</span><span><strong>Map Integration</strong> - Google Maps embedding</span></li>
-                </ul>
-              </div>
-
-            </div>
-
-            <div className="mt-12 text-center">
-              <div className="bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">Why These Factors Matter</h3>
-                <p className="text-lg text-gray-700 leading-relaxed max-w-6xl mx-auto">
-                  Google uses over 200 ranking factors to determine search positions. Our tool analyzes the most critical on-page elements 
-                  that directly impact your rankings. From technical fundamentals like HTTPS and Core Web Vitals to content quality signals 
-                  and user experience indicators, each factor contributes to your overall SEO success. By addressing these elements systematically, 
-                  you can achieve <span className="font-semibold text-primary">25-50% improvement in search rankings</span> and significantly boost 
-                  organic traffic, user engagement, and conversion rates.
-                </p>
-              </div>
+          <div style={{ marginTop: '3rem' }}>
+            <div className="prose-callout">
+              <p className="prose-callout-title">Why These Factors Matter</p>
+              <p>Google uses over 200 ranking factors to determine search positions. Our tool analyzes the most critical on-page elements that directly impact your rankings. From technical fundamentals like HTTPS and Core Web Vitals to content quality signals and user experience indicators, each factor contributes to your overall SEO success. By addressing these elements systematically, you can achieve <strong>25-50% improvement in search rankings</strong> and significantly boost organic traffic, user engagement, and conversion rates.</p>
             </div>
           </div>
         </div>

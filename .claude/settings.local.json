@@ -93,7 +93,12 @@
       "Bash(claude plugin install thedotmack/claude-mem)",
       "Bash(claude plugin marketplace list:*)",
       "Bash(claude plugin search:*)",
-      "Bash(claude plugin install:*)"
+      "Bash(claude plugin install:*)",
+      "mcp__mcp-registry__search_mcp_registry",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(claude plugin *)"
     ],
     "deny": [],
     "ask": []

@@ -191,79 +191,68 @@ Visit: https://seoshouts.com/tools/anchor-cloud
   }
 
   return (
-    <div className="relative inline-block">
-      <div className="group">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          onMouseEnter={() => setIsOpen(true)}
-          className="px-3 sm:px-4 py-2 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors flex items-center text-sm sm:text-base"
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: '6px',
+          padding: '8px 14px',
+          background: 'var(--blue)', color: '#fff', border: 'none',
+          fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.85rem',
+          cursor: 'pointer', transition: 'background 0.15s', letterSpacing: '-0.01em',
+        }}
+        onMouseEnter={() => setIsOpen(true)}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Export Data
+        <svg
+          width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+          style={{ transition: 'transform 0.15s', transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
         >
-          📥 Export Data
-          <svg className={`w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
 
-        {/* Dropdown Menu */}
+      {isOpen && (
         <div
-          className={`absolute right-0 top-full mt-2 w-64 sm:w-72 bg-white rounded-xl shadow-2xl border border-gray-200 transition-all duration-200 ${
-            isOpen ? 'opacity-100 visible transform scale-100' : 'opacity-0 invisible transform scale-95'
-          }`}
-          style={{ zIndex: 9999 }}
+          style={{
+            position: 'absolute', right: 0, top: 'calc(100% + 4px)',
+            width: '240px', background: 'var(--white)',
+            border: '1px solid var(--line)', zIndex: 9999,
+            boxShadow: '0 8px 24px rgba(8,9,10,0.1)',
+          }}
           onMouseLeave={() => setIsOpen(false)}
         >
-          <div className="p-2">
+          {[
+            { label: 'Export CSV', sub: 'Spreadsheet format', icon: '📊', fn: exportToCSV },
+            { label: 'Export JSON', sub: 'Developer format', icon: '📋', fn: exportToJSON },
+            { label: 'Export Report', sub: 'Complete analysis', icon: '📄', fn: exportReport },
+          ].map(({ label, sub, icon, fn }) => (
             <button
-              onClick={exportToCSV}
-              className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors flex items-center"
+              key={label}
+              onClick={fn}
+              style={{
+                width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px',
+                padding: '12px 16px', background: 'none', border: 'none',
+                borderBottom: '1px solid var(--line)', cursor: 'pointer', transition: 'background 0.15s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--gray-1)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
             >
-              <span className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                📊
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="font-medium whitespace-nowrap">Export CSV</div>
-                <div className="text-xs text-gray-500 whitespace-nowrap">Spreadsheet format</div>
+              <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>{icon}</span>
+              <div>
+                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.85rem', color: 'var(--ink)' }}>{label}</div>
+                <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '0.72rem', color: 'var(--gray-4)', marginTop: '1px' }}>{sub}</div>
               </div>
             </button>
-
-            <button
-              onClick={exportToJSON}
-              className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors flex items-center"
-            >
-              <span className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                📋
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="font-medium whitespace-nowrap">Export JSON</div>
-                <div className="text-xs text-gray-500 whitespace-nowrap">Developer format</div>
-              </div>
-            </button>
-
-            <button
-              onClick={exportReport}
-              className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors flex items-center"
-            >
-              <span className="w-6 h-6 bg-purple-100 rounded-full flex items-center justify-center mr-3">
-                📄
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="font-medium whitespace-nowrap">Export Report</div>
-                <div className="text-xs text-gray-500 whitespace-nowrap">Complete analysis</div>
-              </div>
-            </button>
-
-            <div className="border-t border-gray-200 my-2"></div>
-
-            <div className="px-4 py-2">
-              <div className="text-xs text-gray-500 text-center">
-                {results.anchors.length} anchor texts
-                <br />
-                {results.insights.totalInternalLinks} total links
-              </div>
-            </div>
+          ))}
+          <div style={{ padding: '10px 16px', textAlign: 'center', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: 'var(--gray-4)', lineHeight: 1.6 }}>
+            {results.anchors.length} anchor texts<br />{results.insights.totalInternalLinks} total links
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

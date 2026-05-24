@@ -1,834 +1,374 @@
 'use client'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import ScrollToTop from './components/ScrollToTop'
 import FloatingContactPopup from './components/FloatingContactPopup'
 import './globals.css'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [isServicesOpen, setIsServicesOpen] = useState(false)
-  const [isToolsOpen, setIsToolsOpen] = useState(false)
+const SERVICES_MEGA = [
+  { title: 'Local SEO', desc: 'Dominate local search & maps', href: '/services/local-seo/' },
+  { title: 'eCommerce SEO', desc: 'Boost online sales & visibility', href: '/services/ecommerce-seo/' },
+  { title: 'SEO Web Development', desc: 'Websites engineered for search', href: '/services/seo-website-development/' },
+  { title: 'Link Building', desc: 'High-quality backlink acquisition', href: '/services/link-building/' },
+  { title: 'Technical SEO Audit', desc: 'Comprehensive technical analysis', href: '/services/technical-seo-audit/' },
+  { title: 'SEO Consulting', desc: 'Strategic SEO roadmaps', href: '/services/seo-consulting/' },
+]
+
+const TOOLS_MEGA = [
+  { cat: 'Keyword Research', tools: [
+    { name: 'Keyword Density Analyzer', desc: 'Analyze density & distribution', href: '/tools/keyword-density-analyzer/' },
+    { name: 'Keyword Difficulty Checker', desc: 'Evaluate competition scores', href: '/tools/keyword-difficulty-checker/' },
+    { name: 'Long Tail Keyword Generator', desc: 'Generate hundreds of variations', href: '/tools/long-tail-keyword-generator/' },
+  ]},
+  { cat: 'Technical SEO', tools: [
+    { name: 'On-Page SEO Analyzer', desc: '150+ factor analysis', href: '/tools/on-page-seo-analyzer/' },
+    { name: 'Internal Link Checker', desc: 'Visual anchor text analysis', href: '/tools/internal-link-checker/' },
+    { name: 'Schema Generator', desc: '39+ schema types', href: '/tools/schema-generator/' },
+    { name: 'Meta Tag Optimizer', desc: 'Title & description optimization', href: '/tools/meta-tag-optimizer/' },
+    { name: 'Robots.txt Generator', desc: 'Generate & validate robots.txt', href: '/tools/robots-txt-generator/' },
+    { name: 'XML Sitemap Generator', desc: 'Create XML sitemaps', href: '/tools/xml-sitemap-generator/' },
+    { name: '.htaccess Generator', desc: 'Apache redirects & security rules', href: '/tools/htaccess-generator/' },
+    { name: 'Disavow File Generator', desc: 'Google-compliant disavow files', href: '/tools/disavow-file-generator/' },
+  ]},
+  { cat: 'Content & AI', tools: [
+    { name: 'Word Counter', desc: 'Count words, characters & more', href: '/tools/word-counter/' },
+    { name: 'AI Copywriter', desc: 'Generate compelling copy with AI', href: '/tools/ai-copywriter/' },
+    { name: 'AI Blog Ideas Generator', desc: 'Blog topics with AI', href: '/tools/blog-ideas-generator/' },
+    { name: 'SEO Meta Writer', desc: 'AI-powered meta content', href: '/tools/seo-meta-writer/' },
+    { name: 'GEO & AEO Score Checker', desc: 'AI search readiness audit', href: '/tools/geo-aeo-checker/' },
+  ]},
+  { cat: 'Developer', tools: [
+    { name: 'HTML Editor', desc: 'Online HTML, CSS & JS editor', href: '/tools/html-editor/' },
+  ]},
+]
+
+function ArrowRight({ size = 12 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14 M12 5l7 7-7 7" />
+    </svg>
+  )
+}
+
+function ChevronDown({ size = 12 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M19 9l-7 7-7-7" />
+    </svg>
+  )
+}
+
+function MegaTools() {
+  const [activeCat, setActiveCat] = useState(0)
+  const active = TOOLS_MEGA[activeCat]
+  return (
+    <div className="mega" style={{ minWidth: 680 }}>
+      <div className="mega-head">Free SEO Tools — No Registration Required</div>
+      <div className="mega-tools-body">
+        <div className="mega-tools-sidebar">
+          {TOOLS_MEGA.map((cat, i) => (
+            <button
+              key={cat.cat}
+              className={`mega-tools-cat${activeCat === i ? ' active' : ''}`}
+              onMouseEnter={() => setActiveCat(i)}
+              onClick={() => setActiveCat(i)}
+            >
+              {cat.cat}
+              <span style={{ fontSize: '0.65rem', color: activeCat === i ? '#93c5fd' : 'rgba(255,255,255,0.3)', fontWeight: 500 }}>
+                {cat.tools.length}
+              </span>
+            </button>
+          ))}
+        </div>
+        <div className="mega-tools-grid">
+          {active.tools.map(tool => (
+            <a key={tool.name} href={tool.href} className="mega-link" style={{ padding: '9px 12px' }}>
+              <div className="mega-link-title" style={{ fontSize: '0.82rem', marginBottom: 2 }}>{tool.name}</div>
+              <div className="mega-link-sub" style={{ fontSize: '0.7rem' }}>{tool.desc}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+      <div className="mega-foot">
+        <a href="/tools/">View all 18 free tools <ArrowRight size={12} /></a>
+      </div>
+    </div>
+  )
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [showCookieConsent, setShowCookieConsent] = useState(true)
+  const [showCookieConsent, setShowCookieConsent] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
-  const servicesRef = useRef<HTMLDivElement>(null)
-  const toolsRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
-  // All your existing handlers remain the same...
-  const handleServicesToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsServicesOpen(prev => !prev)
-    setIsToolsOpen(false)
-  }
-
-  const handleToolsToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsToolsOpen(prev => !prev)
-    setIsServicesOpen(false)
-  }
-
-  const closeAllMenus = () => {
-    setIsServicesOpen(false)
-    setIsToolsOpen(false)
-  }
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(prev => !prev)
-  }
-
-  // Cookie consent handlers
-  const handleAcceptCookies = () => {
-    setShowCookieConsent(false)
-    sessionStorage.setItem('cookieConsentSession', 'accepted') // Per session
-    localStorage.setItem('cookieConsent', 'accepted') // Permanent across sessions
-  }
-
-  const handleDeclineCookies = () => {
-    setShowCookieConsent(false)
-    sessionStorage.setItem('cookieConsentSession', 'declined') // Per session
-    localStorage.setItem('cookieConsent', 'declined') // Permanent
-  }
-
-  const closeCookieConsent = () => {
-    setShowCookieConsent(false)
-    sessionStorage.setItem('cookieConsentSession', 'closed') // Per session (shows again next session unless accepted/declined)
-  }
-
-  // Check cookie consent on mount (per session + permanent)
   useEffect(() => {
     const sessionConsent = sessionStorage.getItem('cookieConsentSession')
     const permanentConsent = localStorage.getItem('cookieConsent')
-    if (sessionConsent || permanentConsent) {
-      setShowCookieConsent(false)
-    }
+    if (!sessionConsent && !permanentConsent) setShowCookieConsent(true)
   }, [])
 
-  // Enhanced outside click detection
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as Node
-
-      if (servicesRef.current && !servicesRef.current.contains(target)) {
-        setIsServicesOpen(false)
-      }
-      if (toolsRef.current && !toolsRef.current.contains(target)) {
-        setIsToolsOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside, true)
-    document.addEventListener('touchstart', handleClickOutside, true)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside, true)
-      document.removeEventListener('touchstart', handleClickOutside, true)
-    }
-  }, [])
-
-  // Escape key handler
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        closeAllMenus()
-        setShowCookieConsent(false)
-      }
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setIsMobileMenuOpen(false); setShowCookieConsent(false) }
     }
     document.addEventListener('keydown', handleEscape)
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-    }
+    return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
-  // Set default robots meta tag for pages that don't have metadata (client components)
   useEffect(() => {
-    // Only add robots meta if it doesn't already exist (to avoid conflicts with server-side metadata)
     if (typeof window !== 'undefined') {
       const existingRobots = document.querySelector('meta[name="robots"]')
       if (!existingRobots) {
         const robotsMeta = document.createElement('meta')
         robotsMeta.setAttribute('name', 'robots')
-        
-        // Check if this is an admin page - admin pages should not be indexed
         const isAdminPage = window.location.pathname.startsWith('/admin')
-        if (isAdminPage) {
-          robotsMeta.setAttribute('content', 'noindex, nofollow')
-        } else {
-          robotsMeta.setAttribute('content', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1')
-        }
-        
+        robotsMeta.setAttribute('content', isAdminPage
+          ? 'noindex, nofollow'
+          : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+        )
         document.head.appendChild(robotsMeta)
       }
     }
   }, [])
 
+  const handleAccept = () => {
+    setShowCookieConsent(false)
+    sessionStorage.setItem('cookieConsentSession', 'accepted')
+    localStorage.setItem('cookieConsent', 'accepted')
+  }
+  const handleDecline = () => {
+    setShowCookieConsent(false)
+    sessionStorage.setItem('cookieConsentSession', 'declined')
+    localStorage.setItem('cookieConsent', 'declined')
+  }
+
   return (
     <html lang="en">
       <head>
-        {/* Global SEO Elements */}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="author" content="SEO Shouts" />
+        <meta name="author" content="SEOShouts" />
         <meta name="generator" content="Next.js" />
-        
+
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/favicon.png" />
         <meta name="msapplication-TileImage" content="/favicon.png" />
-        
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-29PVGYBCLV"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-29PVGYBCLV');
-            `,
-          }}
-        />
-        <meta name="google-site-verification" content="F4Sh8t9pk3YXNPz_tdyQ9GOXLjUEtbknVOBM3A2KN-Y" />
-        
-        {/* Preconnect to external domains for performance */}
+
+        {/* Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-29PVGYBCLV"></script>
+        <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-29PVGYBCLV');` }} />
+        <meta name="google-site-verification" content="F4Sh8t9pk3YXNPz_tdyQ9GOXLjUEtbknVOBM3A2KN-Y" />
+
         {/* Website Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "SEO Shouts",
-              "url": "https://seoshouts.com",
-              "description": "Professional SEO tools and services",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://seoshouts.com/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-              }
-            })
-          }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "SEOShouts",
+          "url": "https://seoshouts.com",
+          "description": "Professional SEO tools and services",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://seoshouts.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        })}} />
       </head>
-      
+
       <body>
-        {/* Cookie Consent Banner - Updated */}
-        {showCookieConsent && (
-          <div className="fixed bottom-4 right-4 max-w-sm w-full z-50 animate-fade-in-up">
-            <div className="bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl p-6 shadow-2xl relative overflow-hidden">
-              <button 
-                onClick={closeCookieConsent}
-                className="absolute top-2 right-2 text-gray-400 hover:text-white transition-colors"
-                aria-label="Close cookie consent"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-blue-900/50 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2">We value your privacy</h3>
-                  <p className="text-sm text-gray-300 mb-4">
-                    This website uses cookies to improve user experience. Read more in our <a href="/privacy-policy/" className="text-blue-300 hover:text-blue-200 underline">Privacy Policy</a>.
-                  </p>
-                  <div className="flex space-x-3">
-                    <button
-                      onClick={handleAcceptCookies}
-                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-md hover:scale-105"
-                    >
-                      Accept All
-                    </button>
-                    <button
-                      onClick={handleDeclineCookies}
-                      className="flex-1 bg-transparent border border-gray-500 text-gray-300 hover:text-white hover:border-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:shadow-md hover:scale-105"
-                    >
-                      Decline All
-                    </button>
+        {/* Announcement Bar */}
+        <div className="announce">
+          New:{' '}
+          <a href="/tools/geo-aeo-checker/">GEO &amp; AEO Score Checker</a>
+          {' '}— Audit your AI search readiness →
+        </div>
+
+        {/* Navigation */}
+        <nav className={`site-nav${scrolled ? ' scrolled' : ''}`}>
+          <div className="nav-inner">
+            {/* Logo */}
+            <a href="/" className="nav-logo">
+              <img src="/logo.png" alt="SEO Shouts Logo" width={150} height={40} />
+            </a>
+
+            {/* Desktop Links */}
+            <div className="nav-links">
+              {/* Services */}
+              <div className="nav-item">
+                <button className="nav-link">
+                  Services <ChevronDown />
+                </button>
+                <div className="mega" style={{ minWidth: 420 }}>
+                  <div className="mega-head">SEO Services</div>
+                  <div style={{ padding: '0.5rem 0' }}>
+                    {SERVICES_MEGA.map(s => (
+                      <a key={s.href} href={s.href} className="mega-link" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '11px 16px' }}>
+                        <div className="mega-link-title" style={{ fontSize: '0.9rem', marginBottom: 0 }}>{s.title}</div>
+                        <ArrowRight size={12} />
+                      </a>
+                    ))}
+                  </div>
+                  <div className="mega-foot">
+                    <a href="/services/">View all services <ArrowRight size={12} /></a>
                   </div>
                 </div>
               </div>
+
+              {/* Free Tools */}
+              <div className="nav-item">
+                <button className="nav-link">
+                  Free Tools <ChevronDown />
+                </button>
+                <MegaTools />
+              </div>
+
+              <a href="/blog/" className="nav-link">Blog</a>
+              <a href="/meet-the-experts/" className="nav-link">Experts</a>
+              <a href="/newsletter/" className="nav-link">Newsletter</a>
+            </div>
+
+            {/* Desktop CTA */}
+            <div className="nav-right">
+              <a href="/tools/on-page-seo-analyzer/" className="nav-ghost">Free Audit</a>
+              <a href="/contact/" className="nav-cta">Get a Proposal</a>
+            </div>
+
+            {/* Mobile hamburger */}
+            <button
+              className="nav-hamburger"
+              onClick={() => setIsMobileMenuOpen(p => !p)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
+                {isMobileMenuOpen
+                  ? <><path d="M18 6L6 18"/><path d="M6 6l12 12"/></>
+                  : <><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></>
+                }
+              </svg>
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          <div className={`mobile-menu${isMobileMenuOpen ? ' open' : ''}`}>
+            <a href="/services/" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
+            <a href="/tools/" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Free Tools</a>
+            <a href="/blog/" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Blog</a>
+            <a href="/meet-the-experts/" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Experts</a>
+            <a href="/newsletter/" className="mobile-menu-link" onClick={() => setIsMobileMenuOpen(false)}>Newsletter</a>
+            <div className="mobile-menu-actions">
+              <a href="/tools/on-page-seo-analyzer/" className="nav-ghost" style={{ flex: 1, textAlign: 'center' }}>Free Audit</a>
+              <a href="/contact/" className="nav-cta" style={{ flex: 1, textAlign: 'center' }}>Get a Proposal</a>
             </div>
           </div>
-        )}
+        </nav>
 
-        {/* Header with complete menu system */}
-        <header className="bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-100 sticky top-0 z-50">
-          <nav className="container mx-auto px-4 sm:px-6 py-4">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-3">
-                <a href="/">
-                  <img src="/logo.png" alt="SEO Shouts Logo" width={150} height={40}/>
-                </a>
-              </div>
-
-              {/* Desktop Navigation */}
-              <div className="hidden lg:flex items-center space-x-8">
-                {/* Services Dropdown - Updated with SEO Website Development */}
-                <div className="relative" ref={servicesRef}>
-                  <button 
-                    onClick={handleServicesToggle}
-                    className="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative flex items-center focus:outline-none focus:text-primary cursor-pointer select-none bg-transparent border-none p-0"
-                    type="button"
-                  >
-                    Services
-                    <svg className={`w-4 h-4 ml-1 transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  
-                  {/* Services Dropdown Menu - Updated */}
-                  <div 
-                    className={`absolute top-full left-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
-                      isServicesOpen 
-                        ? 'opacity-100 visible translate-y-0 z-[70]' 
-                        : 'opacity-0 invisible translate-y-2 z-[-1]'
-                    }`}
-                    style={{ pointerEvents: isServicesOpen ? 'auto' : 'none' }}
-                  >
-                    <div className="p-4">
-                      <div className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wide">Our SEO Services</div>
-                      <div className="space-y-2">
-                        <a href="/services/local-seo/" className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group/item" onClick={closeAllMenus}>
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-gray-600">📍</span>
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-800 group-hover/item:text-primary">Local SEO</div>
-                            <div className="text-xs text-gray-500">Dominate local search results</div>
-                          </div>
-                        </a>
-                        
-                        <a href="/services/ecommerce-seo/" className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group/item" onClick={closeAllMenus}>
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-gray-600">🛒</span>
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-800 group-hover/item:text-primary">eCommerce SEO</div>
-                            <div className="text-xs text-gray-500">Boost online sales & visibility</div>
-                          </div>
-                        </a>
-                        
-                        <a href="/services/seo-website-development/" className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group/item" onClick={closeAllMenus}>
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-gray-600">💻</span>
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-800 group-hover/item:text-primary">SEO Website Development</div>
-                            <div className="text-xs text-gray-500">Build websites that rank & convert</div>
-                          </div>
-                        </a>
-                        
-                        <a href="/services/link-building/" className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group/item" onClick={closeAllMenus}>
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-gray-600">🔗</span>
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-800 group-hover/item:text-primary">Link Building</div>
-                            <div className="text-xs text-gray-500">High-quality backlink acquisition</div>
-                          </div>
-                        </a>
-                        
-                        <a href="/services/technical-seo-audit/" className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group/item" onClick={closeAllMenus}>
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-gray-600">🔧</span>
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-800 group-hover/item:text-primary">Technical SEO Audit</div>
-                            <div className="text-xs text-gray-500">Complete technical analysis</div>
-                          </div>
-                        </a>
-                        
-                        <a href="/services/seo-consulting/" className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors group/item" onClick={closeAllMenus}>
-                          <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                            <span className="text-gray-600">💡</span>
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-800 group-hover/item:text-primary">SEO Consulting</div>
-                            <div className="text-xs text-gray-500">Strategic SEO guidance</div>
-                          </div>
-                        </a>
-                      </div>
-                      
-                      <div className="pt-3 mt-3 border-t border-gray-100">
-                        <a href="/services/" className="flex items-center justify-center w-full p-2 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All Services
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Free Tools Mega Menu */}
-                <div className="relative" ref={toolsRef}>
-                  <button 
-                    onClick={handleToolsToggle}
-                    className="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative flex items-center focus:outline-none focus:text-primary cursor-pointer select-none bg-transparent border-none p-0"
-                    type="button"
-                  >
-                    Free Tools
-                    <svg className={`w-4 h-4 ml-1 transition-transform duration-200 ${isToolsOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  
-                  {/* Free Tools Mega Menu */}
-                  <div 
-                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[1400px] max-w-[98vw] max-h-[80vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 transition-all duration-200 ${
-                      isToolsOpen 
-                        ? 'opacity-100 visible translate-y-0 z-[70]' 
-                        : 'opacity-0 invisible translate-y-2 z-[-1]'
-                    }`}
-                    style={{ pointerEvents: isToolsOpen ? 'auto' : 'none' }}
-                  >
-                    <div className="p-6">
-                      <div className="text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wide">Free SEO Tools</div>
-                      
-                      <div className="grid grid-cols-5 gap-6">
-                        {/* Content & AI Tools */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-                            <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">📄</span>
-                            </span>
-                            Content & AI Tools
-                          </h4>
-                          <div className="space-y-2">
-                            <a href="/tools/word-counter/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🔢</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Word Counter</div>
-                                <div className="text-xs text-gray-500">Count words, characters & paragraphs</div>
-                              </div>
-                            </a>
-                            <a href="/tools/ai-copywriter/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">✍️</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">AI Copywriter</div>
-                                <div className="text-xs text-gray-500">Generate compelling copy with AI</div>
-                              </div>
-                            </a>
-                            <a href="/tools/blog-ideas-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🤖</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">AI Blog Ideas Generator</div>
-                                <div className="text-xs text-gray-500">Generate blog topics with AI</div>
-                              </div>
-                            </a>
-                            <a href="/tools/seo-meta-writer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">📝</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">SEO Meta Writer</div>
-                                <div className="text-xs text-gray-500">AI-powered meta content writer</div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                        
-                        {/* Technical SEO Tools */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-                            <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">⚙️</span>
-                            </span>
-                            Technical SEO
-                          </h4>
-                          <div className="space-y-2">
-                            <a href="/tools/meta-tag-optimizer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">📝</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Meta Tag Optimizer</div>
-                                <div className="text-xs text-gray-500">Optimize title tags & meta descriptions</div>
-                              </div>
-                            </a>
-                            <a href="/tools/robots-txt-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🤖</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Robots.txt Generator</div>
-                                <div className="text-xs text-gray-500">Generate & validate robots.txt files</div>
-                              </div>
-                            </a>
-                            <a href="/tools/htaccess-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">HT</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">.htaccess Generator</div>
-                                <div className="text-xs text-gray-500">Generate Apache redirects, security & caching rules</div>
-                              </div>
-                            </a>
-                            <a href="/tools/xml-sitemap-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🗺️</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">XML Sitemap Generator</div>
-                                <div className="text-xs text-gray-500">Create XML sitemaps for search engines</div>
-                              </div>
-                            </a>
-                            <a href="/tools/schema-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🏗️</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Schema Generator</div>
-                                <div className="text-xs text-gray-500">Generate JSON-LD schema markup</div>
-                              </div>
-                            </a>
-                            <a href="/tools/on-page-seo-analyzer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🔬</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">On-Page SEO Analyzer</div>
-                                <div className="text-xs text-gray-500">Complete SEO analysis with 150+ factors</div>
-                              </div>
-                            </a>
-                            <a href="/tools/internal-link-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🔗</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Internal Link Checker</div>
-                                <div className="text-xs text-gray-500">Analyze internal links & anchor text</div>
-                              </div>
-                            </a>
-                            <a href="/tools/disavow-file-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🚫</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Disavow File Generator</div>
-                                <div className="text-xs text-gray-500">Create Google-compliant disavow.txt files</div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                        
-                        {/* Keyword Research Tools */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-                            <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">🔍</span>
-                            </span>
-                            Keyword Research
-                          </h4>
-                          <div className="space-y-2">
-                            <a href="/tools/keyword-density-analyzer/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">📊</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Keyword Density Analyzer</div>
-                                <div className="text-xs text-gray-500">Analyze keyword density in content</div>
-                              </div>
-                            </a>
-                            <a href="/tools/keyword-difficulty-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🎯</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Keyword Difficulty Checker</div>
-                                <div className="text-xs text-gray-500">Check keyword competition difficulty</div>
-                              </div>
-                            </a>
-                            <a href="/tools/long-tail-keyword-generator/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🔗</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">Long Tail Keyword Generator</div>
-                                <div className="text-xs text-gray-500">Generate long-tail keyword ideas</div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-
-                        {/* Developer Tools */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-                            <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">💻</span>
-                            </span>
-                            Developer Tools
-                          </h4>
-                          <div className="space-y-2">
-                            <a href="/tools/html-editor/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">💻</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">HTML Editor</div>
-                                <div className="text-xs text-gray-500">Online HTML, CSS & JS editor</div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-
-                        {/* AI SEO Tools */}
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-3 flex items-center">
-                            <span className="w-6 h-6 bg-primary/10 rounded-lg flex items-center justify-center mr-2">
-                              <span className="text-primary text-sm">🤖</span>
-                            </span>
-                            AI SEO Tools
-                          </h4>
-                          <div className="space-y-2">
-                            <a href="/tools/geo-aeo-checker/" className="flex items-center p-2 rounded-lg hover:bg-gray-50 transition-colors group/tool" onClick={closeAllMenus}>
-                              <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-3">
-                                <span className="text-gray-600 text-xs">🤖</span>
-                              </div>
-                              <div>
-                                <div className="text-sm font-medium text-gray-800 group-hover/tool:text-primary">GEO & AEO Score Checker</div>
-                                <div className="text-xs text-gray-500">Audit AI search readiness in 7 categories</div>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                      {/* View All Tools CTA */}
-                      <div className="pt-4 mt-4 border-t border-gray-100">
-                        <a href="/tools/" className="flex items-center justify-center w-full p-3 text-sm font-medium text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={closeAllMenus}>
-                          View All 18 Free Tools
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <a href="/meet-the-experts/" className="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
-                  Meet Our Experts
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="/blog/" className="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
-                  Blog
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="/newsletter/" className="text-gray-700 hover:text-primary transition-all duration-300 font-medium relative group">
-                  Newsletter
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                {/* === NEW MENU ITEM: Meet Our Experts === */}
-               
-                <a href="/tools/on-page-seo-analyzer/" className="bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-lg">
-                  Free On Page Audit
-                </a>
-              </div>
-
-              {/* Mobile Menu Button */}
-              <button 
-                onClick={toggleMobileMenu}
-                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:bg-gray-100"
-                aria-expanded={isMobileMenuOpen}
-                aria-label="Toggle menu"
-              >
-                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-                </svg>
-              </button>
-            </div>
-            {/* Mobile Navigation Menu */}
-            {isMobileMenuOpen && (
-              <div className="lg:hidden mt-4 pb-4 border-t border-gray-200 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="space-y-2 pt-4">
-                  <a href="/services/" className="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                    Services
-                  </a>
-                  <a href="/tools/" className="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                    Free Tools
-                  </a>
-                  <a href="/blog/" className="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                    Blog
-                  </a>
-                  <a href="/newsletter/" className="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                    Newsletter
-                  </a>
-                  {/* === NEW MENU ITEM IN MOBILE NAV === */}
-                  <a
-                    href="/meet-the-experts/"
-                    className="block px-4 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Meet Our Experts
-                  </a>
-                  <div className="px-4 pt-2">
-                    <a href="/tools/on-page-seo-analyzer/" className="w-full bg-primary text-white px-6 py-2.5 rounded-full font-semibold hover:bg-primary/90 transition-colors block text-center">
-                      Free On Page Audit
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-          </nav>
-        </header>
-
-        {/* Main Content Area */}
-        <main className="min-h-screen overflow-x-hidden">
+        {/* Main Content */}
+        <main style={{ paddingTop: 99 }}>
           {children}
         </main>
-        
-        {/* Scroll to Top - Available across all pages */}
-        <ScrollToTop />
 
-        {/* Floating Contact Popup - Available across all pages */}
+        <ScrollToTop />
         <FloatingContactPopup />
-        {/* Footer - Updated with SEO Website Development */}
-        <footer className="bg-gray-900 text-white py-16 sm:py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-          
-          <div className="container mx-auto px-4 sm:px-6 relative z-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
-              {/* Contact Information Section */}
-              <div className="lg:col-span-1">
-                <div className="flex items-center space-x-3 mb-6">
-                  <a href="/">
-                    <img src="/logo.png" alt="SEO Shouts Logo" width={150}  height={40}/>
-                  </a>
-                </div>
-                
-                {/* Contact Details */}
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
-                      <span className="text-primary text-sm">📞</span>
-                    </div>
-                    <div>
-                      <p className="text-gray-300 font-medium">Phone</p>
-                      <a href="tel:+918094888157" className="text-white hover:text-primary transition-colors">+91 8094888157</a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center">
-                      <span className="text-primary text-sm">📧</span>
-                    </div>
-                    <div>
-                      <p className="text-gray-300 font-medium">Email</p>
-                      <div className="space-y-1">
-                        <div><a href="mailto:seoshouts@gmail.com" className="text-white hover:text-primary transition-colors text-sm sm:text-base">seoshouts@gmail.com</a></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Social Media Links */}
-                <div className="flex flex-wrap gap-3">
-                  <a href="https://www.facebook.com/seoshouts/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110" title="Facebook" aria-label="Follow us on Facebook">
-                    <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                  </a>
-                  <a href="https://www.linkedin.com/company/seoshouts/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-blue-700 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110" title="LinkedIn" aria-label="Follow us on LinkedIn">
-                    <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                  </a>
-                  <a href="https://x.com/seo_shouts" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-black rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110" title="X (Twitter)" aria-label="Follow us on X (Twitter)">
-                    <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                    </svg>
-                  </a>
-                  <a href="https://www.reddit.com/r/seoshouts/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110" title="Reddit" aria-label="Follow us on Reddit">
-                    <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
-                    </svg>
-                  </a>
+
+        {/* Footer */}
+        <footer className="site-footer">
+          <div className="footer-inner">
+            <div className="footer-top">
+              {/* Brand + Contact */}
+              <div>
+                <a href="/" className="footer-logo-link">
+                  <img src="/logo.png" alt="SEO Shouts Logo" width={150} height={40} />
+                </a>
+                <p className="footer-desc">Professional SEO services and free tools for businesses, agencies, and marketers worldwide.</p>
+                <div className="footer-contact">
+                  <a href="tel:+918094888157">📞 +91 8094888157</a>
+                  <a href="mailto:seoshouts@gmail.com">✉ seoshouts@gmail.com</a>
+                  <span style={{ fontSize: '0.72rem' }}>Udaipur, Rajasthan, India</span>
                 </div>
               </div>
-              {/* SEO Services - Updated */}
+
+              {/* Services */}
               <div>
-                <h4 className="font-bold text-lg mb-6 text-white">SEO Services</h4>
-                <ul className="space-y-3">
-                  <li><a href="/services/local-seo/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Local SEO
-                  </a></li>
-                  <li><a href="/services/ecommerce-seo/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    eCommerce SEO
-                  </a></li>
-                  <li><a href="/services/seo-website-development/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Website Development
-                  </a></li>
-                  <li><a href="/services/link-building/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Link Building
-                  </a></li>
-                  <li><a href="/services/technical-seo-audit/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Technical Audit
-                  </a></li>
-                  <li><a href="/services/seo-consulting/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    SEO Consulting
-                  </a></li>
-                </ul>
+                <div className="footer-col-title">Services</div>
+                <a href="/services/local-seo/" className="footer-link">Local SEO</a>
+                <a href="/services/ecommerce-seo/" className="footer-link">eCommerce SEO</a>
+                <a href="/services/seo-website-development/" className="footer-link">Website Development</a>
+                <a href="/services/link-building/" className="footer-link">Link Building</a>
+                <a href="/services/technical-seo-audit/" className="footer-link">Technical Audit</a>
+                <a href="/services/seo-consulting/" className="footer-link">SEO Consulting</a>
               </div>
-              
-              {/* Free Tools */}
+
+              {/* Tools */}
               <div>
-                <h4 className="font-bold text-lg mb-6 text-white">Free Tools</h4>
-                <ul className="space-y-3">
-                  <li><a href="/tools/keyword-density-analyzer/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Keyword Analyzer
-                  </a></li>
-                  <li><a href="/tools/meta-tag-optimizer/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Meta Tag Optimizer
-                  </a></li>
-                  <li><a href="/tools/html-editor/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    HTML Editor
-                  </a></li>
-                  <li><a href="/tools/schema-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Schema Generator
-                  </a></li>
-                  <li><a href="/tools/htaccess-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    .htaccess Generator
-                  </a></li>
-                  <li><a href="/tools/disavow-file-generator/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Disavow File Generator
-                  </a></li>
-                  <li><a href="/tools/" className="text-gray-300 hover:text-primary transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    All Tools
-                  </a></li>
-                </ul>
+                <div className="footer-col-title">Tools</div>
+                <a href="/tools/on-page-seo-analyzer/" className="footer-link">On-Page Analyzer</a>
+                <a href="/tools/internal-link-checker/" className="footer-link">Internal Link Checker</a>
+                <a href="/tools/schema-generator/" className="footer-link">Schema Generator</a>
+                <a href="/tools/geo-aeo-checker/" className="footer-link">GEO &amp; AEO Checker</a>
+                <a href="/tools/meta-tag-optimizer/" className="footer-link">Meta Tag Optimizer</a>
+                <a href="/tools/" className="footer-link">All 18 Tools</a>
               </div>
-              
-              {/* Resources */}
+
+              {/* Company */}
               <div>
-                <h4 className="font-bold text-lg mb-6 text-white">Resources</h4>
-                <ul className="space-y-3">
-                  <li><a href="/blog/" className="text-gray-300 hover:text-gray-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    SEO Blog
-                  </a></li>
-                  <li><a href="/newsletter/" className="text-gray-300 hover:text-gray-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Newsletter
-                  </a></li>
-                  <li><a href="/meet-the-experts/" className="text-gray-300 hover:text-gray-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Meet Our Experts
-                  </a></li>
-                  <li><a href="/contact/" className="text-gray-300 hover:text-gray-400 transition-colors duration-300 flex items-center group">
-                    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
-                    Contact Us
-                  </a></li>
-                </ul>
+                <div className="footer-col-title">Company</div>
+                <a href="/blog/" className="footer-link">SEO Blog</a>
+                <a href="/newsletter/" className="footer-link">Newsletter</a>
+                <a href="/meet-the-experts/" className="footer-link">Meet the Experts</a>
+                <a href="/contact/" className="footer-link">Contact Us</a>
+                <a href="/sitemap.xml" className="footer-link">Sitemap</a>
               </div>
             </div>
-            
-            <div className="border-t border-gray-700 mt-12 sm:mt-16 pt-6 sm:pt-8 flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
-              <p className="text-gray-400 text-center lg:text-left text-sm sm:text-base">
-                © 2025 SEO Shouts. Professional SEO tools and services for global success.
-              </p>
-              <div className="flex flex-wrap items-center justify-center lg:justify-end gap-4 sm:gap-6 text-gray-400 text-sm">
-                <a href="/privacy-policy/" className="hover:text-white transition-colors">Privacy Policy</a>
-                <a href="/terms/" className="hover:text-white transition-colors">Terms of Service</a>
-                <a href="/cookie-policy/" className="hover:text-white transition-colors">Cookie Policy</a>
-                <a href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</a>
-                <a href="/contact/" className="hover:text-white transition-colors">Contact Us</a>
+
+            <div className="footer-bottom">
+              <div className="footer-copy">© 2026 SEOShouts. All rights reserved.</div>
+              <div className="footer-legal">
+                <a href="/privacy-policy/">Privacy</a>
+                <a href="/terms/">Terms</a>
+                <a href="/cookie-policy/">Cookies</a>
               </div>
             </div>
           </div>
         </footer>
+
+        {/* Cookie Consent */}
+        {showCookieConsent && (
+          <div style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', width: 320, zIndex: 9999 }}>
+            <div style={{ background: 'var(--ink-2)', border: '1px solid rgba(255,255,255,0.1)', padding: '1.5rem', boxShadow: '0 20px 60px rgba(0,0,0,0.5)', position: 'relative' }}>
+              <button
+                onClick={() => { setShowCookieConsent(false); sessionStorage.setItem('cookieConsentSession', 'closed') }}
+                style={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', color: 'var(--gray-4)', cursor: 'pointer', lineHeight: 1 }}
+                aria-label="Close"
+              >✕</button>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.95rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem' }}>We value your privacy</h3>
+              <p style={{ fontSize: '0.8rem', color: 'var(--gray-4)', lineHeight: 1.6, marginBottom: '1rem' }}>
+                This website uses cookies to improve user experience. Read our{' '}
+                <a href="/privacy-policy/" style={{ color: 'var(--blue-light)', textDecoration: 'underline' }}>Privacy Policy</a>.
+              </p>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button onClick={handleAccept} style={{ flex: 1, background: 'var(--blue)', color: '#fff', border: 'none', padding: '8px 0', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+                  Accept All
+                </button>
+                <button onClick={handleDecline} style={{ flex: 1, background: 'none', color: 'var(--gray-4)', border: '1px solid rgba(255,255,255,0.15)', padding: '8px 0', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>
+                  Decline
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </body>
     </html>
   )
