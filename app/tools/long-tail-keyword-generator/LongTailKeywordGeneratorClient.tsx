@@ -720,7 +720,7 @@ export default function LongTailKeywordGeneratorClient() {
       </section>
 
       {/* ─── COMMON MISTAKES ─── */}
-      <section className="section mistakes-section">
+      <section className="section prose-section">
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">Common Mistakes</div>

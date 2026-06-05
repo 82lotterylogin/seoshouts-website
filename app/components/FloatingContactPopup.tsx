@@ -18,10 +18,7 @@ export default function FloatingContactPopup() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,10 +30,8 @@ export default function FloatingContactPopup() {
       return
     }
 
-    // Get reCAPTCHA token before setting submitting state
     let recaptchaToken = 'recaptcha_disabled'
     if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && recaptchaRef.current) {
-      // Check if user already completed the checkbox
       const existingToken = recaptchaRef.current.getValue()
       if (!existingToken) {
         setErrorMessage('Please complete the reCAPTCHA verification.')
@@ -51,12 +46,9 @@ export default function FloatingContactPopup() {
     setErrorMessage('')
 
     try {
-
       const response = await fetch('/api/contact-submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           name: 'Quick Contact Form',
@@ -70,27 +62,17 @@ export default function FloatingContactPopup() {
 
       if (response.ok) {
         setSubmitStatus('success')
-        setFormData({
-          website: '',
-          message: '',
-          source: ''
-        })
-        // Reset reCAPTCHA
+        setFormData({ website: '', message: '', source: '' })
         if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
-        setTimeout(() => {
-          setSubmitStatus('idle')
-          setIsOpen(false)
-        }, 3000)
+        setTimeout(() => { setSubmitStatus('idle'); setIsOpen(false) }, 3000)
       } else {
         setSubmitStatus('error')
         setErrorMessage(result.error || 'Something went wrong. Please try again.')
-        // Reset reCAPTCHA on error
         if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
       }
     } catch (error) {
       setSubmitStatus('error')
       setErrorMessage('Network error. Please check your connection and try again.')
-      // Reset reCAPTCHA on error
       if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
     } finally {
       setIsSubmitting(false)
@@ -98,243 +80,183 @@ export default function FloatingContactPopup() {
   }
 
   const togglePopup = () => {
-    if (isMinimized) {
-      setIsMinimized(false)
-      setIsOpen(true)
-    } else {
-      setIsOpen(!isOpen)
-    }
+    if (isMinimized) { setIsMinimized(false); setIsOpen(true) }
+    else { setIsOpen(!isOpen) }
   }
 
-  const minimizePopup = () => {
-    setIsMinimized(true)
-    setIsOpen(false)
-  }
+  const minimizePopup = () => { setIsMinimized(true); setIsOpen(false) }
 
   return (
     <>
-      {/* Floating Button */}
+      <style>{`
+        /* FloatingContactPopup (fcp-) */
+        @keyframes fcp-in { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }
+
+        .fcp-trigger { position:fixed; bottom:1.5rem; left:1.5rem; z-index:50; display:flex; align-items:center; gap:10px; background:var(--ink); color:#fff; border:1px solid rgba(255,255,255,0.12); padding:11px 18px 11px 14px; cursor:pointer; font-family:'Space Grotesk',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:-0.01em; transition:background 0.15s, border-color 0.15s; }
+        .fcp-trigger:hover { background:var(--blue); border-color:var(--blue); }
+        .fcp-trigger-icon { width:28px; height:28px; background:var(--blue); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.15s; }
+        .fcp-trigger:hover .fcp-trigger-icon { background:rgba(255,255,255,0.18); }
+        .fcp-trigger-label { display:flex; flex-direction:column; }
+        .fcp-trigger-sub { font-family:'JetBrains Mono',monospace; font-size:0.6rem; color:var(--blue-light); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:1px; transition:color 0.15s; }
+        .fcp-trigger:hover .fcp-trigger-sub { color:rgba(255,255,255,0.7); }
+        .fcp-trigger-arrow { color:rgba(255,255,255,0.35); transition:color 0.15s; }
+        .fcp-trigger:hover .fcp-trigger-arrow { color:#fff; }
+
+        .fcp-mini { position:fixed; bottom:1.5rem; left:1.5rem; z-index:50; width:44px; height:44px; background:var(--ink); border:1px solid rgba(255,255,255,0.12); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background 0.15s; color:#fff; }
+        .fcp-mini:hover { background:var(--blue); border-color:var(--blue); }
+
+        .fcp-popup { position:fixed; bottom:1rem; left:1rem; right:1rem; z-index:50; animation:fcp-in 0.25s ease-out; max-width:420px; }
+        @media (min-width:540px) { .fcp-popup { left:1.5rem; right:auto; bottom:1.5rem; } }
+
+        .fcp-card { background:var(--white); border:1px solid var(--line); }
+        .fcp-head { background:var(--ink); padding:1.1rem 1.25rem; display:flex; align-items:flex-start; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); }
+        .fcp-head-l { display:flex; align-items:center; gap:12px; }
+        .fcp-head-icon { width:36px; height:36px; background:var(--blue); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#fff; }
+        .fcp-head-title { font-family:'Space Grotesk',sans-serif; font-size:1rem; font-weight:700; color:#fff; letter-spacing:-0.02em; margin-bottom:4px; }
+        .fcp-head-status { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:#4ade80; letter-spacing:0.06em; text-transform:uppercase; }
+        .fcp-head-status-dot { width:5px; height:5px; border-radius:50%; background:#4ade80; }
+        .fcp-head-actions { display:flex; gap:4px; }
+        .fcp-head-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.45); background:none; border:none; cursor:pointer; transition:color 0.15s; }
+        .fcp-head-btn:hover { color:#fff; }
+
+        .fcp-body { padding:1.25rem; background:var(--white); }
+        .fcp-field { margin-bottom:0.75rem; }
+        .fcp-label { display:block; font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:600; color:var(--gray-5); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:5px; }
+        .fcp-input { width:100%; padding:10px 12px; border:1px solid var(--line); font-family:'Inter',sans-serif; font-size:0.88rem; color:var(--ink); background:var(--white); outline:none; transition:border-color 0.15s; }
+        .fcp-input:focus { border-color:var(--blue); }
+        .fcp-input::placeholder { color:var(--gray-4); }
+        .fcp-textarea { width:100%; padding:10px 12px; border:1px solid var(--line); font-family:'Inter',sans-serif; font-size:0.88rem; color:var(--ink); background:var(--white); outline:none; transition:border-color 0.15s; resize:vertical; min-height:80px; }
+        .fcp-textarea:focus { border-color:var(--blue); }
+        .fcp-textarea::placeholder { color:var(--gray-4); }
+        .fcp-submit { width:100%; background:var(--blue); color:#fff; border:none; padding:12px; font-family:'Space Grotesk',sans-serif; font-size:0.9rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:background 0.15s; margin-top:0.75rem; }
+        .fcp-submit:hover { background:var(--blue-dark); }
+        .fcp-submit:disabled { background:var(--gray-3); cursor:not-allowed; }
+        .fcp-success { background:rgba(22,163,74,0.06); border:1px solid rgba(22,163,74,0.25); padding:12px; margin-bottom:0.75rem; font-family:'Space Grotesk',sans-serif; font-size:0.88rem; font-weight:600; color:#16a34a; display:flex; align-items:center; gap:8px; }
+        .fcp-error { background:rgba(220,38,38,0.06); border-left:3px solid var(--red,#dc2626); padding:10px 12px; margin-bottom:0.75rem; font-size:0.82rem; color:var(--red,#dc2626); }
+        .fcp-fine { font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--gray-4); letter-spacing:0.04em; margin-top:0.625rem; text-align:center; line-height:1.5; }
+      `}</style>
+
+      {/* Floating trigger button */}
       {!isOpen && !isMinimized && (
-        <button
-          onClick={togglePopup}
-          className="fixed bottom-6 left-6 z-50 group"
-          aria-label="Get free proposal"
-        >
-          <div className="relative">
-            {/* Pulsing background effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity animate-pulse"></div>
-
-            {/* Main button */}
-            <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-3">
-              <div className="relative">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
-                {/* Notification dot */}
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse"></span>
-              </div>
-              <span className="font-semibold text-sm sm:text-base whitespace-nowrap">Get free performance report</span>
-            </div>
+        <button className="fcp-trigger" onClick={togglePopup} aria-label="Get free performance report">
+          <div className="fcp-trigger-icon">
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
           </div>
-        </button>
-      )}
-
-      {/* Minimized Button */}
-      {isMinimized && (
-        <button
-          onClick={togglePopup}
-          className="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-full shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-110"
-          aria-label="Open proposal form"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          <div className="fcp-trigger-label">
+            <span className="fcp-trigger-sub">FREE TOOL</span>
+            <span>Get free performance report</span>
+          </div>
+          <svg className="fcp-trigger-arrow" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
         </button>
       )}
 
-      {/* Popup Form */}
+      {/* Minimised icon button */}
+      {isMinimized && (
+        <button className="fcp-mini" onClick={togglePopup} aria-label="Open form">
+          <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </button>
+      )}
+
+      {/* Popup form */}
       {isOpen && (
-        <div className="fixed bottom-4 left-4 right-4 sm:left-6 sm:right-auto sm:bottom-6 z-50 w-auto sm:w-full sm:max-w-md animate-slide-up">
-          <div className="bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+        <div className="fcp-popup">
+          <div className="fcp-card">
             {/* Header */}
-            <div className="relative bg-gradient-to-r from-blue-600/20 to-indigo-600/20 backdrop-blur-xl p-4 sm:p-6 border-b border-white/10">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-white">Experience Real Results.</h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                      <span className="text-xs text-green-300">We're online now</span>
-                    </div>
-                  </div>
+            <div className="fcp-head">
+              <div className="fcp-head-l">
+                <div className="fcp-head-icon">
+                  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={minimizePopup}
-                    className="text-white/60 hover:text-white transition-colors p-1"
-                    aria-label="Minimize"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="text-white/60 hover:text-white transition-colors p-1"
-                    aria-label="Close"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
+                <div>
+                  <div className="fcp-head-title">Experience Real Results.</div>
+                  <div className="fcp-head-status">
+                    <span className="fcp-head-status-dot"/>
+                    <span>We&apos;re online now</span>
+                  </div>
                 </div>
               </div>
-              <p className="text-xs sm:text-sm text-blue-100">
-                Partner with SEO Shouts and scale your business.
-              </p>
+              <div className="fcp-head-actions">
+                <button className="fcp-head-btn" onClick={minimizePopup} aria-label="Minimise">
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <button className="fcp-head-btn" onClick={() => setIsOpen(false)} aria-label="Close">
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
             </div>
 
-            {/* Form */}
-            <div className="p-4 sm:p-6 bg-white">
+            {/* Form body */}
+            <div className="fcp-body">
               {submitStatus === 'success' && (
-                <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-green-800">
-                        Thank you! We'll get back to you soon.
-                      </p>
-                    </div>
-                  </div>
+                <div className="fcp-success">
+                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  Thank you! We&apos;ll get back to you soon.
                 </div>
               )}
-
               {submitStatus === 'error' && (
-                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-red-800">
-                        {errorMessage}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <div className="fcp-error">{errorMessage}</div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
+              <form onSubmit={handleSubmit}>
+                <div className="fcp-field">
+                  <label className="fcp-label" htmlFor="fcp-website">Website URL</label>
                   <input
-                    type="url"
-                    id="website"
-                    name="website"
-                    required
-                    value={formData.website}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-900"
-                    placeholder="Website"
+                    type="url" id="fcp-website" name="website" required
+                    className="fcp-input" placeholder="https://yoursite.com"
+                    value={formData.website} onChange={handleInputChange}
                   />
                 </div>
-
-                <div>
+                <div className="fcp-field">
+                  <label className="fcp-label" htmlFor="fcp-message">Tell us about your business</label>
                   <textarea
-                    id="message"
-                    name="message"
-                    rows={3}
-                    required
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-900"
-                    placeholder="Tell us about your business"
+                    id="fcp-message" name="message" required
+                    className="fcp-textarea" placeholder="Goals, current traffic, what&apos;s not working..."
+                    value={formData.message} onChange={handleInputChange}
                   />
                 </div>
-
-                <div>
+                <div className="fcp-field">
+                  <label className="fcp-label" htmlFor="fcp-source">How did you hear about us? <span style={{ fontWeight:400, textTransform:'none', letterSpacing:0 }}>(optional)</span></label>
                   <input
-                    type="text"
-                    id="source"
-                    name="source"
-                    value={formData.source}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-900"
-                    placeholder="How Did You Hear About Us?"
+                    type="text" id="fcp-source" name="source"
+                    className="fcp-input" placeholder="Google, referral, social..."
+                    value={formData.source} onChange={handleInputChange}
                   />
                 </div>
 
-                {/* reCAPTCHA */}
                 {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
-                  <div className="flex justify-center">
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    />
+                  <div style={{ margin:'0.625rem 0', transform:'scale(0.88)', transformOrigin:'left center' }}>
+                    <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} />
                   </div>
                 )}
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full py-4 rounded-lg font-bold transition-all transform shadow-xl flex items-center justify-center gap-2 ${
-                    isSubmitting
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:scale-[1.02] hover:shadow-2xl'
-                  }`}
-                >
+                <button type="submit" disabled={isSubmitting} className="fcp-submit">
                   {isSubmitting ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </span>
+                    <>
+                      <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ animation:'spin 1s linear infinite' }}><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                      Sending&hellip;
+                    </>
                   ) : (
                     <>
-                      GET STARTED
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
+                      Get Started
+                      <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </>
                   )}
                 </button>
 
-                <p className="text-xs text-slate-400 text-center mt-3">
-                  By submitting your information, you agree to receiving texts from SEO Shouts.
-                </p>
+                <p className="fcp-fine">By submitting you agree to receive updates from SEO Shouts.</p>
               </form>
             </div>
           </div>
         </div>
       )}
-
-      <style jsx>{`
-        @keyframes slide-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-slide-up {
-          animation: slide-up 0.3s ease-out;
-        }
-      `}</style>
     </>
   )
 }

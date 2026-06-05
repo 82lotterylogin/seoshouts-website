@@ -34,67 +34,46 @@ const RelatedPosts = async ({ currentSlug, category, categorySlug, categoryId }:
   if (relatedPosts.length === 0) return null;
 
   return (
-    <section className="bg-gray-50 py-12">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">More {category} Articles</h2>
-          <p className="text-gray-600">
-            Continue exploring our latest insights
-          </p>
+    <section className="ba-related-section">
+      <div className="ba-related-inner">
+        <div className="ba-related-head">
+          <div>
+            <div className="ba-related-eyebrow">More {category} Articles</div>
+            <h2>Continue exploring our latest insights</h2>
+            <p>Hand-picked reads on {category.toLowerCase()} and the future of search.</p>
+          </div>
+          <Link href={`/categories/${categorySlug}`} className="ba-related-cta">
+            View All {category} Articles
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </Link>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="ba-related-grid">
           {relatedPosts.map((post: any) => (
-            <article key={post.id} className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100">
-              <div className="relative h-40 overflow-hidden">
+            <article key={post.id} className="ba-related-card">
+              <div className="ba-related-img">
                 <Image
                   src={post.featured_image || '/placeholder-blog.jpg'}
                   alt={post.featured_image_alt || post.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover"
+                  style={{ objectFit: 'cover' }}
                 />
-                <div className="absolute top-3 left-3">
-                  <span className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium">
-                    {post.category_name}
-                  </span>
-                </div>
               </div>
-
-              <div className="p-4">
-                <Link href={`/blog/${post.slug}`}>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
-                    {post.title}
-                  </h3>
-                </Link>
-                
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                  {post.excerpt || 'Discover proven SEO strategies and insights that drive real results...'}
-                </p>
-
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                      <span className="text-xs font-semibold text-blue-600">{post.author_name.charAt(0)}</span>
-                    </div>
-                    <span>{post.author_name}</span>
-                  </div>
-                  <span>{new Date(post.published_at || post.created_at).toLocaleDateString()}</span>
+              <div className="ba-related-body">
+                <div><span className="ba-related-cat">{post.category_name}</span></div>
+                <h3><Link href={`/blog/${post.slug}`}>{post.title}</Link></h3>
+                <p>{(() => { const t = post.excerpt || 'Discover proven SEO strategies and insights that drive real results.'; return t.length > 150 ? t.slice(0, 150).trimEnd() + '…' : t; })()}</p>
+                <div className="ba-related-footer">
+                  <span className="ba-related-av">{post.author_name.charAt(0)}</span>
+                  <span className="ba-related-nm">{post.author_name}</span>
+                  <span className="ba-related-dt">
+                    {new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })}
+                  </span>
                 </div>
               </div>
             </article>
           ))}
-        </div>
-
-        <div className="text-center mt-8">
-          <Link 
-            href={`/categories/${categorySlug}`}
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md no-underline"
-          >
-            <span>View All {category} Articles</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </Link>
         </div>
       </div>
     </section>

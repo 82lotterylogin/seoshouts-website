@@ -295,6 +295,65 @@ export default async function HomePage() {
         ]
       })}} />
 
+      {/* Speakable Schema — tells AI assistants which section to extract as the voice-ready answer */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": ["h1", ".s-sub"]
+        },
+        "url": "https://seoshouts.com/"
+      })}} />
+
+      {/* FAQ Schema — common questions about SEOShouts for AI extraction */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What SEO services does SEOShouts offer?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SEOShouts offers six core SEO services: Local SEO, eCommerce SEO, SEO Website Development, Link Building, Technical SEO Audit, and SEO Consulting. All services are delivered by a team with 13+ years of SEO experience, led by founder Rohit Sharma."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does SEOShouts offer free SEO tools?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. SEOShouts provides 18 free professional SEO tools including a Keyword Density Analyzer, On-Page SEO Analyzer, Schema Generator, Meta Tag Optimizer, Internal Link Checker, GEO & AEO Score Checker, and more. All tools are free to use with no registration required."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long has SEOShouts been providing SEO services?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SEOShouts was founded in 2012 and has been providing professional SEO services for over 13 years. The company is headquartered in Udaipur, Rajasthan, India and serves clients across India, USA, UK, Australia, and Canada."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the GEO & AEO Score Checker?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The GEO & AEO Score Checker is a free tool by SEOShouts that audits any webpage for AI search readiness. It provides a 0–100 composite score across 7 categories: schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and page performance. It helps website owners optimize for ChatGPT, Perplexity, Google AI Overviews, and other AI search platforms."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What makes SEOShouts different from other SEO agencies?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "SEOShouts combines professional SEO services with a free suite of 18 SEO tools, offering clients both hands-on expertise and self-serve capabilities. The agency specializes in AI-era SEO including Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO), in addition to traditional technical SEO, link building, and local SEO. With 13+ years of experience and a 90-day performance guarantee on select services, SEOShouts focuses on measurable organic growth."
+            }
+          }
+        ]
+      })}} />
+
       {/* Setup reveal animations */}
       <RevealInit />
 

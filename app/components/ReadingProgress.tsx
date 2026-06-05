@@ -10,15 +10,14 @@ const ReadingProgress = () => {
   useEffect(() => {
     const updateProgress = () => {
       const scrollTop = window.scrollY;
-      
-      // Try to find author box to use as 100% completion point
-      const authorBox = document.querySelector('[class*="author"]') || 
+
+      // Try to find the author bio section at the BOTTOM of the article
+      const authorBox = document.getElementById('author-section') ||
                         document.querySelector('.author-bio') ||
-                        document.querySelector('#author') ||
-                        document.getElementById('author-section');
-      
+                        document.querySelector('#author');
+
       let targetElement = authorBox;
-      
+
       // If no author box found, use document height
       if (!targetElement) {
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -31,7 +30,7 @@ const ReadingProgress = () => {
         const scrollPercent = Math.min(100, Math.max(0, (scrollTop / targetPosition) * 100));
         setProgress(scrollPercent);
       }
-      
+
       setIsVisible(scrollTop > 100);
     };
 
@@ -44,8 +43,8 @@ const ReadingProgress = () => {
   return (
     <>
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-        <div 
-          className="h-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 transition-all duration-300 ease-out"
+        <div
+          className="h-full bg-blue-600 transition-all duration-300 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -65,7 +64,7 @@ const ReadingProgress = () => {
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
               <path
-                className="text-orange-500"
+                className="text-blue-600"
                 stroke="currentColor"
                 strokeWidth="3"
                 fill="transparent"

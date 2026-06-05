@@ -65,7 +65,7 @@ export default function BlogSidebarSubscription() {
           </div>
           <div>
             <h3>Stay Ahead in SEO</h3>
-            <div className="joined">// JOIN 10,000+ SEO PROFESSIONALS</div>
+            <div className="joined">// JOIN SEO PROFESSIONALS</div>
           </div>
         </div>
 
@@ -119,12 +119,6 @@ export default function BlogSidebarSubscription() {
           )}
         </form>
 
-        <div className="news-trust">
-          <span className="check">✓</span>
-          <span>No spam, ever</span>
-          <span className="dotsep">•</span>
-          <span>Unsubscribe anytime</span>
-        </div>
       </div>
     </div>
   )

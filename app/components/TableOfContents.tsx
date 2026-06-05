@@ -64,8 +64,8 @@ const TableOfContents = ({ content }: { content: any }) => {
     }
 
     // Calculate header height more precisely
-    const header = document.querySelector('header[class*="sticky"]') || 
-                   document.querySelector('header');
+    const header = (document.querySelector('header[class*="sticky"]') ||
+                   document.querySelector('header')) as HTMLElement | null;
     const headerHeight = header ? header.offsetHeight : 80;
     
     // Add extra padding for breathing room
@@ -83,64 +83,46 @@ const TableOfContents = ({ content }: { content: any }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-2xl fixed bottom-24 left-4 right-4 lg:relative lg:left-auto lg:right-auto lg:bottom-auto z-[60] lg:z-auto lg:w-full">
-      {/* Header with Toggle Button */}
-      <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-        <h3 className="font-bold text-gray-800 flex items-center gap-2">
-          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7"></path>
+    <div className="ba-toc-card">
+      <button
+        className="ba-toc-btn"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        type="button"
+      >
+        <div className="ba-toc-btn-l">
+          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--blue)', flexShrink: 0 }}>
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
           </svg>
-          Table of Contents
-        </h3>
-        
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? 'Collapse Table of Contents' : 'Expand Table of Contents'}
-          className="text-blue-600 hover:text-blue-800 transition-colors duration-200 p-1 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-        >
-          {isOpen ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
-          )}
-        </button>
+          <span className="ba-toc-btn-title">Table of Contents</span>
+        </div>
+        <span className={`ba-toc-chev${isOpen ? '' : ' collapsed'}`} aria-hidden="true">
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </span>
+      </button>
+
+      <div className={`ba-toc-list${isOpen ? '' : ' collapsed'}`}>
+        {headings.length > 0 ? (
+          headings.map((heading, index) => (
+            <button
+              key={heading.id}
+              className={`ba-toc-link${activeId === heading.id ? ' active' : ''}`}
+              onClick={(e) => { e.preventDefault(); scrollToHeading(heading.id); }}
+              type="button"
+            >
+              <span className="ba-toc-num">{String(index + 1).padStart(2, '0')}</span>
+              <span>{heading.title}</span>
+            </button>
+          ))
+        ) : (
+          <div style={{ padding: '1rem 1.15rem', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', color: 'var(--gray-4)', letterSpacing: '0.06em' }}>
+            No headings found
+          </div>
+        )}
       </div>
-      
-      {/* Navigation Content */}
-      {isOpen && (
-        <nav className="p-4 max-h-[50vh] overflow-y-auto">
-          {headings.length > 0 ? (
-            <ul className="space-y-1">
-              {headings.map((heading, index) => (
-                <li key={heading.id}>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollToHeading(heading.id);
-                    }}
-                    className={`block py-2 px-3 rounded-lg transition-colors duration-200 w-full text-left ${
-                      activeId === heading.id
-                        ? 'text-blue-600 font-semibold bg-blue-50 border-l-2 border-blue-600'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                    }`}
-                    style={{ fontSize: '18px' }}
-                  >
-                    {heading.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="text-center text-gray-500 py-4">
-              <p className="text-sm">No headings found</p>
-            </div>
-          )}
-        </nav>
-      )}
     </div>
   );
 };

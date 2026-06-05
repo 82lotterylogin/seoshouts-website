@@ -83,42 +83,39 @@ const SocialShare = ({ title, slug }: { title: string; slug: string }) => {
   if (shouldHide) return null;
 
   return (
-    <div className="hidden md:flex fixed left-4 top-1/2 transform -translate-y-1/2 z-50 flex-col space-y-3 transition-opacity duration-300">
-      {shareLinks.map((platform) => (
-        <a
-          key={platform.name}
-          href={platform.url}
-          target={platform.isExternal === false ? '_self' : '_blank'}
-          rel={platform.isExternal === false ? undefined : 'noopener noreferrer'}
-          className={`${platform.color} w-12 h-12 flex items-center justify-center rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 group`}
-          aria-label={`Share on ${platform.name}`}
-          title={platform.name}
+    <div className="ba-share-card">
+      <div className="ba-share-title">// Share this article</div>
+      <div className="ba-share-row">
+        {shareLinks.map((platform) => (
+          <a
+            key={platform.name}
+            href={platform.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ba-share-btn"
+            aria-label={`Share on ${platform.name}`}
+            title={platform.name}
+          >
+            {platform.icon}
+          </a>
+        ))}
+        <button
+          onClick={copyToClipboard}
+          className="ba-share-btn"
+          aria-label="Copy link to clipboard"
+          title={copied ? 'Copied!' : 'Copy Link'}
         >
-          {platform.icon}
-        </a>
-      ))}
-      
-      {/* Copy Link Button */}
-      <button
-        onClick={copyToClipboard}
-        className={`w-12 h-12 flex items-center justify-center rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 ${
-          copied 
-            ? 'bg-green-500 hover:bg-green-600' 
-            : 'bg-gray-600 hover:bg-gray-700'
-        }`}
-        aria-label="Copy link to clipboard"
-        title={copied ? 'Copied!' : 'Copy Link'}
-      >
-        {copied ? (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-          </svg>
-        ) : (
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-        )}
-      </button>
+          {copied ? (
+            <svg width={14} height={14} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 13l4 4L19 7" />
+            </svg>
+          ) : (
+            <svg width={14} height={14} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10 14a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1 1"/><path d="M14 10a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1-1"/>
+            </svg>
+          )}
+        </button>
+      </div>
     </div>
   );
 };

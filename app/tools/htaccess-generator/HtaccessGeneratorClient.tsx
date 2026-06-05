@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
-import ToolBreadcrumb from '../../components/ToolBreadcrumb'
+import ShapeGrid from '../../components/ShapeGrid'
 
 type ToolTab = 'redirects' | 'security' | 'gzip' | 'caching' | 'error-pages' | 'php'
 type RedirectType = '301' | '302' | '307' | '308'
@@ -174,6 +174,30 @@ RewriteRule .* index.php [L]
 </IfModule>`,
 }
 
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  border: '1px solid var(--gray-3)',
+  padding: '8px 12px',
+  fontFamily: 'Inter, sans-serif',
+  fontSize: '0.88rem',
+  color: 'var(--ink)',
+  outline: 'none',
+  background: 'var(--white)',
+}
+
+const selectStyle: React.CSSProperties = {
+  width: '100%',
+  border: '1px solid var(--gray-3)',
+  padding: '8px 12px',
+  fontFamily: 'Inter, sans-serif',
+  fontSize: '0.88rem',
+  color: 'var(--ink)',
+  outline: 'none',
+  background: 'var(--white)',
+  appearance: 'none' as const,
+  cursor: 'pointer',
+}
+
 function ToggleSwitch({
   label,
   description,
@@ -186,478 +210,67 @@ function ToggleSwitch({
   onChange: (value: boolean) => void
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 rounded-xl border border-gray-200 bg-white p-4">
+    <div style={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      gap: '1rem',
+      padding: '0.875rem 1rem',
+      border: '1px solid var(--line)',
+      background: 'var(--white)',
+    }}>
       <div>
-        <div className="font-medium text-gray-900">{label}</div>
-        {description ? <p className="mt-1 text-sm text-gray-600">{description}</p> : null}
+        <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 600, fontSize: '0.9rem', color: 'var(--ink)' }}>{label}</div>
+        {description ? (
+          <p style={{ marginTop: '0.25rem', fontSize: '0.8rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>{description}</p>
+        ) : null}
       </div>
       <button
         type="button"
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full ${checked ? 'bg-primary' : 'bg-gray-300'}`}
+        style={{
+          position: 'relative',
+          display: 'inline-flex',
+          flexShrink: 0,
+          width: 44,
+          height: 24,
+          alignItems: 'center',
+          background: checked ? 'var(--blue)' : 'var(--gray-3)',
+          border: 'none',
+          cursor: 'pointer',
+          transition: 'background 0.2s',
+        }}
       >
-        <span className={`inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-5' : 'translate-x-1'}`} />
+        <span style={{
+          position: 'absolute',
+          width: 20,
+          height: 20,
+          background: 'var(--white)',
+          left: checked ? 22 : 2,
+          transition: 'left 0.2s',
+        }} />
       </button>
     </div>
   )
 }
 
 function FieldLabel({ children }: { children: ReactNode }) {
-  return <label className="block text-sm font-semibold text-gray-700 mb-2">{children}</label>
-}
-
-function LongFormContent() {
-  const faq = [
-    ['What is an .htaccess file?', 'An .htaccess file is a directory-level configuration file for Apache web servers. It controls redirects, security, compression, and caching without editing the main server config.'],
-    ['Is .htaccess supported on my hosting?', 'Most shared hosts support .htaccess. Nginx servers do not use .htaccess, and some VPS/dedicated setups disable it if AllowOverride is None.'],
-    ['Can a wrong .htaccess file break my website?', 'Yes. A syntax error can trigger a 500 error across the site. Always back up the existing file before replacing it.'],
-    ['What is the difference between 301 and 302 redirects?', '301 is for permanent moves and is the correct default for migrations and URL changes. 302 is for temporary moves.'],
-    ['Does GZIP compression work with all browsers?', 'Yes. Modern browsers support GZIP and automatically decompress responses.'],
-    ['How do I add .htaccess to a WordPress site?', 'Upload it to the WordPress root directory (the folder with wp-config.php). Back up the existing file before replacing or merging rules.'],
-    ['What is the difference between .htaccess and robots.txt?', '.htaccess controls server behavior; robots.txt controls crawler access directives.'],
-    ['Can I use .htaccess if I am on Cloudflare?', 'Yes, but some rules may be redundant or conflict with Cloudflare-level HTTPS, caching, or compression settings.'],
-  ] as const
-
   return (
-    <>
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 sm:p-8">
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-2xl font-bold">RS</span>
-                </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-                    Built by Rohit Sharma - Technical SEO & Apache Configuration Experience
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    "I&apos;ve fixed hundreds of Apache server misconfigurations for clients who did not know what an
-                    .htaccess file was - let alone how to write one correctly. This tool generates safe,
-                    production-tested rules so you do not have to guess."
-                  </p>
-                  <p className="text-gray-800 font-medium">
-                    - Rohit Sharma, Founder of SEOShouts |{' '}
-                    <a href="/meet-the-experts/" className="text-primary hover:underline">
-                      Meet Our Experts
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                What Is an .htaccess File and Why Does It Matter for SEO?
-              </span>
-            </h2>
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
-              <p>
-                An .htaccess file is a directory-level Apache configuration file that lets you control redirects,
-                security headers, compression, and caching from your site root. Apache reads it before serving matching
-                requests.
-              </p>
-              <p>
-                For SEO, this file controls some of the most important technical behaviors: URL migrations, HTTP to
-                HTTPS redirects, redirect-chain cleanup, compression, and browser caching. Getting these wrong can hurt
-                crawling, indexing, and page speed.
-              </p>
-              <p>
-                The challenge is syntax. Apache rules are unforgiving, and one typo can produce a site-wide 500 error.
-                This generator outputs structured, commented rules so you can review and upload with less risk.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gradient-to-br from-white to-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Key Features of Our .htaccess Generator
-              </span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                ['🔁', 'Complete Redirect Builder', 'Create 301, 302, 307, and 308 redirects with multiple rows and clean Apache output.'],
-                ['🛡️', 'Security Headers Suite', 'Toggle XSS protection, clickjacking protection, content-type sniffing protection, HSTS, and more.'],
-                ['⚡', 'GZIP Compression', 'Enable compression for HTML, CSS, JS, XML, and fonts to reduce transfer size.'],
-                ['🗂️', 'Browser Caching Rules', 'Set cache expiries for HTML, CSS/JS, images, and fonts with practical presets.'],
-                ['🧩', 'CMS Presets', 'WordPress, Shopify, Laravel, and Joomla presets prefill common settings and rewrite blocks.'],
-                ['🧰', 'Error Pages + PHP Settings', 'Add ErrorDocument routes and optional php_value/php_flag overrides when hosting allows them.'],
-              ].map(([icon, title, desc]) => (
-                <div key={title} className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm text-left">
-                  <div className="flex items-center mb-3">
-                    <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                      <span className="text-white text-xl" aria-hidden="true">{icon}</span>
-                    </div>
-                    <h3 className="font-bold text-gray-900">{title}</h3>
-                  </div>
-                  <p className="text-sm text-gray-700 leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                How to Create and Upload Your .htaccess File (Step-by-Step)
-              </span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                ['🧩', '1', 'Select Your CMS Preset', 'Choose WordPress, Shopify, Laravel, Joomla, or no preset. This loads common rewrite and optimization defaults.'],
-                ['🔁', '2', 'Configure Redirects', 'Add redirects for moved URLs. Use 301 for permanent changes, migrations, and HTTPS upgrades.'],
-                ['🛡️', '3', 'Enable Security Headers', 'Turn on X-XSS-Protection, X-Frame-Options, X-Content-Type-Options, and other relevant headers.'],
-                ['⚡', '4', 'Configure Performance Rules', 'Enable GZIP compression and browser caching to improve page speed and repeat-visit performance.'],
-                ['📥', '5', 'Generate, Download, and Upload', 'Generate the file, review the commented output, download as `.htaccess`, upload to your server root, and test immediately.'],
-              ].map(([icon, step, title, desc]) => (
-                <div key={step} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                  <h3 className="text-lg font-bold mb-2 text-gray-800 flex items-center">
-                    <span className="text-2xl mr-3" aria-hidden="true">{icon}</span>
-                    {title}
-                  </h3>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">Step {step}</p>
-                  <p className="text-gray-700 text-sm leading-relaxed">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto space-y-8">
-            <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                .htaccess Redirect Best Practices for SEO
-              </span>
-            </h2>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Always Use 301 for Permanent Moves</h3>
-              <p className="text-gray-700 leading-relaxed">
-                Use 301 redirects for permanent URL changes, rebrands, migrations, and HTTP to HTTPS upgrades. Reserve
-                302 for temporary changes such as campaign pages or short-term maintenance flows.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Avoid Redirect Chains</h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                Redirect chains (A -&gt; B -&gt; C) add latency and create crawling inefficiency. Redirect the original
-                URL directly to the final destination whenever possible.
-              </p>
-              <p className="text-gray-700 leading-relaxed">
-                Validate your live pages with the{' '}
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary hover:underline">
-                  On-Page SEO Analyzer
-                </a>{' '}
-                after deploying new redirects.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Do Not Redirect Everything to the Homepage</h3>
-              <p className="text-gray-700 leading-relaxed">
-                Redirect deleted URLs to the most relevant replacement page. Homepage redirects are a poor substitute
-                for page-level relevance and can behave like soft 404s.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-              <h3 className="text-2xl font-bold mb-4 text-gray-800">Redirect Directive vs mod_rewrite</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <pre className="bg-gray-900 text-green-400 rounded-xl p-4 overflow-x-auto text-sm">{`Redirect 301 /old-page/ https://yourdomain.com/new-page/`}</pre>
-                <pre className="bg-gray-900 text-green-400 rounded-xl p-4 overflow-x-auto text-sm">{`RewriteRule ^old-page/(.*)$ /new-page/$1 [R=301,L]`}</pre>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                GZIP Compression and Core Web Vitals
-              </span>
-            </h2>
-            <div className="space-y-6 text-lg text-gray-700 leading-relaxed mb-8">
-              <p>
-                GZIP is one of the highest-ROI performance optimizations you can apply via .htaccess. It compresses
-                text-based resources before they are sent to the browser.
-              </p>
-              <p>
-                Combined with browser caching, it can significantly reduce transfer size and repeat-load overhead,
-                supporting faster pages and stronger Core Web Vitals.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-primary to-blue-600 text-white">
-                      <th className="px-6 py-4 text-left font-bold">Resource Type</th>
-                      <th className="px-6 py-4 text-left font-bold">Average Size Reduction</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {[
-                      ['HTML', '70-80%'],
-                      ['CSS', '60-75%'],
-                      ['JavaScript', '60-75%'],
-                      ['XML/SVG', '65-80%'],
-                      ['Web Fonts', '30-50%'],
-                      ['Images (JPEG/PNG)', '<5% (usually not recommended)'],
-                    ].map(([a, b]) => (
-                      <tr key={a}>
-                        <td className="px-6 py-4 text-gray-700">{a}</td>
-                        <td className="px-6 py-4 text-gray-700">{b}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 text-gray-800">
-              Pair server configuration with crawler and indexing controls using our{' '}
-              <a href="/tools/robots-txt-generator/" className="text-primary hover:underline">
-                Robots.txt Generator
-              </a>{' '}
-              and{' '}
-              <a href="/tools/xml-sitemap-generator/" className="text-primary hover:underline">
-                XML Sitemap Generator
-              </a>
-              .
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                SEOShouts vs Other .htaccess Generators
-              </span>
-            </h2>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gradient-to-r from-primary to-blue-600 text-white">
-                      <th className="px-4 py-4 text-left text-sm font-bold">Feature</th>
-                      <th className="px-4 py-4 text-left text-sm font-bold">SEOShouts</th>
-                      <th className="px-4 py-4 text-left text-sm font-bold">Others (typical)</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {[
-                      ['CMS Presets', 'Yes (4 presets)', 'Often missing'],
-                      ['Security Headers', 'Yes (6 toggles)', 'Basic or missing'],
-                      ['GZIP + Caching', 'Yes (configurable)', 'Basic or missing'],
-                      ['Custom Error Pages', 'Yes', 'Often missing'],
-                      ['PHP Settings', 'Yes', 'Rarely included'],
-                      ['Commented Output', 'Yes', 'Usually no'],
-                    ].map(([a, b, c]) => (
-                      <tr key={a}>
-                        <td className="px-4 py-3 text-sm font-semibold text-gray-900">{a}</td>
-                        <td className="px-4 py-3 text-sm text-gray-700">{b}</td>
-                        <td className="px-4 py-3 text-sm text-gray-700">{c}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="py-16 bg-gradient-to-br from-white to-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-gray-900">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                .htaccess Checklist (2026)
-              </span>
-            </h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
-              Use this checklist after generating and uploading your file. Verify technical behavior before and after deployment.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                ['🔁', 'Redirects', ['All permanent changes use 301', 'HTTP to HTTPS redirect is in place', 'No redirect chains (A->B->C)', 'No homepage redirects for unrelated pages']],
-                ['🛡️', 'Security', ['X-XSS-Protection enabled', 'X-Frame-Options SAMEORIGIN', 'X-Content-Type-Options nosniff', 'Directory listing disabled', 'HSTS only if fully HTTPS-ready']],
-                ['⚡', 'Performance', ['GZIP enabled for HTML/CSS/JS/XML/fonts', 'Browser caching configured', 'Reasonable expiries for HTML/CSS/JS/images/fonts', 'Re-test PageSpeed/Core Web Vitals']],
-                ['✅', 'After Upload', ['Root domain loads correctly', 'No www/non-www loops', 'HTTPS redirect works cleanly', 'Custom error pages display correctly']],
-              ].map(([icon, title, items]) => (
-                <div key={title as string} className="bg-gray-50 rounded-2xl shadow-sm border border-gray-200 p-6">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800 flex items-center">
-                    <span className="text-2xl mr-3" aria-hidden="true">{icon as string}</span>
-                    {title as string}
-                  </h3>
-                  <ul className="space-y-3">
-                    {(items as string[]).map((item) => (
-                      <li key={item} className="flex items-start">
-                        <span className="mr-3 mt-0.5 text-primary">•</span>
-                        <span className="text-sm text-gray-700">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-3 text-gray-800">Frequently Asked Questions</h2>
-            <p className="text-center text-gray-600 mb-10">Everything you need to know about .htaccess files and Apache rules</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:grid-flow-row-dense">
-              {faq.map(([q, a]) => (
-                <details key={q} className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                  <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                    <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>{q}</span>
-                    <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                  </summary>
-                  <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                    {q === 'What is the difference between .htaccess and robots.txt?' ? (
-                      <>
-                        .htaccess controls server behavior while robots.txt controls crawler directives. Use our{' '}
-                        <a href="/tools/robots-txt-generator/" className="text-primary hover:underline">Robots.txt Generator</a>{' '}
-                        for crawler access rules.
-                      </>
-                    ) : a}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-800">
-                <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                  Explore Our Other Free SEO Tools
-                </span>
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">⚙️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">.htaccess Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate Apache server rules for redirects, security headers, and access control.</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔬</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit redirects, status codes, crawlability, and 150+ technical SEO factors after deploying .htaccess rules.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try On-Page SEO Analyzer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🤖</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Pair server-level Apache rules with crawler directives for a complete technical SEO setup.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🗺️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">XML Sitemap Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Rebuild your XML sitemap after migrations so redirected or removed URLs are handled correctly.</p>
-                <a href="/tools/xml-sitemap-generator/" className="text-primary font-medium hover:underline">Try XML Sitemap Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🚫</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏗️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Combine server optimization with structured data to improve how search engines understand your pages.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
-              </div>
-            </div>
-
-            <div className="text-center">
-              <a
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="mr-2">🛠️</span>
-                Browse All 17 Free SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free - No signup required - Instant results
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-gradient-to-br from-primary to-blue-600 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              <span className="bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                Stop Guessing Apache Syntax
-              </span>
-            </h2>
-            <p className="text-lg mb-8 opacity-90 leading-relaxed">
-              Generate a production-ready .htaccess file in under 2 minutes.
-            </p>
-            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="inline-flex items-center bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105">
-              Generate Your .htaccess File Now
-            </button>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 text-sm opacity-90">
-              <div className="flex items-center justify-center space-x-2">
-                <span aria-hidden="true">⚡</span>
-                <span>Instant results - no account required</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span aria-hidden="true">🧾</span>
-                <span>Tested, commented Apache syntax</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span aria-hidden="true">📥</span>
-                <span>Download as ready-to-upload .htaccess</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+    <label style={{
+      display: 'block',
+      fontFamily: 'Space Grotesk, sans-serif',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      letterSpacing: '0.05em',
+      textTransform: 'uppercase' as const,
+      color: 'var(--ink)',
+      marginBottom: '0.45rem',
+      opacity: 0.65,
+    }}>
+      {children}
+    </label>
   )
 }
 
@@ -677,6 +290,19 @@ export default function HtaccessGeneratorClient() {
     () => redirects.filter((r) => r.from.trim() && r.to.trim()).length,
     [redirects]
   )
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible')
+        })
+      },
+      { threshold: 0.1 }
+    )
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
 
   const validateRedirect = (from: string, to: string) => {
     const errors: string[] = []
@@ -737,83 +363,68 @@ export default function HtaccessGeneratorClient() {
     blank()
 
     if (security.forceHttps) {
-      divider()
-      comment('Force HTTPS')
+      divider(); comment('Force HTTPS')
       push('<IfModule mod_rewrite.c>')
       push('  RewriteEngine On')
       push('  RewriteCond %{HTTPS} off')
       push('  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]')
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     if (security.hstsEnabled) {
-      divider()
-      comment('HSTS')
+      divider(); comment('HSTS')
       push('<IfModule mod_headers.c>')
       push('  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"')
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     if (security.disableDirectoryListing) {
-      divider()
-      comment('Disable Directory Listing')
-      push('Options -Indexes')
-      blank()
+      divider(); comment('Disable Directory Listing')
+      push('Options -Indexes'); blank()
     }
 
     const hasSecurityHeaders =
       security.blockXssAttacks || security.clickjackingProtection || security.contentTypeSniffing || security.referrerPolicy
     if (hasSecurityHeaders) {
-      divider()
-      comment('Security Headers')
+      divider(); comment('Security Headers')
       push('<IfModule mod_headers.c>')
       if (security.blockXssAttacks) push('  Header set X-XSS-Protection "1; mode=block"')
       if (security.clickjackingProtection) push('  Header always append X-Frame-Options SAMEORIGIN')
       if (security.contentTypeSniffing) push('  Header set X-Content-Type-Options "nosniff"')
       if (security.referrerPolicy) push('  Header set Referrer-Policy "strict-origin-when-cross-origin"')
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     if (security.blockBadBots) {
-      divider()
-      comment('Block Common Bad Bots')
+      divider(); comment('Block Common Bad Bots')
       push('<IfModule mod_rewrite.c>')
       push('  RewriteEngine On')
       push('  RewriteCond %{HTTP_USER_AGENT} (AhrefsBot|MJ12bot|DotBot|SemrushBot|ia_archiver|Majestic) [NC]')
       push('  RewriteRule .* - [F,L]')
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     if (security.preventHotlinking) {
-      divider()
-      comment('Prevent Image Hotlinking')
+      divider(); comment('Prevent Image Hotlinking')
       push('<IfModule mod_rewrite.c>')
       push('  RewriteEngine On')
       push('  RewriteCond %{HTTP_REFERER} !^$')
       push('  RewriteCond %{HTTP_REFERER} !^https?://(www\\.)?%{HTTP_HOST} [NC]')
       push('  RewriteRule \\.(jpg|jpeg|png|gif|webp|svg)$ - [NC,F,L]')
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     const validRedirects = redirects.filter((r) => r.from.trim() && r.to.trim())
     if (validRedirects.length) {
-      divider()
-      comment('Redirects')
+      divider(); comment('Redirects')
       validRedirects.forEach((r) => {
         const from = r.from.startsWith('/') || r.from.startsWith('http') ? r.from.trim() : `/${r.from.trim()}`
         push(`Redirect ${r.type} ${from} ${r.to.trim()}`)
-      })
-      blank()
+      }); blank()
     }
 
     if (gzip.enabled) {
-      divider()
-      comment('Enable GZIP Compression')
+      divider(); comment('Enable GZIP Compression')
       push('<IfModule mod_deflate.c>')
       if (gzip.compressHtml) push('  AddOutputFilterByType DEFLATE text/html text/plain')
       if (gzip.compressCss) push('  AddOutputFilterByType DEFLATE text/css')
@@ -821,13 +432,11 @@ export default function HtaccessGeneratorClient() {
       if (gzip.compressXml) push('  AddOutputFilterByType DEFLATE text/xml application/xml application/xhtml+xml')
       if (gzip.compressFonts) push('  AddOutputFilterByType DEFLATE font/truetype font/opentype application/x-font-ttf application/vnd.ms-fontobject image/svg+xml')
       if (gzip.compressImages) push('  AddOutputFilterByType DEFLATE image/x-icon')
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     if (caching.enabled) {
-      divider()
-      comment('Browser Caching')
+      divider(); comment('Browser Caching')
       push('<IfModule mod_expires.c>')
       push('  ExpiresActive On')
       push(`  ExpiresByType text/html "access plus ${caching.htmlExpiry}"`)
@@ -845,13 +454,11 @@ export default function HtaccessGeneratorClient() {
         comment('Custom cache directives')
         caching.customExpiry.split('\n').map((l) => l.trim()).filter(Boolean).forEach((l) => push(`  ${l}`))
       }
-      push('</IfModule>')
-      blank()
+      push('</IfModule>'); blank()
     }
 
     if (errorPages.enabled) {
-      divider()
-      comment('Custom Error Pages')
+      divider(); comment('Custom Error Pages')
       if (errorPages.error400) push(`ErrorDocument 400 ${errorPages.error400}`)
       if (errorPages.error401) push(`ErrorDocument 401 ${errorPages.error401}`)
       if (errorPages.error403) push(`ErrorDocument 403 ${errorPages.error403}`)
@@ -861,8 +468,7 @@ export default function HtaccessGeneratorClient() {
     }
 
     if (phpSettings.enabled) {
-      divider()
-      comment('PHP Configuration')
+      divider(); comment('PHP Configuration')
       push(`php_value upload_max_filesize ${phpSettings.uploadMaxSize}`)
       push(`php_value post_max_size ${phpSettings.postMaxSize}`)
       push(`php_value memory_limit ${phpSettings.memoryLimit}`)
@@ -873,10 +479,8 @@ export default function HtaccessGeneratorClient() {
     }
 
     if (selectedPreset !== 'none' && PRESET_APPEND_RULES[selectedPreset]) {
-      divider()
-      comment(`CMS Preset: ${selectedPreset}`)
-      push(PRESET_APPEND_RULES[selectedPreset])
-      blank()
+      divider(); comment(`CMS Preset: ${selectedPreset}`)
+      push(PRESET_APPEND_RULES[selectedPreset]); blank()
     }
 
     setGeneratedCode(lines.join('\n').trim() + '\n')
@@ -910,47 +514,70 @@ export default function HtaccessGeneratorClient() {
   const renderTabContent = () => {
     if (activeSection === 'redirects') {
       return (
-        <div className="space-y-4">
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ padding: '0.875rem 1rem', border: '1px solid var(--blue)', background: 'rgba(37,99,235,0.05)', fontSize: '0.82rem', color: 'var(--ink)', lineHeight: 1.5 }}>
             Add 301/302/307/308 redirect rules. Use 301 for permanent SEO-safe URL changes.
           </div>
           {redirects.map((rule, index) => {
             const errors = validateRedirect(rule.from, rule.to)
             return (
-              <div key={index} className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div key={index} style={{ border: '1px solid var(--line)', background: 'var(--gray-1)', padding: '1rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr 2fr auto', gap: '0.75rem', alignItems: 'end' }}>
                   <div>
                     <FieldLabel>Type</FieldLabel>
-                    <select value={rule.type} onChange={(e) => updateRedirect(index, 'type', e.target.value as RedirectType)} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm">
+                    <select value={rule.type} onChange={(e) => updateRedirect(index, 'type', e.target.value as RedirectType)} style={selectStyle}>
                       {REDIRECT_TYPE_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                     </select>
                   </div>
                   <div>
                     <FieldLabel>From</FieldLabel>
-                    <input value={rule.from} onChange={(e) => updateRedirect(index, 'from', e.target.value)} placeholder="/old-page/" className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm" />
+                    <input value={rule.from} onChange={(e) => updateRedirect(index, 'from', e.target.value)} placeholder="/old-page/" style={inputStyle} />
                   </div>
                   <div>
                     <FieldLabel>To</FieldLabel>
-                    <input value={rule.to} onChange={(e) => updateRedirect(index, 'to', e.target.value)} placeholder="/new-page/ or https://..." className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm" />
+                    <input value={rule.to} onChange={(e) => updateRedirect(index, 'to', e.target.value)} placeholder="/new-page/ or https://..." style={inputStyle} />
                   </div>
-                  <div className="flex items-end">
-                    <button type="button" onClick={() => removeRedirect(index)} disabled={redirects.length === 1} className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm disabled:opacity-50">Remove</button>
+                  <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                    <button
+                      type="button"
+                      onClick={() => removeRedirect(index)}
+                      disabled={redirects.length === 1}
+                      style={{ border: '1px solid var(--line)', background: 'var(--white)', padding: '8px 14px', fontSize: '0.82rem', color: 'var(--gray-5)', cursor: redirects.length === 1 ? 'not-allowed' : 'pointer', opacity: redirects.length === 1 ? 0.45 : 1, fontFamily: 'Inter, sans-serif' }}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
-                {errors.length > 0 ? <ul className="mt-2 text-xs text-red-700 space-y-1">{errors.map((e, i) => <li key={i}>- {e}</li>)}</ul> : null}
+                {errors.length > 0 ? (
+                  <ul style={{ marginTop: '0.5rem', paddingLeft: 0, listStyle: 'none' }}>
+                    {errors.map((e, i) => (
+                      <li key={i} style={{ fontSize: '0.78rem', color: 'var(--red)', marginTop: '0.2rem' }}>
+                        <span>&#8212; </span><span>{e}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
             )
           })}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button type="button" onClick={addRedirect} className="rounded-xl bg-primary text-white px-4 py-2 font-medium">Add Redirect Row</button>
-            <div className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm text-gray-600">{validRedirectCount} valid redirect rule{validRedirectCount === 1 ? '' : 's'} ready</div>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={addRedirect}
+              style={{ border: 'none', background: 'var(--blue)', color: 'var(--white)', padding: '8px 18px', fontSize: '0.88rem', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, cursor: 'pointer' }}
+            >
+              + Add Redirect Row
+            </button>
+            <div style={{ border: '1px solid var(--line)', background: 'var(--gray-1)', padding: '8px 14px', fontSize: '0.82rem', color: 'var(--gray-5)', fontFamily: 'Inter, sans-serif' }}>
+              {validRedirectCount} valid redirect rule{validRedirectCount === 1 ? '' : 's'} ready
+            </div>
           </div>
         </div>
       )
     }
     if (activeSection === 'security') {
       return (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <ToggleSwitch label="Disable Directory Listing" checked={security.disableDirectoryListing} onChange={(v) => setSecurity((p) => ({ ...p, disableDirectoryListing: v }))} />
           <ToggleSwitch label="Block XSS Attacks" checked={security.blockXssAttacks} onChange={(v) => setSecurity((p) => ({ ...p, blockXssAttacks: v }))} />
           <ToggleSwitch label="Prevent Hotlinking" checked={security.preventHotlinking} onChange={(v) => setSecurity((p) => ({ ...p, preventHotlinking: v }))} />
@@ -965,7 +592,7 @@ export default function HtaccessGeneratorClient() {
     }
     if (activeSection === 'gzip') {
       return (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <ToggleSwitch label="Enable GZIP Compression" checked={gzip.enabled} onChange={(v) => setGzip((p) => ({ ...p, enabled: v }))} />
           <ToggleSwitch label="Compress HTML" checked={gzip.compressHtml} onChange={(v) => setGzip((p) => ({ ...p, compressHtml: v }))} />
           <ToggleSwitch label="Compress CSS" checked={gzip.compressCss} onChange={(v) => setGzip((p) => ({ ...p, compressCss: v }))} />
@@ -978,46 +605,52 @@ export default function HtaccessGeneratorClient() {
     }
     if (activeSection === 'caching') {
       return (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <ToggleSwitch label="Enable Browser Caching" checked={caching.enabled} onChange={(v) => setCaching((p) => ({ ...p, enabled: v }))} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <div>
               <FieldLabel>HTML Expiry</FieldLabel>
-              <select value={caching.htmlExpiry} onChange={(e) => setCaching((p) => ({ ...p, htmlExpiry: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm">
+              <select value={caching.htmlExpiry} onChange={(e) => setCaching((p) => ({ ...p, htmlExpiry: e.target.value }))} style={selectStyle}>
                 {CACHE_EXPIRY_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
               <FieldLabel>CSS/JS Expiry</FieldLabel>
-              <select value={caching.cssJsExpiry} onChange={(e) => setCaching((p) => ({ ...p, cssJsExpiry: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm">
+              <select value={caching.cssJsExpiry} onChange={(e) => setCaching((p) => ({ ...p, cssJsExpiry: e.target.value }))} style={selectStyle}>
                 {CACHE_EXPIRY_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
               <FieldLabel>Images Expiry</FieldLabel>
-              <select value={caching.imagesExpiry} onChange={(e) => setCaching((p) => ({ ...p, imagesExpiry: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm">
+              <select value={caching.imagesExpiry} onChange={(e) => setCaching((p) => ({ ...p, imagesExpiry: e.target.value }))} style={selectStyle}>
                 {CACHE_EXPIRY_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
             <div>
               <FieldLabel>Fonts Expiry</FieldLabel>
-              <select value={caching.fontsExpiry} onChange={(e) => setCaching((p) => ({ ...p, fontsExpiry: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm">
+              <select value={caching.fontsExpiry} onChange={(e) => setCaching((p) => ({ ...p, fontsExpiry: e.target.value }))} style={selectStyle}>
                 {CACHE_EXPIRY_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
               </select>
             </div>
           </div>
           <div>
             <FieldLabel>Custom Expires Directives (Optional)</FieldLabel>
-            <textarea value={caching.customExpiry} onChange={(e) => setCaching((p) => ({ ...p, customExpiry: e.target.value }))} rows={4} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-mono" placeholder='ExpiresByType application/json "access plus 1 hour"' />
+            <textarea
+              value={caching.customExpiry}
+              onChange={(e) => setCaching((p) => ({ ...p, customExpiry: e.target.value }))}
+              rows={4}
+              style={{ ...inputStyle, fontFamily: 'JetBrains Mono, monospace', resize: 'vertical' }}
+              placeholder='ExpiresByType application/json "access plus 1 hour"'
+            />
           </div>
         </div>
       )
     }
     if (activeSection === 'error-pages') {
       return (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <ToggleSwitch label="Enable Custom Error Pages" checked={errorPages.enabled} onChange={(v) => setErrorPages((p) => ({ ...p, enabled: v }))} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             {([
               ['error400', '400'],
               ['error401', '401'],
@@ -1027,7 +660,11 @@ export default function HtaccessGeneratorClient() {
             ] as Array<[keyof ErrorPageSettings, string]>).map(([field, label]) => (
               <div key={field}>
                 <FieldLabel>{label} ErrorDocument</FieldLabel>
-                <input value={errorPages[field]} onChange={(e) => setErrorPages((p) => ({ ...p, [field]: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm" />
+                <input
+                  value={errorPages[field] as string}
+                  onChange={(e) => setErrorPages((p) => ({ ...p, [field]: e.target.value }))}
+                  style={inputStyle}
+                />
               </div>
             ))}
           </div>
@@ -1036,15 +673,27 @@ export default function HtaccessGeneratorClient() {
     }
     if (activeSection === 'php') {
       return (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <ToggleSwitch label="Enable PHP Settings" description="Requires hosting support for php_value/php_flag in .htaccess." checked={phpSettings.enabled} onChange={(v) => setPhpSettings((p) => ({ ...p, enabled: v }))} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><FieldLabel>Upload Max Size</FieldLabel><input value={phpSettings.uploadMaxSize} onChange={(e) => setPhpSettings((p) => ({ ...p, uploadMaxSize: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm" /></div>
-            <div><FieldLabel>Post Max Size</FieldLabel><input value={phpSettings.postMaxSize} onChange={(e) => setPhpSettings((p) => ({ ...p, postMaxSize: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm" /></div>
-            <div><FieldLabel>Memory Limit</FieldLabel><input value={phpSettings.memoryLimit} onChange={(e) => setPhpSettings((p) => ({ ...p, memoryLimit: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm" /></div>
-            <div><FieldLabel>Max Execution Time</FieldLabel><input value={phpSettings.maxExecutionTime} onChange={(e) => setPhpSettings((p) => ({ ...p, maxExecutionTime: e.target.value }))} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm" /></div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div>
+              <FieldLabel>Upload Max Size</FieldLabel>
+              <input value={phpSettings.uploadMaxSize} onChange={(e) => setPhpSettings((p) => ({ ...p, uploadMaxSize: e.target.value }))} style={inputStyle} />
+            </div>
+            <div>
+              <FieldLabel>Post Max Size</FieldLabel>
+              <input value={phpSettings.postMaxSize} onChange={(e) => setPhpSettings((p) => ({ ...p, postMaxSize: e.target.value }))} style={inputStyle} />
+            </div>
+            <div>
+              <FieldLabel>Memory Limit</FieldLabel>
+              <input value={phpSettings.memoryLimit} onChange={(e) => setPhpSettings((p) => ({ ...p, memoryLimit: e.target.value }))} style={inputStyle} />
+            </div>
+            <div>
+              <FieldLabel>Max Execution Time</FieldLabel>
+              <input value={phpSettings.maxExecutionTime} onChange={(e) => setPhpSettings((p) => ({ ...p, maxExecutionTime: e.target.value }))} style={inputStyle} />
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
             <ToggleSwitch label="Display Errors" checked={phpSettings.displayErrors} onChange={(v) => setPhpSettings((p) => ({ ...p, displayErrors: v }))} />
             <ToggleSwitch label="Output Buffering" checked={phpSettings.outputBuffering} onChange={(v) => setPhpSettings((p) => ({ ...p, outputBuffering: v }))} />
           </div>
@@ -1055,95 +704,605 @@ export default function HtaccessGeneratorClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-center leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Free .htaccess Generator: Redirects, Security Headers, GZIP & Caching Rules
-              </span>
-            </h1>
-            <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                An .htaccess generator creates Apache server configuration files that control redirects, security headers, GZIP compression, and browser caching rules for your website. SEOShouts&apos; free tool generates production-ready .htaccess code with WordPress, Shopify, Laravel, and Joomla presets - no server knowledge required.
+    <>
+      {/* ── HERO ── */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,9,10,0.35)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>.htaccess Generator</span>
+          </nav>
+          <div className="tool-hero-badge">Free SEO Tool</div>
+          <h1 className="tool-hero-h1">
+            Free .htaccess <span>Generator</span>
+          </h1>
+          <p className="tool-hero-sub">
+            Generate production-ready Apache configuration files for redirects, security headers, GZIP compression, and browser
+            caching. WordPress, Shopify, Laravel, and Joomla presets included &mdash; no server knowledge required.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
+            {['6-Tab Configuration', 'CMS Presets', 'Commented Output', '100% Free'].map((label) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
+                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── TOOL INPUT ── */}
+      <div className="tool-input-section">
+        <div className="tool-input-inner" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.5rem', alignItems: 'start' }}>
+
+          {/* LEFT: Configuration */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Configure Your .htaccess Rules</h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--gray-4)', marginBottom: '1.25rem', lineHeight: 1.5, textAlign: 'center' }}>
+              Download or copy your file &mdash; ready to upload to your server root.
+            </p>
+
+            <div style={{ marginBottom: '1.25rem' }}>
+              <FieldLabel>CMS Preset</FieldLabel>
+              <select value={selectedPreset} onChange={(e) => applyPreset(e.target.value as PresetKey)} style={selectStyle}>
+                <option value="none">No Preset</option>
+                <option value="wordpress">WordPress</option>
+                <option value="shopify">Shopify (Subdirectory Proxy)</option>
+                <option value="laravel">Laravel</option>
+                <option value="joomla">Joomla</option>
+              </select>
+            </div>
+
+            <div className="tabs" style={{ marginBottom: '1.25rem' }}>
+              {TAB_ITEMS.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveSection(tab.key)}
+                  className={`tab${activeSection === tab.key ? ' active' : ''}`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {renderTabContent()}
+          </div>
+
+          {/* RIGHT: Output */}
+          <div className="tool-box" style={{ maxWidth: 'none', position: 'sticky', top: '6rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.75rem', gap: '0.75rem' }}>
+              <div>
+                <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1rem', color: 'var(--ink)', margin: 0 }}>
+                  Generated .htaccess Output
+                </h3>
+                <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginTop: '0.2rem' }}>
+                  Commented Apache rules, ready to review and upload
+                </p>
+              </div>
+              {copySuccess && (
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--green)', border: '1px solid var(--green)', padding: '2px 10px', flexShrink: 0 }}>
+                  Copied
+                </span>
+              )}
+            </div>
+
+            <textarea
+              readOnly
+              value={generatedCode}
+              rows={22}
+              style={{
+                width: '100%',
+                resize: 'none',
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '0.78rem',
+                background: 'var(--ink)',
+                color: '#4ade80',
+                padding: '1rem',
+                border: '1px solid var(--gray-3)',
+                outline: 'none',
+                lineHeight: 1.65,
+                display: 'block',
+              }}
+            />
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', marginTop: '0.75rem' }}>
+              <button
+                type="button"
+                onClick={handleCopy}
+                style={{ border: '1px solid var(--blue)', background: 'var(--blue)', color: 'var(--white)', padding: '8px', fontSize: '0.82rem', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, cursor: 'pointer' }}
+              >
+                {copySuccess ? '✓ Copied!' : 'Copy'}
+              </button>
+              <button
+                type="button"
+                onClick={handleDownload}
+                style={{ border: '1px solid var(--line)', background: 'var(--white)', color: 'var(--ink)', padding: '8px', fontSize: '0.82rem', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, cursor: 'pointer' }}
+              >
+                Download
+              </button>
+              <button
+                type="button"
+                onClick={() => applyPreset('none')}
+                style={{ border: '1px solid var(--line)', background: 'var(--white)', color: 'var(--ink)', padding: '8px', fontSize: '0.82rem', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, cursor: 'pointer' }}
+              >
+                Reset
+              </button>
+            </div>
+
+            <div style={{ marginTop: '0.75rem', padding: '0.75rem 1rem', border: '1px solid var(--amber)', background: 'rgba(245,158,11,0.07)', fontSize: '0.8rem', color: 'var(--ink)', lineHeight: 1.5 }}>
+              <strong>Warning:</strong> Test your site immediately after upload. A syntax error can trigger a site-wide 500 error.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── FOUNDER ── */}
+      <div className="founder-section" style={{ padding: '4rem 2rem' }}>
+        <div className="founder-inner" style={{ margin: '0 auto' }}>
+          <div className="founder-avatar">RS</div>
+          <div>
+            <p className="founder-quote-text">
+              &ldquo;I&apos;ve fixed hundreds of Apache server misconfigurations for clients who did not know what an
+              .htaccess file was &mdash; let alone how to write one correctly. This tool generates safe,
+              production-tested rules so you do not have to guess.&rdquo;
+            </p>
+            <p className="founder-name">Rohit Sharma</p>
+            <p className="founder-role">
+              Founder of SEOShouts &mdash;{' '}
+              <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── WHAT IS .htaccess ── gray */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">What Is an .htaccess File and Why Does It Matter for SEO?</h2>
+          </div>
+          <div className="prose-content reveal">
+            <p>
+              An .htaccess file is a directory-level Apache configuration file that lets you control redirects,
+              security headers, compression, and caching from your site root. Apache reads it before serving matching
+              requests.
+            </p>
+            <p>
+              For SEO, this file controls some of the most important technical behaviors: URL migrations, HTTP to
+              HTTPS redirects, redirect-chain cleanup, compression, and browser caching. Getting these wrong can hurt
+              crawling, indexing, and page speed.
+            </p>
+            <p>
+              The challenge is syntax. Apache rules are unforgiving, and one typo can produce a site-wide 500 error.
+              This generator outputs structured, commented rules so you can review and upload with less risk.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── KEY FEATURES ── white */}
+      <section className="section features-section" style={{ background: 'var(--white)' }}>
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">Key Features of Our .htaccess Generator</h2>
+          </div>
+          <div className="features-grid">
+            {[
+              {
+                title: 'Complete Redirect Builder',
+                desc: 'Create 301, 302, 307, and 308 redirects with multiple rows and clean Apache output.',
+                paths: ['M5 12h14', 'M14 6l6 6-6 6'],
+              },
+              {
+                title: 'Security Headers Suite',
+                desc: 'Toggle XSS protection, clickjacking protection, content-type sniffing protection, HSTS, and more.',
+                paths: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'],
+              },
+              {
+                title: 'GZIP Compression',
+                desc: 'Enable compression for HTML, CSS, JS, XML, and fonts to reduce transfer size.',
+                paths: ['M13 2L3 14h9l-1 8 10-12h-9l1-8z'],
+              },
+              {
+                title: 'Browser Caching Rules',
+                desc: 'Set cache expiries for HTML, CSS/JS, images, and fonts with practical presets.',
+                paths: ['M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z', 'M12 6v6l4 2'],
+              },
+              {
+                title: 'CMS Presets',
+                desc: 'WordPress, Shopify, Laravel, and Joomla presets prefill common settings and rewrite blocks.',
+                paths: ['M12 2 2 7l10 5 10-5-10-5z', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'],
+              },
+              {
+                title: 'Error Pages + PHP Settings',
+                desc: 'Add ErrorDocument routes and optional php_value/php_flag overrides when hosting allows them.',
+                paths: ['M16 18 22 12 16 6', 'M8 6 2 12 8 18'],
+              },
+            ].map((f) => (
+              <div key={f.title} className="feature-card reveal">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    {f.paths.map((d, j) => <path key={j} d={d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-5)', lineHeight: 1.65, marginTop: '0.5rem' }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW TO ── gray */}
+      <section className="section howto-section" style={{ background: 'var(--gray-1)' }}>
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">How to Create and Upload Your .htaccess File</h2>
+          </div>
+          <div className="steps-grid" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+            {[
+              { n: '01', title: 'Select Your CMS Preset', desc: 'Choose WordPress, Shopify, Laravel, Joomla, or no preset to load common rewrite and optimization defaults.' },
+              { n: '02', title: 'Configure Redirects', desc: 'Add redirects for moved URLs. Use 301 for permanent changes, migrations, and HTTPS upgrades.' },
+              { n: '03', title: 'Enable Security Headers', desc: 'Turn on X-XSS-Protection, X-Frame-Options, X-Content-Type-Options, and other relevant headers.' },
+              { n: '04', title: 'Configure Performance Rules', desc: 'Enable GZIP compression and browser caching to improve page speed and repeat-visit performance.' },
+              { n: '05', title: 'Generate, Download & Upload', desc: 'Generate the file, review the commented output, download as .htaccess, upload to your server root, and test immediately.' },
+            ].map((s, i) => (
+              <div key={s.n} className="step-card reveal">
+                {i < 4 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                )}
+                <div className="step-num-big">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── REDIRECT BEST PRACTICES ── white */}
+      <section className="section why-section" style={{ background: 'var(--white)' }}>
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">.htaccess Redirect Best Practices for SEO</h2>
+          </div>
+          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
+            <div className="why-card reveal" style={{ borderTop: '3px solid var(--green)' }}>
+              <div className="why-card-title">
+                <div className="why-card-icon" style={{ background: 'var(--green)' }}>
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+                Always Use 301 for Permanent Moves
+              </div>
+              <p className="why-card-body">
+                Use 301 redirects for permanent URL changes, rebrands, migrations, and HTTP to HTTPS upgrades. Reserve
+                302 for temporary changes such as campaign pages or short-term maintenance flows.
               </p>
             </div>
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 lg:p-8">
-              <div className="text-center mb-6">
-                <h2 className="text-xl sm:text-2xl font-bold mb-2 text-gray-900">Configure Your .htaccess Rules Below</h2>
-                <p className="text-sm sm:text-base text-gray-600">Download or copy your file - ready to upload to your server root</p>
-              </div>
-              <div className="mb-6 rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                <FieldLabel>CMS Preset</FieldLabel>
-                <select value={selectedPreset} onChange={(e) => applyPreset(e.target.value as PresetKey)} className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm">
-                  <option value="none">No Preset</option>
-                  <option value="wordpress">WordPress</option>
-                  <option value="shopify">Shopify (Subdirectory Proxy)</option>
-                  <option value="laravel">Laravel</option>
-                  <option value="joomla">Joomla</option>
-                </select>
-              </div>
-              <div className="border-b border-gray-200 mb-6">
-                <nav className="flex overflow-x-auto scrollbar-hide">
-                  {TAB_ITEMS.map((tab) => (
-                    <button key={tab.key} type="button" onClick={() => setActiveSection(tab.key)} className={`px-4 py-3 text-sm font-medium whitespace-nowrap ${activeSection === tab.key ? 'text-white bg-primary rounded-t-xl' : 'text-gray-600 hover:text-primary hover:bg-gray-50 rounded-t-xl'}`}>
-                      {tab.label}
-                    </button>
-                  ))}
-                </nav>
-              </div>
-              <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-8">
-                <div className="space-y-4">{renderTabContent()}</div>
-                <div className="lg:sticky lg:top-24 h-fit">
-                  <div className="rounded-2xl border border-gray-200 bg-white shadow-lg overflow-hidden">
-                    <div className="border-b border-gray-200 bg-gray-50 px-4 py-3 flex items-center justify-between gap-3">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">Generated .htaccess Output</h3>
-                        <p className="text-xs text-gray-500">Commented Apache rules, ready to review and upload</p>
-                      </div>
-                      {copySuccess ? <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">Copied</span> : null}
-                    </div>
-                    <div className="p-4 space-y-4">
-                      <textarea readOnly value={generatedCode} rows={22} className="w-full resize-none font-mono text-sm bg-gray-900 text-green-400 p-4 rounded-lg border border-gray-800" />
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <button type="button" onClick={generateHtaccess} className="sm:col-span-3 inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-primary to-blue-600 text-white font-bold rounded-xl hover:shadow-xl transition-all duration-300">Generate .htaccess File</button>
-                        <button type="button" onClick={handleCopy} className="px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-medium">Copy</button>
-                        <button type="button" onClick={handleDownload} className="px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-medium">Download</button>
-                        <button type="button" onClick={() => applyPreset('none')} className="px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-700 font-medium">Reset</button>
-                      </div>
-                      <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-3 text-sm text-yellow-800">Test your site immediately after upload. A syntax error can trigger a site-wide 500 error.</div>
-                    </div>
-                  </div>
+            <div className="why-card reveal" style={{ borderTop: '3px solid var(--blue)' }}>
+              <div className="why-card-title">
+                <div className="why-card-icon" style={{ background: 'var(--blue)' }}>
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                  </svg>
                 </div>
+                Avoid Redirect Chains
               </div>
-              <div className="mt-10 pt-8 border-t border-gray-200">
-                <h3 className="text-lg font-semibold mb-6 text-gray-900 text-center">Key Features</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                  {[
-                    ['🔁', '301/302/307/308 Redirect Rules', 'Set up any redirect type in seconds'],
-                    ['🛡️', 'Security Headers', 'Block XSS, clickjacking, and content sniffing attacks'],
-                    ['⚡', 'GZIP + Browser Caching', 'Improve Core Web Vitals with one click'],
-                    ['🧩', 'CMS Presets', 'WordPress, Shopify, Laravel & Joomla rules pre-loaded'],
-                  ].map(([, title, desc]) => (
-                    <div key={title} className="flex items-start">
-                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0" aria-hidden="true">
-                        <span className="text-white text-xs">&#10003;</span>
-                      </div>
-                      <div>
-                        <div className="font-medium text-gray-900">{title}</div>
-                        <div className="text-gray-600">{desc}</div>
-                      </div>
-                    </div>
-                  ))}
+              <p className="why-card-body">
+                Redirect chains (A &#8594; B &#8594; C) add latency and create crawling inefficiency. Redirect the original
+                URL directly to the final destination. Validate live pages with the{' '}
+                <a href="/tools/on-page-seo-analyzer/" style={{ color: 'var(--blue)' }}>On-Page SEO Analyzer</a>{' '}
+                after deploying.
+              </p>
+            </div>
+            <div className="why-card reveal" style={{ borderTop: '3px solid var(--amber)' }}>
+              <div className="why-card-title">
+                <div className="why-card-icon" style={{ background: 'var(--amber)' }}>
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
                 </div>
+                Do Not Redirect to the Homepage
+              </div>
+              <p className="why-card-body">
+                Redirect deleted URLs to the most relevant replacement page. Homepage redirects are a poor substitute
+                for page-level relevance and can behave like soft 404s in Google&apos;s eyes.
+              </p>
+            </div>
+          </div>
+
+          {/* Code comparison */}
+          <div style={{ marginTop: '2.5rem' }} className="reveal">
+            <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.1rem', color: 'var(--ink)', marginBottom: '1rem' }}>
+              Redirect Directive vs mod_rewrite
+            </h3>
+            <div className="tool-grid-2col" style={{ gap: '1rem' }}>
+              <div>
+                <p style={{ fontSize: '0.72rem', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--gray-4)', marginBottom: '0.5rem' }}>Simple Redirect</p>
+                <pre style={{ background: 'var(--ink)', color: '#4ade80', padding: '1rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8rem', overflowX: 'auto', lineHeight: 1.6, margin: 0, border: '1px solid var(--gray-3)' }}>{`Redirect 301 /old-page/\nhttps://yourdomain.com/new-page/`}</pre>
+              </div>
+              <div>
+                <p style={{ fontSize: '0.72rem', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--gray-4)', marginBottom: '0.5rem' }}>RewriteRule (Pattern Match)</p>
+                <pre style={{ background: 'var(--ink)', color: '#4ade80', padding: '1rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.8rem', overflowX: 'auto', lineHeight: 1.6, margin: 0, border: '1px solid var(--gray-3)' }}>{`RewriteRule ^old-page/(.*)$\n/new-page/$1 [R=301,L]`}</pre>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <ToolBreadcrumb toolName=".htaccess Generator" toolSlug="htaccess-generator" />
-      <LongFormContent />
-    </div>
+
+      {/* ── GZIP + COMPARISON TABLE ── gray */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">GZIP Compression and Core Web Vitals</h2>
+          </div>
+          <div className="prose-content reveal">
+            <p>
+              GZIP is one of the highest-ROI performance optimizations you can apply via .htaccess. It compresses
+              text-based resources before they are sent to the browser.
+            </p>
+            <p>
+              Combined with browser caching, it can significantly reduce transfer size and repeat-load overhead,
+              supporting faster pages and stronger Core Web Vitals.
+            </p>
+          </div>
+
+          <div style={{ overflowX: 'auto', marginTop: '2rem' }} className="reveal">
+            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--line)', minWidth: 400 }}>
+              <thead>
+                <tr style={{ background: 'var(--ink)' }}>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', color: 'var(--white)', fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Resource Type</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', color: 'var(--white)', fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Average Size Reduction</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['HTML', '70–80%'],
+                  ['CSS', '60–75%'],
+                  ['JavaScript', '60–75%'],
+                  ['XML/SVG', '65–80%'],
+                  ['Web Fonts', '30–50%'],
+                  ['Images (JPEG/PNG)', '<5% — usually not recommended'],
+                ].map(([a, b], i) => (
+                  <tr key={a} style={{ background: i % 2 === 0 ? 'var(--white)' : 'rgba(0,0,0,0.02)' }}>
+                    <td style={{ padding: '10px 16px', borderBottom: '1px solid var(--line)', fontSize: '0.88rem', color: 'var(--ink)', fontWeight: 500 }}><span>{a}</span></td>
+                    <td style={{ padding: '10px 16px', borderBottom: '1px solid var(--line)', fontSize: '0.88rem', color: 'var(--gray-5)' }}><span>{b}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="prose-callout reveal" style={{ marginTop: '1.5rem' }}>
+            <div className="prose-callout-title">Pair server rules with crawler controls</div>
+            <p>
+              Use our <a href="/tools/robots-txt-generator/" style={{ color: 'var(--blue-dark)', fontWeight: 600 }}>Robots.txt Generator</a> and{' '}
+              <a href="/tools/xml-sitemap-generator/" style={{ color: 'var(--blue-dark)', fontWeight: 600 }}>XML Sitemap Generator</a> alongside your .htaccess for a complete technical SEO setup.
+            </p>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="s-header" style={{ marginTop: '4rem' }}>
+            <h2 className="s-title">SEOShouts vs Other .htaccess Generators</h2>
+          </div>
+          <div style={{ overflowX: 'auto', marginTop: '1.5rem' }} className="reveal">
+            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--line)', minWidth: 500 }}>
+              <thead>
+                <tr style={{ background: 'var(--ink)' }}>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', color: 'var(--white)', fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Feature</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', color: 'var(--blue-light)', fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>SEOShouts</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', color: 'var(--white)', fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', opacity: 0.5 }}>Others (typical)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['CMS Presets', 'Yes (4 presets)', 'Often missing'],
+                  ['Security Headers', 'Yes (6 toggles)', 'Basic or missing'],
+                  ['GZIP + Caching', 'Yes (configurable)', 'Basic or missing'],
+                  ['Custom Error Pages', 'Yes', 'Often missing'],
+                  ['PHP Settings', 'Yes', 'Rarely included'],
+                  ['Commented Output', 'Yes', 'Usually no'],
+                ].map(([feat, ours, theirs], i) => (
+                  <tr key={feat} style={{ background: i % 2 === 0 ? 'var(--white)' : 'rgba(0,0,0,0.02)' }}>
+                    <td style={{ padding: '10px 16px', borderBottom: '1px solid var(--line)', fontSize: '0.88rem', color: 'var(--ink)', fontWeight: 600 }}><span>{feat}</span></td>
+                    <td style={{ padding: '10px 16px', borderBottom: '1px solid var(--line)', fontSize: '0.88rem', color: 'var(--green)', fontWeight: 600 }}><span>{ours}</span></td>
+                    <td style={{ padding: '10px 16px', borderBottom: '1px solid var(--line)', fontSize: '0.88rem', color: 'var(--gray-4)' }}><span>{theirs}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CHECKLIST ── white */}
+      <section className="section features-section" style={{ background: 'var(--white)' }}>
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">.htaccess Checklist (2026)</h2>
+            <p className="s-sub">Verify technical behavior before and after deployment using this checklist.</p>
+          </div>
+          <div className="tool-grid-2col" style={{ gap: '0', border: '1px solid var(--line)', marginTop: '3rem' }}>
+            {[
+              {
+                title: 'Redirects', color: 'var(--blue)',
+                paths: ['M5 12h14', 'M14 6l6 6-6 6'],
+                items: ['All permanent changes use 301', 'HTTP to HTTPS redirect is in place', 'No redirect chains (A &#8594; B &#8594; C)', 'No homepage redirects for unrelated pages'],
+              },
+              {
+                title: 'Security', color: 'var(--red)',
+                paths: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'],
+                items: ['X-XSS-Protection enabled', 'X-Frame-Options SAMEORIGIN', 'X-Content-Type-Options nosniff', 'Directory listing disabled', 'HSTS only if fully HTTPS-ready'],
+              },
+              {
+                title: 'Performance', color: 'var(--amber)',
+                paths: ['M13 2L3 14h9l-1 8 10-12h-9l1-8z'],
+                items: ['GZIP enabled for HTML/CSS/JS/XML/fonts', 'Browser caching configured', 'Reasonable expiries for all resource types', 'Re-test PageSpeed/Core Web Vitals'],
+              },
+              {
+                title: 'After Upload', color: 'var(--green)',
+                paths: ['M20 6L9 17l-5-5'],
+                items: ['Root domain loads correctly', 'No www/non-www redirect loops', 'HTTPS redirect works cleanly', 'Custom error pages display correctly'],
+              },
+            ].map((card, i) => (
+              <div key={card.title} className="feature-card reveal" style={{
+                borderTop: `3px solid ${card.color}`,
+                borderRight: i % 2 === 0 ? '1px solid var(--line)' : 'none',
+                borderBottom: i < 2 ? '1px solid var(--line)' : 'none',
+              }}>
+                <div className="feature-icon" style={{ background: card.color }}>
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    {card.paths.map((d, j) => <path key={j} d={d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{card.title}</div>
+                <ul style={{ listStyle: 'none', padding: 0, marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                  {card.items.map((item) => (
+                    <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--gray-5)' }}>
+                      <span style={{ color: card.color, fontWeight: 700, flexShrink: 0, marginTop: '0.05em' }}>&#10003;</span>
+                      <span dangerouslySetInnerHTML={{ __html: item }} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── gray */}
+      <section className="section faq-section" style={{ background: 'var(--gray-1)' }}>
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">Frequently Asked Questions</h2>
+            <p className="s-sub">Everything you need to know about .htaccess files and Apache rules</p>
+          </div>
+          <div className="faq-list">
+            {[
+              ['What is an .htaccess file?', 'An .htaccess file is a directory-level configuration file for Apache web servers. It controls redirects, security, compression, and caching without editing the main server config.'],
+              ['Is .htaccess supported on my hosting?', 'Most shared hosts support .htaccess. Nginx servers do not use .htaccess, and some VPS/dedicated setups disable it if AllowOverride is None.'],
+              ['Can a wrong .htaccess file break my website?', 'Yes. A syntax error can trigger a 500 error across the site. Always back up the existing file before replacing it.'],
+              ['What is the difference between 301 and 302 redirects?', '301 is for permanent moves and is the correct default for migrations and URL changes. 302 is for temporary moves.'],
+              ['Does GZIP compression work with all browsers?', 'Yes. Modern browsers support GZIP and automatically decompress responses.'],
+              ['How do I add .htaccess to a WordPress site?', 'Upload it to the WordPress root directory (the folder with wp-config.php). Back up the existing file before replacing or merging rules.'],
+              ['What is the difference between .htaccess and robots.txt?', '.htaccess controls server behavior; robots.txt controls crawler access directives. Use our Robots.txt Generator for crawler access rules.'],
+              ['Can I use .htaccess if I am on Cloudflare?', 'Yes, but some rules may be redundant or conflict with Cloudflare-level HTTPS, caching, or compression settings.'],
+            ].map(([q, a]) => (
+              <details key={q} className="faq-item reveal">
+                <summary>{q}</summary>
+                <div className="faq-answer">{a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── RELATED TOOLS ── dark */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <h2 className="s-title">Explore Our Other SEO Tools</h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', maxWidth: 560, marginTop: '0.75rem', lineHeight: 1.6 }}>
+              Discover our complete suite of free SEO tools designed to help you optimize your website and improve rankings.
+            </p>
+          </div>
+          <div className="related-tools-grid">
+            {[
+              {
+                name: '.htaccess Generator',
+                desc: 'Generate Apache server rules for redirects, security headers, GZIP compression, and browser caching.',
+                current: true,
+                href: '/tools/htaccess-generator/',
+                paths: ['M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z', 'M8 10h8', 'M8 14h5'],
+              },
+              {
+                name: 'Robots.txt Generator',
+                desc: 'Pair server-level Apache rules with crawler directives for a complete technical SEO setup.',
+                current: false,
+                href: '/tools/robots-txt-generator/',
+                paths: ['M12 2a3 3 0 0 0-3 3v1H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v4h10v-4h1a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3V5a3 3 0 0 0-3-3z', 'M9 12h.01', 'M15 12h.01'],
+              },
+              {
+                name: 'XML Sitemap Generator',
+                desc: 'Rebuild your XML sitemap after migrations so redirected or removed URLs are handled correctly.',
+                current: false,
+                href: '/tools/xml-sitemap-generator/',
+                paths: ['M3 3h18v18H3z', 'M3 9h18', 'M3 15h18', 'M9 3v18', 'M15 3v18'],
+              },
+              {
+                name: 'On-Page SEO Analyzer',
+                desc: 'Audit redirects, status codes, crawlability, and 150+ technical SEO factors after deploying .htaccess rules.',
+                current: false,
+                href: '/tools/on-page-seo-analyzer/',
+                paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'],
+              },
+              {
+                name: 'Schema Generator',
+                desc: 'Combine server optimization with structured data to improve how search engines understand your pages.',
+                current: false,
+                href: '/tools/schema-generator/',
+                paths: ['M16 18 22 12 16 6', 'M8 6 2 12 8 18'],
+              },
+            ].map((t) => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ── */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Stop Guessing <span>Apache Syntax</span></h2>
+          <p className="final-cta-sub">
+            Generate a production-ready .htaccess file in under 2 minutes. Tested, commented rules — ready to upload.
+          </p>
+          <div className="final-cta-row">
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="btn-primary">
+              Generate Your .htaccess File Now
+            </button>
+            <a href="/contact/" className="btn-outline">Get Expert Help</a>
+          </div>
+          <div className="final-cta-pills">
+            {[
+              'Instant results — no account required',
+              'Tested, commented Apache syntax',
+              'Download as ready-to-upload .htaccess',
+            ].map((p) => (
+              <div key={p} className="final-pill">{p}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

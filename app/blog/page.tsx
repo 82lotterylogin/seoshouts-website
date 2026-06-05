@@ -1,6 +1,7 @@
 // app/blog/page.tsx
 import { calculateReadTime, extractExcerpt } from "../lib/content-utils";
 import BlogSidebarSubscription from "../components/BlogSidebarSubscription";
+import BlogArticleGrid from "./BlogArticleGrid";
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
@@ -62,7 +63,7 @@ async function fetchBlogArticles(searchParams?: { [key: string]: string | string
     const db = getDatabase();
     
     const page = 1;
-    const limit = 12;
+    const limit = 100;
     const category = searchParams?.category as string;
     const search = searchParams?.search as string;
     
@@ -377,92 +378,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
       <div className="blog-shell" id="articles">
 
         {/* Articles */}
-        <div className="articles">
-          {articles.length > 0 ? articles.map((article: any, index: number) => {
-            const dateStr = new Date(article.published_at || article.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-            const dateIso = article.published_at || article.created_at;
-            const excerpt = article.excerpt || extractExcerpt(article.content);
-            const readTime = calculateReadTime(article.content);
-
-            if (index === 0) {
-              return (
-                <article key={article.id} className="feat-card">
-                  <div className="feat-img">
-                    <span className="feat-ribbon">★ Latest</span>
-                    {article.featured_image && (
-                      <Image src={article.featured_image} alt={article.title} width={800} height={600} priority style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    )}
-                  </div>
-                  <div className="feat-body">
-                    <div className="feat-meta">
-                      {article.category && (
-                        <a href={`/categories/${article.category.slug}/`} className="cat-pill">{article.category.name}</a>
-                      )}
-                      <time className="feat-date" dateTime={dateIso}>{dateStr}</time>
-                    </div>
-                    <h2>
-                      <Link href={`/blog/${article.slug}/`}>{article.title}</Link>
-                    </h2>
-                    <p className="feat-excerpt">{excerpt}</p>
-                    <div className="author-row">
-                      {article.author?.avatar_url && (
-                        <Image src={article.author.avatar_url} alt={article.author.name || ''} width={32} height={32} style={{ borderRadius: '50%', objectFit: 'cover' }} />
-                      )}
-                      {article.author?.slug ? (
-                        <a href={`/authors/${article.author.slug}/`} className="author-name">{article.author.name}</a>
-                      ) : (
-                        <span className="author-name">{article.author?.name || 'SEOShouts'}</span>
-                      )}
-                      <span className="author-dot">•</span>
-                      <span className="author-read">{readTime}&nbsp;min read</span>
-                    </div>
-                  </div>
-                </article>
-              )
-            }
-
-            return (
-              <article key={article.id} className="art-card">
-                <div className="art-img">
-                  {article.featured_image && (
-                    <Image src={article.featured_image} alt={article.title} width={560} height={350} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  )}
-                </div>
-                <div className="art-body">
-                  <div className="art-meta">
-                    {article.category && (
-                      <a href={`/categories/${article.category.slug}/`} className="cat-pill">{article.category.name}</a>
-                    )}
-                    <time className="feat-date" dateTime={dateIso}>{dateStr}</time>
-                  </div>
-                  <h2>
-                    <Link href={`/blog/${article.slug}/`}>{article.title}</Link>
-                  </h2>
-                  <p className="art-excerpt">{excerpt}</p>
-                  <div className="author-row">
-                    {article.author?.avatar_url && (
-                      <Image src={article.author.avatar_url} alt={article.author.name || ''} width={32} height={32} style={{ borderRadius: '50%', objectFit: 'cover' }} />
-                    )}
-                    {article.author?.slug ? (
-                      <a href={`/authors/${article.author.slug}/`} className="author-name">{article.author.name}</a>
-                    ) : (
-                      <span className="author-name">{article.author?.name || 'SEOShouts'}</span>
-                    )}
-                    <span className="author-dot">•</span>
-                    <span className="author-read">{readTime}&nbsp;min read</span>
-                  </div>
-                </div>
-              </article>
-            )
-          }) : (
-            <div className="blog-empty">
-              <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <p>No articles found. Check back soon!</p>
-            </div>
-          )}
-        </div>
+        <BlogArticleGrid articles={articles} initialCount={13} batchSize={12} />
 
         {/* Sidebar */}
         <aside className="blog-sidebar">

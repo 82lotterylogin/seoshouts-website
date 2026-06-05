@@ -166,6 +166,14 @@ export default function SEOConsultingServicePage() {
         }}
       />
 
+      {/* Speakable Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", ".s-sub"] },
+        "url": "https://seoshouts.com/services/seo-consulting/"
+      })}} />
+
       <SeoConsultingPageContent />
     </>
   )

@@ -12,79 +12,12 @@ interface SEOMetricCardProps {
   loading?: boolean
 }
 
-const getStatusConfig = (status: string, score?: number, maxScore?: number) => {
-  const percentage = maxScore ? (score! / maxScore) * 100 : score!
-  
-  switch (status) {
-    case 'excellent':
-      return {
-        bg: 'bg-green-50',
-        border: 'border-green-200',
-        text: 'text-green-700',
-        iconBg: 'bg-green-100',
-        iconColor: 'text-green-600',
-        scoreColor: 'text-green-600',
-        badgeColor: 'bg-green-100 text-green-800'
-      }
-    case 'good':
-      return {
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        text: 'text-blue-700',
-        iconBg: 'bg-blue-100',
-        iconColor: 'text-blue-600',
-        scoreColor: 'text-blue-600',
-        badgeColor: 'bg-blue-100 text-blue-800'
-      }
-    case 'warning':
-      return {
-        bg: 'bg-yellow-50',
-        border: 'border-yellow-200',
-        text: 'text-yellow-700',
-        iconBg: 'bg-yellow-100',
-        iconColor: 'text-yellow-600',
-        scoreColor: 'text-yellow-600',
-        badgeColor: 'bg-yellow-100 text-yellow-800'
-      }
-    case 'error':
-      return {
-        bg: 'bg-red-50',
-        border: 'border-red-200',
-        text: 'text-red-700',
-        iconBg: 'bg-red-100',
-        iconColor: 'text-red-600',
-        scoreColor: 'text-red-600',
-        badgeColor: 'bg-red-100 text-red-800'
-      }
-    case 'info':
-    default:
-      return {
-        bg: 'bg-gray-50',
-        border: 'border-gray-200',
-        text: 'text-gray-700',
-        iconBg: 'bg-gray-100',
-        iconColor: 'text-gray-600',
-        scoreColor: 'text-gray-600',
-        badgeColor: 'bg-gray-100 text-gray-800'
-      }
-  }
-}
-
-const getStatusLabel = (status: string) => {
-  switch (status) {
-    case 'excellent':
-      return 'Excellent'
-    case 'good':
-      return 'Good'
-    case 'warning':
-      return 'Needs Attention'
-    case 'error':
-      return 'Critical Issue'
-    case 'info':
-      return 'Information'
-    default:
-      return 'Unknown'
-  }
+const STATUS_CONFIG: Record<string, { color: string; bg: string; label: string }> = {
+  excellent: { color: '#059669', bg: 'rgba(5,150,105,0.06)',   label: 'Excellent'      },
+  good:      { color: '#2563eb', bg: 'rgba(37,99,235,0.06)',   label: 'Good'           },
+  warning:   { color: '#d97706', bg: 'rgba(217,119,6,0.06)',   label: 'Needs Attention'},
+  error:     { color: '#dc2626', bg: 'rgba(220,38,38,0.06)',   label: 'Critical Issue' },
+  info:      { color: '#64748b', bg: 'rgba(100,116,139,0.06)', label: 'Information'    },
 }
 
 export default function SEOMetricCard({
@@ -96,28 +29,28 @@ export default function SEOMetricCard({
   description,
   details = [],
   recommendations = [],
-  loading = false
+  loading = false,
 }: SEOMetricCardProps) {
-  const config = getStatusConfig(status, score, maxScore)
+  const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG.info
   const percentage = maxScore ? Math.round((score / maxScore) * 100) : score
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+      <div style={{ border: '1px solid var(--line)', background: 'var(--white)', padding: '1.25rem' }}>
         <div className="animate-pulse">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded w-32"></div>
-                <div className="h-3 bg-gray-200 rounded w-24"></div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: 40, height: 40, background: 'var(--line)' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+                <div style={{ width: 120, height: 14, background: 'var(--line)' }} />
+                <div style={{ width: 80, height: 11, background: 'var(--line)' }} />
               </div>
             </div>
-            <div className="w-16 h-8 bg-gray-200 rounded"></div>
+            <div style={{ width: 52, height: 28, background: 'var(--line)' }} />
           </div>
-          <div className="space-y-2">
-            <div className="h-3 bg-gray-200 rounded w-full"></div>
-            <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+            <div style={{ height: 11, background: 'var(--line)', width: '100%' }} />
+            <div style={{ height: 11, background: 'var(--line)', width: '75%' }} />
           </div>
         </div>
       </div>
@@ -125,66 +58,57 @@ export default function SEOMetricCard({
   }
 
   return (
-    <div className={`bg-white rounded-xl shadow-lg border ${config.border} transition-all duration-200 hover:shadow-xl`}>
+    <div style={{ border: `1px solid ${cfg.color}22`, background: 'var(--white)', overflow: 'hidden', borderLeft: `3px solid ${cfg.color}` }}>
       {/* Header */}
-      <div className={`${config.bg} px-6 py-4 rounded-t-xl border-b ${config.border}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className={`w-12 h-12 ${config.iconBg} rounded-lg flex items-center justify-center ${config.iconColor}`}>
-              {icon}
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.badgeColor}`}>
-                {getStatusLabel(status)}
-              </span>
-            </div>
+      <div style={{ background: cfg.bg, padding: '0.875rem 1rem', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', minWidth: 0 }}>
+          <div style={{ width: 36, height: 36, background: cfg.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'white' }}>
+            {icon}
           </div>
-          <div className="text-right">
-            <div className={`text-2xl font-bold ${config.scoreColor}`}>
-              {maxScore > 1 ? `${score}/${maxScore}` : `${percentage}%`}
-            </div>
+          <div style={{ minWidth: 0 }}>
+            <h3 style={{ margin: 0, fontSize: '0.85rem', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</h3>
+            <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 6px', background: cfg.color, color: 'white', display: 'inline-block', marginTop: 3 }}>
+              {cfg.label}
+            </span>
+          </div>
+        </div>
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: cfg.color, letterSpacing: '-0.04em', lineHeight: 1 }}>
+            {maxScore > 1 ? `${score}/${maxScore}` : `${percentage}%`}
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        {/* Description */}
-        <p className="text-gray-600 mb-4">{description}</p>
+      <div style={{ padding: '0.875rem 1rem' }}>
+        <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--gray-5)', lineHeight: 1.6, marginBottom: '0.75rem' }}>{description}</p>
 
-        {/* Progress Bar for percentage scores */}
+        {/* Progress Bar */}
         {maxScore > 1 && (
-          <div className="mb-4">
-            <div className="flex justify-between text-sm text-gray-600 mb-1">
+          <div style={{ marginBottom: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: 'var(--gray-5)', marginBottom: '0.25rem' }}>
               <span>Progress</span>
-              <span>{percentage}%</span>
+              <span style={{ fontWeight: 700, color: cfg.color }}>{percentage}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className={`h-2 rounded-full transition-all duration-500 ${
-                  percentage >= 80 ? 'bg-green-500' : 
-                  percentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'
-                }`}
-                style={{ width: `${Math.min(percentage, 100)}%` }}
-              ></div>
+            <div style={{ height: 3, background: 'var(--line)', width: '100%' }}>
+              <div style={{ height: '100%', background: cfg.color, width: `${Math.min(percentage, 100)}%`, transition: 'width 0.5s ease' }} />
             </div>
           </div>
         )}
 
         {/* Details */}
         {details.length > 0 && (
-          <div className="mb-4">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ marginBottom: '0.75rem' }}>
+            <h4 style={{ margin: 0, marginBottom: '0.375rem', fontSize: '0.68rem', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <svg style={{ width: 10, height: 10 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Details
             </h4>
-            <ul className="space-y-1">
+            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
               {details.map((detail, index) => (
-                <li key={index} className="flex items-start text-sm text-gray-600">
-                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.375rem', fontSize: '0.75rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>
+                  <span style={{ width: 4, height: 4, background: 'var(--gray-5)', flexShrink: 0, marginTop: '0.45rem', display: 'inline-block' }} />
                   {detail}
                 </li>
               ))}
@@ -194,18 +118,18 @@ export default function SEOMetricCard({
 
         {/* Recommendations */}
         {recommendations.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center">
-              <svg className="w-4 h-4 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid var(--line)' }}>
+            <h4 style={{ margin: 0, marginBottom: '0.375rem', fontSize: '0.68rem', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+              <svg style={{ width: 10, height: 10, color: 'var(--blue)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Recommendations
             </h4>
-            <ul className="space-y-1">
-              {recommendations.map((recommendation, index) => (
-                <li key={index} className="flex items-start text-sm text-gray-600">
-                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                  {recommendation}
+            <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+              {recommendations.map((rec, index) => (
+                <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.375rem', fontSize: '0.75rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>
+                  <span style={{ width: 4, height: 4, background: 'var(--blue)', flexShrink: 0, marginTop: '0.45rem', display: 'inline-block' }} />
+                  {rec}
                 </li>
               ))}
             </ul>

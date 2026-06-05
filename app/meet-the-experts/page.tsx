@@ -59,6 +59,13 @@ export const metadata: Metadata = {
   },
 }
 
+const WHY_CARDS = [
+  { n: "/ 01", title: "Specialized", body: "Rohit = Organic. Ajay = Paid. No ego, no blurring, double the impact.", paths: ["M22 12h-4l-3 9L9 3l-3 9H2"] },
+  { n: "/ 02", title: "Collaborative", body: "Constant communication: SEO and ads fuel each other — testing, feedback, wins.", paths: ["M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2", "M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0", "M23 21v-2a4 4 0 0 0-3-3.87", "M16 3.13a4 4 0 0 1 0 7.75"] },
+  { n: "/ 03", title: "Transparent", body: "You always know what's working and what's not. We care about YOUR profits.", paths: ["M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z", "M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0"] },
+  { n: "/ 04", title: "Simple", body: "No jargon, no fluff reports. Straight facts and real strategy.", paths: ["M20 6L9 17l-5-5"] },
+]
+
 export default function MeetTheExperts() {
   return (
     <>
@@ -70,206 +77,298 @@ export default function MeetTheExperts() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://seoshouts.com/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Meet Our Experts",
-                "item": "https://seoshouts.com/meet-the-experts/"
-              }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seoshouts.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Meet Our Experts", "item": "https://seoshouts.com/meet-the-experts/" }
             ]
           })
         }}
       />
 
-      <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen pb-16 pt-12">
-      <div className="max-w-5xl mx-auto px-4">
-
-        {/* HERO */}
-        <section className="text-center mb-14">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-800 to-purple-700 bg-clip-text text-transparent mb-3">
-            Meet the Humans Behind Your Results
-          </h1>
-          <p className="mt-3 text-xl font-semibold text-gray-700">
-            The SEOShouts Team — Real Results. Real Conversation. No Agency Nonsense.
-          </p>
-          
-          <p className="max-w-xl mx-auto text-gray-600 mt-4">
-            We’re Rohit and Ajay. No suits. No buzzwords. Just two passionate digital marketers who deliver what matters: real growth and honest advice.
-          </p>
-          <div className="mt-6">
-            <a
-              href="/contact/"
-              className="inline-block px-8 py-3 bg-gradient-to-r from-blue-700 to-purple-700 shadow-xl text-white rounded-full font-bold uppercase tracking-wide hover:scale-105 hover:bg-blue-800 transition"
-            >
-              Let's Chat &rarr;
-            </a>
-          </div>
-        </section>
-
-        {/* TEAM PROFILES */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
-          {/* Rohit */}
-          <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl border-t-8 border-blue-700 transition-all duration-300 flex flex-col items-center px-6 py-8 relative">
-            {/* === SWAP THIS URL WITH YOUR REAL PHOTO LATER === */}
-            <img
-              src="/images/team/rohit-sharma.jpg"
-              alt="Rohit Sharma"
-              className="w-32 h-32 rounded-full mb-4 shadow-lg border-4 border-white object-cover"
-            />
-            <h2 className="font-bold text-2xl text-blue-800 mb-0">Rohit Sharma</h2>
-            <span className="text-xs uppercase font-semibold text-blue-700 mb-2 flex items-center gap-1">
-              <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M12 20l9-5-9-5-9 5 9 5zm0-5V4m4 4H8"/></svg>
-              SEO Guy Who Ranks
-            </span>
-            <div className="bg-blue-50 px-4 py-2 rounded-xl font-semibold text-blue-900 mt-1 mb-1 text-[15px]">
-              SEO Developer &bull; Local SEO &bull; Global SEO &bull; eCommerce SEO
-            </div>
-            <p className="text-gray-600 text-sm mt-2 mb-2">
-              Built SEOShouts out of frustration. Now, I build growth engines for businesses with practical, battle-tested SEO. No magic. Just strategies that outlive Google updates.
-            </p>
-            <ul className="text-left text-blue-900/90 text-sm space-y-1 mb-2">
-              <li>
-                <b>&#9733; Local & International SEO</b>
-              </li>
-              <li>
-                <b>&#9733; Clear, jargon-free communication</b>
-              </li>
-              <li>
-                <b>&#9733; WordPress rescue specialist</b>
-              </li>
-            </ul>
-            <p className="text-gray-400 italic text-xs">Udaipur, Rajasthan</p>
-            <a
-              href="/authors/rohit-sharma/"
-              className="mt-4 inline-flex items-center text-blue-700 hover:text-purple-600 text-sm font-semibold underline"
-            >
-              Know more about Rohit <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-            </a>
-          </div>
-
-          {/* Ajay */}
-          <div className="bg-white rounded-3xl shadow-xl hover:shadow-2xl border-t-8 border-purple-700 transition-all duration-300 flex flex-col items-center px-6 py-8 relative">
-            {/* === SWAP THIS URL WITH YOUR REAL PHOTO LATER === */}
-            <img
-              src="/images/team/ajay-porwal.jpg"
-              alt="Ajay Porwal"
-              className="w-32 h-32 rounded-full mb-4 shadow-lg border-4 border-white object-cover"
-            />
-            <h2 className="font-bold text-2xl text-purple-800 mb-0">Ajay Porwal</h2>
-            <span className="text-xs uppercase font-semibold text-purple-700 mb-2 flex items-center gap-1">
-              <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M3 12l2-2a4 4 0 015.657 0l2.121 2.121a4 4 0 005.657 0L21 12"/></svg>
-              Ads & Social Guy
-            </span>
-            <div className="bg-blue-50 px-4 py-2 rounded-xl font-semibold text-blue-900 mt-1 mb-1 text-[15px]">
-              Facebook Ads &bull; Google Ads
-            </div>
-            <p className="text-gray-700 text-sm mt-2 mb-2">
-              Passionate about what truly makes people click. I run ads that perform, not just "spend," and turn social into a profit channel, not just a pretty page.
-            </p>
-            <ul className="text-left text-purple-900/90 text-sm space-y-1 mb-2">
-              <li>
-                <b>&#9733; Profit-focused ad campaigns</b>
-              </li>
-              <li>
-                <b>&#9733; Data-driven social strategy</b>
-              </li>
-              <li>
-                <b>&#9733; Relentless testing & improvement</b>
-              </li>
-            </ul>
-            <p className="text-gray-400 italic text-xs">Udaipur, Rajasthan</p>
-            <a
-              href="/authors/ajay-porwal/"
-              className="mt-4 inline-flex items-center text-purple-700 hover:text-blue-700 text-sm font-semibold underline"
-            >
-              Know more about Ajay <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-            </a>
-          </div>
-        </div>
-
-        {/* WHY WE WORK TOGETHER */}
-        <div className="flex flex-col gap-6 mb-14">
-          <h2 className="text-center text-xl sm:text-2xl font-bold mb-2 text-gray-900">
-            Why We Actually Work (Really) Well Together
-          </h2>
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center items-stretch">
-            <div className="flex-1 bg-blue-50 border-l-4 border-blue-500 rounded-2xl p-5 shadow-sm">
-              <span className="font-bold text-blue-800 text-lg block mb-1">Specialized</span>
-              Rohit = Organic. Ajay = Paid. No ego, no blurring, double the impact.
-            </div>
-            <div className="flex-1 bg-blue-50 border-l-4 border-blue-500 rounded-2xl p-5 shadow-sm">
-              <span className="font-bold text-blue-800 text-lg block mb-1">Collaborative</span>
-              Constant communication: SEO and ads fuel each other—testing, feedback, wins.
-            </div>
-            <div className="flex-1 bg-blue-50 border-l-4 border-blue-500 rounded-2xl p-5 shadow-sm">
-              <span className="font-bold text-blue-800 text-lg block mb-1">Transparent</span>
-              You always know what’s working (& what’s not). We care about YOUR profits.
-            </div>
-            <div className="flex-1 bg-blue-50 border-l-4 border-blue-500 rounded-2xl p-5 shadow-sm">
-              <span className="font-bold text-blue-800 text-lg block mb-1">Simple</span>
-              No jargon, no fluff reports. Straight facts and real strategy.
-            </div>
-          </div>
-        </div>
-
-        {/* PROCESS STEPS */}
-        <div className="mb-20">
-          <h2 className="font-bold text-center text-blue-800 text-xl mb-6">What It’s Like to Work With Us</h2>
-          <div className="flex flex-col sm:flex-row gap-8 items-center justify-center">
-            <div className="flex-1 text-center bg-gradient-to-b from-white to-blue-50 rounded-2xl p-6 shadow border-blue-100 border mb-4 sm:mb-0">
-              <h3 className="font-bold text-lg mb-1 text-blue-700">Month 1: Deep Dive</h3>
-              <p className="text-gray-600">We go deep into your business, goals, and competition—no templates, no assumptions.</p>
-            </div>
-            <div className="flex-1 text-center bg-gradient-to-b from-white to-purple-50 rounded-2xl p-6 shadow border-blue-100 border mb-4 sm:mb-0">
-              <h3 className="font-bold text-lg mb-1 text-purple-700">Month 2-3: Build & Action</h3>
-              <p className="text-gray-600">Rohit builds SEO foundation. Ajay gets ads and social delivering results. Fast but strategic.</p>
-            </div>
-            <div className="flex-1 text-center bg-gradient-to-b from-white to-blue-50 rounded-2xl p-6 shadow border-blue-100 border">
-              <h3 className="font-bold text-lg mb-1 text-blue-700">Month 4+: Optimize & Scale</h3>
-              <p className="text-gray-600">Data, reporting, and constant improvement—double down where it’s working.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="bg-gradient-to-r from-blue-700 to-purple-700 rounded-2xl p-9 text-center mb-8 shadow-xl">
-          <h2 className="font-bold text-2xl mb-3 text-white">Ready to Work With Experts Who Care?</h2>
-          <p className="text-blue-100 mb-5 text-lg max-w-xl mx-auto">No fluff. No upsells. Just an honest conversation about helping your business grow. Let's bring clarity and real results to your digital strategy.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
-            <a
-              href="/contact/"
-              className="font-bold px-7 py-3 bg-white text-blue-700 rounded-xl shadow hover:bg-blue-50 hover:text-blue-900 transition"
-            >
-              🎯 Book a Strategy Call
-            </a>
-            <a
-              href="mailto:seoshouts@gmail.com"
-              className="font-bold px-7 py-3 bg-white/20 border border-white rounded-xl text-white hover:bg-white hover:text-blue-700 transition"
-              target="_blank" rel="noopener noreferrer"
-            >
-              📧 Email Us
-            </a>
-            <a
-              href="tel:+918094888157"
-              className="font-bold px-7 py-3 border-2 border-white rounded-xl text-white hover:bg-white hover:text-blue-700 transition"
-            >
-              📞 +91 8094888157
-            </a>
-          </div>
-          <div className="mt-3 text-blue-100 text-sm">Helping businesses across India and beyond</div>
-        </div>
-
-        <div className="text-center text-xs text-gray-500">
-          Rohit &amp; Ajay – The SEOShouts Team | Real Results | No BS | Actually Located in India
+      {/* Breadcrumb bar */}
+      <div className="mte-crumbs">
+        <div className="mte-crumbs-inner">
+          <a href="/">Home</a>
+          <span className="sep">/</span>
+          <span className="current">Meet the Experts</span>
         </div>
       </div>
-    </div>
+
+      {/* ── HERO ── */}
+      <section className="mte-hero">
+        <div className="mte-hero-grid" />
+        <div className="mte-hero-inner">
+
+          {/* Left: text */}
+          <div>
+            <div className="mte-hero-tag">
+              <span className="dot" />
+              The SEOShouts Team
+            </div>
+            <h1>Meet the Humans Behind Your <span className="stk">Results</span></h1>
+            <p className="mte-tagline">Real Results.<span className="pipe">/</span>Real Conversation.<span className="pipe">/</span>No Agency Nonsense.</p>
+            <p className="mte-lead">We&rsquo;re <strong>Rohit and Ajay</strong>. No suits. No buzzwords. Just two passionate digital marketers who deliver what matters: real growth and honest advice.</p>
+            <div className="mte-hero-ctas">
+              <a href="/contact/" className="mte-btn-blue">
+                Let&rsquo;s Chat
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <a href="#team" className="mte-btn-ghost">Meet the Team</a>
+            </div>
+          </div>
+
+          {/* Right: overlapping portraits + stats */}
+          <div className="mte-hero-stack">
+            <div className="mte-hero-badge">Hi, we&rsquo;re SEOShouts</div>
+            <div className="mte-portraits">
+              <div className="mte-portrait p1">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/team/rohit-sharma.jpg" alt="Rohit Sharma — SEO Strategist" />
+                <div className="mte-portrait-tag">ROHIT <span className="blu">/</span> SEO</div>
+              </div>
+              <div className="mte-portrait p2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/images/team/ajay-porwal.jpg" alt="Ajay Porwal — Paid Ads Specialist" />
+                <div className="mte-portrait-tag">AJAY <span className="blu">/</span> ADS</div>
+              </div>
+            </div>
+            <div className="mte-hero-stats">
+              <div className="mte-hero-stat">
+                <div className="num">2<span className="blue">.</span></div>
+                <div className="lbl">Founders</div>
+              </div>
+              <div className="mte-hero-stat">
+                <div className="num">10+</div>
+                <div className="lbl">Years Combined</div>
+              </div>
+              <div className="mte-hero-stat">
+                <div className="num">0<span className="blue">%</span></div>
+                <div className="lbl">Agency Fluff</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── TEAM CARDS ── */}
+      <section className="mte-team-section" id="team">
+        <div className="mte-container">
+          <div className="mte-s-header">
+            <div className="mte-eyebrow">The Founders</div>
+            <h2 className="mte-s-title">Two people. <span className="blue">Two specialties.</span> Zero handoff loss.</h2>
+            <p className="mte-s-sub">We don&rsquo;t outsource. We don&rsquo;t hand you off to a junior. You get us — talking to you, doing the work, owning the results.</p>
+          </div>
+
+          <div className="mte-team-grid">
+
+            {/* Rohit */}
+            <article className="mte-team-card">
+              <div className="mte-team-photo-col">
+                <div className="mte-team-photo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/team/rohit-sharma.jpg" alt="Rohit Sharma — SEO Strategist & Founder of SEOShouts" />
+                  <div className="mte-team-photo-meta">
+                    <span className="mte-pid">// FOUNDER #01</span>
+                    <span className="mte-pdot" aria-hidden="true" />
+                  </div>
+                </div>
+                <div className="mte-team-photo-detail">
+                  <div className="mte-team-detail-inner">
+                    <p className="mte-team-quote">SEO that outlives Google updates.</p>
+                    <div className="mte-team-socials">
+                      <a href="https://linkedin.com/in/seowithrohitsharma/" aria-label="Rohit on LinkedIn" target="_blank" rel="noopener noreferrer">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                      </a>
+                      <a href="mailto:seowithrohitsharma@gmail.com" aria-label="Email Rohit">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mte-team-body">
+                <span className="mte-role-pill"><span className="pdot" />SEO Guy Who Ranks</span>
+                <h2>Rohit Sharma</h2>
+                <p className="mte-team-tagline">SEO that outlives Google updates</p>
+                <div className="mte-specialties">
+                  <span className="mte-sp">SEO Developer</span>
+                  <span className="mte-sp">Local SEO</span>
+                  <span className="mte-sp">Global SEO</span>
+                  <span className="mte-sp">eCommerce SEO</span>
+                </div>
+                <p className="mte-team-bio">Built SEOShouts out of frustration. Now, I build growth engines for businesses with practical, battle-tested SEO. No magic. Just strategies that outlive Google updates.</p>
+                <div className="mte-team-feats">
+                  <div className="mte-team-feat"><span className="star">★</span>Local &amp; International SEO</div>
+                  <div className="mte-team-feat"><span className="star">★</span>Clear, jargon-free communication</div>
+                  <div className="mte-team-feat"><span className="star">★</span>WordPress rescue specialist</div>
+                </div>
+                <div className="mte-team-foot">
+                  <div className="mte-team-loc">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Udaipur, Rajasthan
+                  </div>
+                  <a href="/authors/rohit-sharma/" className="mte-team-link">
+                    Know more about Rohit
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            {/* Ajay */}
+            <article className="mte-team-card">
+              <div className="mte-team-photo-col">
+                <div className="mte-team-photo">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/team/ajay-porwal.jpg" alt="Ajay Porwal — Paid Ads & Social Media Specialist" />
+                  <div className="mte-team-photo-meta">
+                    <span className="mte-pid">// FOUNDER #02</span>
+                    <span className="mte-pdot" aria-hidden="true" />
+                  </div>
+                </div>
+                <div className="mte-team-photo-detail">
+                  <div className="mte-team-detail-inner">
+                    <p className="mte-team-quote">Ads that perform &mdash; not just &ldquo;spend.&rdquo;</p>
+                    <div className="mte-team-socials">
+                      <a href="https://linkedin.com/in/ajay-porwal/" aria-label="Ajay on LinkedIn" target="_blank" rel="noopener noreferrer">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                      </a>
+                      <a href="mailto:seoshouts@gmail.com" aria-label="Email Ajay">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mte-team-body">
+                <span className="mte-role-pill"><span className="pdot" />Ads &amp; Social Guy</span>
+                <h2>Ajay Porwal</h2>
+                <p className="mte-team-tagline">Ads that perform — not just &ldquo;spend&rdquo;</p>
+                <div className="mte-specialties">
+                  <span className="mte-sp">Facebook Ads</span>
+                  <span className="mte-sp">Google Ads</span>
+                </div>
+                <p className="mte-team-bio">Passionate about what truly makes people click. I run ads that perform, not just &ldquo;spend,&rdquo; and turn social into a profit channel, not just a pretty page.</p>
+                <div className="mte-team-feats">
+                  <div className="mte-team-feat"><span className="star">★</span>Profit-focused ad campaigns</div>
+                  <div className="mte-team-feat"><span className="star">★</span>Data-driven social strategy</div>
+                  <div className="mte-team-feat"><span className="star">★</span>Relentless testing &amp; improvement</div>
+                </div>
+                <div className="mte-team-foot">
+                  <div className="mte-team-loc">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Udaipur, Rajasthan
+                  </div>
+                  <a href="/authors/ajay-porwal/" className="mte-team-link">
+                    Know more about Ajay
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY WE WORK WELL TOGETHER ── */}
+      <section className="mte-why-section">
+        <div className="mte-container">
+          <div className="mte-s-header">
+            <div className="mte-eyebrow">The Operating Principles</div>
+            <h2 className="mte-s-title">Why We Actually Work <span className="blue">(Really)</span> Well Together</h2>
+            <p className="mte-s-sub">Four reasons our two-person setup keeps outperforming bloated agencies on speed, clarity, and ROI.</p>
+          </div>
+          <div className="mte-why-grid">
+            {WHY_CARDS.map((c, i) => (
+              <div key={i} className="mte-why-card">
+                <span className="mte-why-num">{c.n}</span>
+                <div className="mte-why-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    {c.paths.map((p, pi) => <path key={pi} d={p} />)}
+                  </svg>
+                </div>
+                <h3>{c.title}</h3>
+                <p>{c.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROCESS / TIMELINE ── */}
+      <section className="mte-process-section">
+        <div className="mte-process-grid-bg" />
+        <div className="mte-process-inner">
+          <div className="mte-s-header">
+            <div className="mte-eyebrow light">The Engagement</div>
+            <h2 className="mte-s-title light">What It&rsquo;s Like to <span style={{ color: 'var(--blue-light)' }}>Work With Us</span></h2>
+            <p className="mte-s-sub light">A clear three-phase rhythm. No mystery. No &ldquo;we&rsquo;ll get back to you next quarter.&rdquo;</p>
+          </div>
+          <div className="mte-process-grid">
+            {[
+              { num: '01', phase: 'Phase 01', when: 'Month 1', title: 'Deep Dive', body: 'We go deep into your business, goals, and competition — no templates, no assumptions.', hasConn: true },
+              { num: '02', phase: 'Phase 02', when: 'Month 2–3', title: 'Build & Action', body: 'Rohit builds SEO foundation. Ajay gets ads and social delivering results. Fast but strategic.', hasConn: true },
+              { num: '03', phase: 'Phase 03', when: 'Month 4+', title: 'Optimize & Scale', body: 'Data, reporting, and constant improvement — double down where it\'s working.', hasConn: false },
+            ].map((s, i) => (
+              <div key={i} className="mte-process-step">
+                <div className="mte-process-numblock">
+                  <span className="mte-process-num">{s.num}</span>
+                  <span className="mte-process-phase">{s.phase}<span className="when">{s.when}</span></span>
+                </div>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+                {s.hasConn && (
+                  <div className="mte-process-conn">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ── */}
+      <div className="mte-final-cta">
+        <div className="mte-cta-card">
+          <div className="mte-cta-inner">
+            <h2>Ready to Work With Experts<br />Who <span style={{ color: 'var(--blue-light)' }}>Care?</span></h2>
+            <p>No fluff. No upsells. Just an honest conversation about helping your business grow. Let&rsquo;s bring clarity and real results to your digital strategy.</p>
+            <div className="mte-cta-row">
+              <a href="/contact/" className="mte-cta-pill solid">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Book a Strategy Call
+              </a>
+              <a href="mailto:seoshouts@gmail.com" target="_blank" rel="noopener noreferrer" className="mte-cta-pill ghost">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Email Us
+              </a>
+              <a href="tel:+918094888157" className="mte-cta-pill ghost">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                +91 8094888157
+              </a>
+            </div>
+            <div className="mte-cta-foot">
+              Helping businesses across <span className="blue">India and beyond</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Signature strip */}
+      <div className="mte-sig">
+        <p className="mte-sig-text">
+          <span className="name">Rohit &amp; Ajay</span>
+          <span style={{ color: 'var(--gray-4)' }}> – The SEOShouts Team</span>
+          <span className="pipe">|</span>
+          <span className="accent">Real Results</span>
+          <span className="pipe">|</span>
+          <span className="accent">No BS</span>
+          <span className="pipe">|</span>
+          <span>Actually Located in India</span>
+        </p>
+      </div>
     </>
-  );
+  )
 }

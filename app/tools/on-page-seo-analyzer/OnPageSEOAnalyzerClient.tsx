@@ -108,35 +108,31 @@ export default function OnPageSEOAnalyzerClient() {
   const [downloadingCSV, setDownloadingCSV] = useState(false)
   const [emailingReport, setEmailingReport] = useState(false)
   const [isReportVisible, setIsReportVisible] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
-  // Track report visibility for PDF button
+  // Track report visibility for PDF button — modal is always visible when open
   useEffect(() => {
-    if (!analysisResult) return
+    setIsReportVisible(showModal)
+  }, [showModal])
 
-    const reportElement = document.getElementById('seo-report-section')
-    if (!reportElement) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0]
-        setIsReportVisible(entry.isIntersecting)
-      },
-      {
-        root: null,
-        rootMargin: '-100px 0px',
-        threshold: 0.1
-      }
-    )
-
-    observer.observe(reportElement)
-
-    return () => {
-      observer.unobserve(reportElement)
+  // Scroll lock + Escape key when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
     }
-  }, [analysisResult])
+    return () => { document.body.style.overflow = '' }
+  }, [showModal])
 
-
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showModal) setShowModal(false)
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [showModal])
 
   // Check usage limits on component mount
   useEffect(() => {
@@ -170,6 +166,7 @@ export default function OnPageSEOAnalyzerClient() {
     setAnalysisProgress(0)
     setCurrentStep('')
     setActiveTab('overview')
+    setShowModal(false)
   }
 
   const analyzeWebsite = useCallback(async () => {
@@ -297,7 +294,8 @@ export default function OnPageSEOAnalyzerClient() {
         pageSpeed: pageSpeedData
       }
       setAnalysisResult(analysisWithPageSpeed)
-      
+      setShowModal(true)
+
       // Show usage warning if remaining uses are low
       if (usageLimit.remaining <= 2 && usageLimit.remaining > 0) {
         setShowUsageWarning(true)
@@ -1372,17 +1370,25 @@ DETAILED ANALYSIS:
   }
 
   const getStatusIcon = (status: 'excellent' | 'good' | 'fair' | 'warning' | 'critical' | 'neutral' | 'poor' | 'error') => {
-    switch (status) {
-      case 'excellent': return '🌟'
-      case 'good': return '✅'
-      case 'fair': return '👍'
-      case 'warning': return '⚠️'
-      case 'critical': return '❌'
-      case 'poor': return '😞'
-      case 'error': return '💥'
-      case 'neutral': return 'ℹ️'
-      default: return '❓'
+    type IconEntry = { path: string; color: string }
+    const iconMap: Record<string, IconEntry> = {
+      excellent: { path: 'M5 13l4 4L19 7', color: '#059669' },
+      good:      { path: 'M5 13l4 4L19 7', color: '#2563eb' },
+      fair:      { path: 'M5 12h14', color: '#64748b' },
+      warning:   { path: 'M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z', color: '#d97706' },
+      critical:  { path: 'M6 18L18 6M6 6l12 12', color: '#dc2626' },
+      poor:      { path: 'M6 18L18 6M6 6l12 12', color: '#dc2626' },
+      error:     { path: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', color: '#dc2626' },
+      neutral:   { path: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', color: '#64748b' },
     }
+    const d = iconMap[status] || iconMap.neutral
+    return (
+      <div style={{ width: 22, height: 22, background: d.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <svg style={{ width: 11, height: 11 }} fill="none" stroke="white" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={d.path} />
+        </svg>
+      </div>
+    )
   }
 
   const renderAnalysisSection = (title: string, section: AnalysisSection) => {
@@ -1391,334 +1397,213 @@ DETAILED ANALYSIS:
     const goodChecks = section.checks.filter(c => c.status === 'good').length
     const warningChecks = section.checks.filter(c => c.status === 'warning').length
     const criticalChecks = section.checks.filter(c => c.status === 'critical' || c.status === 'error').length
-    
+    const scoreColor = percentage >= 80 ? '#059669' : percentage >= 60 ? '#2563eb' : percentage >= 40 ? '#d97706' : '#dc2626'
+
     return (
-      <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8">
-        {/* Header with Score */}
-        <div className={`px-6 py-4 ${
-          percentage >= 90 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200' :
-          percentage >= 75 ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200' :
-          percentage >= 50 ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-200' :
-          'bg-gradient-to-r from-red-50 to-pink-50 border-red-200'
-        } border-b`}>
-          <div className="flex items-center justify-between">
+      <div style={{ border: '1px solid var(--line)', background: 'var(--white)', overflow: 'hidden', marginBottom: '1.5rem' }}>
+        {/* Header */}
+        <div style={{ background: 'var(--gray-1)', borderBottom: '1px solid var(--line)', padding: '1rem 1.25rem', borderLeft: `4px solid ${scoreColor}` }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
             <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-              <div className="flex items-center space-x-4 text-sm">
-                <span className="flex items-center text-green-600">
-                  <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+              <h3 style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--ink)', letterSpacing: '-0.02em', margin: 0, marginBottom: '0.5rem' }}>{title}</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.75rem', flexWrap: 'wrap' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#059669' }}>
+                  <span style={{ width: 6, height: 6, background: '#059669', display: 'inline-block', flexShrink: 0 }} />
                   {excellentChecks + goodChecks} Passed
                 </span>
-                <span className="flex items-center text-yellow-600">
-                  <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#d97706' }}>
+                  <span style={{ width: 6, height: 6, background: '#d97706', display: 'inline-block', flexShrink: 0 }} />
                   {warningChecks} Warnings
                 </span>
-                <span className="flex items-center text-red-600">
-                  <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#dc2626' }}>
+                  <span style={{ width: 6, height: 6, background: '#dc2626', display: 'inline-block', flexShrink: 0 }} />
                   {criticalChecks} Critical
                 </span>
               </div>
             </div>
-            <div className="text-right">
-              <div className={`text-3xl font-bold ${
-                percentage >= 90 ? 'text-green-600' :
-                percentage >= 75 ? 'text-blue-600' :
-                percentage >= 50 ? 'text-yellow-600' :
-                'text-red-600'
-              }`}>
-                {percentage}%
-              </div>
-              <div className="text-sm text-gray-600">{section.score}/{section.maxScore} points</div>
+            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: scoreColor, letterSpacing: '-0.04em', lineHeight: 1 }}>{percentage}%</div>
+              <div style={{ fontSize: '0.7rem', color: 'var(--gray-5)', marginTop: 2 }}>{section.score}/{section.maxScore} pts</div>
             </div>
           </div>
-          
-          {/* Progress Bar */}
-          <div className="mt-4">
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className={`h-2 rounded-full transition-all duration-500 ${
-                  percentage >= 90 ? 'bg-green-500' :
-                  percentage >= 75 ? 'bg-blue-500' :
-                  percentage >= 50 ? 'bg-yellow-500' :
-                  'bg-red-500'
-                }`}
-                style={{ width: `${Math.min(percentage, 100)}%` }}
-              ></div>
-            </div>
+          <div style={{ marginTop: '0.75rem', height: 3, background: 'var(--line)', width: '100%' }}>
+            <div style={{ height: '100%', background: scoreColor, width: `${Math.min(percentage, 100)}%`, transition: 'width 0.5s ease' }} />
           </div>
         </div>
 
         {/* Filter Buttons */}
-        <div className="px-4 md:px-6 py-4 bg-gray-50 border-b border-gray-200">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+        <div style={{ padding: '0.75rem 1.25rem', background: 'var(--white)', borderBottom: '1px solid var(--line)', display: 'flex', flexWrap: 'wrap', gap: '0.375rem' }}>
+          {([
+            { id: 'all' as const, label: `All Factors (${section.checks.length})`, activeColor: 'var(--ink)' },
+            { id: 'passed' as const, label: `Passed (${excellentChecks + goodChecks})`, activeColor: '#059669' },
+            { id: 'warnings' as const, label: `Warnings (${warningChecks})`, activeColor: '#d97706' },
+            { id: 'critical' as const, label: `Critical (${criticalChecks})`, activeColor: '#dc2626' },
+          ]).map(btn => (
             <button
-              onClick={() => setActiveFilter('all')}
-              className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 ${
-                activeFilter === 'all'
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
+              key={btn.id}
+              onClick={() => setActiveFilter(btn.id)}
+              style={{
+                padding: '0.3rem 0.75rem', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer',
+                border: `1px solid ${activeFilter === btn.id ? btn.activeColor : 'var(--line)'}`,
+                background: activeFilter === btn.id ? btn.activeColor : 'var(--white)',
+                color: activeFilter === btn.id ? 'white' : 'var(--gray-5)',
+                transition: 'all 0.15s ease',
+              }}
             >
-              <span className="hidden sm:inline">All Factors </span>
-              <span className="sm:hidden">All </span>
-              ({section.checks.length})
+              {btn.label}
             </button>
-            <button
-              onClick={() => setActiveFilter('passed')}
-              className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 ${
-                activeFilter === 'passed'
-                  ? 'bg-green-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              <span className="w-2 h-2 bg-green-500 rounded-full inline-block mr-1 md:mr-2"></span>
-              <span className="hidden sm:inline">Passed </span>
-              <span className="sm:hidden">✓ </span>
-              ({excellentChecks + goodChecks})
-            </button>
-            <button
-              onClick={() => setActiveFilter('warnings')}
-              className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 ${
-                activeFilter === 'warnings'
-                  ? 'bg-yellow-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              <span className="w-2 h-2 bg-yellow-500 rounded-full inline-block mr-1 md:mr-2"></span>
-              <span className="hidden sm:inline">Warnings </span>
-              <span className="sm:hidden">⚠ </span>
-              ({warningChecks})
-            </button>
-            <button
-              onClick={() => setActiveFilter('critical')}
-              className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 ${
-                activeFilter === 'critical'
-                  ? 'bg-red-600 text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              <span className="w-2 h-2 bg-red-500 rounded-full inline-block mr-1 md:mr-2"></span>
-              <span className="hidden sm:inline">Critical </span>
-              <span className="sm:hidden">✗ </span>
-              ({criticalChecks})
-            </button>
-          </div>
+          ))}
         </div>
 
         {/* Checks List */}
-        <div className="p-6">
-          <div className="space-y-4">
+        <div style={{ padding: '1rem 1.25rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
             {(() => {
-              // Filter checks based on active filter
               let filteredChecks = section.checks
-              if (activeFilter === 'passed') {
-                filteredChecks = section.checks.filter(c => c.status === 'excellent' || c.status === 'good')
-              } else if (activeFilter === 'warnings') {
-                filteredChecks = section.checks.filter(c => c.status === 'warning')
-              } else if (activeFilter === 'critical') {
-                filteredChecks = section.checks.filter(c => c.status === 'critical' || c.status === 'error')
-              }
-              
+              if (activeFilter === 'passed') filteredChecks = section.checks.filter(c => c.status === 'excellent' || c.status === 'good')
+              else if (activeFilter === 'warnings') filteredChecks = section.checks.filter(c => c.status === 'warning')
+              else if (activeFilter === 'critical') filteredChecks = section.checks.filter(c => c.status === 'critical' || c.status === 'error')
+
               if (filteredChecks.length === 0) {
                 return (
-                  <div className="text-center py-8 text-gray-500">
-                    <svg className="w-12 h-12 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--gray-5)' }}>
+                    <svg style={{ width: 32, height: 32, margin: '0 auto 0.75rem', opacity: 0.4 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <p className="text-lg font-medium text-gray-600 mb-2">No factors found</p>
-                    <p className="text-sm text-gray-500">
-                      {activeFilter === 'passed' && 'No passed factors in this category.'}
-                      {activeFilter === 'warnings' && 'No warning factors in this category.'}
-                      {activeFilter === 'critical' && 'No critical factors in this category.'}
+                    <p style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--ink)', marginBottom: 4 }}>No factors found</p>
+                    <p style={{ fontSize: '0.75rem' }}>
+                      {activeFilter === 'passed' ? 'No passed factors in this category.' :
+                       activeFilter === 'warnings' ? 'No warning factors in this category.' :
+                       'No critical factors in this category.'}
                     </p>
                   </div>
                 )
               }
-              
+
               return filteredChecks.map((check, index) => {
-              const getBorderColor = (status: string) => {
-                switch (status) {
-                  case 'excellent': return 'border-green-200 bg-green-50'
-                  case 'good': return 'border-blue-200 bg-blue-50'
-                  case 'warning': return 'border-yellow-200 bg-yellow-50'
-                  case 'critical':
-                  case 'error': return 'border-red-200 bg-red-50'
-                  default: return 'border-gray-200 bg-gray-50'
-                }
-              }
-              
-              const getTextColor = (status: string) => {
-                switch (status) {
-                  case 'excellent': return 'text-green-700'
-                  case 'good': return 'text-blue-700'
-                  case 'warning': return 'text-yellow-700'
-                  case 'critical':
-                  case 'error': return 'text-red-700'
-                  default: return 'text-gray-700'
-                }
-              }
-              
-              return (
-                <div key={index} className={`border-l-4 ${getBorderColor(check.status)} border rounded-lg p-4`}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-3 mb-2">
-                        <span className="text-2xl">{getStatusIcon(check.status)}</span>
-                        <div>
-                          <span className="font-semibold text-gray-900">{check.factor}</span>
-                          <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ml-3 ${
-                            check.status === 'excellent' ? 'bg-green-100 text-green-800' :
-                            check.status === 'good' ? 'bg-blue-100 text-blue-800' :
-                            check.status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
-                            check.status === 'critical' ? 'bg-red-100 text-red-800' :
-                            'bg-gray-100 text-gray-800'
-                          }`}>
-                            {check.status === 'excellent' ? 'Excellent' :
-                             check.status === 'good' ? 'Good' :
-                             check.status === 'warning' ? 'Needs Attention' :
-                             check.status === 'critical' ? 'Critical' :
-                             check.status === 'error' ? 'Error' : 'Unknown'}
-                          </div>
+                const statusColor =
+                  check.status === 'excellent' ? '#059669' :
+                  check.status === 'good' ? '#2563eb' :
+                  check.status === 'warning' ? '#d97706' :
+                  (check.status === 'critical' || check.status === 'error') ? '#dc2626' :
+                  '#64748b'
+                const statusLabel =
+                  check.status === 'excellent' ? 'Excellent' :
+                  check.status === 'good' ? 'Good' :
+                  check.status === 'warning' ? 'Needs Attention' :
+                  check.status === 'critical' ? 'Critical' :
+                  check.status === 'error' ? 'Error' : 'Info'
+
+                return (
+                  <div key={index} style={{ borderTop: `1px solid ${statusColor}22`, borderRight: `1px solid ${statusColor}22`, borderBottom: `1px solid ${statusColor}22`, borderLeft: `3px solid ${statusColor}`, background: `${statusColor}08`, padding: '0.875rem 1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.75rem' }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.375rem', flexWrap: 'wrap' }}>
+                          {getStatusIcon(check.status)}
+                          <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--ink)' }}>{check.factor}</span>
+                          <span style={{ fontSize: '0.65rem', fontWeight: 700, padding: '2px 6px', background: statusColor, color: 'white', flexShrink: 0 }}>
+                            {statusLabel}
+                          </span>
                         </div>
-                      </div>
-                      <p className={`text-sm ${getTextColor(check.status)} leading-relaxed mb-2`}>
-                        {check.description}
-                      </p>
-                      
-                      {/* Enhanced Information Display */}
-                      {check.recommendation && (
-                        <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                          <div className="flex items-start space-x-2">
-                            <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <span className="text-white text-xs">✓</span>
-                            </div>
-                            <div>
-                              <h5 className="text-sm font-semibold text-blue-900 mb-1">Recommendation</h5>
-                              <p className="text-sm text-blue-800">{check.recommendation}</p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {check.technicalDetails && (
-                        <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                          <div className="flex items-start space-x-2">
-                            <div className="w-4 h-4 bg-gray-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <span className="text-white text-xs">i</span>
-                            </div>
-                            <div>
-                              <h5 className="text-sm font-semibold text-gray-900 mb-1">Technical Details</h5>
-                              <p className="text-sm text-gray-700">{check.technicalDetails}</p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {check.howToFix && check.howToFix.length > 0 && (
-                        <div className="mt-3 p-3 bg-green-50 rounded-lg border border-green-100">
-                          <div className="flex items-start space-x-2">
-                            <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <span className="text-white text-xs">→</span>
-                            </div>
-                            <div>
-                              <h5 className="text-sm font-semibold text-green-900 mb-2">How to Fix</h5>
-                              <ul className="space-y-1">
-                                {check.howToFix.map((step, stepIndex) => (
-                                  <li key={stepIndex} className="flex items-start text-sm text-green-800">
-                                    <span className="w-1.5 h-1.5 bg-green-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                                    {step}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Keyword Optimization Table */}
-                      {check.keywordData && check.keywordData.topKeywords && check.keywordData.topKeywords.length > 0 && (
-                        <div className="mt-4">
-                          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 overflow-hidden">
-                            <div className="px-4 py-3 bg-gradient-to-r from-indigo-100 to-purple-100 border-b border-indigo-200">
-                              <h5 className="text-sm font-semibold text-indigo-900 flex items-center">
-                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                </svg>
-                                Keyword Analysis Report
-                              </h5>
-                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mt-2 text-xs">
-                                <div className="text-indigo-700">
-                                  <span className="font-medium">1-Word:</span> {check.keywordData.singleWords || 0}
-                                </div>
-                                <div className="text-indigo-700">
-                                  <span className="font-medium">2-Word:</span> {check.keywordData.bigrams || 0}
-                                </div>
-                                <div className="text-indigo-700">
-                                  <span className="font-medium">3-Word:</span> {check.keywordData.trigrams || 0}
-                                </div>
-                                <div className="text-indigo-700">
-                                  <span className="font-medium">Diversity:</span> {check.keywordData.keywordDiversityScore.toFixed(1)}%
-                                </div>
+                        <p style={{ margin: 0, fontSize: '0.8rem', color: statusColor === '#64748b' ? 'var(--gray-5)' : statusColor, lineHeight: 1.55, marginBottom: '0.375rem' }}>
+                          {check.description}
+                        </p>
+
+                        {check.recommendation && (
+                          <div style={{ marginTop: '0.625rem', padding: '0.625rem 0.75rem', background: 'rgba(37,99,235,0.05)', borderLeft: '2px solid var(--blue)' }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                              <div style={{ width: 16, height: 16, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                                <svg style={{ width: 8, height: 8 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+                              </div>
+                              <div>
+                                <h5 style={{ margin: 0, marginBottom: 3, fontSize: '0.68rem', fontWeight: 700, color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recommendation</h5>
+                                <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--ink)', lineHeight: 1.5 }}>{check.recommendation}</p>
                               </div>
                             </div>
-                            
-                            {/* Desktop Table View */}
-                            <div className="hidden lg:block overflow-x-auto">
-                              <table className="w-full text-xs">
-                                <thead className="bg-indigo-50">
-                                  <tr>
-                                    <th className="px-3 py-2 text-left font-medium text-indigo-900">#</th>
-                                    <th className="px-3 py-2 text-left font-medium text-indigo-900">Keyword/Phrase</th>
-                                    <th className="px-3 py-2 text-center font-medium text-indigo-900">Type</th>
-                                    <th className="px-3 py-2 text-center font-medium text-indigo-900">Count</th>
-                                    <th className="px-3 py-2 text-center font-medium text-indigo-900">Density</th>
-                                    <th className="px-3 py-2 text-center font-medium text-indigo-900">Visibility</th>
-                                    <th className="px-3 py-2 text-left font-medium text-indigo-900">Found In</th>
+                          </div>
+                        )}
+
+                        {check.technicalDetails && (
+                          <div style={{ marginTop: '0.5rem', padding: '0.625rem 0.75rem', background: 'var(--gray-1)', borderLeft: '2px solid var(--line)' }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                              <div style={{ width: 16, height: 16, background: 'var(--gray-5)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                                <svg style={{ width: 8, height: 8 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                              </div>
+                              <div>
+                                <h5 style={{ margin: 0, marginBottom: 3, fontSize: '0.68rem', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Technical Details</h5>
+                                <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>{check.technicalDetails}</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {check.howToFix && check.howToFix.length > 0 && (
+                          <div style={{ marginTop: '0.5rem', padding: '0.625rem 0.75rem', background: 'rgba(5,150,105,0.05)', borderLeft: '2px solid #059669' }}>
+                            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                              <div style={{ width: 16, height: 16, background: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+                                <svg style={{ width: 8, height: 8 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+                              </div>
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <h5 style={{ margin: 0, marginBottom: 4, fontSize: '0.68rem', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em' }}>How to Fix</h5>
+                                <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                                  {check.howToFix.map((step, stepIndex) => (
+                                    <li key={stepIndex} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.375rem', fontSize: '0.78rem', color: 'var(--ink)', lineHeight: 1.5 }}>
+                                      <span style={{ width: 4, height: 4, background: '#059669', flexShrink: 0, marginTop: '0.45rem', display: 'inline-block' }} />
+                                      {step}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                        {/* Keyword Optimization Table */}
+                        {check.keywordData && check.keywordData.topKeywords && check.keywordData.topKeywords.length > 0 && (
+                          <div style={{ marginTop: '0.75rem', border: '1px solid var(--line)', overflow: 'hidden' }}>
+                            <div style={{ padding: '0.625rem 0.875rem', background: 'var(--ink)', color: 'white', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                              <h5 style={{ margin: 0, fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                                <svg style={{ width: 12, height: 12, flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                                Keyword Analysis Report
+                              </h5>
+                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '0.375rem', marginTop: '0.375rem', fontSize: '0.68rem', color: 'rgba(255,255,255,0.65)' }}>
+                                <span><strong style={{ color: 'rgba(255,255,255,0.9)' }}>1-Word:</strong> {check.keywordData.singleWords || 0}</span>
+                                <span><strong style={{ color: 'rgba(255,255,255,0.9)' }}>2-Word:</strong> {check.keywordData.bigrams || 0}</span>
+                                <span><strong style={{ color: 'rgba(255,255,255,0.9)' }}>3-Word:</strong> {check.keywordData.trigrams || 0}</span>
+                                <span><strong style={{ color: 'rgba(255,255,255,0.9)' }}>Diversity:</strong> {check.keywordData.keywordDiversityScore.toFixed(1)}%</span>
+                              </div>
+                            </div>
+                            <div className="hidden lg:block" style={{ overflowX: 'auto' }}>
+                              <table style={{ width: '100%', fontSize: '0.72rem', borderCollapse: 'collapse' }}>
+                                <thead>
+                                  <tr style={{ background: 'var(--gray-1)', borderBottom: '1px solid var(--line)' }}>
+                                    {['#','Keyword/Phrase','Type','Count','Density','Visibility','Found In'].map(h => (
+                                      <th key={h} style={{ padding: '0.375rem 0.625rem', textAlign: ['Count','Density','Visibility','#'].includes(h)?'center':'left', fontWeight: 700, color: 'var(--ink)', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}>{h}</th>
+                                    ))}
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {check.keywordData.topKeywords.map((keyword, idx) => (
-                                    <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-indigo-25'}>
-                                      <td className="px-3 py-2 font-medium text-indigo-600">{keyword.rank}</td>
-                                      <td className="px-3 py-2 font-medium text-gray-900 max-w-48 truncate">{keyword.keyword}</td>
-                                      <td className="px-3 py-2 text-center">
-                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                                          keyword.type === '1-word' ? 'bg-blue-100 text-blue-800' :
-                                          keyword.type === '2-word' ? 'bg-green-100 text-green-800' :
-                                          'bg-purple-100 text-purple-800'
-                                        }`}>
-                                          {keyword.type}
-                                        </span>
+                                    <tr key={idx} style={{ borderBottom: '1px solid var(--line)', background: idx % 2 === 0 ? 'var(--white)' : 'var(--gray-1)' }}>
+                                      <td style={{ padding: '0.375rem 0.625rem', textAlign: 'center', fontWeight: 700, color: 'var(--blue)' }}>{keyword.rank}</td>
+                                      <td style={{ padding: '0.375rem 0.625rem', fontWeight: 600, color: 'var(--ink)', maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{keyword.keyword}</td>
+                                      <td style={{ padding: '0.375rem 0.625rem', textAlign: 'center' }}>
+                                        <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 5px', background: keyword.type==='1-word'?'rgba(37,99,235,0.1)':keyword.type==='2-word'?'rgba(5,150,105,0.1)':'rgba(124,58,237,0.1)', color: keyword.type==='1-word'?'#2563eb':keyword.type==='2-word'?'#059669':'#7c3aed' }}>{keyword.type}</span>
                                       </td>
-                                      <td className="px-3 py-2 text-center text-gray-700">{keyword.frequency}</td>
-                                      <td className="px-3 py-2 text-center">
-                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                                          parseFloat(keyword.density) > 5 
-                                            ? 'bg-red-100 text-red-800' 
-                                            : parseFloat(keyword.density) >= 0.5 
-                                            ? 'bg-green-100 text-green-800' 
-                                            : 'bg-yellow-100 text-yellow-800'
-                                        }`}>
-                                          {keyword.density}%
-                                        </span>
+                                      <td style={{ padding: '0.375rem 0.625rem', textAlign: 'center', color: 'var(--gray-5)' }}>{keyword.frequency}</td>
+                                      <td style={{ padding: '0.375rem 0.625rem', textAlign: 'center' }}>
+                                        <span style={{ fontSize: '0.62rem', fontWeight: 700, padding: '1px 5px', background: parseFloat(keyword.density)>5?'rgba(220,38,38,0.1)':parseFloat(keyword.density)>=0.5?'rgba(5,150,105,0.1)':'rgba(217,119,6,0.1)', color: parseFloat(keyword.density)>5?'#dc2626':parseFloat(keyword.density)>=0.5?'#059669':'#d97706' }}>{keyword.density}%</span>
                                       </td>
-                                      <td className="px-3 py-2 text-center">
-                                        <div className="flex items-center justify-center">
-                                          <div className="w-12 bg-gray-200 rounded-full h-2 mr-2">
-                                            <div 
-                                              className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full" 
-                                              style={{width: `${keyword.visibility}%`}}
-                                            ></div>
-                                          </div>
-                                          <span className="text-gray-600">{keyword.visibility}%</span>
+                                      <td style={{ padding: '0.375rem 0.625rem', textAlign: 'center' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.375rem' }}>
+                                          <div style={{ width: 40, height: 3, background: 'var(--line)' }}><div style={{ height: '100%', background: 'var(--blue)', width: `${keyword.visibility}%` }} /></div>
+                                          <span style={{ color: 'var(--gray-5)', fontSize: '0.65rem' }}>{keyword.visibility}%</span>
                                         </div>
                                       </td>
-                                      <td className="px-3 py-2">
-                                        <div className="flex flex-wrap gap-1">
+                                      <td style={{ padding: '0.375rem 0.625rem' }}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem' }}>
                                           {keyword.positions.map((position, posIdx) => (
-                                            <span key={posIdx} className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                                              {position}
-                                            </span>
+                                            <span key={posIdx} style={{ fontSize: '0.6rem', fontWeight: 600, padding: '1px 4px', background: 'rgba(37,99,235,0.08)', color: 'var(--blue)' }}>{position}</span>
                                           ))}
                                         </div>
                                       </td>
@@ -1727,68 +1612,31 @@ DETAILED ANALYSIS:
                                 </tbody>
                               </table>
                             </div>
-                            
-                            {/* Mobile Card View */}
                             <div className="lg:hidden">
-                              <div className="space-y-3 p-4">
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', padding: '0.75rem' }}>
                                 {check.keywordData.topKeywords.map((keyword, idx) => (
-                                  <div key={idx} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
-                                    <div className="flex items-start justify-between mb-2">
-                                      <div className="flex-1 min-w-0">
-                                        <div className="flex items-center gap-2 mb-1">
-                                          <span className="text-sm font-medium text-indigo-600">#{keyword.rank}</span>
-                                          <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium ${
-                                            keyword.type === '1-word' ? 'bg-blue-100 text-blue-800' :
-                                            keyword.type === '2-word' ? 'bg-green-100 text-green-800' :
-                                            'bg-purple-100 text-purple-800'
-                                          }`}>
-                                            {keyword.type}
-                                          </span>
-                                        </div>
-                                        <p className="text-sm font-medium text-gray-900 break-words">{keyword.keyword}</p>
-                                      </div>
+                                  <div key={idx} style={{ background: 'var(--white)', border: '1px solid var(--line)', padding: '0.625rem 0.75rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', marginBottom: '0.25rem' }}>
+                                      <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--blue)' }}>#{keyword.rank}</span>
+                                      <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '1px 4px', background: keyword.type==='1-word'?'rgba(37,99,235,0.1)':keyword.type==='2-word'?'rgba(5,150,105,0.1)':'rgba(124,58,237,0.1)', color: keyword.type==='1-word'?'#2563eb':keyword.type==='2-word'?'#059669':'#7c3aed' }}>{keyword.type}</span>
                                     </div>
-                                    
-                                    <div className="grid grid-cols-2 gap-3 text-xs">
-                                      <div>
-                                        <span className="text-gray-500">Count:</span>
-                                        <span className="ml-1 font-medium text-gray-800">{keyword.frequency}</span>
-                                      </div>
-                                      <div>
-                                        <span className="text-gray-500">Density:</span>
-                                        <span className={`ml-1 px-1.5 py-0.5 rounded text-xs font-medium ${
-                                          parseFloat(keyword.density) > 5 
-                                            ? 'bg-red-100 text-red-800' 
-                                            : parseFloat(keyword.density) >= 0.5 
-                                            ? 'bg-green-100 text-green-800' 
-                                            : 'bg-yellow-100 text-yellow-800'
-                                        }`}>
-                                          {keyword.density}%
-                                        </span>
-                                      </div>
+                                    <p style={{ margin: 0, marginBottom: '0.375rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--ink)' }}>{keyword.keyword}</p>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.375rem', fontSize: '0.72rem' }}>
+                                      <div><span style={{ color: 'var(--gray-5)' }}>Count:</span> <strong style={{ color: 'var(--ink)' }}>{keyword.frequency}</strong></div>
+                                      <div><span style={{ color: 'var(--gray-5)' }}>Density: </span><span style={{ fontWeight: 700, padding: '1px 4px', background: parseFloat(keyword.density)>5?'rgba(220,38,38,0.1)':parseFloat(keyword.density)>=0.5?'rgba(5,150,105,0.1)':'rgba(217,119,6,0.1)', color: parseFloat(keyword.density)>5?'#dc2626':parseFloat(keyword.density)>=0.5?'#059669':'#d97706' }}>{keyword.density}%</span></div>
                                     </div>
-                                    
-                                    <div className="mt-2">
-                                      <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
-                                        <span>Visibility</span>
-                                        <span className="font-medium text-gray-700">{keyword.visibility}%</span>
+                                    <div style={{ marginTop: '0.375rem' }}>
+                                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.68rem', color: 'var(--gray-5)', marginBottom: '0.2rem' }}>
+                                        <span>Visibility</span><span style={{ fontWeight: 600, color: 'var(--ink)' }}>{keyword.visibility}%</span>
                                       </div>
-                                      <div className="w-full bg-gray-200 rounded-full h-1.5">
-                                        <div 
-                                          className="bg-gradient-to-r from-indigo-500 to-purple-500 h-1.5 rounded-full transition-all duration-500"
-                                          style={{ width: `${keyword.visibility}%` }}
-                                        ></div>
-                                      </div>
+                                      <div style={{ height: 3, background: 'var(--line)' }}><div style={{ height: '100%', background: 'var(--blue)', width: `${keyword.visibility}%`, transition: 'width 0.5s ease' }} /></div>
                                     </div>
-                                    
                                     {keyword.positions && keyword.positions.length > 0 && (
-                                      <div className="mt-2">
-                                        <p className="text-xs text-gray-500 mb-1">Found in:</p>
-                                        <div className="flex flex-wrap gap-1">
+                                      <div style={{ marginTop: '0.375rem' }}>
+                                        <p style={{ fontSize: '0.65rem', color: 'var(--gray-5)', marginBottom: '0.2rem' }}>Found in:</p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem' }}>
                                           {keyword.positions.map((position, posIdx) => (
-                                            <span key={posIdx} className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-                                              {position}
-                                            </span>
+                                            <span key={posIdx} style={{ fontSize: '0.6rem', fontWeight: 600, padding: '1px 4px', background: 'rgba(37,99,235,0.08)', color: 'var(--blue)' }}>{position}</span>
                                           ))}
                                         </div>
                                       </div>
@@ -1797,36 +1645,30 @@ DETAILED ANALYSIS:
                                 ))}
                               </div>
                             </div>
-                            
-                            {/* Over/Under Optimized Keywords */}
                             {(check.keywordData.overOptimizedKeywords.length > 0 || check.keywordData.underOptimizedKeywords.length > 0) && (
-                              <div className="px-4 py-3 bg-gradient-to-r from-amber-50 to-orange-50 border-t border-amber-200">
+                              <div style={{ padding: '0.625rem 0.875rem', borderTop: '1px solid var(--line)', background: 'var(--gray-1)' }}>
                                 {check.keywordData.overOptimizedKeywords.length > 0 && (
-                                  <div className="mb-2">
-                                    <h6 className="text-xs font-semibold text-red-800 mb-1 flex items-center">
-                                      <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-                                      Over-optimized ({'>'}5% density)
+                                  <div style={{ marginBottom: '0.375rem' }}>
+                                    <h6 style={{ margin: 0, marginBottom: '0.25rem', fontSize: '0.65rem', fontWeight: 700, color: '#dc2626', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                      <span style={{ width: 6, height: 6, background: '#dc2626', display: 'inline-block' }} />
+                                      Over-optimized (&gt;5% density)
                                     </h6>
-                                    <div className="flex flex-wrap gap-1">
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem' }}>
                                       {check.keywordData.overOptimizedKeywords.map((kw, idx) => (
-                                        <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
-                                          {kw.word} ({kw.density}%)
-                                        </span>
+                                        <span key={idx} style={{ fontSize: '0.65rem', fontWeight: 600, padding: '1px 5px', background: 'rgba(220,38,38,0.08)', color: '#dc2626' }}>{kw.word} ({kw.density}%)</span>
                                       ))}
                                     </div>
                                   </div>
                                 )}
                                 {check.keywordData.underOptimizedKeywords.length > 0 && (
                                   <div>
-                                    <h6 className="text-xs font-semibold text-yellow-800 mb-1 flex items-center">
-                                      <span className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                                      Under-optimized ({'<'}0.5% density)
+                                    <h6 style={{ margin: 0, marginBottom: '0.25rem', fontSize: '0.65rem', fontWeight: 700, color: '#d97706', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                      <span style={{ width: 6, height: 6, background: '#d97706', display: 'inline-block' }} />
+                                      Under-optimized (&lt;0.5% density)
                                     </h6>
-                                    <div className="flex flex-wrap gap-1">
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.2rem' }}>
                                       {check.keywordData.underOptimizedKeywords.map((kw, idx) => (
-                                        <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                                          {kw.word} ({kw.density}%)
-                                        </span>
+                                        <span key={idx} style={{ fontSize: '0.65rem', fontWeight: 600, padding: '1px 5px', background: 'rgba(217,119,6,0.08)', color: '#d97706' }}>{kw.word} ({kw.density}%)</span>
                                       ))}
                                     </div>
                                   </div>
@@ -1834,100 +1676,67 @@ DETAILED ANALYSIS:
                               </div>
                             )}
                           </div>
-                        </div>
-                      )}
-                      
-                      {/* Heading Hierarchy Display */}
-                      {check.headingData && check.headingData.totalCount > 0 && (
-                        <div className="mt-4">
-                          <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200 overflow-hidden">
-                            <div className="px-3 sm:px-4 py-3 bg-gradient-to-r from-green-100 to-emerald-100 border-b border-green-200">
-                              <h5 className="text-sm font-semibold text-green-900 flex items-center">
-                                <svg className="w-4 h-4 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                                </svg>
-                                <span className="truncate">Heading Structure Analysis</span>
+                        )}
+
+                        {/* Heading Hierarchy */}
+                        {check.headingData && check.headingData.totalCount > 0 && (
+                          <div style={{ marginTop: '0.75rem', border: '1px solid var(--line)', overflow: 'hidden' }}>
+                            <div style={{ padding: '0.625rem 0.875rem', background: 'var(--ink)', color: 'white', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                              <h5 style={{ margin: 0, fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                                <svg style={{ width: 12, height: 12, flexShrink: 0 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                                Heading Structure Analysis
                               </h5>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mt-2 text-xs">
-                                <div className="text-green-700">
-                                  <span className="font-medium">Total Headings:</span> {check.headingData.totalCount}
-                                </div>
-                                <div className="text-green-700">
-                                  <span className="font-medium">Hierarchy Score:</span> {check.headingData.hierarchyScore}/10
-                                </div>
+                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.375rem', marginTop: '0.375rem', fontSize: '0.68rem', color: 'rgba(255,255,255,0.65)' }}>
+                                <span><strong style={{ color: 'rgba(255,255,255,0.9)' }}>Total:</strong> {check.headingData.totalCount}</span>
+                                <span><strong style={{ color: 'rgba(255,255,255,0.9)' }}>Score:</strong> {check.headingData.hierarchyScore}/10</span>
                               </div>
                             </div>
-                            <div className="p-3 sm:p-4">
-                              <div className="space-y-3 sm:space-y-4">
-                                {['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].map((level) => {
-                                  const headings = check.headingData?.[level as keyof typeof check.headingData] as string[];
-                                  if (!headings || headings.length === 0) return null;
-
+                            <div style={{ padding: '0.75rem 0.875rem' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {['h1','h2','h3','h4','h5','h6'].map((level) => {
+                                  const headings = check.headingData?.[level as keyof typeof check.headingData] as string[]
+                                  if (!headings || headings.length === 0) return null
+                                  const lvlColors: {[k:string]:string} = { h1:'#dc2626',h2:'#2563eb',h3:'#059669',h4:'#d97706',h5:'#7c3aed',h6:'#64748b' }
+                                  const lvlColor = lvlColors[level] || '#64748b'
                                   return (
-                                    <div key={level} className="border-l-4 border-gray-200 pl-3 sm:pl-4">
-                                      <div className="flex items-center mb-2 flex-wrap gap-2">
-                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium shrink-0 ${
-                                          level === 'h1' ? 'bg-red-100 text-red-800' :
-                                          level === 'h2' ? 'bg-blue-100 text-blue-800' :
-                                          level === 'h3' ? 'bg-green-100 text-green-800' :
-                                          level === 'h4' ? 'bg-yellow-100 text-yellow-800' :
-                                          level === 'h5' ? 'bg-purple-100 text-purple-800' :
-                                          'bg-gray-100 text-gray-800'
-                                        }`}>
-                                          {level.toUpperCase()}
-                                        </span>
-                                        <span className="text-xs sm:text-sm font-medium text-gray-700">
-                                          {headings.length} heading{headings.length !== 1 ? 's' : ''}
-                                        </span>
+                                    <div key={level} style={{ borderLeft: `3px solid ${lvlColor}`, paddingLeft: '0.75rem' }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.375rem', flexWrap: 'wrap' }}>
+                                        <span style={{ fontSize: '0.65rem', fontWeight: 800, padding: '1px 6px', background: lvlColor, color: 'white' }}>{level.toUpperCase()}</span>
+                                        <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--ink)' }}>{headings.length} heading{headings.length !== 1 ? 's' : ''}</span>
                                       </div>
-                                      <div className="space-y-2">
-                                        {headings.map((heading, idx) => (
-                                          <div key={idx} className="bg-white rounded-lg border border-gray-100 p-2 sm:p-3 shadow-sm">
-                                            <div className="flex flex-col space-y-2">
-                                              <div className="min-w-0">
-                                                <p className="text-xs sm:text-sm font-medium text-gray-900 break-words leading-tight">
-                                                  {heading.length > 80 ? `${heading.substring(0, 80)}...` : heading}
-                                                </p>
-                                              </div>
-                                              <div className="flex items-center flex-wrap gap-2 text-xs text-gray-500">
-                                                <span className="shrink-0">{heading.length} chars</span>
-                                                <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${
-                                                  level === 'h1' && heading.length < 30 ? 'bg-red-100 text-red-700' :
-                                                  level === 'h1' && heading.length > 60 ? 'bg-red-100 text-red-700' :
-                                                  level !== 'h1' && heading.length < 20 ? 'bg-yellow-100 text-yellow-700' :
-                                                  level !== 'h1' && heading.length > 70 ? 'bg-yellow-100 text-yellow-700' :
-                                                  'bg-green-100 text-green-700'
-                                                }`}>
-                                                  {
-                                                    level === 'h1' && heading.length >= 30 && heading.length <= 60 ? 'Optimal' :
-                                                    level !== 'h1' && heading.length >= 20 && heading.length <= 70 ? 'Good' :
-                                                    heading.length < (level === 'h1' ? 30 : 20) ? 'Too Short' :
-                                                    'Too Long'
-                                                  }
-                                                </span>
+                                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                        {headings.map((heading, idx) => {
+                                          const isOptimal = level === 'h1' ? heading.length >= 30 && heading.length <= 60 : heading.length >= 20 && heading.length <= 70
+                                          const isTooLong = heading.length > (level === 'h1' ? 60 : 70)
+                                          const lengthColor = isOptimal ? '#059669' : isTooLong ? '#dc2626' : '#d97706'
+                                          const lengthLabel = isOptimal ? 'Optimal' : isTooLong ? 'Too Long' : 'Too Short'
+                                          return (
+                                            <div key={idx} style={{ background: 'var(--gray-1)', border: '1px solid var(--line)', padding: '0.375rem 0.5rem' }}>
+                                              <p style={{ margin: 0, marginBottom: '0.2rem', fontSize: '0.78rem', fontWeight: 500, color: 'var(--ink)', lineHeight: 1.45, wordBreak: 'break-word' }}>
+                                                {heading.length > 80 ? `${heading.substring(0, 80)}...` : heading}
+                                              </p>
+                                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.65rem', color: 'var(--gray-5)' }}>
+                                                <span>{heading.length} chars</span>
+                                                <span style={{ fontWeight: 700, padding: '1px 4px', background: `${lengthColor}15`, color: lengthColor }}>{lengthLabel}</span>
                                               </div>
                                             </div>
-                                          </div>
-                                        ))}
+                                          )
+                                        })}
                                       </div>
                                     </div>
-                                  );
+                                  )
                                 })}
                               </div>
-                              
-                              {/* Hierarchy Issues */}
                               {check.headingData.issues && check.headingData.issues.length > 0 && (
-                                <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
-                                  <h6 className="text-xs font-semibold text-amber-800 mb-2 flex items-center">
-                                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                    </svg>
+                                <div style={{ marginTop: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(217,119,6,0.06)', borderLeft: '2px solid #d97706' }}>
+                                  <h6 style={{ margin: 0, marginBottom: '0.25rem', fontSize: '0.65rem', fontWeight: 700, color: '#d97706', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    <svg style={{ width: 10, height: 10 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
                                     Structure Issues
                                   </h6>
-                                  <ul className="text-xs text-amber-700 space-y-1">
+                                  <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
                                     {check.headingData.issues.map((issue, idx) => (
-                                      <li key={idx} className="flex items-start">
-                                        <span className="w-1 h-1 bg-amber-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                                      <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.375rem', fontSize: '0.72rem', color: '#d97706', lineHeight: 1.45 }}>
+                                        <span style={{ width: 4, height: 4, background: '#d97706', flexShrink: 0, marginTop: '0.35rem', display: 'inline-block' }} />
                                         {issue}
                                       </li>
                                     ))}
@@ -1936,65 +1745,54 @@ DETAILED ANALYSIS:
                               )}
                             </div>
                           </div>
-                        </div>
-                      )}
-                      
-                      {check.impact && (
-                        <div className="mt-3 p-2 bg-purple-50 rounded border-l-4 border-purple-400">
-                          <div className="flex items-center space-x-2">
-                            <span className="text-purple-600 text-xs font-semibold">SEO Impact:</span>
-                            <span className="text-purple-800 text-xs">{check.impact}</span>
+                        )}
+
+                        {check.impact && (
+                          <div style={{ marginTop: '0.5rem', padding: '0.375rem 0.625rem', background: 'rgba(37,99,235,0.05)', borderLeft: '2px solid var(--blue)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <span style={{ fontSize: '0.68rem', fontWeight: 700, color: 'var(--blue)', textTransform: 'uppercase', letterSpacing: '0.04em', flexShrink: 0 }}>SEO Impact:</span>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--ink)', lineHeight: 1.4 }}>{check.impact}</span>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })
-          })()}
+                )
+              })
+            })()}
           </div>
-          
-          {/* Summary and Recommendations */}
+
+          {/* Priority Actions */}
           {(criticalChecks > 0 || warningChecks > 0) && (
-            <div className="mt-8 pt-6 border-t border-gray-100">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+            <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--line)' }}>
+              <h4 style={{ margin: 0, marginBottom: '0.75rem', fontSize: '0.85rem', fontWeight: 700, color: 'var(--ink)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ width: 18, height: 18, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg style={{ width: 9, height: 9 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
                 Priority Actions
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {section.checks
-                  .filter(c => c.status === 'critical' || c.status === 'error')
-                  .slice(0, 4)
-                  .map((check, index) => (
-                    <div key={index} className="flex items-start p-3 bg-red-50 border border-red-100 rounded-lg">
-                      <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
-                        <span className="text-white text-xs font-bold">{index + 1}</span>
-                      </div>
-                      <div>
-                        <span className="font-medium text-red-800 text-sm">Fix {check.factor}</span>
-                        <p className="text-xs text-red-600 mt-1">High impact on SEO performance</p>
-                      </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '0.5rem' }}>
+                {section.checks.filter(c => c.status === 'critical' || c.status === 'error').slice(0, 4).map((check, index) => (
+                  <div key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.625rem', padding: '0.625rem 0.75rem', background: 'rgba(220,38,38,0.05)', borderLeft: '2px solid #dc2626' }}>
+                    <div style={{ width: 18, height: 18, background: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <span style={{ color: 'white', fontSize: '0.6rem', fontWeight: 800 }}>{index + 1}</span>
                     </div>
-                  ))
-                }
-                {section.checks
-                  .filter(c => c.status === 'warning')
-                  .slice(0, Math.max(0, 4 - criticalChecks))
-                  .map((check, index) => (
-                    <div key={index + criticalChecks} className="flex items-start p-3 bg-yellow-50 border border-yellow-100 rounded-lg">
-                      <div className="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
-                        <span className="text-white text-xs font-bold">{index + criticalChecks + 1}</span>
-                      </div>
-                      <div>
-                        <span className="font-medium text-yellow-800 text-sm">Improve {check.factor}</span>
-                        <p className="text-xs text-yellow-600 mt-1">Moderate impact on SEO performance</p>
-                      </div>
+                    <div>
+                      <span style={{ fontWeight: 700, color: '#dc2626', fontSize: '0.78rem' }}>Fix {check.factor}</span>
+                      <p style={{ margin: 0, marginTop: 2, fontSize: '0.68rem', color: 'var(--gray-5)' }}>High impact on SEO performance</p>
                     </div>
-                  ))
-                }
+                  </div>
+                ))}
+                {section.checks.filter(c => c.status === 'warning').slice(0, Math.max(0, 4 - criticalChecks)).map((check, index) => (
+                  <div key={index + criticalChecks} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.625rem', padding: '0.625rem 0.75rem', background: 'rgba(217,119,6,0.05)', borderLeft: '2px solid #d97706' }}>
+                    <div style={{ width: 18, height: 18, background: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <span style={{ color: 'white', fontSize: '0.6rem', fontWeight: 800 }}>{index + criticalChecks + 1}</span>
+                    </div>
+                    <div>
+                      <span style={{ fontWeight: 700, color: '#d97706', fontSize: '0.78rem' }}>Improve {check.factor}</span>
+                      <p style={{ margin: 0, marginTop: 2, fontSize: '0.68rem', color: 'var(--gray-5)' }}>Moderate impact on SEO performance</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -2011,6 +1809,13 @@ DETAILED ANALYSIS:
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,9,10,0.35)', zIndex: 0 }} />
         <ShapeGrid borderColor="rgba(37,99,235,0.18)" squareSize={48} speed={0.4} hoverFillColor="rgba(37,99,235,0.12)" />
         <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>On-Page SEO Analyzer</span>
+          </nav>
           <div className="tool-hero-badge">
             <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -2021,15 +1826,6 @@ DETAILED ANALYSIS:
             Advanced On-Page SEO Analyzer<br />
             <span>Complete Website Analysis with 150+ Factors</span>
           </h1>
-          <h2 className="tool-hero-sub" style={{ maxWidth: '900px', fontWeight: 600, fontSize: '1.2rem', color: 'rgba(255,255,255,0.78)', marginBottom: '0.75rem' }}>
-            What is an On-Page SEO Analyzer?
-          </h2>
-          <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
-            An <strong>on-page SEO analyzer</strong> is a comprehensive tool that evaluates all optimization elements directly on your web pages that influence search engine rankings. Unlike off-page factors like backlinks, on-page SEO focuses on what you can control: your content, HTML structure, meta tags, images, internal links, and technical elements.
-          </p>
-          <p className="tool-hero-sub" style={{ maxWidth: '900px', marginTop: '0.75rem' }}>
-            Our advanced analyzer examines <strong>150+ critical ranking factors</strong> including content quality, keyword optimization, Core Web Vitals, mobile responsiveness, structured data, accessibility, and security. Get instant, actionable insights to improve your search visibility, user experience, and organic traffic with data-driven recommendations tailored to your website.
-          </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.75rem' }}>
             {['150+ SEO Factors', 'Core Web Vitals', 'Real PageSpeed Data', '100% Free'].map(pill => (
               <div key={pill} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(37,99,235,0.35)', padding: '5px 14px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' as const }}>
@@ -2123,7 +1919,7 @@ DETAILED ANALYSIS:
 
             {/* Usage Warning */}
             {showUsageWarning && usageLimit.remaining <= 1 && usageLimit.remaining > 0 && (
-              <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--amber)', padding: '1rem 1.25rem', marginTop: '1rem' }}>
+              <div style={{ background: 'var(--blue-pale)', borderTop: '1px solid var(--blue-mid)', borderRight: '1px solid var(--blue-mid)', borderBottom: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--amber)', padding: '1rem 1.25rem', marginTop: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                   <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--amber)', flexShrink: 0 }}>
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
@@ -2144,7 +1940,7 @@ DETAILED ANALYSIS:
 
             {/* Error Display */}
             {error && (
-              <div style={{ background: '#fef2f2', border: '1px solid #fecaca', borderLeft: '4px solid var(--red)', padding: '0.875rem 1.25rem', marginTop: '1rem', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+              <div style={{ background: '#fef2f2', borderTop: '1px solid #fecaca', borderRight: '1px solid #fecaca', borderBottom: '1px solid #fecaca', borderLeft: '4px solid var(--red)', padding: '0.875rem 1.25rem', marginTop: '1rem', display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
                 <svg width={16} height={16} viewBox="0 0 20 20" fill="currentColor" style={{ color: 'var(--red)', flexShrink: 0, marginTop: '2px' }}>
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
@@ -2203,797 +1999,228 @@ DETAILED ANALYSIS:
         </div>
       </section>
 
-      {/* Analysis Results Section */}
-      {/* Floating PDF Button - Desktop (Right side) */}
-      {analysisResult && isReportVisible && (
-        <div className="hidden sm:block fixed right-4 sm:right-6 lg:right-8 xl:right-12 top-1/2 transform -translate-y-1/2 z-50">
-          <button
-            onClick={handleDownloadPDF}
-            className="bg-red-600 text-white px-4 py-3 rounded-xl shadow-2xl hover:bg-red-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 hover:shadow-red-500/25 border border-red-500 animate-fade-in"
-            disabled={downloadingPDF}
-            title="Download PDF Report"
-          >
-            {downloadingPDF ? (
-              <div className="flex items-center space-x-2">
-                <svg className="animate-spin h-4 w-4 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 718-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span className="text-xs font-medium">PDF</span>
+
+      {showModal && analysisResult && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', flexDirection: 'column', background: 'rgba(0,0,0,0.85)' }}>
+          <style>{`.seo-modal-inner * { border-radius: 0 !important; }`}</style>
+
+          {/* Modal top bar */}
+          <div style={{ background: 'var(--ink)', color: 'var(--white)', padding: '0.875rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+              <div style={{ width: 36, height: 36, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg style={{ width: 19, height: 19 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
               </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-                </svg>
-                <span className="text-xs font-medium">PDF</span>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: '1.05rem', letterSpacing: '-0.01em' }}>SEO Analysis Report</div>
+                <div style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', marginTop: 2, maxWidth: 360, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{analysisResult.url}</div>
               </div>
-            )}
-          </button>
-        </div>
-      )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.75rem', fontSize: '0.84rem', color: 'rgba(255,255,255,0.5)' }} className="hidden sm:flex">
+                <span>Analyzed {new Date().toLocaleDateString()}</span>
+                <span>·</span>
+                <span>{Object.values(analysisResult.factors).reduce((acc, s) => acc + s.checks.length, 0)} factors checked</span>
+              </div>
+              <button
+                onClick={handleDownloadPDF}
+                disabled={downloadingPDF}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0 0.875rem', height: 34, background: '#dc2626', color: 'white', borderTop: 'none', borderRight: 'none', borderBottom: 'none', borderLeft: 'none', cursor: downloadingPDF ? 'not-allowed' : 'pointer', flexShrink: 0, fontSize: '0.78rem', fontWeight: 700, opacity: downloadingPDF ? 0.7 : 1 }}
+                title="Download PDF Report"
+              >
+                {downloadingPDF ? (
+                  <svg style={{ width: 14, height: 14 }} className="animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+                ) : (
+                  <svg style={{ width: 14, height: 14 }} fill="currentColor" viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" /></svg>
+                )}
+                <span>{downloadingPDF ? 'Generating...' : 'PDF'}</span>
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, background: 'rgba(255,255,255,0.08)', borderTop: '1px solid rgba(255,255,255,0.18)', borderRight: '1px solid rgba(255,255,255,0.18)', borderBottom: '1px solid rgba(255,255,255,0.18)', borderLeft: '1px solid rgba(255,255,255,0.18)', color: 'white', cursor: 'pointer', flexShrink: 0 }}
+                title="Close report"
+              >
+                <svg style={{ width: 15, height: 15 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+          </div>
 
-      {/* Floating PDF Button - Mobile (Parallel to Scroll to Top but on Right) */}
-      {analysisResult && (
-        <div className="sm:hidden fixed bottom-8 right-4 z-[100]">
-          <button
-            onClick={handleDownloadPDF}
-            className="w-12 h-12 bg-red-600 hover:bg-red-700 rounded-full shadow-lg border border-red-700 flex items-center justify-center transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={downloadingPDF}
-            title="Download PDF Report"
-            aria-label="Download PDF Report"
-            type="button"
-          >
-            {downloadingPDF ? (
-              <svg className="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 718-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-white pointer-events-none" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-              </svg>
-            )}
-          </button>
-        </div>
-      )}
+          {/* Two-panel body */}
+          <div className="seo-modal-inner" id="seo-report-section" style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
 
-      {analysisResult && (
-        <section id="seo-report-section" style={{ background: 'var(--white)', borderTop: '1px solid var(--line)', padding: '4rem 2rem' }}>
-          <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
-              <div className="space-y-8">
+            {/* ── LEFT PANEL ── */}
+            <div style={{ width: 256, flexShrink: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden', borderRight: '1px solid var(--line)', background: 'var(--white)' }}>
 
-                {/* Complete Report Display - Works for both regular and shared reports */}
-                {/* Overall Score Dashboard */}
-                <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-                  {/* Header */}
-                  <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white">
-                    {/* Mobile Layout */}
-                    <div className="block lg:hidden p-4">
-                      {/* Top Row: Title and Score */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mr-3">
-                            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                          </div>
-                          <div>
-                            <h2 className="text-lg font-bold">SEO Analysis Report</h2>
-                          </div>
-                        </div>
-                        
-                        {/* Compact Score Display */}
-                        <div className="relative">
-                          <div className="w-16 h-16">
-                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
-                              <circle cx="60" cy="60" r="45" stroke="rgba(255,255,255,0.2)" strokeWidth="8" fill="none" />
-                              <circle
-                                cx="60" cy="60" r="45"
-                                stroke={analysisResult.overallScore >= 80 ? '#22c55e' : 
-                                       analysisResult.overallScore >= 60 ? '#f59e0b' : '#ef4444'}
-                                strokeWidth="8" fill="none" strokeLinecap="round"
-                                strokeDasharray={`${(analysisResult.overallScore / 100) * 283} 283`}
-                                className="transition-all duration-1000 ease-out"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="text-center">
-                                <div className="text-lg font-bold text-white">{analysisResult.overallScore}</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* URL Row */}
-                      <div className="mb-4 bg-white/10 rounded-lg p-3">
-                        <div className="flex items-center text-slate-200 text-xs mb-2">
-                          <svg className="w-3 h-3 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                          </svg>
-                          <span className="truncate" title={analysisResult.url}>{analysisResult.url}</span>
-                        </div>
-                        
-                        {/* Analysis Summary - Mobile */}
-                        <div className="grid grid-cols-2 gap-2 text-slate-300 text-xs">
-                          <div className="flex items-center">
-                            <svg className="w-2 h-2 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {new Date().toLocaleDateString()}
-                          </div>
-                          <div className="flex items-center">
-                            <svg className="w-2 h-2 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {Object.values(analysisResult.factors).reduce((acc, section) => acc + section.checks.length, 0)} factors
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Stats Row */}
-                      <div className="grid grid-cols-3 gap-2">
-                        <div className="bg-green-500/20 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold text-green-300">
-                            {Object.values(analysisResult.factors).reduce((acc, section) => 
-                              acc + section.checks.filter(c => c.status === 'excellent' || c.status === 'good').length, 0)}
-                          </div>
-                          <div className="text-xs text-green-200">Passed</div>
-                        </div>
-                        <div className="bg-yellow-500/20 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold text-yellow-300">
-                            {Object.values(analysisResult.factors).reduce((acc, section) => 
-                              acc + section.checks.filter(c => c.status === 'warning').length, 0)}
-                          </div>
-                          <div className="text-xs text-yellow-200">Warnings</div>
-                        </div>
-                        <div className="bg-red-500/20 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold text-red-300">
-                            {Object.values(analysisResult.factors).reduce((acc, section) => 
-                              acc + section.checks.filter(c => c.status === 'critical' || c.status === 'error').length, 0)}
-                          </div>
-                          <div className="text-xs text-red-200">Critical</div>
-                        </div>
-                      </div>
-                      
-                      {/* Priority Actions - Mobile */}
-                      {Object.values(analysisResult.factors).some(section => 
-                        section.checks.some(c => c.status === 'critical' || c.status === 'error')
-                      ) && (
-                        <div className="mt-4 bg-red-500/20 border border-red-400/30 rounded-lg p-3">
-                          <div className="flex items-start">
-                            <svg className="w-3 h-3 text-red-300 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                            </svg>
-                            <div>
-                              <h4 className="text-red-200 font-medium text-xs">Critical Issues Found</h4>
-                              <p className="text-red-300 text-xs mt-1">
-                                Address critical issues first to improve your SEO score
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Status Badge */}
-                      <div className="mt-4 text-center">
-                        <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-bold ${
-                          analysisResult.overallScore >= 80 ? 'bg-green-500 text-white' :
-                          analysisResult.overallScore >= 60 ? 'bg-yellow-500 text-black' :
-                          'bg-red-500 text-white'
-                        }`}>
-                          {analysisResult.overallScore >= 80 ? '🌟 Excellent Performance' :
-                           analysisResult.overallScore >= 60 ? '👍 Good Performance' : '⚠️ Needs Improvement'}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Desktop Layout */}
-                    <div className="hidden lg:block p-8">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start mb-6">
-                            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                              </svg>
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <h2 className="text-3xl font-bold mb-2">SEO Analysis Report</h2>
-                              <div className="flex items-center text-slate-200 text-sm mb-3">
-                                <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                                </svg>
-                                <span className="truncate" title={analysisResult.url}>{analysisResult.url}</span>
-                              </div>
-                              
-                              {/* Analysis Summary */}
-                              <div className="flex items-center text-slate-300 text-xs space-x-4 mb-4">
-                                <div className="flex items-center">
-                                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                  Analyzed {new Date().toLocaleDateString()}
-                                </div>
-                                <div className="flex items-center">
-                                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                  {Object.values(analysisResult.factors).reduce((acc, section) => acc + section.checks.length, 0)} factors checked
-                                </div>
-                                <div className="flex items-center">
-                                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                  </svg>
-                                  {Object.keys(analysisResult.factors).length} categories
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Enhanced Status Grid */}
-                          <div className="grid grid-cols-3 gap-4 mb-4">
-                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <div className="flex items-center text-green-300 text-sm font-medium mb-1">
-                                    <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                                    Passed
-                                  </div>
-                                  <div className="text-2xl font-bold text-white">
-                                    {Object.values(analysisResult.factors).reduce((acc, section) => 
-                                      acc + section.checks.filter(c => c.status === 'excellent' || c.status === 'good').length, 0)}
-                                  </div>
-                                </div>
-                                <svg className="w-8 h-8 text-green-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                            </div>
-                            
-                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <div className="flex items-center text-yellow-300 text-sm font-medium mb-1">
-                                    <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
-                                    Warnings
-                                  </div>
-                                  <div className="text-2xl font-bold text-white">
-                                    {Object.values(analysisResult.factors).reduce((acc, section) => 
-                                      acc + section.checks.filter(c => c.status === 'warning').length, 0)}
-                                  </div>
-                                </div>
-                                <svg className="w-8 h-8 text-yellow-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                </svg>
-                              </div>
-                            </div>
-                            
-                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-                              <div className="flex items-center justify-between">
-                                <div>
-                                  <div className="flex items-center text-red-300 text-sm font-medium mb-1">
-                                    <div className="w-2 h-2 bg-red-400 rounded-full mr-2"></div>
-                                    Critical
-                                  </div>
-                                  <div className="text-2xl font-bold text-white">
-                                    {Object.values(analysisResult.factors).reduce((acc, section) => 
-                                      acc + section.checks.filter(c => c.status === 'critical' || c.status === 'error').length, 0)}
-                                  </div>
-                                </div>
-                                <svg className="w-8 h-8 text-red-400 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Priority Actions */}
-                          {Object.values(analysisResult.factors).some(section => 
-                            section.checks.some(c => c.status === 'critical' || c.status === 'error')
-                          ) && (
-                            <div className="bg-red-500/20 border border-red-400/30 rounded-lg p-3 mb-4">
-                              <div className="flex items-start">
-                                <svg className="w-4 h-4 text-red-300 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                </svg>
-                                <div>
-                                  <h4 className="text-red-200 font-medium text-sm">Critical Issues Found</h4>
-                                  <p className="text-red-300 text-xs mt-1">
-                                    Address critical issues first to improve your SEO score significantly
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        
-                        {/* Overall Score Circle - Desktop */}
-                        <div className="flex flex-col items-center space-y-4">
-                          <div className="relative w-32 h-32">
-                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
-                              <circle cx="60" cy="60" r="45" stroke="rgba(255,255,255,0.2)" strokeWidth="8" fill="none" />
-                              <circle
-                                cx="60" cy="60" r="45"
-                                stroke={analysisResult.overallScore >= 80 ? '#22c55e' : 
-                                       analysisResult.overallScore >= 60 ? '#f59e0b' : '#ef4444'}
-                                strokeWidth="8" fill="none" strokeLinecap="round"
-                                strokeDasharray={`${(analysisResult.overallScore / 100) * 283} 283`}
-                                className="transition-all duration-1000 ease-out"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="text-center">
-                                <div className="text-4xl font-bold text-white mb-1">{analysisResult.overallScore}</div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex flex-col items-center space-y-2">
-                            <div className="text-sm text-slate-200">Overall Score</div>
-                            <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                              analysisResult.overallScore >= 80 ? 'bg-green-500 text-white' :
-                              analysisResult.overallScore >= 60 ? 'bg-yellow-500 text-black' :
-                              'bg-red-500 text-white'
-                            }`}>
-                              {analysisResult.overallScore >= 80 ? 'Excellent' :
-                               analysisResult.overallScore >= 60 ? 'Good' : 'Needs Work'}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+              {/* Score block */}
+              <div style={{ background: 'var(--ink)', color: 'white', padding: '1rem', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.875rem' }}>
+                  <div style={{ position: 'relative', width: 64, height: 64, flexShrink: 0 }}>
+                    <svg style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }} viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="45" stroke="rgba(255,255,255,0.18)" strokeWidth="10" fill="none" />
+                      <circle cx="60" cy="60" r="45"
+                        stroke={analysisResult.overallScore >= 80 ? '#22c55e' : analysisResult.overallScore >= 60 ? '#f59e0b' : '#ef4444'}
+                        strokeWidth="10" fill="none" strokeLinecap="round"
+                        strokeDasharray={`${(analysisResult.overallScore / 100) * 283} 283`}
+                        style={{ transition: 'stroke-dasharray 1s ease-out' }}
+                      />
+                    </svg>
+                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ fontSize: '1.2rem', fontWeight: 800, color: 'white', letterSpacing: '-0.04em' }}>{analysisResult.overallScore}</span>
                     </div>
                   </div>
-                  
-                  {/* Category Scores Grid */}
-                  <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
-                    <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                      <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
-                      </svg>
-                      Performance Breakdown by Category
-                    </h3>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {Object.entries(analysisResult.factors).map(([key, section]) => {
-                        const titles: { [key: string]: string } = {
-                          contentQuality: 'Content Quality',
-                          technicalSEO: 'Technical SEO',
-                          onPageElements: 'On-Page Elements',
-                          userExperience: 'User Experience',
-                          contentStructure: 'Content Structure',
-                          socialOptimization: 'Social Optimization',
-                          localSEO: 'Local SEO',
-                          advancedAnalytics: 'Advanced Analytics',
-                          securityAndTrust: 'Security & Trust',
-                          advancedPerformance: 'Advanced Performance',
-                          advancedTechnical: 'Advanced Technical',
-                          modernSEO: 'Modern SEO & AI'
-                        }
-                        
-                        const icons: { [key: string]: React.ReactNode } = {
-                          contentQuality: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>,
-                          technicalSEO: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
-                          onPageElements: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>,
-                          userExperience: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>,
-                          contentStructure: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14-7H5m14 14H5" /></svg>,
-                          socialOptimization: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>,
-                          localSEO: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
-                          advancedAnalytics: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-                        }
-                        
-                        const percentage = Math.round((section.score / section.maxScore) * 100)
-                        const getColorClass = (score: number) => {
-                          if (score >= 80) return 'from-green-500 to-emerald-600 text-green-600 bg-green-50 border-green-200'
-                          if (score >= 60) return 'from-blue-500 to-indigo-600 text-blue-600 bg-blue-50 border-blue-200'
-                          if (score >= 40) return 'from-yellow-500 to-orange-600 text-yellow-600 bg-yellow-50 border-yellow-200'
-                          return 'from-red-500 to-pink-600 text-red-600 bg-red-50 border-red-200'
-                        }
-                        
-                        // Map factor keys to tab IDs
-                        const factorToTabMap: { [key: string]: string } = {
-                          contentQuality: 'content',
-                          technicalSEO: 'technical',
-                          onPageElements: 'onpage',
-                          userExperience: 'ux',
-                          contentStructure: 'structure',
-                          socialOptimization: 'social',
-                          localSEO: 'local',
-                          advancedAnalytics: 'analytics',
-                          securityAndTrust: 'security',
-                          advancedPerformance: 'performance',
-                          advancedTechnical: 'advtech',
-                          modernSEO: 'modern'
-                        }
-                        
+                  <div>
+                    <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.45)', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Overall Score</div>
+                    <div style={{ display: 'inline-block', fontSize: '0.68rem', fontWeight: 700, padding: '2px 7px', background: analysisResult.overallScore >= 80 ? '#22c55e' : analysisResult.overallScore >= 60 ? '#f59e0b' : '#ef4444', color: (analysisResult.overallScore >= 60 && analysisResult.overallScore < 80) ? '#000' : '#fff' }}>
+                      {analysisResult.overallScore >= 80 ? 'Excellent' : analysisResult.overallScore >= 60 ? 'Good' : 'Needs Work'}
+                    </div>
+                    <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', marginTop: 4 }}>{new Date().toLocaleDateString()}</div>
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.375rem' }}>
+                  {[
+                    { label: 'Passed', count: Object.values(analysisResult.factors).reduce((a,s)=>a+s.checks.filter(c=>c.status==='excellent'||c.status==='good').length,0), bg:'rgba(34,197,94,0.18)', border:'rgba(34,197,94,0.3)', color:'#86efac' },
+                    { label: 'Warnings', count: Object.values(analysisResult.factors).reduce((a,s)=>a+s.checks.filter(c=>c.status==='warning').length,0), bg:'rgba(245,158,11,0.18)', border:'rgba(245,158,11,0.3)', color:'#fcd34d' },
+                    { label: 'Critical', count: Object.values(analysisResult.factors).reduce((a,s)=>a+s.checks.filter(c=>c.status==='critical'||c.status==='error').length,0), bg:'rgba(239,68,68,0.18)', border:'rgba(239,68,68,0.3)', color:'#fca5a5' }
+                  ].map(s => (
+                    <div key={s.label} style={{ background: s.bg, border: `1px solid ${s.border}`, padding: '0.375rem 0.25rem', textAlign: 'center' }}>
+                      <div style={{ fontSize: '1rem', fontWeight: 700, color: s.color, lineHeight: 1 }}>{s.count}</div>
+                      <div style={{ fontSize: '0.58rem', color: s.color, marginTop: 2, opacity: 0.85 }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+                {Object.values(analysisResult.factors).some(s=>s.checks.some(c=>c.status==='critical'||c.status==='error')) && (
+                  <div style={{ marginTop: '0.625rem', background: 'rgba(239,68,68,0.18)', border: '1px solid rgba(239,68,68,0.3)', padding: '0.375rem 0.625rem', display: 'flex', gap: '0.375rem', alignItems: 'flex-start' }}>
+                    <svg style={{ width: 11, height: 11, color: '#fca5a5', flexShrink: 0, marginTop: 1 }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
+                    <span style={{ fontSize: '0.62rem', color: '#fca5a5', lineHeight: 1.4 }}>Critical issues found — address these first</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Category list */}
+              <div style={{ flex: 1, overflowY: 'auto' }}>
+                <div style={{ padding: '0.5rem 0.75rem', background: 'var(--gray-1)', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: '0.375rem', position: 'sticky', top: 0, zIndex: 1 }}>
+                  <div style={{ width: 20, height: 20, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg style={{ width: 11, height: 11 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Categories</span>
+                </div>
+
+                {/* Overview row */}
+                <button onClick={() => { setActiveTab('overview'); setActiveFilter('all'); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', width: '100%', textAlign: 'left', background: activeTab==='overview' ? 'rgba(37,99,235,0.07)' : 'transparent', borderLeft: activeTab==='overview' ? '2px solid var(--blue)' : '2px solid transparent', borderBottom: '1px solid var(--line)', cursor: 'pointer', borderTop: 'none', borderRight: 'none' }}>
+                  <svg style={{ width:15, height:15, flexShrink:0, color: activeTab==='overview'?'var(--blue)':'var(--gray-5)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v18h18 M7 16v2 M12 8v10 M17 4v14" /></svg>
+                  <span style={{ fontSize: '0.84rem', fontWeight: activeTab==='overview'?700:500, color: activeTab==='overview'?'var(--blue)':'var(--ink)' }}>Overview</span>
+                </button>
+
+                {/* 12 category rows */}
+                {(() => {
+                  const catTitles: {[k:string]:string} = { contentQuality:'Content Quality', technicalSEO:'Technical SEO', onPageElements:'On-Page Elements', userExperience:'User Experience', contentStructure:'Content Structure', socialOptimization:'Social', localSEO:'Local SEO', advancedAnalytics:'Analytics', securityAndTrust:'Security & Trust', advancedPerformance:'Performance', advancedTechnical:'Adv. Technical', modernSEO:'AI & Modern' }
+                  const f2tab: {[k:string]:string} = { contentQuality:'content', technicalSEO:'technical', onPageElements:'onpage', userExperience:'ux', contentStructure:'structure', socialOptimization:'social', localSEO:'local', advancedAnalytics:'analytics', securityAndTrust:'security', advancedPerformance:'performance', advancedTechnical:'advtech', modernSEO:'modern' }
+                  return Object.entries(analysisResult.factors).map(([key, section]) => {
+                    const pct = Math.round((section.score / section.maxScore) * 100)
+                    const tabId = f2tab[key] || 'overview'
+                    const isActive = activeTab === tabId
+                    const sc = pct >= 80 ? '#22c55e' : pct >= 60 ? '#3b82f6' : pct >= 40 ? '#f59e0b' : '#ef4444'
+                    return (
+                      <button key={key} onClick={() => { setActiveTab(tabId); setActiveFilter('all'); }} style={{ display: 'flex', flexDirection: 'column', padding: '0.45rem 0.75rem', width: '100%', textAlign: 'left', background: isActive ? 'rgba(37,99,235,0.06)' : 'transparent', borderLeft: `2px solid ${isActive ? sc : 'transparent'}`, borderBottom: '1px solid var(--line)', cursor: 'pointer' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                          <span style={{ fontSize: '0.82rem', fontWeight: isActive?700:500, color: isActive?'var(--ink)':'var(--gray-5)' }}>{catTitles[key]}</span>
+                          <span style={{ fontSize: '0.79rem', fontWeight: 700, color: sc }}>{pct}%</span>
+                        </div>
+                        <div style={{ height: 2, background: 'var(--line)', width: '100%' }}>
+                          <div style={{ height: '100%', background: sc, width: `${pct}%`, transition: 'width 0.5s ease' }} />
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.625rem', marginTop: '0.18rem' }}>
+                          <span style={{ fontSize: '0.7rem', color: '#22c55e' }}>✓ {section.checks.filter(c=>c.status==='excellent'||c.status==='good').length}</span>
+                          <span style={{ fontSize: '0.7rem', color: '#ef4444' }}>✗ {section.checks.filter(c=>c.status==='critical'||c.status==='error').length}</span>
+                        </div>
+                      </button>
+                    )
+                  })
+                })()}
+              </div>
+
+            </div>
+
+            {/* ── RIGHT PANEL ── */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--gray-1)', minWidth: 0 }}>
+
+              {/* Tab bar — unified grid, fills 100% width, no empty space */}
+              <div style={{ flexShrink: 0, borderBottom: '1px solid var(--line)' }}>
+                {(() => {
+                  const tabs = [
+                    { id:'overview',     label:'Overview',   short:'Overview',  path:'M3 3v18h18 M7 16v2 M12 8v10 M17 4v14',                                                                                                   count:'' },
+                    { id:'content',      label:'Content',    short:'Content',   path:'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',                count:`${analysisResult.factors.contentQuality.score}` },
+                    { id:'technical',    label:'Technical',  short:'Tech',      path:'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z', count:`${analysisResult.factors.technicalSEO.score}` },
+                    { id:'onpage',       label:'On-Page',    short:'On-Page',   path:'M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z',         count:`${analysisResult.factors.onPageElements.score}` },
+                    { id:'ux',           label:'UX',         short:'UX',        path:'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z', count:`${analysisResult.factors.userExperience.score}` },
+                    { id:'structure',    label:'Structure',  short:'Struct',    path:'M4 6h16M4 10h16M4 14h16M4 18h16',                                                                                                         count:`${analysisResult.factors.contentStructure.score}` },
+                    { id:'social',       label:'Social',     short:'Social',    path:'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z', count:`${analysisResult.factors.socialOptimization.score}` },
+                    { id:'local',        label:'Local',      short:'Local',     path:'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z',                   count:`${analysisResult.factors.localSEO.score}` },
+                    { id:'analytics',    label:'Analytics',  short:'Analytics', path:'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', count:`${analysisResult.factors.advancedAnalytics.score}` },
+                    { id:'security',     label:'Security',   short:'Security',  path:'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', count:`${analysisResult.factors.securityAndTrust.score}` },
+                    { id:'performance',  label:'Perf.',      short:'Perf',      path:'M13 10V3L4 14h7v7l9-11h-7z',                                                                                                               count:`${analysisResult.factors.advancedPerformance.score}` },
+                    { id:'advtech',      label:'Adv. Tech',  short:'Adv',       path:'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',                                                                                                   count:`${analysisResult.factors.advancedTechnical.score}` },
+                    { id:'modern',       label:'AI & Modern',short:'AI',        path:'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z',                              count:`${analysisResult.factors.modernSEO.score}` },
+                  ]
+                  return (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(13, 1fr)', width: '100%' }}>
+                      {tabs.map((tab, i) => {
+                        const isActive = activeTab === tab.id
                         return (
-                          <button 
-                            key={key} 
-                            onClick={() => handleCardClick(factorToTabMap[key] || 'overview')}
-                            className={`group w-full text-left bg-white rounded-xl shadow-md border-2 ${getColorClass(percentage).split(' ').slice(-2).join(' ')} p-6 transition-all duration-200 hover:shadow-2xl hover:scale-105 hover:border-opacity-80 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-400 cursor-pointer active:scale-100 active:translate-y-0`}
-                            aria-label={`View detailed ${titles[key]} report`}
+                          <button
+                            key={tab.id}
+                            onClick={() => { setActiveTab(tab.id); setActiveFilter('all') }}
+                            style={{
+                              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                              gap: '0.3rem', padding: '0.75rem 0.375rem',
+                              background: isActive ? 'var(--ink)' : 'var(--white)',
+                              color: isActive ? 'white' : 'var(--gray-5)',
+                              cursor: 'pointer',
+                              borderTop: isActive ? '2px solid var(--blue)' : '2px solid transparent',
+                              borderRight: i < 12 ? '1px solid var(--line)' : '0',
+                              borderBottom: '0',
+                              borderLeft: '0',
+                              outline: 'none',
+                              position: 'relative',
+                            }}
                           >
-                            <div className="flex items-center justify-between mb-4">
-                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${getColorClass(percentage).split(' ').slice(-4, -2).join(' ')}`}>
-                                {icons[key]}
-                              </div>
-                              <div className="text-right">
-                                <div className={`text-2xl font-bold ${getColorClass(percentage).split(' ')[2]}`}>
-                                  {percentage}%
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <h4 className="font-semibold text-gray-900 mb-2">{titles[key]}</h4>
-                            
-                            <div className="mb-3">
-                              <div className="flex justify-between text-sm text-gray-600 mb-1">
-                                <span>{section.score}/{section.maxScore}</span>
-                                <span>{percentage}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div 
-                                  className={`h-2 rounded-full bg-gradient-to-r ${getColorClass(percentage).split(' ').slice(0, 2).join(' ')} transition-all duration-700 ease-out`}
-                                  style={{ width: `${Math.min(percentage, 100)}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                            
-                            <div className="flex items-center justify-between text-xs text-gray-500">
-                              <span className="flex items-center">
-                                <span className="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
-                                {section.checks.filter(c => c.status === 'excellent' || c.status === 'good').length} passed
+                            <svg style={{ width: 18, height: 18, flexShrink: 0, opacity: isActive ? 1 : 0.7 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={isActive ? 2 : 1.5} d={tab.path} />
+                            </svg>
+                            <span style={{ fontSize: '0.62rem', fontWeight: isActive ? 700 : 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '100%', textAlign: 'center', lineHeight: 1.2 }}>
+                              {tab.short}
+                            </span>
+                            {tab.count && (
+                              <span style={{
+                                fontSize: '0.58rem', fontWeight: 700, padding: '0 4px', lineHeight: '16px',
+                                background: isActive ? 'var(--blue)' : 'var(--gray-1)',
+                                color: isActive ? 'white' : 'var(--gray-5)',
+                              }}>
+                                {tab.count}
                               </span>
-                              <span className="flex items-center">
-                                <span className="w-2 h-2 bg-red-400 rounded-full mr-1"></span>
-                                {section.checks.filter(c => c.status === 'critical' || c.status === 'error').length} issues
-                              </span>
-                            </div>
-                            
-                            {/* Click indicator */}
-                            <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-center text-xs text-gray-400 group-hover:text-blue-600 transition-colors">
-                              <span className="mr-1">Click for detailed report</span>
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
+                            )}
                           </button>
                         )
                       })}
                     </div>
-                    
-                    {/* Quick Insights */}
-                    <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
-                        <div className="flex items-center mb-3">
-                          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                          </div>
-                          <h4 className="font-semibold text-gray-900">Top Priority</h4>
-                        </div>
-                        <p className="text-sm text-gray-700">
-                          {(() => {
-                            const lowestSection = Object.entries(analysisResult.factors)
-                              .sort((a, b) => (a[1].score / a[1].maxScore) - (b[1].score / b[1].maxScore))[0]
-                            const titles: { [key: string]: string } = {
-                              contentQuality: 'Content Quality',
-                              technicalSEO: 'Technical SEO',
-                              onPageElements: 'On-Page Elements',
-                              userExperience: 'User Experience',
-                              contentStructure: 'Content Structure',
-                              socialOptimization: 'Social Optimization',
-                              localSEO: 'Local SEO',
-                              advancedAnalytics: 'Advanced Analytics',
-                              securityAndTrust: 'Security & Trust',
-                              advancedPerformance: 'Advanced Performance',
-                              advancedTechnical: 'Advanced Technical',
-                              modernSEO: 'Modern SEO & AI',
-                              securityAndTrust: 'Security & Trust',
-                              advancedPerformance: 'Advanced Performance',
-                              advancedTechnical: 'Advanced Technical',
-                              modernSEO: 'Modern SEO & AI'
-                            }
-                            return `Focus on improving ${titles[lowestSection[0]]} for maximum SEO impact.`
-                          })()}
-                        </p>
-                      </div>
-                      
-                      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
-                        <div className="flex items-center mb-3">
-                          <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center mr-3">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          </div>
-                          <h4 className="font-semibold text-gray-900">Strengths</h4>
-                        </div>
-                        <p className="text-sm text-gray-700">
-                          {(() => {
-                            const highestSection = Object.entries(analysisResult.factors)
-                              .sort((a, b) => (b[1].score / b[1].maxScore) - (a[1].score / a[1].maxScore))[0]
-                            const titles: { [key: string]: string } = {
-                              contentQuality: 'Content Quality',
-                              technicalSEO: 'Technical SEO',
-                              onPageElements: 'On-Page Elements',
-                              userExperience: 'User Experience',
-                              contentStructure: 'Content Structure',
-                              socialOptimization: 'Social Optimization',
-                              localSEO: 'Local SEO',
-                              advancedAnalytics: 'Advanced Analytics',
-                              securityAndTrust: 'Security & Trust',
-                              advancedPerformance: 'Advanced Performance',
-                              advancedTechnical: 'Advanced Technical',
-                              modernSEO: 'Modern SEO & AI'
-                            }
-                            return `${titles[highestSection[0]]} is performing well and supports your SEO strategy.`
-                          })()}
-                        </p>
-                      </div>
-                      
-                      <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 border border-purple-100">
-                        <div className="flex items-center mb-3">
-                          <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
-                            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                          </div>
-                          <h4 className="font-semibold text-gray-900">Potential</h4>
-                        </div>
-                        <p className="text-sm text-gray-700">
-                          With focused improvements, your SEO score could reach {Math.min(100, analysisResult.overallScore + 25)}/100, significantly boosting organic visibility.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  )
+                })()}
+              </div>
 
-                {/* Navigation Tabs */}
-                <div id="detailed-results" className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                  {/* Desktop Tabs */}
-                  <div className="hidden lg:block">
-                    <div className="bg-gray-50 rounded-lg overflow-hidden">
-                      {/* Tabs arranged in balanced grid */}
-                      <div className="grid grid-cols-7 gap-0.5 bg-gray-200">
-                        {/* First 7 tabs */}
-                        {[
-                          { id: 'overview', label: 'Overview', icon: '📊', count: '' },
-                          { id: 'content', label: 'Content', icon: '📝', count: `${analysisResult.factors.contentQuality.score}` },
-                          { id: 'technical', label: 'Technical', icon: '⚙️', count: `${analysisResult.factors.technicalSEO.score}` },
-                          { id: 'onpage', label: 'On-Page', icon: '🎯', count: `${analysisResult.factors.onPageElements.score}` },
-                          { id: 'ux', label: 'Experience', icon: '👥', count: `${analysisResult.factors.userExperience.score}` },
-                          { id: 'structure', label: 'Structure', icon: '🏗️', count: `${analysisResult.factors.contentStructure.score}` },
-                          { id: 'social', label: 'Social', icon: '📱', count: `${analysisResult.factors.socialOptimization.score}` }
-                        ].map(tab => (
-                        <button
-                          key={tab.id}
-                          onClick={() => { setActiveTab(tab.id); setActiveFilter('all'); }}
-                          className={`relative px-2 py-3 text-center transition-all duration-200 bg-white hover:bg-gray-50 ${
-                            activeTab === tab.id
-                              ? 'bg-primary/5 border-2 border-primary text-primary shadow-sm'
-                              : 'text-gray-600 border-2 border-transparent hover:text-gray-900'
-                          }`}
-                        >
-                          <div className="flex flex-col items-center space-y-1">
-                            <span className="text-base">{tab.icon}</span>
-                            <span className="text-xs font-semibold leading-tight">{tab.label}</span>
-                            {tab.count && (
-                              <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
-                                activeTab === tab.id 
-                                  ? 'bg-primary text-white' 
-                                  : 'bg-gray-200 text-gray-600'
-                              }`}>
-                                {tab.count}
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                        ))}
-                      </div>
-                      
-                      {/* Second row with 6 tabs */}
-                      <div className="grid grid-cols-6 gap-0.5 bg-gray-200 border-t border-gray-300">
-                        {[
-                          { id: 'local', label: 'Local SEO', icon: '📍', count: `${analysisResult.factors.localSEO.score}` },
-                          { id: 'analytics', label: 'Analytics', icon: '📈', count: `${analysisResult.factors.advancedAnalytics.score}` },
-                          { id: 'security', label: 'Security', icon: '🔒', count: `${analysisResult.factors.securityAndTrust.score}` },
-                          { id: 'performance', label: 'Performance', icon: '⚡', count: `${analysisResult.factors.advancedPerformance.score}` },
-                          { id: 'advtech', label: 'Advanced', icon: '🔧', count: `${analysisResult.factors.advancedTechnical.score}` },
-                          { id: 'modern', label: 'AI & Modern', icon: '🤖', count: `${analysisResult.factors.modernSEO.score}` }
-                        ].map(tab => (
-                        <button
-                          key={tab.id}
-                          onClick={() => { setActiveTab(tab.id); setActiveFilter('all'); }}
-                          className={`relative px-2 py-3 text-center transition-all duration-200 bg-white hover:bg-gray-50 ${
-                            activeTab === tab.id
-                              ? 'bg-primary/5 border-2 border-primary text-primary shadow-sm'
-                              : 'text-gray-600 border-2 border-transparent hover:text-gray-900'
-                          }`}
-                        >
-                          <div className="flex flex-col items-center space-y-1">
-                            <span className="text-base">{tab.icon}</span>
-                            <span className="text-xs font-semibold leading-tight">{tab.label}</span>
-                            {tab.count && (
-                              <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${
-                                activeTab === tab.id 
-                                  ? 'bg-primary text-white' 
-                                  : 'bg-gray-200 text-gray-600'
-                              }`}>
-                                {tab.count}
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mobile/Tablet Tabs */}
-                  <div className="lg:hidden">
-                    <div className="p-4 bg-gray-50 border-b">
-                      <div className="grid grid-cols-3 gap-2">
-                        {[
-                          { id: 'overview', label: 'Overview', icon: '📊', count: '' },
-                          { id: 'content', label: 'Content', icon: '📝', count: `${analysisResult.factors.contentQuality.score}` },
-                          { id: 'technical', label: 'Technical', icon: '⚙️', count: `${analysisResult.factors.technicalSEO.score}` },
-                          { id: 'onpage', label: 'On-Page', icon: '🎯', count: `${analysisResult.factors.onPageElements.score}` },
-                          { id: 'ux', label: 'Experience', icon: '👥', count: `${analysisResult.factors.userExperience.score}` },
-                          { id: 'structure', label: 'Structure', icon: '🏗️', count: `${analysisResult.factors.contentStructure.score}` },
-                          { id: 'social', label: 'Social', icon: '📱', count: `${analysisResult.factors.socialOptimization.score}` },
-                          { id: 'local', label: 'Local', icon: '📍', count: `${analysisResult.factors.localSEO.score}` },
-                          { id: 'analytics', label: 'Analytics', icon: '📈', count: `${analysisResult.factors.advancedAnalytics.score}` },
-                          { id: 'security', label: 'Security', icon: '🔒', count: `${analysisResult.factors.securityAndTrust.score}` },
-                          { id: 'performance', label: 'Performance', icon: '⚡', count: `${analysisResult.factors.advancedPerformance.score}` },
-                          { id: 'advtech', label: 'Advanced', icon: '🔧', count: `${analysisResult.factors.advancedTechnical.score}` },
-                          { id: 'modern', label: 'AI & Modern', icon: '🤖', count: `${analysisResult.factors.modernSEO.score}` }
-                        ].map(tab => (
-                          <button
-                            key={tab.id}
-                            onClick={() => { setActiveTab(tab.id); setActiveFilter('all'); }}
-                            className={`px-3 py-3 rounded-lg text-center transition-all duration-200 ${
-                              activeTab === tab.id
-                                ? 'bg-primary text-white shadow-md'
-                                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                            }`}
-                          >
-                            <div className="flex flex-col items-center space-y-1">
-                              <span className="text-sm">{tab.icon}</span>
-                              <span className="text-xs font-medium">{tab.label}</span>
-                              {tab.count && (
-                                <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
-                                  activeTab === tab.id 
-                                    ? 'bg-white/20 text-white' 
-                                    : 'bg-gray-100 text-gray-600'
-                                }`}>
-                                  {tab.count}
-                                </span>
-                              )}
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Active Tab Indicator */}
-                  <div className="hidden lg:block bg-white px-6 py-3 border-b border-gray-100">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <span className="text-sm">
-                            {(() => {
-                              const currentTab = [
-                                { id: 'overview', icon: '📊' },
-                                { id: 'content', icon: '📝' },
-                                { id: 'technical', icon: '⚙️' },
-                                { id: 'onpage', icon: '🎯' },
-                                { id: 'ux', icon: '👥' },
-                                { id: 'structure', icon: '🏗️' },
-                                { id: 'social', icon: '📱' },
-                                { id: 'local', icon: '📍' },
-                                { id: 'analytics', icon: '📈' }
-                              ].find(tab => tab.id === activeTab)
-                              return currentTab?.icon || '📊'
-                            })()}
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">
-                            {(() => {
-                              const titles: { [key: string]: string } = {
-                                overview: 'Analysis Overview',
-                                content: 'Content Quality Analysis',
-                                technical: 'Technical SEO Analysis',
-                                onpage: 'On-Page Elements Analysis',
-                                ux: 'User Experience Analysis',
-                                structure: 'Content Structure Analysis',
-                                social: 'Social Optimization Analysis',
-                                local: 'Local SEO Analysis',
-                                analytics: 'Advanced Analytics',
-                                security: 'Security & Trust Analysis',
-                                performance: 'Performance Optimization Analysis',
-                                advtech: 'Advanced Technical Analysis',
-                                modern: 'Modern SEO & AI Analysis'
-                              }
-                              return titles[activeTab] || 'Analysis Overview'
-                            })()}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {activeTab === 'overview' 
-                              ? 'Complete overview of your SEO performance across all categories'
-                              : `Detailed analysis and recommendations for ${activeTab} optimization`}
-                          </p>
-                        </div>
-                      </div>
-                      
-                      {activeTab !== 'overview' && (
-                        <div className="flex items-center space-x-2">
-                          <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            (() => {
-                              const factorKey = {
-                                content: 'contentQuality',
-                                technical: 'technicalSEO',
-                                onpage: 'onPageElements',
-                                ux: 'userExperience',
-                                structure: 'contentStructure',
-                                social: 'socialOptimization',
-                                local: 'localSEO',
-                                analytics: 'advancedAnalytics'
-                              }[activeTab as keyof typeof factorKey]
-                              
-                              if (!factorKey) return 'bg-gray-100 text-gray-700'
-                              
-                              const section = analysisResult.factors[factorKey as keyof typeof analysisResult.factors]
-                              if (!section) return 'bg-gray-100 text-gray-700'
-                              
-                              const percentage = Math.round((section.score / section.maxScore) * 100)
-                              if (percentage >= 80) return 'bg-green-100 text-green-700'
-                              if (percentage >= 60) return 'bg-blue-100 text-blue-700'
-                              if (percentage >= 40) return 'bg-yellow-100 text-yellow-700'
-                              return 'bg-red-100 text-red-700'
-                            })()
-                          }`}>
-                            {(() => {
-                              const factorKey = {
-                                content: 'contentQuality',
-                                technical: 'technicalSEO',
-                                onpage: 'onPageElements',
-                                ux: 'userExperience',
-                                structure: 'contentStructure',
-                                social: 'socialOptimization',
-                                local: 'localSEO',
-                                analytics: 'advancedAnalytics'
-                              }[activeTab as keyof typeof factorKey]
-                              
-                              if (!factorKey) return '0'
-                              
-                              const section = analysisResult.factors[factorKey as keyof typeof analysisResult.factors]
-                              if (!section) return '0'
-                              
-                              return Math.round((section.score / section.maxScore) * 100)
-                            })()}% Score
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
+              {/* Scrollable tab content */}
+              <div id="detailed-results" style={{ flex:1, overflowY:'auto', padding:'1.25rem' }}>
+                <div className="space-y-8">
 
                 {/* Tab Content */}
-                <div>
                   {activeTab === 'overview' && (
                     <div className="space-y-8">
                       {/* Core Web Vitals Section */}
                       {analysisResult.pageSpeed && (
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                            <svg className="w-7 h-7 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            Page Speed & Core Web Vitals
+                          <h3 style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <div style={{ width: 22, height: 22, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                              <svg style={{ width: 12, height: 12 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                            </div>
+                            Page Speed &amp; Core Web Vitals
                           </h3>
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             <CoreWebVitalsCard
@@ -3014,10 +2241,10 @@ DETAILED ANALYSIS:
                       
                       {/* SEO Metrics Overview */}
                       <div>
-                        <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                          <svg className="w-7 h-7 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                          </svg>
+                        <h3 style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <div style={{ width: 22, height: 22, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <svg style={{ width: 12, height: 12 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                          </div>
                           SEO Factors Overview
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -3031,10 +2258,6 @@ DETAILED ANALYSIS:
                               socialOptimization: 'Social Optimization',
                               localSEO: 'Local SEO',
                               advancedAnalytics: 'Advanced Analytics',
-                              securityAndTrust: 'Security & Trust',
-                              advancedPerformance: 'Advanced Performance',
-                              advancedTechnical: 'Advanced Technical',
-                              modernSEO: 'Modern SEO & AI',
                               securityAndTrust: 'Security & Trust',
                               advancedPerformance: 'Advanced Performance',
                               advancedTechnical: 'Advanced Technical',
@@ -3095,67 +2318,61 @@ DETAILED ANALYSIS:
                       </div>
                       
                       {/* Overall Summary */}
-                      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                          📊 Analysis Summary
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <h4 className="font-medium text-gray-900 mb-3">Top Performing Areas</h4>
-                            <div className="space-y-2">
-                              {Object.entries(analysisResult.factors)
-                                .sort((a, b) => b[1].score - a[1].score)
-                                .slice(0, 3)
-                                .map(([key, section]) => {
-                                  const titles: { [key: string]: string } = {
-                                    contentQuality: 'Content Quality',
-                                    technicalSEO: 'Technical SEO',
-                                    onPageElements: 'On-Page Elements',
-                                    userExperience: 'User Experience',
-                                    contentStructure: 'Content Structure',
-                                    socialOptimization: 'Social Optimization',
-                                    localSEO: 'Local SEO',
-                                    advancedAnalytics: 'Advanced Analytics'
-                                  }
-                                  return (
-                                    <div key={key} className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
-                                      <span className="text-sm font-medium text-gray-900">{titles[key]}</span>
-                                      <span className="text-sm font-bold text-green-600">{section.score}/{section.maxScore}</span>
+                      {(() => {
+                        const factorTitles: { [key: string]: string } = {
+                          contentQuality: 'Content Quality',
+                          technicalSEO: 'Technical SEO',
+                          onPageElements: 'On-Page Elements',
+                          userExperience: 'User Experience',
+                          contentStructure: 'Content Structure',
+                          socialOptimization: 'Social Optimization',
+                          localSEO: 'Local SEO',
+                          advancedAnalytics: 'Advanced Analytics',
+                          securityAndTrust: 'Security & Trust',
+                          advancedPerformance: 'Performance',
+                          advancedTechnical: 'Adv. Technical',
+                          modernSEO: 'Modern SEO & AI',
+                        }
+                        const sorted = Object.entries(analysisResult.factors).map(([key, s]) => ({
+                          key, section: s, pct: Math.round((s.score / s.maxScore) * 100)
+                        }))
+                        const top3 = [...sorted].sort((a, b) => b.pct - a.pct).slice(0, 3)
+                        const low3 = [...sorted].sort((a, b) => a.pct - b.pct).slice(0, 3)
+                        return (
+                          <div style={{ border: '1px solid var(--line)', background: 'var(--white)', overflow: 'hidden' }}>
+                            <div style={{ padding: '0.75rem 1rem', background: 'var(--gray-1)', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <div style={{ width: 22, height: 22, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <svg style={{ width: 12, height: 12 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                              </div>
+                              <h3 style={{ margin: 0, fontWeight: 800, fontSize: '0.9rem', color: 'var(--ink)', letterSpacing: '-0.02em' }}>Analysis Summary</h3>
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+                              <div style={{ padding: '0.875rem 1rem', borderRight: '1px solid var(--line)' }}>
+                                <h4 style={{ margin: 0, marginBottom: '0.625rem', fontSize: '0.72rem', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Top Performing Areas</h4>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+                                  {top3.map(({ key, section, pct }) => (
+                                    <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.375rem 0.625rem', background: 'rgba(5,150,105,0.05)', borderLeft: '2px solid #059669' }}>
+                                      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--ink)' }}>{factorTitles[key] || key}</span>
+                                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#059669', flexShrink: 0 }}>{pct}%</span>
                                     </div>
-                                  )
-                                })
-                              }
+                                  ))}
+                                </div>
+                              </div>
+                              <div style={{ padding: '0.875rem 1rem' }}>
+                                <h4 style={{ margin: 0, marginBottom: '0.625rem', fontSize: '0.72rem', fontWeight: 700, color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Areas for Improvement</h4>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+                                  {low3.map(({ key, section, pct }) => (
+                                    <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.375rem 0.625rem', background: 'rgba(217,119,6,0.05)', borderLeft: '2px solid #d97706' }}>
+                                      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--ink)' }}>{factorTitles[key] || key}</span>
+                                      <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#d97706', flexShrink: 0 }}>{pct}%</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <div>
-                            <h4 className="font-medium text-gray-900 mb-3">Areas for Improvement</h4>
-                            <div className="space-y-2">
-                              {Object.entries(analysisResult.factors)
-                                .sort((a, b) => a[1].score - b[1].score)
-                                .slice(0, 3)
-                                .map(([key, section]) => {
-                                  const titles: { [key: string]: string } = {
-                                    contentQuality: 'Content Quality',
-                                    technicalSEO: 'Technical SEO',
-                                    onPageElements: 'On-Page Elements',
-                                    userExperience: 'User Experience',
-                                    contentStructure: 'Content Structure',
-                                    socialOptimization: 'Social Optimization',
-                                    localSEO: 'Local SEO',
-                                    advancedAnalytics: 'Advanced Analytics'
-                                  }
-                                  return (
-                                    <div key={key} className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
-                                      <span className="text-sm font-medium text-gray-900">{titles[key]}</span>
-                                      <span className="text-sm font-bold text-yellow-600">{section.score}/{section.maxScore}</span>
-                                    </div>
-                                  )
-                                })
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        )
+                      })()}
                     </div>
                   )}
 
@@ -3173,120 +2390,34 @@ DETAILED ANALYSIS:
                   {activeTab === 'modern' && renderAnalysisSection('Modern SEO & AI Analysis', analysisResult.factors.modernSEO)}
                 </div>
 
-                {/* Export Options */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">📄 Analysis Complete</h3>
-                  <div className="flex flex-wrap gap-4">
-                    <button 
-                      onClick={handleDownloadPDF}
-                      className="flex items-center px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={downloadingPDF}
-                    >
-                      {downloadingPDF ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Generating...
-                        </>
-                      ) : (
-                        <>
-                          <span className="mr-2">📊</span>
-                          Download PDF Report
-                        </>
-                      )}
-                    </button>
-                    <button 
-                      onClick={handleDownloadCSV}
-                      className="hidden"
-                      disabled={true}
-                    >
-                      {downloadingCSV ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Exporting...
-                        </>
-                      ) : (
-                        <>
-                          <span className="mr-2">📈</span>
-                          Export to CSV - DISABLED
-                        </>
-                      )}
-                    </button>
-                    <button 
-                      onClick={handleEmailReport}
-                      className="hidden"
-                      disabled={true}
-                    >
-                      {emailingReport ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <span className="mr-2">📧</span>
-                          Email Report
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
+                {/* Export — moved to left panel */}
               </div>
             </div>
           </div>
-        </section>
+        </div>
       )}
 
 
       {/* ── READY TO ANALYZE ── */}
       <section className="prose-section section">
         <div className="section-container">
-          <div className="s-header">
-            <div className="eyebrow">How It Works</div>
-            <h2 className="s-title">Ready to Analyze <span className="blue">Your Website?</span></h2>
-            <p className="s-sub">Enter your website URL above to get a comprehensive SEO analysis with actionable insights and detailed recommendations.</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--line)', background: 'var(--line)', gap: '1px' }}>
-            {[
-              {
-                title: '150+ SEO Factors',
-                desc: 'Comprehensive analysis covering content, technical SEO, Core Web Vitals, and more',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />,
-              },
-              {
-                title: 'Actionable Insights',
-                desc: 'Get specific recommendations and step-by-step optimization guidance',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
-              },
-              {
-                title: 'Latest 2025 Standards',
-                desc: 'Analysis based on current Google algorithm and ranking factors',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />,
-              },
-              {
-                title: 'Detailed Scoring',
-                desc: 'Clear scoring system with priorities and impact assessment',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />,
-              },
-            ].map(card => (
-              <div key={card.title} className="feature-card" style={{ background: 'var(--white)' }}>
-                <div className="feature-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2}>
-                    {card.icon}
-                  </svg>
-                </div>
-                <div className="feature-title">{card.title}</div>
-                <p className="feature-desc">{card.desc}</p>
-              </div>
-            ))}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '4rem', alignItems: 'start' }}>
+            {/* Left — heading */}
+            <div>
+              <div className="eyebrow">About This Tool</div>
+              <h2 className="s-title" style={{ marginTop: '0.75rem', marginBottom: 0 }}>
+                What is an <span className="blue">On-Page SEO Analyzer?</span>
+              </h2>
+            </div>
+            {/* Right — prose */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', paddingTop: '0.25rem' }}>
+              <p style={{ fontSize: '0.95rem', color: 'var(--gray-5)', lineHeight: 1.8, margin: 0 }}>
+                An <strong style={{ color: 'var(--ink)' }}>on-page SEO analyzer</strong> is a comprehensive tool that evaluates all optimization elements directly on your web pages that influence search engine rankings. Unlike off-page factors like backlinks, on-page SEO focuses on what you can control: your content, HTML structure, meta tags, images, internal links, and technical elements.
+              </p>
+              <p style={{ fontSize: '0.95rem', color: 'var(--gray-5)', lineHeight: 1.8, margin: 0 }}>
+                Our advanced analyzer examines <strong style={{ color: 'var(--ink)' }}>150+ critical ranking factors</strong> including content quality, keyword optimization, Core Web Vitals, mobile responsiveness, structured data, accessibility, and security. Get instant, actionable insights to improve your search visibility, user experience, and organic traffic with data-driven recommendations tailored to your website.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -3296,49 +2427,34 @@ DETAILED ANALYSIS:
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">Industry Knowledge</div>
-            <h2 className="s-title">What is On-Page SEO Analysis <span className="blue">and Why It Matters in 2025</span></h2>
-            <p className="s-sub">In 2025, this includes traditional factors like content quality and meta tags, as well as modern considerations like Core Web Vitals, E-A-T signals, and AI-driven content analysis.</p>
+            <h2 className="s-title">What is On-Page SEO Analysis <span className="blue">and Why It Matters</span></h2>
+            <p className="s-sub">On-page SEO analysis is the comprehensive evaluation of all elements on your website that impact search engine rankings — from content quality and meta tags to Core Web Vitals, E-A-T signals, and AI-driven content analysis.</p>
           </div>
-          <div className="prose-content" style={{ maxWidth: '100%' }}>
-            <p>On-page SEO analysis is the comprehensive evaluation of all elements on your website that impact search engine rankings. In 2025, this includes traditional factors like content quality and meta tags, as well as modern considerations like Core Web Vitals, E-A-T signals, and AI-driven content analysis.</p>
-            <h3>Our 2025 On-Page SEO Analysis Covers:</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1rem' }}>
-              <div>
-                {[
-                  { title: 'Content Quality & E-A-T', desc: 'Expertise, authoritativeness, trustworthiness analysis' },
-                  { title: 'Core Web Vitals', desc: 'LCP, INP, CLS performance metrics' },
-                  { title: 'Technical SEO Audit', desc: 'HTTPS, mobile-friendliness, structured data' },
-                  { title: 'On-Page Optimization', desc: 'Title tags, meta descriptions, headers, URLs' },
-                ].map(item => (
-                  <div key={item.title} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--blue)', marginTop: '6px', flexShrink: 0 }} />
-                    <div>
-                      <strong style={{ color: 'var(--ink)', fontSize: '0.92rem' }}>{item.title}</strong>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--gray-5)', marginTop: '2px', marginBottom: 0, lineHeight: 1.6 }}>{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+          <div className="features-grid">
+            {[
+              { title: 'Content Quality & E-A-T', desc: 'Expertise, authoritativeness, and trustworthiness signals that establish credibility with Google.', paths: ['M12 20h9', 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'] },
+              { title: 'Core Web Vitals', desc: 'LCP, INP, and CLS performance metrics that directly influence your search rankings.', paths: ['M13 10V3L4 14h7v7l9-11h-7z'] },
+              { title: 'Technical SEO Audit', desc: 'HTTPS security, mobile-friendliness, structured data, and crawlability checks.', paths: ['M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z', 'M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'] },
+              { title: 'On-Page Optimization', desc: 'Title tags, meta descriptions, heading hierarchy, URL structure, and keyword placement.', paths: ['M4 6h16', 'M4 12h16', 'M4 18h7'] },
+              { title: 'User Experience', desc: 'Navigation clarity, accessibility compliance, and design quality signals.', paths: ['M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2', 'M23 21v-2a4 4 0 0 0-3-3.87', 'M16 3.13a4 4 0 0 1 0 7.75', 'M9 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'] },
+              { title: 'Social Optimization', desc: 'Open Graph tags, Twitter Cards, and social sharing metadata for better CTR.', paths: ['M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'] },
+              { title: 'Advanced Analytics', desc: 'Search intent alignment, SERP feature eligibility, and voice search readiness.', paths: ['M3 3v18h18', 'm19 9-5 5-4-4-3 3'] },
+              { title: 'Local SEO Factors', desc: 'NAP consistency, local schema markup, and geo-targeting optimization.', paths: ['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z', 'M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'] },
+            ].map(card => (
+              <div key={card.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    {card.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{card.title}</div>
+                <p className="feature-desc">{card.desc}</p>
               </div>
-              <div>
-                {[
-                  { title: 'User Experience Analysis', desc: 'Navigation, accessibility, design quality' },
-                  { title: 'Social Media Optimization', desc: 'Open Graph, Twitter Cards, social sharing' },
-                  { title: 'Advanced Analytics', desc: 'Search intent, SERP features, voice search readiness' },
-                  { title: 'Local SEO Factors', desc: 'NAP consistency, local schema, geo-targeting' },
-                ].map(item => (
-                  <div key={item.title} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
-                    <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--blue)', marginTop: '6px', flexShrink: 0 }} />
-                    <div>
-                      <strong style={{ color: 'var(--ink)', fontSize: '0.92rem' }}>{item.title}</strong>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--gray-5)', marginTop: '2px', marginBottom: 0, lineHeight: 1.6 }}>{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="prose-callout">
-              <p><strong>Why it matters:</strong> Proper on-page SEO can improve your search rankings by 25-50% and significantly boost organic traffic, user engagement, and conversion rates.</p>
-            </div>
+            ))}
+          </div>
+          <div className="prose-callout" style={{ marginTop: '2.5rem' }}>
+            <p className="prose-callout-title">Why It Matters</p>
+            <p>Proper on-page SEO can improve your search rankings by 25–50% and significantly boost organic traffic, user engagement, and conversion rates.</p>
           </div>
         </div>
       </section>
@@ -3355,38 +2471,38 @@ DETAILED ANALYSIS:
               {
                 title: '150+ SEO Factors',
                 desc: 'Most comprehensive analysis available covering every aspect of on-page SEO optimization',
-                icon: <><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></>,
+                iconPaths: ['M11 11m-8 0a8 8 0 1016 0 8 8 0 00-16 0', 'M21 21l-4.35-4.35'],
               },
               {
                 title: 'Core Web Vitals Analysis',
                 desc: "Real-time analysis of Google's Core Web Vitals with specific optimization recommendations",
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
+                iconPaths: ['M13 10V3L4 14h7v7l9-11h-7z'],
               },
               {
                 title: 'AI-Powered Insights',
                 desc: 'Advanced AI analysis for content quality, E-A-T signals, and search intent matching',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />,
+                iconPaths: ['M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'],
               },
               {
                 title: 'Visual Score Dashboard',
                 desc: 'Clear, color-coded scoring system with detailed breakdowns for each SEO category',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />,
+                iconPaths: ['M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'],
               },
               {
                 title: 'Actionable Recommendations',
                 desc: 'Specific, prioritized recommendations with step-by-step implementation guidance',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />,
+                iconPaths: ['M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
               },
               {
-                title: '2025 Algorithm Ready',
-                desc: 'Analysis based on the latest Google algorithm updates and ranking factors for 2025',
-                icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />,
+                title: 'Algorithm Ready',
+                desc: 'Analysis based on the latest Google algorithm updates and current ranking factors',
+                iconPaths: ['M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'],
               },
             ].map(card => (
               <div key={card.title} className="feature-card">
                 <div className="feature-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    {card.icon}
+                    {card.iconPaths.map((p: string, pi: number) => <path key={pi} d={p} />)}
                   </svg>
                 </div>
                 <div className="feature-title">{card.title}</div>
@@ -3408,7 +2524,7 @@ DETAILED ANALYSIS:
             {[
               {
                 title: 'Meta Tags & Title Optimization',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />,
+                svgPaths: ['M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z'],
                 items: [
                   ['Title Tag Length', 'Optimal 30-65 characters'],
                   ['Title Power Words', 'CTR-improving words'],
@@ -3421,7 +2537,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Content Quality & Structure',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />,
+                svgPaths: ['M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
                 items: [
                   ['Content Length', 'Word count analysis (300+ min)'],
                   ['Content Depth', 'Comprehensiveness scoring'],
@@ -3435,7 +2551,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Technical SEO',
-                svgPath: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></>,
+                svgPaths: ['M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z', 'M15 12a3 3 0 11-6 0 3 3 0 016 0z'],
                 items: [
                   ['HTTPS Protocol', 'SSL/TLS security'],
                   ['URL Structure', 'Clean URL analysis'],
@@ -3449,7 +2565,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Performance Optimization',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />,
+                svgPaths: ['M13 10V3L4 14h7v7l9-11h-7z'],
                 items: [
                   ['CSS Minification', 'Code optimization'],
                   ['JS Minification', 'JavaScript optimization'],
@@ -3462,7 +2578,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Social Media & Open Graph',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />,
+                svgPaths: ['M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z'],
                 items: [
                   ['OG Title', 'Social media title optimization'],
                   ['OG Description', 'Social sharing descriptions'],
@@ -3475,7 +2591,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Images & Media',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />,
+                svgPaths: ['M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'],
                 items: [
                   ['Image Usage', 'Visual content analysis'],
                   ['Image Alt Text', 'Accessibility compliance'],
@@ -3487,7 +2603,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Security & Headers',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />,
+                svgPaths: ['M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'],
                 items: [
                   ['SSL/TLS Security', 'Certificate validation'],
                   ['Security Headers', 'HTTP security headers'],
@@ -3498,7 +2614,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Mobile & User Experience',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />,
+                svgPaths: ['M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z'],
                 items: [
                   ['Mobile Viewport', 'Responsive design validation'],
                   ['Responsive Design', 'Mobile-friendly assessment'],
@@ -3509,7 +2625,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Structured Data & Schema',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />,
+                svgPaths: ['M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4'],
                 items: [
                   ['Local Schema Markup', 'Business schema validation'],
                   ['Semantic SEO', 'Topic authority analysis'],
@@ -3519,7 +2635,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Internal & External Links',
-                svgPath: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />,
+                svgPaths: ['M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'],
                 items: [
                   ['Internal Links', 'Site architecture analysis'],
                   ['Internal Navigation', 'Link structure assessment'],
@@ -3531,7 +2647,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Accessibility',
-                svgPath: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></>,
+                svgPaths: ['M15 12a3 3 0 11-6 0 3 3 0 016 0z', 'M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'],
                 items: [
                   ['ARIA Labels', 'Accessibility markup'],
                   ['Form Accessibility', 'Form label compliance'],
@@ -3540,7 +2656,7 @@ DETAILED ANALYSIS:
               },
               {
                 title: 'Local SEO',
-                svgPath: <><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></>,
+                svgPaths: ['M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z', 'M15 11a3 3 0 11-6 0 3 3 0 016 0z'],
                 items: [
                   ['Address Information', 'Local business data'],
                   ['Contact Phone', 'Phone number validation'],
@@ -3556,7 +2672,7 @@ DETAILED ANALYSIS:
                 <div className="why-card-title">
                   <div className="why-card-icon">
                     <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      {cat.svgPath}
+                      {cat.svgPaths.map((p: string, pi: number) => <path key={pi} d={p} />)}
                     </svg>
                   </div>
                   {cat.title}
@@ -3585,482 +2701,397 @@ DETAILED ANALYSIS:
       </section>
 
       {/* Comparison Table Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">
-              SEO Shouts vs. Other On-Page SEO Analyzers
-            </h2>
-            <p className="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
-              Compare our advanced analyzer with other popular tools. See why SEO Shouts provides the most comprehensive and actionable SEO analysis.
-            </p>
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEO Shouts vs. Other <span className="blue">On-Page SEO Analyzers</span></h2>
+            <p className="s-sub">Compare our advanced analyzer with other popular tools. See why SEO Shouts provides the most comprehensive and actionable SEO analysis.</p>
+          </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="overflow-x-auto" style={{ marginTop: '2.5rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--line)' }}>
                 <thead>
-                  <tr className="bg-gradient-to-r from-primary/10 to-blue-600/10 border-b border-gray-200">
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-800">Feature</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-primary">SEO Shouts</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">SEOptimer</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Seobility</th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-600">Sitechecker</th>
+                  <tr style={{ background: 'var(--gray-1)', borderBottom: '2px solid var(--line)' }}>
+                    <th style={{ padding: '0.875rem 1.25rem', textAlign: 'left', fontSize: '0.875rem', fontWeight: 600, color: 'var(--ink)' }}>Feature</th>
+                    <th style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', fontWeight: 600, color: 'var(--blue)' }}>SEO Shouts</th>
+                    <th style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', fontWeight: 600, color: 'var(--gray-5)' }}>SEOptimer</th>
+                    <th style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', fontWeight: 600, color: 'var(--gray-5)' }}>Seobility</th>
+                    <th style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', fontWeight: 600, color: 'var(--gray-5)' }}>Sitechecker</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Number of SEO Factors Analyzed</td>
-                    <td className="px-6 py-4 text-center text-sm">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold">150+</span>
+                <tbody>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Number of SEO Factors Analyzed</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem' }}>
+                      <span style={{ display: 'inline-block', padding: '0.2rem 0.75rem', background: '#dcfce7', color: '#166534', fontWeight: 600 }}>150+</span>
                     </td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">50+</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">70+</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">80+</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--gray-5)' }}>50+</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--gray-5)' }}>70+</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--gray-5)' }}>80+</td>
                   </tr>
 
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Core Web Vitals Analysis</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Core Web Vitals Analysis</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                  </tr>
-
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Real PageSpeed Insights Data</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-red-600 text-lg">✗</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
                   </tr>
 
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Keyword Density Analysis</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Real PageSpeed Insights Data</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#dc2626', fontWeight: 700 }}>✗</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                  </tr>
-
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Structured Data Validation</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
                     </td>
                   </tr>
 
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Mobile UX Analysis</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Keyword Density Analysis</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                  </tr>
-
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Local SEO Factors</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-red-600 text-lg">✗</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
                   </tr>
 
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Accessibility Audit</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Structured Data Validation</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
-                    </td>
-                  </tr>
-
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Security Analysis</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
                   </tr>
 
-                  <tr className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-medium">Detailed How-to-Fix Guides</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Mobile UX Analysis</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-yellow-600 text-lg">~</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="text-green-600 text-lg">✓</span>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
                   </tr>
 
-                  <tr className="hover:bg-gray-50 transition-colors bg-gradient-to-r from-blue-50/50 to-indigo-50/50">
-                    <td className="px-6 py-4 text-sm text-gray-700 font-semibold">100% Free (No Limits)</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 font-semibold text-sm">Yes</span>
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Local SEO Factors</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
                     </td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-600">Limited</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#dc2626', fontWeight: 700 }}>✗</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
+                    </td>
+                  </tr>
+
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Accessibility Audit</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
+                    </td>
+                  </tr>
+
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Security Analysis</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                  </tr>
+
+                  <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 500 }}>Detailed How-to-Fix Guides</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#ca8a04', fontWeight: 700 }}>~</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ color: '#16a34a', fontWeight: 700 }}>✓</span>
+                    </td>
+                  </tr>
+
+                  <tr style={{ borderBottom: '1px solid var(--line)', background: 'rgba(37,99,235,0.04)' }}>
+                    <td style={{ padding: '0.875rem 1.25rem', fontSize: '0.875rem', color: 'var(--ink)', fontWeight: 600 }}>100% Free (No Limits)</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center' }}>
+                      <span style={{ display: 'inline-block', padding: '0.2rem 0.75rem', background: '#dcfce7', color: '#166534', fontWeight: 600, fontSize: '0.875rem' }}>Yes</span>
+                    </td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--gray-5)' }}>Limited</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--gray-5)' }}>Limited</td>
+                    <td style={{ padding: '0.875rem 1.25rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--gray-5)' }}>Limited</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div className="mt-8 text-center">
-              <div className="bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 rounded-xl p-6">
-                <p className="text-gray-700 text-lg">
-                  <span className="font-semibold">Legend:</span> <span className="text-green-600 mx-2">✓ = Full support</span>
-                  <span className="text-yellow-600 mx-2">~ = Partial support</span>
-                  <span className="text-red-600 mx-2">✗ = Not available</span>
-                </p>
-              </div>
-            </div>
+          <div style={{ marginTop: '1.5rem', padding: '1rem 1.5rem', background: 'var(--gray-1)', border: '1px solid var(--line)' }}>
+            <p style={{ fontSize: '0.875rem', color: 'var(--gray-5)', margin: 0 }}>
+              <strong style={{ color: 'var(--ink)' }}>Legend:</strong>
+              <span style={{ color: '#16a34a', margin: '0 0.75rem', fontWeight: 600 }}>✓ = Full support</span>
+              <span style={{ color: '#ca8a04', margin: '0 0.75rem', fontWeight: 600 }}>~ = Partial support</span>
+              <span style={{ color: '#dc2626', margin: '0 0.75rem', fontWeight: 600 }}>✗ = Not available</span>
+            </p>
           </div>
         </div>
       </section>
 
       {/* How to Use Target Keyword Feature Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-              How to Use the Target Keyword Feature for Better Analysis
-            </h2>
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Advanced Feature</div>
+            <h2 className="s-title">How to Use the <span className="blue">Target Keyword Feature</span> for Better Analysis</h2>
+          </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                The <strong>Target Keyword</strong> feature is one of the most powerful aspects of our on-page SEO analyzer. By specifying your target keyword,
-                our tool provides keyword-specific analysis that helps you optimize your content for better rankings on that exact search term.
-              </p>
+          <p style={{ fontSize: '0.95rem', color: 'var(--gray-5)', lineHeight: 1.75, margin: '2.5rem 0 0' }}>
+            The <strong style={{ color: 'var(--ink)' }}>Target Keyword</strong> feature is one of the most powerful aspects of our on-page SEO analyzer. By specifying your target keyword, our tool provides keyword-specific analysis that helps you optimize your content for better rankings on that exact search term.
+          </p>
 
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">What the Target Keyword Feature Analyzes:</h3>
-
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700">
-                    <span className="font-semibold text-gray-900">Keyword Placement:</span> Checks if your target keyword appears in critical SEO locations including the title tag, meta description, H1 heading, first paragraph, URL, and image alt text.
-                  </p>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--ink)', letterSpacing: '-0.02em', margin: '2rem 0 1.25rem' }}>What the Target Keyword Feature Analyzes:</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            {[
+              {
+                title: 'Keyword Placement',
+                desc: 'Checks if your target keyword appears in critical SEO locations including the title tag, meta description, H1 heading, first paragraph, URL, and image alt text.',
+                paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11']
+              },
+              {
+                title: 'Keyword Density Analysis',
+                desc: "Calculates the keyword density to ensure it's within the optimal 1–3% range. Detects both keyword stuffing (over-optimization) and under-optimization issues.",
+                paths: ['M3 3v18h18', 'm19 9-5 5-4-4-3 3']
+              },
+              {
+                title: 'Keyword Variations & LSI Keywords',
+                desc: 'Identifies related keywords and semantic variations that support your target keyword, helping you create more comprehensive, topically-relevant content.',
+                paths: ['M21 21l-4.35-4.35', 'M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z']
+              },
+              {
+                title: 'Competitive Keyword Insights',
+                desc: "Compares your keyword optimization against typical patterns for well-ranking pages, showing where you're ahead or behind competitors.",
+                paths: ['M18 20V10', 'M12 20V4', 'M6 20v-6']
+              },
+            ].map(item => (
+              <div key={item.title} style={{ background: 'var(--white)', border: '1px solid var(--line)', padding: '1.5rem' }}>
+                <div style={{ width: 40, height: 40, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', flexShrink: 0 }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 20, height: 20 }}>
+                    {item.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
                 </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700">
-                    <span className="font-semibold text-gray-900">Keyword Density Analysis:</span> Calculates the keyword density to ensure it's within the optimal 1-3% range. Detects both keyword stuffing (over-optimization) and under-optimization issues.
-                  </p>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700">
-                    <span className="font-semibold text-gray-900">Keyword Variations & LSI Keywords:</span> Identifies related keywords and semantic variations that support your target keyword, helping you create more comprehensive, topically-relevant content.
-                  </p>
-                </div>
-
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700">
-                    <span className="font-semibold text-gray-900">Competitive Keyword Insights:</span> Compares your keyword optimization against typical patterns for well-ranking pages, showing where you're ahead or behind competitors.
-                  </p>
-                </div>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--ink)', marginBottom: '0.5rem' }}>{item.title}</h3>
+                <p style={{ fontSize: '0.875rem', color: 'var(--gray-5)', lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
               </div>
+            ))}
+          </div>
 
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">How to Get the Best Results:</h3>
+          <div style={{ marginTop: '2rem', background: 'var(--white)', border: '1px solid var(--line)', padding: '2rem' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--ink)', marginBottom: '1.25rem' }}>How to Get the Best Results:</h3>
+            <ol style={{ paddingLeft: '1.5rem', margin: 0, listStyleType: 'decimal' }}>
+              {[
+                { strong: 'Use Specific Keywords:', text: 'Instead of "shoes", use "men\'s running shoes size 12" for more targeted analysis.' },
+                { strong: 'Match Search Intent:', text: 'Make sure your keyword matches what users are actually searching for when they visit your page.' },
+                { strong: 'Optimize Iteratively:', text: 'Run the analysis, make improvements, then analyze again to see your progress.' },
+                { strong: 'Focus on Natural Integration:', text: "Don't force keywords. The tool will show you opportunities to naturally include your target keyword." },
+                { strong: 'Check Related Keywords:', text: 'Review the keyword suggestions to expand your content with semantic variations.' },
+              ].map(item => (
+                <li key={item.strong} style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.6, marginBottom: '0.75rem' }}>
+                  <strong style={{ color: 'var(--ink)' }}>{item.strong}</strong> {item.text}
+                </li>
+              ))}
+            </ol>
+          </div>
 
-              <div className="bg-white rounded-xl p-6 border border-blue-200">
-                <ol className="space-y-3 list-decimal list-inside text-gray-700">
-                  <li><strong>Use Specific Keywords:</strong> Instead of "shoes", use "men's running shoes size 12" for more targeted analysis.</li>
-                  <li><strong>Match Search Intent:</strong> Make sure your keyword matches what users are actually searching for when they visit your page.</li>
-                  <li><strong>Optimize Iteratively:</strong> Run the analysis, make improvements, then analyze again to see your progress.</li>
-                  <li><strong>Focus on Natural Integration:</strong> Don't force keywords. The tool will show you opportunities to naturally include your target keyword.</li>
-                  <li><strong>Check Related Keywords:</strong> Review the keyword suggestions to expand your content with semantic variations.</li>
-                </ol>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 rounded-xl p-6 text-center">
-              <p className="text-gray-700 text-lg">
-                <span className="font-semibold">Pro Tip:</span> Always enter your target keyword for the most accurate and actionable SEO analysis.
-                Pages optimized for specific keywords rank 67% higher than generic pages according to industry studies.
-              </p>
-            </div>
+          <div style={{ marginTop: '1.5rem', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.2)', padding: '1.25rem 1.5rem' }}>
+            <p style={{ fontSize: '0.9rem', color: 'var(--ink)', margin: 0, lineHeight: 1.6 }}>
+              <strong style={{ color: 'var(--blue)' }}>Pro Tip:</strong> Always enter your target keyword for the most accurate and actionable SEO analysis. Pages optimized for specific keywords rank 67% higher than generic pages according to industry studies.
+            </p>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:grid-flow-row-dense">
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What is on-page SEO and why does it matter?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  On-page SEO refers to all optimization techniques applied directly on your website pages to improve search engine rankings. This includes optimizing content, HTML tags, images, internal links, URL structure, and technical elements. Unlike off-page SEO (backlinks, social signals), on-page factors are completely within your control. Studies show that proper on-page optimization can improve rankings by 25-50% and significantly increase organic traffic, making it one of the most cost-effective SEO strategies available.
-                </div>
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+          </div>
+          <div className="faq-list">
+            {[
+              {
+                q: 'What is on-page SEO and why does it matter?',
+                a: 'On-page SEO refers to all optimization techniques applied directly on your website pages to improve search engine rankings. This includes optimizing content, HTML tags, images, internal links, URL structure, and technical elements. Unlike off-page SEO (backlinks, social signals), on-page factors are completely within your control. Studies show that proper on-page optimization can improve rankings by 25–50% and significantly increase organic traffic, making it one of the most cost-effective SEO strategies available.'
+              },
+              {
+                q: 'Is this on-page SEO analyzer completely free?',
+                a: 'Yes, our advanced on-page SEO analyzer is 100% free with no hidden costs, subscriptions, or premium upsells. You get full access to analyze 150+ SEO factors including Core Web Vitals, keyword density, technical SEO, mobile optimization, and detailed recommendations. Unlike other tools that limit features or require paid upgrades, we provide comprehensive analysis without any restrictions. No credit card required, no registration needed, and no analysis limits.'
+              },
+              {
+                q: 'How accurate is the SEO analysis provided by this tool?',
+                a: "Our analyzer uses real-time data from Google PageSpeed Insights API for Core Web Vitals and performance metrics, ensuring you get the same data Google uses for ranking decisions. We fetch and analyze your actual HTML, CSS, and page structure in real-time. The tool evaluates 150+ ranking factors based on Google's documented best practices and proven SEO principles. Each recommendation is backed by SEO research and aligned with current algorithm updates, making our analysis highly accurate and actionable."
+              },
+              {
+                q: 'What makes SEO Shouts analyzer better than other tools?',
+                a: 'Unlike generic SEO tools that provide surface-level analysis, we examine 150+ specific factors—more than most premium tools. We integrate real Google PageSpeed Insights data, provide detailed how-to-fix guides for each issue, and offer keyword-specific optimization when you enter a target keyword. Our tool analyzes local SEO factors, accessibility compliance, structured data validation, security headers, and modern performance metrics that many competitors ignore. Plus, every recommendation includes implementation guidance, not just "what\'s wrong" but "exactly how to fix it."'
+              },
+              {
+                q: 'Can I analyze competitor websites with this tool?',
+                a: "Absolutely! You can analyze any publicly accessible website URL, including your competitors' sites. This is an excellent way to conduct competitive SEO analysis, understand what they're doing right, identify their weaknesses, and discover optimization opportunities for your own site. Many SEO professionals use our tool to benchmark their sites against top-ranking competitors, reverse-engineer successful SEO strategies, and identify content gaps or technical advantages that contribute to higher rankings."
+              },
+              {
+                q: 'How often should I run on-page SEO analysis?',
+                a: 'We recommend analyzing your pages at least monthly to monitor SEO health and catch issues early. Additionally, run analysis whenever you make significant changes like redesigns, content updates, template modifications, or after Google algorithm updates. For competitive industries or active content sites, weekly analysis of key pages helps maintain optimal performance. Regular monitoring ensures you catch and fix issues before they impact rankings, and helps you track improvement progress over time.'
+              },
+              {
+                q: 'Do you store or share my website data?',
+                a: "No, we take privacy seriously. We don't store, save, or share any data from your website analysis. Each analysis is performed in real-time, and results are only displayed to you during your active session. Once you close or refresh the page, all data is cleared. We don't create accounts, track users across sessions, or collect personal information. The only data transmitted is your URL to our analysis engine and to Google's PageSpeed API."
+              },
+              {
+                q: 'What should I do after getting my SEO analysis report?',
+                a: 'Start by addressing critical issues first (shown in red), as these have the most significant impact on rankings. Then tackle warnings (yellow), and finally optimize the good items that can be made excellent. Prioritize technical issues like HTTPS, Core Web Vitals, and mobile-friendliness, then move to content optimization (title tags, headings, keyword placement), and finally enhance user experience elements. Make changes incrementally, re-analyze after each major fix, and monitor your ranking improvements over 2–4 weeks.'
+              },
+            ].map(item => (
+              <details key={item.q} className="faq-item">
+                <summary>{item.q}</summary>
+                <div className="faq-answer">{item.a}</div>
               </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Is this on-page SEO analyzer completely free?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Yes, our advanced on-page SEO analyzer is 100% free with no hidden costs, subscriptions, or premium upsells. You get full access to analyze 150+ SEO factors including Core Web Vitals, keyword density, technical SEO, mobile optimization, and detailed recommendations. Unlike other tools that limit features or require paid upgrades, we provide comprehensive analysis without any restrictions. No credit card required, no registration needed, and no analysis limits.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How accurate is the SEO analysis provided by this tool?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Our analyzer uses real-time data from Google PageSpeed Insights API for Core Web Vitals and performance metrics, ensuring you get the same data Google uses for ranking decisions. We fetch and analyze your actual HTML, CSS, and page structure in real-time. The tool evaluates 150+ ranking factors based on Google's documented best practices and proven SEO principles. Each recommendation is backed by SEO research and aligned with current algorithm updates, making our analysis highly accurate and actionable.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What makes SEO Shouts analyzer better than other tools?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Unlike generic SEO tools that provide surface-level analysis, we examine 150+ specific factors—more than most premium tools. We integrate real Google PageSpeed Insights data, provide detailed how-to-fix guides for each issue, and offer keyword-specific optimization when you enter a target keyword. Our tool analyzes local SEO factors, accessibility compliance, structured data validation, security headers, and modern performance metrics that many competitors ignore. Plus, every recommendation includes implementation guidance, not just "what's wrong" but "exactly how to fix it."
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Can I analyze competitor websites with this tool?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Absolutely! You can analyze any publicly accessible website URL, including your competitors' sites. This is an excellent way to conduct competitive SEO analysis, understand what they're doing right, identify their weaknesses, and discover optimization opportunities for your own site. Many SEO professionals use our tool to benchmark their sites against top-ranking competitors, reverse-engineer successful SEO strategies, and identify content gaps or technical advantages that contribute to higher rankings.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>How often should I run on-page SEO analysis?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  We recommend analyzing your pages at least monthly to monitor SEO health and catch issues early. Additionally, run analysis whenever you make significant changes like redesigns, content updates, template modifications, or after Google algorithm updates. For competitive industries or active content sites, weekly analysis of key pages helps maintain optimal performance. Regular monitoring ensures you catch and fix issues before they impact rankings, and helps you track improvement progress over time.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>Do you store or share my website data?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  No, we take privacy seriously. We don't store, save, or share any data from your website analysis. Each analysis is performed in real-time, and results are only displayed to you during your active session. Once you close or refresh the page, all data is cleared. We don't create accounts, track users across sessions, or collect personal information. The only data transmitted is your URL to our analysis engine and to Google's PageSpeed API (which is also temporary and not stored by Google for user tracking purposes).
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center"><span className="text-primary mr-2">▸</span>What should I do after getting my SEO analysis report?</span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Start by addressing critical issues first (shown in red), as these have the most significant impact on rankings. Then tackle warnings (yellow), and finally optimize the good items that can be made excellent. Prioritize technical issues like HTTPS, Core Web Vitals, and mobile-friendliness, then move to content optimization (title tags, headings, keyword placement), and finally enhance user experience elements. Make changes incrementally, re-analyze after each major fix, and monitor your ranking improvements over 2-4 weeks.
-                </div>
-              </details>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Explore Other Tools Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
-              </p>
-            </div>
-
-            {/* Featured Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔬</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Tools</div>
+            <h2 className="s-title">Explore Our Other <span className="blue">SEO Tools</span></h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', maxWidth: 560, marginTop: '0.75rem', lineHeight: 1.6 }}>
+              Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
+            </p>
+          </div>
+          <div className="related-tools-grid">
+            {[
+              { name: 'On-Page SEO Analyzer', desc: 'Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.', current: true, href: '/tools/on-page-seo-analyzer/', paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'] },
+              { name: 'Internal Link Checker', desc: 'Visualize anchor text distribution and audit internal link structure across your site.', href: '/tools/internal-link-checker/', paths: ['M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71', 'M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'] },
+              { name: 'Schema Generator', desc: 'Generate JSON-LD structured data for 39+ schema types instantly.', href: '/tools/schema-generator/', paths: ['M4 9h16', 'M4 15h16', 'M10 3 8 21', 'M16 3l-2 18'] },
+              { name: 'Robots.txt Generator', desc: 'Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.', href: '/tools/robots-txt-generator/', paths: ['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z', 'M12 8v4l3 3'] },
+              { name: 'Disavow File Generator', desc: 'Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.', href: '/tools/disavow-file-generator/', paths: ['M18 6 6 18', 'M6 6l12 12'] },
+            ].map(t => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
               </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔗</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
-                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
-                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Internal Link Checker</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏗️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types instantly.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">Try Schema Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🤖</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🚫</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Analyze keyword frequency and optimize content for target keywords without over-optimization.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">Try Keyword Density Analyzer</a> →
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <a 
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="mr-2">🛠️</span>
-                Browse All SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free • No signup required • Instant results
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Call to Action Section - Final Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Start Your Complete SEO Analysis Today</h2>
-            <p className="text-lg mb-8 opacity-90">
-              Stop guessing what's wrong with your website's SEO. Get a comprehensive analysis of 150+ factors that directly impact your search rankings, user experience, and organic traffic.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button 
-                onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
-                className="bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-              >
-                🔬 Analyze Your Website Now →
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm opacity-90">
-              <div className="flex items-center justify-center space-x-2">
-                <span>⚡</span>
-                <span>Complete analysis in under 60 seconds</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>🎯</span>
-                <span>150+ SEO factors analyzed</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>📊</span>
-                <span>Actionable recommendations included</span>
-              </div>
-            </div>
-            
-            <p className="text-sm mt-6 opacity-80">
-              <strong>Get professional SEO insights with SEO Shouts' Advanced On-Page Analyzer!</strong>
-              <br />
-              <em>Trusted by thousands of SEO professionals, marketers, and website owners worldwide for accurate website analysis.</em>
-            </p>
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Start Your Complete <span>SEO Analysis Today</span></h2>
+          <p className="final-cta-sub">
+            Stop guessing what&apos;s wrong with your website&apos;s SEO. Get a comprehensive analysis of 150+ factors that directly impact your search rankings, user experience, and organic traffic.
+          </p>
+          <div className="final-cta-row">
+            <button
+              onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
+              className="btn-primary"
+            >
+              Analyze Your Website Now →
+            </button>
+            <a href="/contact/" className="btn-outline">Get Expert Help</a>
           </div>
+          <div className="final-cta-pills">
+            {[
+              'Complete analysis in under 60 seconds — no registration required',
+              '150+ SEO factors analyzed with actionable recommendations',
+              'Get personalized SEO strategy guidance from our experts',
+            ].map(p => (
+              <div key={p} className="final-pill">{p}</div>
+            ))}
+          </div>
+          <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, maxWidth: 600, margin: '1.5rem auto 0', textAlign: 'center' }}>
+            <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Get professional SEO insights with SEO Shouts&apos; Advanced On-Page Analyzer!</strong>
+            <br />
+            <em>Trusted by thousands of SEO professionals, marketers, and website owners worldwide for accurate website analysis.</em>
+          </p>
         </div>
-      </section>
+      </div>
 
     </div>
   )

@@ -30,38 +30,20 @@ export default function CoreWebVitalsQuickCheck() {
   const [error, setError] = useState('')
 
   const checkPerformance = async () => {
-    if (!url) {
-      setError('Please enter a valid URL')
-      return
-    }
-
-    setLoading(true)
-    setError('')
-    setResult(null)
-
+    if (!url) { setError('Please enter a valid URL'); return }
+    setLoading(true); setError(''); setResult(null)
     try {
-      // Set a 60-second timeout for the request
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 60000)
-
       const response = await fetch('/api/analyze-seo', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url,
-          targetKeyword: '',
-          recaptchaToken: 'quick_check_bypass'
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url, targetKeyword: '', recaptchaToken: 'quick_check_bypass' }),
         signal: controller.signal
       })
-
       clearTimeout(timeoutId)
       const data = await response.json()
-
       if (response.ok && data.pageSpeed) {
-        // Data is now in the correct format from the API
         setResult(data.pageSpeed)
       } else if (response.ok && !data.pageSpeed) {
         setError('Performance data unavailable. The PageSpeed API may be temporarily down or not configured.')
@@ -79,350 +61,171 @@ export default function CoreWebVitalsQuickCheck() {
     }
   }
 
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600'
-    if (score >= 50) return 'text-yellow-600'
-    return 'text-red-600'
-  }
+  const scoreColor   = (s: number) => s >= 90 ? '#16a34a' : s >= 50 ? '#d97706' : '#dc2626'
+  const scoreBg      = (s: number) => s >= 90 ? 'rgba(22,163,74,0.15)' : s >= 50 ? 'rgba(217,119,6,0.15)' : 'rgba(220,38,38,0.15)'
+  const metricColor  = (st: string) => st === 'good' ? '#10b981' : st === 'needs-improvement' ? '#f59e0b' : '#ef4444'
+  // r=27, circumference=169.65; good=10%, ni=50%, poor=70% offset
+  const circleOffset = (st: string) => st === 'good' ? '16.97' : st === 'needs-improvement' ? '84.82' : '118.75'
+  const formatValue  = (metric: string, value: number) => metric === 'CLS' ? value.toFixed(3) : `${(value / 1000).toFixed(2)}s`
 
-  const getScoreBgColor = (score: number) => {
-    if (score >= 90) return 'bg-green-100'
-    if (score >= 50) return 'bg-yellow-100'
-    return 'bg-red-100'
-  }
-
-  const getStatusColor = (status: string) => {
-    if (status === 'good') return 'bg-green-500'
-    if (status === 'needs-improvement') return 'bg-yellow-500'
-    return 'bg-red-500'
-  }
-
-  const getStatusText = (status: string) => {
-    if (status === 'good') return 'Good'
-    if (status === 'needs-improvement') return 'Needs Improvement'
-    return 'Poor'
-  }
-
-  const formatValue = (metric: string, value: number) => {
-    if (metric === 'CLS') return value.toFixed(3)
-    return `${(value / 1000).toFixed(2)}s`
+  function MetricCell({ label, metric, full }: { label: string; metric: CoreWebVitalMetric; full: string }) {
+    const col = metricColor(metric.status)
+    return (
+      <div className="wd-cwc-metric">
+        <div className="wd-cwc-metric-ring">
+          <svg width="64" height="64" viewBox="0 0 64 64" style={{ transform: 'rotate(-90deg)', display: 'block' }}>
+            <circle cx="32" cy="32" r="27" stroke="rgba(255,255,255,0.14)" strokeWidth="6" fill="none" />
+            <circle cx="32" cy="32" r="27"
+              stroke={col}
+              strokeWidth="6"
+              fill="none"
+              strokeDasharray="169.65"
+              strokeDashoffset={circleOffset(metric.status)}
+              strokeLinecap="butt"
+              style={{ transition: 'stroke-dashoffset 0.8s ease-out' }}
+            />
+          </svg>
+          <div className="wd-cwc-metric-val" style={{ color: col }}>
+            {formatValue(label, metric.value)}
+          </div>
+        </div>
+        <span className="wd-cwc-metric-key">{label}</span>
+        <span className="wd-cwc-metric-full">{full}</span>
+      </div>
+    )
   }
 
   return (
-    <section id="core-web-vitals-check" className="relative py-6 sm:py-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-300 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-      </div>
+    <section id="core-web-vitals-check" className="section svc-section">
+      <style>{`
+        @keyframes wd-cwc-spin { to { transform: rotate(360deg); } }
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
+        .wd-cwc-wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 5rem; align-items: center; }
+        .wd-cwc-input-row { display: flex; margin-top: 1.75rem; border: 1px solid rgba(255,255,255,0.12); }
+        .wd-cwc-input { flex: 1; padding: 14px 16px; background: rgba(255,255,255,0.05); border: none; color: #fff; font-size: 0.9rem; outline: none; min-width: 0; }
+        .wd-cwc-input::placeholder { color: rgba(255,255,255,0.3); }
+        .wd-cwc-input:focus { background: rgba(255,255,255,0.08); }
+        .wd-cwc-btn { padding: 14px 20px; background: var(--blue); border: none; color: #fff; font-size: 0.875rem; font-weight: 700; cursor: pointer; white-space: nowrap; letter-spacing: 0.04em; transition: background 0.2s; flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; }
+        .wd-cwc-btn:hover:not(:disabled) { background: var(--blue-dark); }
+        .wd-cwc-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .wd-cwc-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.25); border-top-color: #fff; animation: wd-cwc-spin 0.7s linear infinite; flex-shrink: 0; }
+        .wd-cwc-error { margin-top: 1rem; padding: 12px 16px; background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.25); font-size: 0.85rem; color: #fca5a5; display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
 
-          {/* Two Column Layout */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        .wd-cwc-panels { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.2); }
+        .wd-cwc-panel { background: #161821; padding: 1.5rem 1.75rem; }
+        .wd-cwc-panel-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.12); }
+        .wd-cwc-panel-left { display: flex; align-items: center; gap: 12px; }
+        .wd-cwc-panel-icon { width: 34px; height: 34px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.8); flex-shrink: 0; }
+        .wd-cwc-panel-name { font-size: 1rem; font-weight: 700; color: #fff; }
+        .wd-cwc-score-num { font-size: 1.75rem; font-weight: 800; font-family: 'Space Grotesk', sans-serif; line-height: 1; min-width: 52px; text-align: center; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.3); }
 
-            {/* Left Column - Header and Input Form */}
-            <div>
-              {/* Section Header */}
-              <div className="mb-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-4 border border-white/20">
-                  <svg className="w-5 h-5 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  <span className="text-sm font-semibold text-white uppercase tracking-wide">Free Performance Check</span>
-                </div>
-                <h2 className="text-[2rem] font-bold text-white mb-4 leading-tight">
-                  Quick Core Web Vitals Check
-                </h2>
-                <p className="text-blue-100 text-base sm:text-lg leading-relaxed">
-                  Get instant mobile and desktop performance scores powered by Google PageSpeed Insights
-                </p>
-              </div>
+        .wd-cwc-metrics-row { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+        .wd-cwc-metric { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 8px; border-right: 1px solid rgba(255,255,255,0.1); }
+        .wd-cwc-metric:last-child { border-right: none; }
+        .wd-cwc-metric-ring { position: relative; width: 64px; height: 64px; flex-shrink: 0; }
+        .wd-cwc-metric-val { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; font-family: 'Space Grotesk', sans-serif; }
+        .wd-cwc-metric-key { font-size: 0.8rem; font-weight: 700; color: #fff; }
+        .wd-cwc-metric-full { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,0.3); text-align: center; }
 
-              {/* Input Form - Highlighted with border glow */}
-              <div className="relative">
-                {/* Glow effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 rounded-2xl blur-lg opacity-30 animate-pulse"></div>
+        @media (max-width: 900px) { .wd-cwc-wrap { grid-template-columns: 1fr; gap: 2rem; } }
+        @media (max-width: 480px) { .wd-cwc-input-row { flex-direction: column; } .wd-cwc-btn { width: 100%; justify-content: center; } }
+      `}</style>
 
-                <div className="relative bg-white rounded-2xl shadow-2xl p-2 border-2 border-yellow-400/50">
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <input
-                      type="url"
-                      value={url}
-                      onChange={(e) => setUrl(e.target.value)}
-                      placeholder="Enter your website URL (e.g., https://example.com)"
-                      className="flex-1 px-4 py-3 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-base placeholder-gray-400 bg-gray-50"
-                      onKeyPress={(e) => e.key === 'Enter' && checkPerformance()}
-                    />
-                    <button
-                      onClick={checkPerformance}
-                      disabled={loading || !url}
-                      className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 font-bold text-base rounded-lg hover:shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300 whitespace-nowrap hover:from-yellow-300 hover:to-orange-400"
-                    >
-                      {loading ? (
-                        <span className="flex items-center justify-center">
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Checking...
-                        </span>
-                      ) : (
-                        'Check Your Performance'
-                      )}
-                    </button>
-                  </div>
+      <div className="section-container">
+        <div className="wd-cwc-wrap">
 
-                  {error && (
-                    <div className="mt-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                      <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                        {error}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+          {/* Left: heading + input */}
+          <div>
+            <div className="eyebrow light">Free Performance Check</div>
+            <h2 className="s-title light">Quick Core Web Vitals Check</h2>
+            <p className="s-sub light">Get instant mobile and desktop performance scores powered by Google PageSpeed Insights</p>
+
+            <div className="wd-cwc-input-row">
+              <input
+                type="url"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="Enter your website URL (e.g., https://example.com)"
+                className="wd-cwc-input"
+                onKeyPress={(e) => e.key === 'Enter' && checkPerformance()}
+              />
+              <button onClick={checkPerformance} disabled={loading || !url} className="wd-cwc-btn">
+                {loading ? (
+                  <><span className="wd-cwc-spinner" />Checking…</>
+                ) : (
+                  'Check Performance'
+                )}
+              </button>
             </div>
 
-            {/* Right Column - Score Display */}
-            <div>
+            {error && (
+              <div className="wd-cwc-error">
+                <svg width={14} height={14} viewBox="0 0 20 20" fill="currentColor" style={{ flexShrink: 0, marginTop: 2 }}>
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                </svg>
+                {error}
+              </div>
+            )}
+          </div>
 
-          {/* Score Display - Always Visible */}
-          <div className="space-y-6">
-            {/* Mobile Score */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-6">
-                {/* Left: Header */}
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center shadow-sm">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
+          {/* Right: score panels */}
+          <div className="wd-cwc-panels">
+
+            {/* Mobile */}
+            <div className="wd-cwc-panel">
+              <div className="wd-cwc-panel-hd">
+                <div className="wd-cwc-panel-left">
+                  <div className="wd-cwc-panel-icon">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900">Mobile</h3>
+                  <span className="wd-cwc-panel-name">Mobile</span>
                 </div>
-
-                {/* Right: Score Box */}
-                <div className={`px-8 py-4 rounded-2xl transition-all duration-500 shadow-md ${result ? getScoreBgColor(result.mobile.score) : 'bg-gradient-to-br from-gray-100 to-gray-200'}`}>
-                  <div className={`text-5xl font-bold transition-all duration-700 ${result ? getScoreColor(result.mobile.score) + ' animate-score-pop' : 'text-gray-400'}`}>
-                    {result ? result.mobile.score : '0'}
-                  </div>
+                <div className="wd-cwc-score-num"
+                  style={result ? {
+                    background: scoreBg(result.mobile.score),
+                    color: scoreColor(result.mobile.score),
+                    borderColor: 'transparent',
+                  } : {}}>
+                  {result ? result.mobile.score : '—'}
                 </div>
               </div>
-
               {result && (
-                <div className="grid grid-cols-3 gap-6 animate-fade-in">
-                  {/* LCP Circle */}
-                  <div className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                    <div className="relative w-28 h-28 mb-4">
-                      <svg className="w-28 h-28 transform -rotate-90">
-                        <circle cx="56" cy="56" r="50" stroke="#f3f4f6" strokeWidth="10" fill="white" />
-                        <circle
-                          cx="56" cy="56" r="50"
-                          stroke={result.mobile.coreWebVitals.LCP.status === 'good' ? '#10b981' : result.mobile.coreWebVitals.LCP.status === 'needs-improvement' ? '#f59e0b' : '#ef4444'}
-                          strokeWidth="10"
-                          fill="none"
-                          strokeDasharray="314.16"
-                          strokeDashoffset={result.mobile.coreWebVitals.LCP.status === 'good' ? '31.416' : result.mobile.coreWebVitals.LCP.status === 'needs-improvement' ? '157.08' : '219.912'}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000 ease-out drop-shadow-md"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className={`w-8 h-8 ${result.mobile.coreWebVitals.LCP.status === 'good' ? 'text-green-600' : result.mobile.coreWebVitals.LCP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className={`text-3xl font-bold mb-2 ${result.mobile.coreWebVitals.LCP.status === 'good' ? 'text-green-600' : result.mobile.coreWebVitals.LCP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {formatValue('LCP', result.mobile.coreWebVitals.LCP.value)}
-                    </div>
-                    <div className="text-base font-bold text-gray-900 mb-1">LCP</div>
-                    <div className="text-xs text-gray-500 text-center">Largest Contentful Paint</div>
-                  </div>
-
-                  {/* CLS Circle */}
-                  <div className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                    <div className="relative w-28 h-28 mb-4">
-                      <svg className="w-28 h-28 transform -rotate-90">
-                        <circle cx="56" cy="56" r="50" stroke="#f3f4f6" strokeWidth="10" fill="white" />
-                        <circle
-                          cx="56" cy="56" r="50"
-                          stroke={result.mobile.coreWebVitals.CLS.status === 'good' ? '#10b981' : result.mobile.coreWebVitals.CLS.status === 'needs-improvement' ? '#f59e0b' : '#ef4444'}
-                          strokeWidth="10"
-                          fill="none"
-                          strokeDasharray="314.16"
-                          strokeDashoffset={result.mobile.coreWebVitals.CLS.status === 'good' ? '31.416' : result.mobile.coreWebVitals.CLS.status === 'needs-improvement' ? '157.08' : '219.912'}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000 ease-out drop-shadow-md"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className={`w-8 h-8 ${result.mobile.coreWebVitals.CLS.status === 'good' ? 'text-green-600' : result.mobile.coreWebVitals.CLS.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className={`text-3xl font-bold mb-2 ${result.mobile.coreWebVitals.CLS.status === 'good' ? 'text-green-600' : result.mobile.coreWebVitals.CLS.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {formatValue('CLS', result.mobile.coreWebVitals.CLS.value)}
-                    </div>
-                    <div className="text-base font-bold text-gray-900 mb-1">CLS</div>
-                    <div className="text-xs text-gray-500 text-center">Cumulative Layout Shift</div>
-                  </div>
-
-                  {/* INP Circle */}
-                  <div className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                    <div className="relative w-28 h-28 mb-4">
-                      <svg className="w-28 h-28 transform -rotate-90">
-                        <circle cx="56" cy="56" r="50" stroke="#f3f4f6" strokeWidth="10" fill="white" />
-                        <circle
-                          cx="56" cy="56" r="50"
-                          stroke={result.mobile.coreWebVitals.INP.status === 'good' ? '#10b981' : result.mobile.coreWebVitals.INP.status === 'needs-improvement' ? '#f59e0b' : '#ef4444'}
-                          strokeWidth="10"
-                          fill="none"
-                          strokeDasharray="314.16"
-                          strokeDashoffset={result.mobile.coreWebVitals.INP.status === 'good' ? '31.416' : result.mobile.coreWebVitals.INP.status === 'needs-improvement' ? '157.08' : '219.912'}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000 ease-out drop-shadow-md"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className={`w-8 h-8 ${result.mobile.coreWebVitals.INP.status === 'good' ? 'text-green-600' : result.mobile.coreWebVitals.INP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className={`text-3xl font-bold mb-2 ${result.mobile.coreWebVitals.INP.status === 'good' ? 'text-green-600' : result.mobile.coreWebVitals.INP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {formatValue('INP', result.mobile.coreWebVitals.INP.value)}
-                    </div>
-                    <div className="text-base font-bold text-gray-900 mb-1">INP</div>
-                    <div className="text-xs text-gray-500 text-center">Interaction to Next Paint</div>
-                  </div>
+                <div className="wd-cwc-metrics-row">
+                  <MetricCell label="LCP" metric={result.mobile.coreWebVitals.LCP} full="Largest Paint" />
+                  <MetricCell label="CLS" metric={result.mobile.coreWebVitals.CLS} full="Layout Shift" />
+                  <MetricCell label="INP" metric={result.mobile.coreWebVitals.INP} full="Interaction" />
                 </div>
               )}
             </div>
 
-            {/* Desktop Score */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-6 border border-gray-200">
-              <div className="flex items-center justify-between mb-6">
-                {/* Left: Header */}
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-xl flex items-center justify-center shadow-sm">
-                    <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
+            {/* Desktop */}
+            <div className="wd-cwc-panel">
+              <div className="wd-cwc-panel-hd">
+                <div className="wd-cwc-panel-left">
+                  <div className="wd-cwc-panel-icon">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900">Desktop</h3>
+                  <span className="wd-cwc-panel-name">Desktop</span>
                 </div>
-
-                {/* Right: Score Box */}
-                <div className={`px-8 py-4 rounded-2xl transition-all duration-500 shadow-md ${result ? getScoreBgColor(result.desktop.score) : 'bg-gradient-to-br from-gray-100 to-gray-200'}`}>
-                  <div className={`text-5xl font-bold transition-all duration-700 ${result ? getScoreColor(result.desktop.score) + ' animate-score-pop' : 'text-gray-400'}`}>
-                    {result ? result.desktop.score : '0'}
-                  </div>
+                <div className="wd-cwc-score-num"
+                  style={result ? {
+                    background: scoreBg(result.desktop.score),
+                    color: scoreColor(result.desktop.score),
+                    borderColor: 'transparent',
+                  } : {}}>
+                  {result ? result.desktop.score : '—'}
                 </div>
               </div>
-
               {result && (
-                <div className="grid grid-cols-3 gap-6 animate-fade-in">
-                  {/* LCP Circle */}
-                  <div className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                    <div className="relative w-28 h-28 mb-4">
-                      <svg className="w-28 h-28 transform -rotate-90">
-                        <circle cx="56" cy="56" r="50" stroke="#f3f4f6" strokeWidth="10" fill="white" />
-                        <circle
-                          cx="56" cy="56" r="50"
-                          stroke={result.desktop.coreWebVitals.LCP.status === 'good' ? '#10b981' : result.desktop.coreWebVitals.LCP.status === 'needs-improvement' ? '#f59e0b' : '#ef4444'}
-                          strokeWidth="10"
-                          fill="none"
-                          strokeDasharray="314.16"
-                          strokeDashoffset={result.desktop.coreWebVitals.LCP.status === 'good' ? '31.416' : result.desktop.coreWebVitals.LCP.status === 'needs-improvement' ? '157.08' : '219.912'}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000 ease-out drop-shadow-md"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className={`w-8 h-8 ${result.desktop.coreWebVitals.LCP.status === 'good' ? 'text-green-600' : result.desktop.coreWebVitals.LCP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className={`text-3xl font-bold mb-2 ${result.desktop.coreWebVitals.LCP.status === 'good' ? 'text-green-600' : result.desktop.coreWebVitals.LCP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {formatValue('LCP', result.desktop.coreWebVitals.LCP.value)}
-                    </div>
-                    <div className="text-base font-bold text-gray-900 mb-1">LCP</div>
-                    <div className="text-xs text-gray-500 text-center">Largest Contentful Paint</div>
-                  </div>
-
-                  {/* CLS Circle */}
-                  <div className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                    <div className="relative w-28 h-28 mb-4">
-                      <svg className="w-28 h-28 transform -rotate-90">
-                        <circle cx="56" cy="56" r="50" stroke="#f3f4f6" strokeWidth="10" fill="white" />
-                        <circle
-                          cx="56" cy="56" r="50"
-                          stroke={result.desktop.coreWebVitals.CLS.status === 'good' ? '#10b981' : result.desktop.coreWebVitals.CLS.status === 'needs-improvement' ? '#f59e0b' : '#ef4444'}
-                          strokeWidth="10"
-                          fill="none"
-                          strokeDasharray="314.16"
-                          strokeDashoffset={result.desktop.coreWebVitals.CLS.status === 'good' ? '31.416' : result.desktop.coreWebVitals.CLS.status === 'needs-improvement' ? '157.08' : '219.912'}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000 ease-out drop-shadow-md"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className={`w-8 h-8 ${result.desktop.coreWebVitals.CLS.status === 'good' ? 'text-green-600' : result.desktop.coreWebVitals.CLS.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className={`text-3xl font-bold mb-2 ${result.desktop.coreWebVitals.CLS.status === 'good' ? 'text-green-600' : result.desktop.coreWebVitals.CLS.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {formatValue('CLS', result.desktop.coreWebVitals.CLS.value)}
-                    </div>
-                    <div className="text-base font-bold text-gray-900 mb-1">CLS</div>
-                    <div className="text-xs text-gray-500 text-center">Cumulative Layout Shift</div>
-                  </div>
-
-                  {/* INP Circle */}
-                  <div className="flex flex-col items-center p-4 rounded-xl hover:bg-gray-50 transition-colors duration-200">
-                    <div className="relative w-28 h-28 mb-4">
-                      <svg className="w-28 h-28 transform -rotate-90">
-                        <circle cx="56" cy="56" r="50" stroke="#f3f4f6" strokeWidth="10" fill="white" />
-                        <circle
-                          cx="56" cy="56" r="50"
-                          stroke={result.desktop.coreWebVitals.INP.status === 'good' ? '#10b981' : result.desktop.coreWebVitals.INP.status === 'needs-improvement' ? '#f59e0b' : '#ef4444'}
-                          strokeWidth="10"
-                          fill="none"
-                          strokeDasharray="314.16"
-                          strokeDashoffset={result.desktop.coreWebVitals.INP.status === 'good' ? '31.416' : result.desktop.coreWebVitals.INP.status === 'needs-improvement' ? '157.08' : '219.912'}
-                          strokeLinecap="round"
-                          className="transition-all duration-1000 ease-out drop-shadow-md"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className={`w-8 h-8 ${result.desktop.coreWebVitals.INP.status === 'good' ? 'text-green-600' : result.desktop.coreWebVitals.INP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`} fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div className={`text-3xl font-bold mb-2 ${result.desktop.coreWebVitals.INP.status === 'good' ? 'text-green-600' : result.desktop.coreWebVitals.INP.status === 'needs-improvement' ? 'text-yellow-600' : 'text-red-600'}`}>
-                      {formatValue('INP', result.desktop.coreWebVitals.INP.value)}
-                    </div>
-                    <div className="text-base font-bold text-gray-900 mb-1">INP</div>
-                    <div className="text-xs text-gray-500 text-center">Interaction to Next Paint</div>
-                  </div>
+                <div className="wd-cwc-metrics-row">
+                  <MetricCell label="LCP" metric={result.desktop.coreWebVitals.LCP} full="Largest Paint" />
+                  <MetricCell label="CLS" metric={result.desktop.coreWebVitals.CLS} full="Layout Shift" />
+                  <MetricCell label="INP" metric={result.desktop.coreWebVitals.INP} full="Interaction" />
                 </div>
               )}
             </div>
-          </div>
 
-            </div>
           </div>
-
         </div>
       </div>
     </section>

@@ -82,6 +82,28 @@ export default function MetaTagOptimizer() {
         }}
       />
 
+      {/* HowTo Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Optimize Your Meta Tags for Better SEO",
+        "description": "Use the free SEOShouts Meta Tag Optimizer to write, preview, and optimize your page title and meta description for maximum click-through rate.",
+        "tool": { "@type": "HowToTool", "name": "SEOShouts Meta Tag Optimizer", "url": "https://seoshouts.com/tools/meta-tag-optimizer/" },
+        "step": [
+          { "@type": "HowToStep", "position": 1, "name": "Enter Your Meta Content", "text": "Input your page title, meta description, target keywords, and URL. The tool provides real-time character count and optimization suggestions as you type." },
+          { "@type": "HowToStep", "position": 2, "name": "Preview SERP Appearance", "text": "See exactly how your page will appear in Google search results with the live SERP preview. Adjust until your title and description fit within the recommended character limits." },
+          { "@type": "HowToStep", "position": 3, "name": "Generate and Copy the Code", "text": "Get ready-to-use HTML meta tag code including Open Graph and Twitter Card tags. Copy and paste the output into your page's <head> section." }
+        ]
+      })}} />
+
+      {/* Speakable Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", ".tool-hero-sub"] },
+        "url": "https://seoshouts.com/tools/meta-tag-optimizer/"
+      })}} />
+
       <MetaTagOptimizerClient />
     </>
   )

@@ -71,80 +71,50 @@ export default function BlogNewsletterForm() {
   }
 
   return (
-    <div className="mt-2 mb-12">
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg p-8 text-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold mb-2">Get More SEO Insights</h3>
-            <p className="text-blue-100">
-              Join 10,000+ marketers receiving weekly SEO strategies and tips directly in their inbox.
-            </p>
+    <div className="ba-inline-news">
+      <div className="ba-inline-news-l">
+        <span className="ba-inline-news-tag">Newsletter</span>
+        <h4>Get More SEO Insights</h4>
+        <p>Join 10,000+ marketers receiving weekly SEO strategies and tips directly in their inbox.</p>
+      </div>
+      <div className="ba-inline-news-r">
+        {formData.isSubscribed ? (
+          <div className="ba-inline-news-success">
+            &#10003; You&apos;re subscribed! Welcome aboard.
           </div>
-          
-          {!formData.isSubscribed ? (
-            <form onSubmit={handleSubmit} className="space-y-2">
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50"
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value, error: '' }))}
-                  disabled={formData.isLoading}
-                  required
-                />
-                <button
-                  type="submit"
-                  className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
-                  disabled={formData.isLoading}
-                >
-                  {formData.isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Subscribing...
-                    </span>
-                  ) : (
-                    'Subscribe Free'
-                  )}
-                </button>
-              </div>
-
-              {/* reCAPTCHA */}
-              <div className="flex justify-center">
-                <div style={{ transform: 'scale(0.75)', transformOrigin: 'center' }}>
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                    theme="light"
-                    size="normal"
-                  />
-                </div>
-              </div>
-
-              {/* Error Message */}
-              {formData.error && (
-                <div className="bg-red-500/20 border border-red-300/30 rounded-lg p-4 text-white text-center">
-                  {formData.error}
-                </div>
-              )}
-            </form>
-          ) : (
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 text-center">
-              <div className="flex items-center justify-center gap-2">
-                <svg className="w-5 h-5 text-green-300" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                </svg>
-                <span className="font-semibold">Thank you! You've been successfully subscribed to our newsletter.</span>
-              </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <input
+              type="email"
+              placeholder="you@company.com"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value, error: '' }))}
+              disabled={formData.isLoading}
+              required
+            />
+            <div style={{ transform: 'scale(0.75)', transformOrigin: 'left center', marginBottom: '-12px' }}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                theme="dark"
+                size="normal"
+              />
             </div>
-          )}
-          
-          <p className="text-xs text-blue-200 mt-4">
-            ✓ No spam, ever ✓ Unsubscribe anytime ✓ Expert SEO tips
-          </p>
+            <button type="submit" disabled={formData.isLoading}>
+              {formData.isLoading ? 'Subscribing…' : (
+                <>
+                  Subscribe Free
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </>
+              )}
+            </button>
+            {formData.error && <div className="ba-inline-news-error">{formData.error}</div>}
+          </form>
+        )}
+        <div className="ba-inline-news-trust">
+          <span className="ck">&#10003;</span><span>No spam, ever</span>
+          <span className="ck">&#10003;</span><span>Unsubscribe anytime</span>
+          <span className="ck">&#10003;</span><span>Expert SEO tips</span>
         </div>
       </div>
     </div>

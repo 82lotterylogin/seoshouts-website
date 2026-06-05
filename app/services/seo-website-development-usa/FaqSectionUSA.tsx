@@ -109,6 +109,13 @@ const categorizedFaqs = {
   ]
 }
 
+const TAB_LABELS: Record<string, string> = {
+  general:   'General FAQs',
+  technical: 'Technical FAQs',
+  pricing:   'Pricing & Delivery',
+  content:   'Content & Growth',
+}
+
 export default function FaqSectionUSA() {
   const [activeTab, setActiveTab] = useState<'general' | 'technical' | 'pricing' | 'content'>('general')
   const [openIndex, setOpenIndex] = useState<number | null>(null)
@@ -131,25 +138,18 @@ export default function FaqSectionUSA() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+    setFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     if (!formData.name || !formData.email || !formData.message) {
       setErrorMessage('Please fill in all required fields.')
       setSubmitStatus('error')
       return
     }
-
-    // Get reCAPTCHA token before setting submitting state
     let recaptchaToken = 'recaptcha_disabled'
     if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && recaptchaRef.current) {
-      // Check if user already completed the checkbox
       const existingToken = recaptchaRef.current.getValue()
       if (!existingToken) {
         setErrorMessage('Please complete the reCAPTCHA verification.')
@@ -158,50 +158,28 @@ export default function FaqSectionUSA() {
       }
       recaptchaToken = existingToken
     }
-
     setIsSubmitting(true)
     setSubmitStatus('idle')
     setErrorMessage('')
-
     try {
-
       const response = await fetch('/api/contact-submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          service: 'website-development-usa',
-          budget: formData.package,
-          recaptchaToken
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, service: 'website-development-usa', budget: formData.package, recaptchaToken }),
       })
-
       const result = await response.json()
-
       if (response.ok) {
         setSubmitStatus('success')
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          website: '',
-          package: 'bronze',
-          message: ''
-        })
-        // Reset reCAPTCHA
+        setFormData({ name: '', email: '', phone: '', website: '', package: 'bronze', message: '' })
         if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
       } else {
         setSubmitStatus('error')
         setErrorMessage(result.error || 'Something went wrong. Please try again.')
-        // Reset reCAPTCHA on error
         if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
       }
     } catch (error) {
       setSubmitStatus('error')
       setErrorMessage('Network error. Please check your connection and try again.')
-      // Reset reCAPTCHA on error
       if (process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) recaptchaRef.current?.reset()
     } finally {
       setIsSubmitting(false)
@@ -209,306 +187,198 @@ export default function FaqSectionUSA() {
   }
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
+    <section className="section faq-section">
+      <style>{`
+        @keyframes wd-faqOpen {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .wd-faq-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .wd-faq-tabs { display: flex; gap: 0; margin-bottom: 0; border: 1px solid var(--line); border-bottom: none; }
+        .wd-faq-tab { flex: 1; padding: 10px 6px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; border: none; background: transparent; cursor: pointer; color: var(--gray-5); border-right: 1px solid var(--line); border-bottom: 3px solid transparent; transition: color 0.18s, border-color 0.18s; }
+        .wd-faq-tab:last-child { border-right: none; }
+        .wd-faq-tab:hover { color: var(--ink); }
+        .wd-faq-tab.wd-faq-tab-on { color: var(--blue); border-bottom-color: var(--blue); background: rgba(37,99,235,0.03); }
+        .wd-faq-list-wrap { border: 1px solid var(--line); }
+        .wd-faq-item { border-bottom: 1px solid var(--line); }
+        .wd-faq-item:last-child { border-bottom: none; }
+        .wd-faq-q { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.5rem; background: transparent; border: none; cursor: pointer; text-align: left; transition: background 0.18s; }
+        .wd-faq-q:hover { background: var(--gray-1); }
+        .wd-faq-q-text { font-size: 0.925rem; font-weight: 600; color: var(--ink); line-height: 1.45; }
+        .wd-faq-item.wd-faq-open .wd-faq-q-text { color: var(--blue); }
+        .wd-faq-chevron { flex-shrink: 0; width: 18px; height: 18px; color: var(--gray-5); transition: transform 0.22s, color 0.18s; }
+        .wd-faq-item.wd-faq-open .wd-faq-chevron { transform: rotate(180deg); color: var(--blue); }
+        .wd-faq-a { padding: 0 1.5rem 1.25rem; font-size: 0.875rem; color: var(--ink-2); line-height: 1.7; animation: wd-faqOpen 0.22s ease both; }
+        /* Contact form */
+        .wd-faq-form-card { border: 1px solid var(--line); background: #fff; padding: 2.25rem 2rem; position: sticky; top: 100px; }
+        .wd-faq-form-title { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 0.375rem; }
+        .wd-faq-form-sub { font-size: 0.875rem; color: var(--gray-5); margin-bottom: 1.5rem; }
+        .wd-form-field { margin-bottom: 1rem; }
+        .wd-form-label { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.375rem; }
+        .wd-form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--line); background: #fff; font-size: 0.875rem; color: var(--ink); outline: none; transition: border-color 0.18s; font-family: inherit; }
+        .wd-form-input:focus { border-color: var(--blue); }
+        .wd-form-input::placeholder { color: var(--gray-5); }
+        .wd-form-textarea { resize: vertical; min-height: 96px; }
+        .wd-form-submit { width: 100%; padding: 13px 20px; background: var(--blue); color: #fff; font-size: 0.9rem; font-weight: 700; border: none; cursor: pointer; transition: background 0.2s; font-family: inherit; margin-top: 0.5rem; }
+        .wd-form-submit:hover:not(:disabled) { background: var(--blue-dark); }
+        .wd-form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+        .wd-form-submit-loading { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .wd-form-alert { padding: 12px 14px; font-size: 0.825rem; line-height: 1.5; margin-bottom: 1rem; }
+        .wd-form-alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        .wd-form-alert-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+        @media (max-width: 960px) {
+          .wd-faq-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+          .wd-faq-form-card { position: static; }
+        }
+        @media (max-width: 540px) {
+          .wd-faq-tabs { flex-wrap: wrap; }
+          .wd-faq-tab { flex: 1 1 40%; }
+        }
+      `}</style>
 
-          {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-4">
-              Comprehensive SEO Website Development Service Related FAQs
-            </h2>
-            <p className="text-lg text-slate-600">
-              Common questions about our SEO development service in the United States
-            </p>
+      <div className="section-container">
+        <div className="s-header">
+          <div className="eyebrow">FAQs</div>
+          <h2 className="s-title">Comprehensive SEO Website Development <span className="blue">Service Related FAQs</span></h2>
+          <p className="s-sub">Common questions about our SEO development service in the United States</p>
+        </div>
+
+        <div className="wd-faq-layout">
+          {/* Left: FAQ accordion with tabs */}
+          <div>
+            <div className="wd-faq-tabs" role="tablist" aria-label="FAQ categories">
+              {(Object.keys(TAB_LABELS) as Array<keyof typeof TAB_LABELS>).map(tab => (
+                <button
+                  key={tab}
+                  role="tab"
+                  aria-selected={activeTab === tab}
+                  className={`wd-faq-tab${activeTab === tab ? ' wd-faq-tab-on' : ''}`}
+                  onClick={() => { setActiveTab(tab as any); setOpenIndex(null) }}
+                >
+                  {TAB_LABELS[tab]}
+                </button>
+              ))}
+            </div>
+
+            <div className="wd-faq-list-wrap">
+              {categorizedFaqs[activeTab].map((faq, index) => (
+                <div
+                  key={index}
+                  className={`wd-faq-item${openIndex === index ? ' wd-faq-open' : ''}`}
+                >
+                  <button className="wd-faq-q" onClick={() => toggleFaq(index)} aria-expanded={openIndex === index}>
+                    <span className="wd-faq-q-text">{faq.question}</span>
+                    <svg className="wd-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </button>
+                  {openIndex === index && (
+                    <div className="wd-faq-a">{faq.answer}</div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Two Column Layout */}
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          {/* Right: Contact form */}
+          <div id="faq-contact" className="wd-faq-form-card">
+            <div className="wd-faq-form-title">Get Your Free SEO Analysis</div>
+            <p className="wd-faq-form-sub">Start your USA SEO website development journey today</p>
 
-            {/* Left Column - FAQs with Tabs */}
-            <div>
-              {/* Tab Navigation */}
-              <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-4">
-                <button
-                  onClick={() => {setActiveTab('general'); setOpenIndex(null)}}
-                  className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    activeTab === 'general'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+            {submitStatus === 'success' && (
+              <div className="wd-form-alert wd-form-alert-success">
+                Thank you! Your message has been sent successfully. We&apos;ll get back to you within 24 hours.
+              </div>
+            )}
+            {submitStatus === 'error' && (
+              <div className="wd-form-alert wd-form-alert-error">{errorMessage}</div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className="wd-form-field">
+                <label htmlFor="wd-name" className="wd-form-label">Full Name *</label>
+                <input
+                  type="text" id="wd-name" name="name" required
+                  value={formData.name} onChange={handleInputChange}
+                  className="wd-form-input" placeholder="Your full name"
+                />
+              </div>
+              <div className="wd-form-field">
+                <label htmlFor="wd-email" className="wd-form-label">Email Address *</label>
+                <input
+                  type="email" id="wd-email" name="email" required
+                  value={formData.email} onChange={handleInputChange}
+                  className="wd-form-input" placeholder="your@email.com"
+                />
+              </div>
+              <div className="wd-form-field">
+                <label htmlFor="wd-phone" className="wd-form-label">Phone Number</label>
+                <input
+                  type="tel" id="wd-phone" name="phone"
+                  value={formData.phone} onChange={handleInputChange}
+                  className="wd-form-input" placeholder="+1 (555) 123-4567"
+                />
+              </div>
+              <div className="wd-form-field">
+                <label htmlFor="wd-website" className="wd-form-label">Website URL</label>
+                <input
+                  type="url" id="wd-website" name="website"
+                  value={formData.website} onChange={handleInputChange}
+                  className="wd-form-input" placeholder="https://yourwebsite.com"
+                />
+              </div>
+              <div className="wd-form-field">
+                <label htmlFor="wd-package" className="wd-form-label">Select Service Package</label>
+                <select
+                  id="wd-package" name="package"
+                  value={formData.package} onChange={handleInputChange}
+                  className="wd-form-input"
                 >
-                  General FAQs
-                </button>
-                <button
-                  onClick={() => {setActiveTab('technical'); setOpenIndex(null)}}
-                  className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    activeTab === 'technical'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  Technical FAQs
-                </button>
-                <button
-                  onClick={() => {setActiveTab('pricing'); setOpenIndex(null)}}
-                  className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    activeTab === 'pricing'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  Pricing & Delivery
-                </button>
-                <button
-                  onClick={() => {setActiveTab('content'); setOpenIndex(null)}}
-                  className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-                    activeTab === 'content'
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  Content & Growth
-                </button>
+                  <option value="website-static-usa">SEO Optimised Static Website - $100</option>
+                  <option value="website-backend-usa">SEO Optimised Website with Backend - $250</option>
+                  <option value="website-ecommerce-usa">SEO Optimised eCommerce Website - $500</option>
+                </select>
+              </div>
+              <div className="wd-form-field">
+                <label htmlFor="wd-message" className="wd-form-label">Tell Us About Your Goals *</label>
+                <textarea
+                  id="wd-message" name="message" rows={4} required
+                  value={formData.message} onChange={handleInputChange}
+                  className="wd-form-input wd-form-textarea"
+                  placeholder="What are your main SEO goals? What challenges are you facing?"
+                />
               </div>
 
-              {/* FAQ Items */}
-              <div className="space-y-4">
-                {categorizedFaqs[activeTab].map((faq, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:border-blue-400 transition-all duration-300"
-                  >
-                    <button
-                      onClick={() => toggleFaq(index)}
-                      className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-50 transition-colors duration-200"
-                    >
-                      <span className={`font-semibold text-base ${openIndex === index ? 'text-blue-600' : 'text-slate-900'}`}>
-                        {faq.question}
-                      </span>
-                      <div className="flex-shrink-0 ml-4">
-                        {openIndex === index ? (
-                          <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                          </svg>
-                        ) : (
-                          <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                          </svg>
-                        )}
-                      </div>
-                    </button>
-
-                    {openIndex === index && (
-                      <div className="px-5 pb-5 pt-2 text-slate-600 leading-relaxed border-t border-slate-100 animate-fadeIn">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column - Form */}
-            <div id="faq-contact" className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 sticky top-8">
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                Get Your Free SEO Analysis
-              </h3>
-              <p className="text-slate-600 mb-6">
-                Start your USA SEO website development journey today
-              </p>
-
-              {submitStatus === 'success' && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-green-800">
-                        Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.
-                      </p>
-                    </div>
-                  </div>
+              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  />
                 </div>
               )}
 
-              {submitStatus === 'error' && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm font-medium text-red-800">
-                        {errorMessage}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Your full name"
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="your@email.com"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="+1 (555) 123-4567"
-                  />
-                </div>
-
-                {/* Website URL */}
-                <div>
-                  <label htmlFor="website" className="block text-sm font-medium text-slate-700 mb-2">
-                    Website URL
-                  </label>
-                  <input
-                    type="url"
-                    id="website"
-                    name="website"
-                    value={formData.website}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="https://yourwebsite.com"
-                  />
-                </div>
-
-                {/* Package Selection */}
-                <div>
-                  <label htmlFor="package" className="block text-sm font-medium text-slate-700 mb-2">
-                    Select Service Package
-                  </label>
-                  <select
-                    id="package"
-                    name="package"
-                    value={formData.package}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-white"
-                  >
-                    <option value="website-static-usa">SEO Optimised Static Website - $100</option>
-                    <option value="website-backend-usa">SEO Optimised Website with Backend - $250</option>
-                    <option value="website-ecommerce-usa">SEO Optimised eCommerce Website - $500</option>
-                  </select>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">
-                    Tell Us About Your Goals *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    required
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="What are your main SEO goals? What challenges are you facing?"
-                  />
-                </div>
-
-                {/* reCAPTCHA */}
-                {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
-                  <div className="flex justify-center">
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    />
-                  </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="wd-form-submit"
+              >
+                {isSubmitting ? (
+                  <span className="wd-form-submit-loading">
+                    <svg style={{ animation: 'spin 1s linear infinite', width: 18, height: 18 }} viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeOpacity="0.25"/>
+                      <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                    </svg>
+                    Sending...
+                  </span>
+                ) : (
+                  'Get My Free SEO Analysis'
                 )}
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full py-4 rounded-lg font-semibold transition-all duration-300 shadow-lg ${
-                    isSubmitting
-                      ? 'bg-gray-400 cursor-not-allowed text-white'
-                      : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-xl'
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </span>
-                  ) : (
-                    'Get My Free SEO Analysis'
-                  )}
-                </button>
-              </form>
-            </div>
-
+              </button>
+            </form>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-      `}</style>
     </section>
   )
 }

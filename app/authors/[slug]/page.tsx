@@ -239,357 +239,323 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         }}
       />
 
-      <div className="bg-white min-h-screen">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800 text-white overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="relative z-10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
-              <div className="flex flex-col lg:flex-row items-start gap-8">
-                
-                {/* Author Image & Basic Info */}
-                <div className="flex-shrink-0">
-                  <div className="relative">
-                    {author.avatar_url ? (
-                      <Image
-                        src={author.avatar_url}
-                        alt={author.avatar_alt_text || `${author.name} profile picture`}
-                        width={160}
-                        height={160}
-                        className="w-32 h-32 lg:w-40 lg:h-40 rounded-full object-cover border-4 border-white/20 shadow-xl"
-                      />
-                    ) : (
-                      <div className="w-32 h-32 lg:w-40 lg:h-40 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 border-4 border-white/20 shadow-xl flex items-center justify-center">
-                        <span className="text-3xl lg:text-4xl font-bold text-white">
-                          {author.name.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
-                    <div className="absolute -bottom-2 -right-2">
-                      <div className="w-8 h-8 bg-green-500 border-3 border-white rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                        </svg>
+      {/* Breadcrumb */}
+      <div className="ap-crumbs">
+        <div className="ap-crumbs-inner">
+          <a href="/">Home</a>
+          <span className="sep">/</span>
+          <a href="/meet-the-experts/">Experts</a>
+          <span className="sep">/</span>
+          <span className="current">{author.name}</span>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <section className="ap-hero">
+        <div className="ap-hero-grid" />
+        <div className="ap-hero-inner">
+
+          {/* Portrait card */}
+          <div className="ap-author-card">
+            <div className="ap-verify">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+              Verified Author
+            </div>
+            <div className="ap-frame">
+              <div className="ap-frame-top">
+                <span className="ap-ftag">AUTH <span className="blu">/</span> {String(author.id).padStart(3, '0')}</span>
+                <div className="ap-dots"><span /><span /><span /></div>
+              </div>
+              <div className="ap-photo">
+                {author.avatar_url ? (
+                  <Image src={author.avatar_url} alt={author.avatar_alt_text || `${author.name} profile photo`} fill style={{ objectFit: 'cover', objectPosition: '50% 25%' }} unoptimized />
+                ) : (
+                  <div style={{ width: '100%', height: '100%', minHeight: 320, background: 'var(--ink-3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '4rem', fontWeight: 700, color: 'rgba(255,255,255,0.3)' }}>{author.name.charAt(0)}</span>
+                  </div>
+                )}
+                <div className="ap-photo-meta">
+                  <span className="ap-live"><span className="ap-pdot" />ACTIVE</span>
+                  {author.location && (
+                    <span className="ap-loc">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                      {author.location}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="ap-frame-foot">
+                <span className="ap-sig">SEO <span className="blu">/</span> FOUNDER <span className="blu">/</span> 2026</span>
+                <div className="ap-socials">
+                  {author.linkedin_url && (
+                    <a href={author.linkedin_url} aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                    </a>
+                  )}
+                  {author.website_url && (
+                    <a href={author.website_url} aria-label="Website" target="_blank" rel="noopener noreferrer">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
+                    </a>
+                  )}
+                  {author.email && (
+                    <a href={`mailto:${author.email}`} aria-label="Email">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </a>
+                  )}
+                  {author.phone && (
+                    <a href={`tel:${author.phone}`} aria-label="Phone">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Identity */}
+          <div className="ap-id">
+            <div className="ap-role-tag">
+              <span className="ap-role-dot" />
+              {author.job_title || 'SEO Strategist'}
+            </div>
+            <h1>{author.name}</h1>
+            <div className="ap-h1-sub">SEO that outlives Google updates.</div>
+            {author.bio && <p className="ap-lead" dangerouslySetInnerHTML={{ __html: author.bio }} />}
+
+            <div className="ap-stats">
+              <div className="ap-stat">
+                <div className="num">10<span className="blu">+</span></div>
+                <div className="lbl">Years Experience</div>
+              </div>
+              <div className="ap-stat">
+                <div className="num">{articles.length}</div>
+                <div className="lbl">Articles Published</div>
+              </div>
+              <div className="ap-stat">
+                <div className="num">{hasContent(author.expertise) ? author.expertise!.length : 8}</div>
+                <div className="lbl">Areas of Expertise</div>
+              </div>
+            </div>
+
+            <div className="ap-contact-row">
+              {author.email && (
+                <a href={`mailto:${author.email}`} className="ap-pill solid">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Email {author.name.split(' ')[0]}
+                </a>
+              )}
+              {author.linkedin_url && (
+                <a href={author.linkedin_url} target="_blank" rel="noopener noreferrer" className="ap-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                  LinkedIn
+                </a>
+              )}
+              {author.website_url && (
+                <a href={author.website_url} target="_blank" rel="noopener noreferrer" className="ap-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>
+                  Website
+                </a>
+              )}
+              {author.phone && (
+                <a href={`tel:${author.phone}`} className="ap-pill">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  {author.phone}
+                </a>
+              )}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Articles + Sidebar */}
+      <section className="ap-main">
+        <div className="ap-grid">
+
+          {/* Articles column */}
+          <div>
+            <div className="ap-articles-header">
+              <div className="left">
+                <div className="eyebrow">// Published Work</div>
+                <h2>Latest Articles <span className="blue">by {author.name.split(' ')[0]}</span></h2>
+                <p className="sub">Expert insights, research-backed playbooks, and case notes on SEO, internal linking, and the AI search shift.</p>
+              </div>
+              <div className="ap-meta">
+                <span className="ap-chip">{articles.length} <span className="blue">/</span> POSTS</span>
+              </div>
+            </div>
+
+            {articles.length > 0 ? (
+              <div className="ap-list">
+                {articles.map((article, index) => (
+                  <article key={article.id} className="ap-article-card">
+                    <div className="ap-article-img">
+                      {index === 0 && <span className="ap-latest-flag">Latest</span>}
+                      <span className="ap-article-idx">{String(index + 1).padStart(2, '0')}</span>
+                      {article.featured_image && (
+                        <Image src={article.featured_image} alt={article.featured_image_alt || article.title} fill style={{ objectFit: 'cover' }} unoptimized />
+                      )}
+                    </div>
+                    <div className="ap-article-body">
+                      {(article as any).category_name && (
+                        <Link href={`/categories/${(article as any).category_slug}/`} className="ap-article-cat">
+                          <span className="pdot" />
+                          {(article as any).category_name}
+                        </Link>
+                      )}
+                      <h3><Link href={`/blog/${article.slug}/`}>{article.title}</Link></h3>
+                      {article.excerpt && <p>{article.excerpt}</p>}
+                      <div className="ap-article-foot">
+                        <time dateTime={article.published_at || article.created_at}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                          {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        </time>
                       </div>
                     </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="ap-empty">
+                <div className="ap-empty-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </div>
+                <h3>Articles Coming Soon</h3>
+                <p>{author.name} is working on publishing expert insights. Check back soon!</p>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <aside className="ap-sidebar">
+
+            {/* About */}
+            <div className="ap-side-card">
+              <div className="ap-side-inner">
+                <div className="ap-side-head">
+                  <h3>About {author.name.split(' ')[0]}</h3>
+                  <span className="tag">// PROFILE</span>
+                </div>
+                {author.bio && <p>{author.bio.replace(/<[^>]*>/g, '')}</p>}
+                <div className="ap-about-chips">
+                  {author.location && (
+                    <div className="ap-about-row">
+                      <div className="ap-about-ico">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      </div>
+                      <div><span className="k">Based in</span><span className="v">{author.location}</span></div>
+                    </div>
+                  )}
+                  {author.job_title && (
+                    <div className="ap-about-row">
+                      <div className="ap-about-ico">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                      </div>
+                      <div><span className="k">Title</span><span className="v">{author.job_title}</span></div>
+                    </div>
+                  )}
+                  {author.company && (
+                    <div className="ap-about-row">
+                      <div className="ap-about-ico">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                      </div>
+                      <div><span className="k">Company</span><span className="v">{author.company}</span></div>
+                    </div>
+                  )}
+                  {author.education && (
+                    <div className="ap-about-row">
+                      <div className="ap-about-ico">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                      </div>
+                      <div><span className="k">Education</span><span className="v">{author.education}</span></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Expertise */}
+            {hasContent(author.expertise) && (
+              <div className="ap-side-card">
+                <div className="ap-side-inner">
+                  <div className="ap-side-head">
+                    <h3>Areas of Expertise</h3>
+                    <span className="tag">// {author.expertise!.length} SKILLS</span>
+                  </div>
+                  <div className="ap-exp-grid">
+                    {author.expertise!.map((skill) => (
+                      <span key={skill} className="ap-exp-chip">{skill}</span>
+                    ))}
                   </div>
                 </div>
+              </div>
+            )}
 
-                {/* Author Details */}
-                <div className="flex-1">
-                  {author.job_title && (
-                    <div className="mb-4">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-600 text-white">
-                        {author.job_title}
-                      </span>
-                    </div>
-                  )}
-                  
-                  <h1 className="text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
-                    {author.name}
-                  </h1>
-                  
-                  {author.bio && (
-                    <p className="text-xl text-purple-100 mb-6 leading-relaxed max-w-3xl">
-                      {author.bio}
-                    </p>
-                  )}
-
-                  {/* Stats */}
-                  <div className="flex flex-wrap gap-8 mb-8">
-                    <div>
-                      <div className="text-2xl font-bold text-white">{articles.length}</div>
-                      <div className="text-sm text-purple-200">Articles Published</div>
-                    </div>
-                    {hasContent(author.expertise) && (
-                      <div>
-                        <div className="text-2xl font-bold text-white">{author.expertise!.length}</div>
-                        <div className="text-sm text-purple-200">Skills & Expertise</div>
-                      </div>
-                    )}
-                    {author.company && (
-                      <div>
-                        <div className="text-2xl font-bold text-white">{author.company}</div>
-                        <div className="text-sm text-purple-200">Company</div>
-                      </div>
-                    )}
+            {/* Career */}
+            {hasContent(author.career_highlights) && (
+              <div className="ap-side-card">
+                <div className="ap-side-inner">
+                  <div className="ap-side-head">
+                    <h3>Career Highlights</h3>
+                    <span className="tag">// TIMELINE</span>
                   </div>
+                  <div className="ap-career">
+                    {author.career_highlights!.map((position: CareerHighlight, idx) => (
+                      <div key={idx} className="ap-career-item">
+                        {position.duration && <div className="when">{position.duration}</div>}
+                        <div className="role">{position.title}</div>
+                        {position.company && <div className="org">{position.company}</div>}
+                        {position.description && <div className="desc">{position.description}</div>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
-                  {/* Contact Links */}
-                  <div className="flex flex-wrap gap-4">
-                    {author.email && (
-                      <a 
-                        href={`mailto:${author.email}`}
-                        className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        Email
+            {/* Get in touch */}
+            {author.email && (
+              <div className="ap-side-card dark">
+                <div className="ap-side-inner">
+                  <div className="ap-side-head">
+                    <h3>Get in Touch</h3>
+                    <span className="tag">// LET&apos;S TALK</span>
+                  </div>
+                  <p>Need expert advice or consultation? Let&apos;s discuss your project.</p>
+                  <div className="ap-gt-actions">
+                    <a href={`mailto:${author.email}`} className="ap-gt-btn primary">
+                      <div className="lt">
+                        <div className="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        <div><span className="meta">EMAIL {author.name.toUpperCase().split(' ')[0]}</span><span className="lbl">{author.email}</span></div>
+                      </div>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                    {author.phone && (
+                      <a href={`tel:${author.phone}`} className="ap-gt-btn">
+                        <div className="lt">
+                          <div className="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                          <div><span className="meta">CALL DIRECT</span><span className="lbl">{author.phone}</span></div>
+                        </div>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                       </a>
                     )}
                     {author.linkedin_url && (
-                      <a 
-                        href={author.linkedin_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.207v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.005 6.575a1.548 1.548 0 11-.003-3.096 1.548 1.548 0 01.003 3.096zm-1.337 9.763H6.34v-8.59H3.667v8.59zM17.668 1H2.328C1.595 1 1 1.581 1 2.298v15.403C1 18.418 1.595 19 2.328 19h15.34c.734 0 1.332-.582 1.332-1.299V2.298C19 1.581 18.402 1 17.668 1z" clipRule="evenodd"></path>
-                        </svg>
-                        LinkedIn
-                      </a>
-                    )}
-                    {author.twitter_url && (
-                      <a 
-                        href={author.twitter_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
-                        Twitter
-                      </a>
-                    )}
-                    {author.website_url && (
-                      <a 
-                        href={author.website_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
-                        </svg>
-                        Website
-                      </a>
-                    )}
-                    {author.phone && (
-                      <a 
-                        href={`tel:${author.phone}`}
-                        className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/20 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                        Call
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-3 gap-12">
-            
-            {/* Main Content - Articles */}
-            <div className="lg:col-span-2">
-              <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Latest Articles</h2>
-                <p className="text-gray-600">Expert insights and strategies from {author.name}.</p>
-              </div>
-
-              {articles.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {articles.map((article, index) => (
-                    <article key={article.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow group">
-                        {/* Featured Image — no link */}
-                        {article.featured_image && (
-                          <div className="relative w-full h-48 bg-gray-100 overflow-hidden">
-                            <Image
-                              src={article.featured_image}
-                              alt={article.featured_image_alt || article.title}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
-                            />
-                            {index === 0 && (
-                              <div className="absolute top-4 left-4">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-600 text-white shadow-lg">
-                                  Latest
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-
-                        <div className="p-6">
-                          <div className="flex items-center gap-2 mb-3">
-                            {!article.featured_image && index === 0 && (
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
-                                Latest
-                              </span>
-                            )}
-                            {(article as any).category_name && (
-                              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">
-                                <Link href={`/categories/${(article as any).category_slug}/`} className="hover:underline">
-                                  {(article as any).category_name}
-                                </Link>
-                              </span>
-                            )}
-                          </div>
-                          <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                            <Link href={`/blog/${article.slug}/`}>
-                              {article.title}
-                            </Link>
-                          </h3>
-                          {article.excerpt && (
-                            <p className="text-gray-600 mb-4 leading-relaxed text-sm line-clamp-2">
-                              {article.excerpt}
-                            </p>
-                          )}
-                          <div className="flex items-center text-sm text-gray-500">
-                            <time dateTime={article.published_at || article.created_at}>
-                              {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric'
-                              })}
-                            </time>
-                          </div>
+                      <a href={author.linkedin_url} target="_blank" rel="noopener noreferrer" className="ap-gt-btn">
+                        <div className="lt">
+                          <div className="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg></div>
+                          <div><span className="meta">CONNECT</span><span className="lbl">LinkedIn Profile</span></div>
                         </div>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Articles Coming Soon</h3>
-                  <p className="text-gray-600">{author.name} is working on publishing expert insights and strategies. Check back soon!</p>
-                </div>
-              )}
-            </div>
-
-            {/* Sidebar - Author Info */}
-            <aside className="lg:col-span-1">
-              <div className="sticky top-8 space-y-8">
-                
-                {/* Author Bio */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                  <h3 className="text-lg font-bold text-gray-900 mb-4">About {author.name.split(' ')[0]}</h3>
-                  {author.bio && (
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      {author.bio}
-                    </p>
-                  )}
-                  <div className="space-y-3 text-sm">
-                    {author.location && (
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <span className="text-gray-600">{author.location}</span>
-                      </div>
-                    )}
-                    {author.job_title && (
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m-8 0v10a2 2 0 002 2h4a2 2 0 002-2V6"></path>
-                        </svg>
-                        <span className="text-gray-600">{author.job_title}</span>
-                      </div>
-                    )}
-                    {author.company && (
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                        <span className="text-gray-600">{author.company}</span>
-                      </div>
-                    )}
-                    {author.education && (
-                      <div className="flex items-center gap-2">
-                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
-                        </svg>
-                        <span className="text-gray-600">{author.education}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Areas of Expertise */}
-                {hasContent(author.expertise) && (
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Areas of Expertise</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {author.expertise!.map((skill) => (
-                        <span key={skill} className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Career Highlights */}
-                {hasContent(author.career_highlights) && (
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Career Highlights</h3>
-                    <div className="space-y-3">
-                      {author.career_highlights!.map((position: CareerHighlight, index) => (
-                        <div key={index} className="text-sm">
-                          <div className="font-medium text-gray-900">{position.title}</div>
-                          <div className="text-gray-600">{position.company}</div>
-                          <div className="text-gray-500">{position.duration}</div>
-                          {position.description && (
-                            <div className="text-gray-600 mt-1">{position.description}</div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Contact CTA - only show if email exists */}
-                {author.email && (
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Get in Touch</h3>
-                    <p className="text-gray-600 mb-4 text-sm">
-                      Need expert advice or consultation? Let's discuss your project.
-                    </p>
-                    <div className="space-y-3">
-                      <a 
-                        href={`mailto:${author.email}`}
-                        className="flex items-center justify-center gap-2 w-full bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                        Email Me
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                       </a>
-                      {author.phone && (
-                        <a 
-                          href={`tel:${author.phone}`}
-                          className="flex items-center justify-center gap-2 w-full bg-white border border-purple-200 text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors text-sm"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                          </svg>
-                          Call Me
-                        </a>
-                      )}
-                    </div>
+                    )}
                   </div>
-                )}
-
+                </div>
               </div>
-            </aside>
-          </div>
+            )}
+
+          </aside>
         </div>
-      </div>
+      </section>
     </>
   )
 }

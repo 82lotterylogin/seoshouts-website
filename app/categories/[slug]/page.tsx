@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import { calculateReadTime, extractExcerpt } from "../../lib/content-utils";
 import BlogSidebarSubscription from "../../components/BlogSidebarSubscription";
+import BlogArticleGrid from "../../blog/BlogArticleGrid";
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Metadata } from 'next';
 
 interface CategoryPageProps {
@@ -208,21 +208,26 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
-  
+
   const category = await fetchCategoryBySlug(resolvedParams.slug);
-  
+
   if (!category) {
     notFound();
   }
 
   const { articles } = await fetchCategoryArticles(category.id, resolvedSearchParams);
-  
-  // Fetch all categories for sidebar
+
+  // Fetch all categories for sidebar + filter rail
   const allCategories = await fetchAllCategories();
+
+  // Average read time across articles
+  const avgRead = articles.length > 0
+    ? Math.round(articles.reduce((sum: number, a: any) => sum + calculateReadTime(a.content), 0) / articles.length)
+    : 0;
 
   return (
     <>
-      {/* STRUCTURED DATA */}
+      {/* ─── STRUCTURED DATA ─── */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -236,10 +241,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
               "@type": "Organization",
               name: "SEO Shouts",
               url: "https://seoshouts.com",
-              logo: {
-                "@type": "ImageObject",
-                url: "https://seoshouts.com/logo.png"
-              }
+              logo: { "@type": "ImageObject", url: "https://seoshouts.com/logo.png" }
             },
             mainEntity: {
               "@type": "ItemList",
@@ -254,199 +256,204 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
                   url: `https://seoshouts.com/blog/${article.slug}`,
                   datePublished: article.published_at || article.created_at,
                   dateModified: article.updated_at,
-                  author: {
-                    "@type": "Person",
-                    name: article.author?.name || "SEO Shouts Team"
-                  },
-                  publisher: {
-                    "@type": "Organization",
-                    name: "SEO Shouts"
-                  }
+                  author: { "@type": "Person", name: article.author?.name || "SEO Shouts Team" },
+                  publisher: { "@type": "Organization", name: "SEO Shouts" }
                 }
               }))
             }
           })
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://seoshouts.com/" },
+              { "@type": "ListItem", position: 2, name: "Blog", item: "https://seoshouts.com/blog/" },
+              { "@type": "ListItem", position: 3, name: category.name, item: `https://seoshouts.com/categories/${category.slug}/` }
+            ]
+          })
+        }}
+      />
 
-      {/* Main Content */}
-      <div className="bg-white">
-        {/* Hero Section */}
-        <div className="relative bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800">
-          <div className="absolute inset-0 bg-black opacity-20"></div>
-          <div className="relative max-w-7xl mx-auto py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                <span className="block">{category.name}</span>
-                <span className="block bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent text-3xl sm:text-4xl lg:text-5xl mt-2">
-                  Articles
+      {/* ─── BREADCRUMBS ─── */}
+      <div className="crumbs">
+        <div className="crumbs-inner">
+          <Link href="/">Home</Link>
+          <span className="sep">/</span>
+          <Link href="/blog/">Blog</Link>
+          <span className="sep">/</span>
+          <span className="current">{category.name}</span>
+        </div>
+      </div>
+
+      {/* ─── PAGE HERO ─── */}
+      <section className="phero">
+        <div className="phero-bg-grid" />
+        <div className="phero-inner">
+
+          {/* Left: category info */}
+          <div>
+            <div className="phero-tag">
+              <span className="dot" />
+              SEOShouts Editorial — Category
+            </div>
+            <h1>
+              {category.name}
+              <span className="blue">Articles &amp; Guides</span>
+            </h1>
+            {category.description ? (
+              <p className="lead">{category.description}</p>
+            ) : (
+              <p className="lead">
+                In-depth articles, practical guides, and expert analysis on{' '}
+                <strong>{category.name}</strong> — curated by the SEOShouts team.
+              </p>
+            )}
+            <div className="phero-ctas">
+              <Link href="/blog/" className="btn-outline">
+                <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg>
+                All Articles
+              </Link>
+              <Link href="/newsletter/" className="btn-primary">
+                Subscribe Free
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: stats card */}
+          <div className="phero-card">
+            <div className="phero-card-head">
+              <span className="phero-card-title">category.index</span>
+              <span className="phero-card-live"><span className="live-dot" />LIVE</span>
+            </div>
+            <div className="phero-card-body">
+              <div className="phero-card-row">
+                <span className="pck">Category</span>
+                <span className="pcv" style={{ fontSize: '0.78rem', fontFamily: "'JetBrains Mono', monospace", fontWeight: 600, letterSpacing: '0.04em' }}>
+                  {category.name.toUpperCase()}
                 </span>
-              </h1>
-              {category.description && (
-                <p className="mt-6 max-w-3xl mx-auto text-xl text-blue-100 leading-relaxed">
-                  {category.description}
-                </p>
-              )}
-              <div className="mt-8 flex justify-center">
-                <div className="inline-flex rounded-md shadow">
-                  <Link
-                    href="/blog/"
-                    className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors duration-200"
-                  >
-                    ← All Articles
-                  </Link>
+              </div>
+              <div className="phero-card-row">
+                <span className="pck">Articles</span>
+                <span className="pcv">{articles.length}<span className="blu">.</span></span>
+              </div>
+              {avgRead > 0 && (
+                <div className="phero-card-row">
+                  <span className="pck">Avg. Read</span>
+                  <span className="pcv">{avgRead}<span className="blu">min</span></span>
                 </div>
+              )}
+              {articles[0] && (
+                <div className="phero-card-row">
+                  <span className="pck">Latest</span>
+                  <span className="pcv" style={{ fontSize: '0.78rem', fontFamily: "'JetBrains Mono', monospace", fontWeight: 500 }}>
+                    {new Date(articles[0].published_at || articles[0].created_at)
+                      .toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                      .toUpperCase()}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="map-card-foot">
+              <div className="pcf-cell">
+                <div className="pcf-num">{articles.length}</div>
+                <div className="pcf-label">Articles</div>
+              </div>
+              <div className="pcf-cell">
+                <div className="pcf-num">Free</div>
+                <div className="pcf-label">Always</div>
+              </div>
+              <div className="pcf-cell">
+                <div className="pcf-num">{avgRead > 0 ? `${avgRead}m` : '—'}</div>
+                <div className="pcf-label">Avg. Read</div>
               </div>
             </div>
           </div>
+
         </div>
+      </section>
 
-        {/* Main Content Grid */}
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-3 lg:gap-12">
-            
-            {/* Main Content - Articles */}
-            <div className="lg:col-span-2">
-              {articles.length > 0 ? (
-                <div className="space-y-12">
-                  {articles.map((article: any) => (
-                    <article key={article.id} className="group">
-                      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 hover:border-blue-200">
-                        {article.featured_image && (
-                          <div className="aspect-w-16 aspect-h-9">
-                            <Image
-                              src={article.featured_image}
-                              alt={article.title}
-                              width={800}
-                              height={450}
-                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
-                            />
-                          </div>
-                        )}
-                        <div className="p-6">
-                          <div className="flex items-center gap-4 mb-3">
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                              <Link href={`/categories/${article.category.slug}/`} className="hover:underline">
-                                {article.category.name}
-                              </Link>
-                            </span>
-                            <time className="text-sm text-gray-500" dateTime={article.published_at || article.created_at}>
-                              {new Date(article.published_at || article.created_at).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                              })}
-                            </time>
-                          </div>
-
-                          <h2 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                            <Link href={`/blog/${article.slug}/`}>
-                              {article.title}
-                            </Link>
-                          </h2>
-
-                          <p className="text-gray-600 mb-4 leading-relaxed line-clamp-3">
-                            {article.excerpt || extractExcerpt(article.content)}
-                          </p>
-
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                              {article.author?.avatar_url && (
-                                <Image
-                                  src={article.author.avatar_url}
-                                  alt={article.author.name}
-                                  width={32}
-                                  height={32}
-                                  className="w-8 h-8 rounded-full"
-                                />
-                              )}
-                              {article.author?.slug ? (
-                                <Link href={`/authors/${article.author.slug}/`} className="text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors">
-                                  {article.author.name}
-                                </Link>
-                              ) : (
-                                <span className="text-sm font-medium text-gray-900">
-                                  {article.author?.name || 'SEO Shouts Team'}
-                                </span>
-                              )}
-                            </div>
-                            <span className="text-gray-300">•</span>
-                            <span className="text-sm text-gray-500">
-                              {calculateReadTime(article.content)} min read
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <div className="max-w-md mx-auto">
-                    <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <h3 className="mt-2 text-lg font-medium text-gray-900">No articles found</h3>
-                    <p className="mt-1 text-gray-500">No articles have been published in this category yet.</p>
-                    <Link
-                      href="/blog/"
-                      className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200"
-                    >
-                      Browse All Articles
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Sidebar */}
-            <div className="mt-12 lg:mt-0 space-y-8">
-              <BlogSidebarSubscription />
-              
-              {/* Categories Section */}
-              {allCategories.length > 0 && (
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.99 1.99 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
-                    Categories
-                  </h3>
-                  <div className="space-y-2">
-                    {allCategories.map((cat: any) => (
-                      <div
-                        key={cat.id}
-                        className={`flex items-center justify-between p-3 rounded-lg border ${
-                          cat.id === category.id
-                            ? 'border-blue-200 bg-blue-50'
-                            : 'border-gray-100'
-                        }`}
-                      >
-                        <Link
-                          href={`/categories/${cat.slug}/`}
-                          className={`font-medium transition-colors duration-200 ${
-                            cat.id === category.id
-                              ? 'text-blue-700'
-                              : 'text-gray-700 hover:text-blue-700'
-                          }`}
-                        >
-                          {cat.name}
-                        </Link>
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          cat.id === category.id
-                            ? 'bg-blue-100 text-blue-600'
-                            : 'bg-gray-100 text-gray-600'
-                        }`}>
-                          {cat.article_count}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+      {/* ─── CATEGORY FILTER RAIL ─── */}
+      <div className="filter-rail">
+        <div className="filter-inner">
+          <span className="filter-label">Browse by Category</span>
+          <div className="filter-chips">
+            <Link href="/blog/" className="fchip">
+              All Posts
+            </Link>
+            {(allCategories as any[]).map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/categories/${cat.slug}/`}
+                className={`fchip${cat.id === category.id ? ' active' : ''}`}
+              >
+                {cat.name}
+                <span className="count">{cat.article_count}</span>
+              </Link>
+            ))}
           </div>
         </div>
+      </div>
+
+      {/* ─── MAIN SHELL ─── */}
+      <div className="blog-shell" id="articles">
+
+        {/* Articles — identical rendering to /blog/ page */}
+        <div>
+          <BlogArticleGrid
+            articles={articles}
+            initialCount={articles.length}
+            batchSize={12}
+          />
+        </div>
+
+        {/* Sidebar */}
+        <aside className="blog-sidebar">
+          <BlogSidebarSubscription />
+
+          {(allCategories as any[]).length > 0 && (
+            <div className="cats-card">
+              <div className="cats-head">
+                <svg className="tag-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                  <line x1="7" y1="7" x2="7.01" y2="7" />
+                </svg>
+                <h3>All Categories</h3>
+              </div>
+              <div className="cats-list">
+                {(allCategories as any[]).map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/categories/${cat.slug}/`}
+                    className="cat-row"
+                    style={cat.id === category.id
+                      ? { background: 'var(--blue-pale)', color: 'var(--blue-dark)' }
+                      : {}
+                    }
+                  >
+                    <span>{cat.name}</span>
+                    <span
+                      className="cat-count"
+                      style={cat.id === category.id
+                        ? { background: 'var(--blue)', color: '#fff', borderColor: 'transparent' }
+                        : {}
+                      }
+                    >
+                      {cat.article_count}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+
       </div>
     </>
   );

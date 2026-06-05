@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
-import ToolBreadcrumb from '../../components/ToolBreadcrumb'
+import ShapeGrid from '../../components/ShapeGrid'
 
 interface SitemapUrl {
   url: string
@@ -21,18 +21,11 @@ export default function XmlSitemapGeneratorClient() {
     }
   }, [])
 
-  // Input mode selection
   const [inputMode, setInputMode] = useState<'manual' | 'crawl'>('crawl')
-  
-  // Manual URL inputs
   const [manualUrls, setManualUrls] = useState('')
-  
-  // Crawl inputs
   const [crawlUrl, setCrawlUrl] = useState('')
   const [maxPages, setMaxPages] = useState(100)
   const [crawlDepth, setCrawlDepth] = useState(3)
-  
-  // Settings
   const [changeFreq, setChangeFreq] = useState<'daily' | 'weekly' | 'monthly'>('weekly')
   const [isGenerating, setIsGenerating] = useState(false)
   const [sitemapUrls, setSitemapUrls] = useState<SitemapUrl[]>([])
@@ -49,21 +42,17 @@ export default function XmlSitemapGeneratorClient() {
   const [usageCount, setUsageCount] = useState(0)
   const [usageLimit] = useState(5)
 
-  // Handle reCAPTCHA verification
   const handleCaptchaChange = (value: string | null) => {
     console.log('reCAPTCHA value:', value)
     setCaptchaValue(value)
     setIsVerified(!!value)
   }
 
-  // Generate sitemap from manual URLs or crawling
   const generateSitemap = async () => {
     if (!isVerified) {
       setError('Please complete the human verification first!')
       return
     }
-
-    // Check usage limit
     if (usageCount >= usageLimit) {
       setError(`You've reached the limit of ${usageLimit} sitemap generations per session. Please refresh the page to continue.`)
       return
@@ -78,33 +67,23 @@ export default function XmlSitemapGeneratorClient() {
       let urls: string[] = []
 
       if (inputMode === 'manual') {
-        // Manual URL input
         if (!manualUrls.trim()) {
           setError('Please enter URLs to include in the sitemap')
           setIsGenerating(false)
           return
         }
-
-        urls = manualUrls
-          .split('\n')
-          .map(url => url.trim())
-          .filter(url => url.length > 0)
-
-        // Check if URLs exceed 2000 limit BEFORE processing
+        urls = manualUrls.split('\n').map(url => url.trim()).filter(url => url.length > 0)
         if (urls.length > 2000) {
           setError(`Too many URLs! You've entered ${urls.length} URLs, but the maximum allowed is 2,000. Please remove ${urls.length - 2000} URLs.`)
           setIsGenerating(false)
           return
         }
       } else {
-        // Crawl mode
         if (!crawlUrl.trim()) {
           setError('Please enter a website URL to crawl')
           setIsGenerating(false)
           return
         }
-
-        // Validate the crawl URL
         try {
           new URL(crawlUrl)
         } catch {
@@ -112,10 +91,7 @@ export default function XmlSitemapGeneratorClient() {
           setIsGenerating(false)
           return
         }
-
-        // Crawl the website
         urls = await crawlWebsite(crawlUrl, maxPages, crawlDepth)
-        
         if (urls.length === 0) {
           setError('No valid pages found. Please check the URL and try again.')
           setIsGenerating(false)
@@ -123,54 +99,34 @@ export default function XmlSitemapGeneratorClient() {
         }
       }
 
-      // Normalize and deduplicate URLs
       const normalizedUrls = new Set<string>()
-      
       urls.forEach(url => {
         try {
           const urlObj = new URL(url)
-          
-          // Build normalized URL with consistent trailing slashes
           let normalizedUrl = urlObj.origin + urlObj.pathname
-          
-          // Ensure trailing slash for consistency (except for files with extensions)
           const hasFileExtension = /\.[a-zA-Z0-9]+$/.test(urlObj.pathname)
-          
           if (!hasFileExtension && !normalizedUrl.endsWith('/')) {
             normalizedUrl += '/'
           }
-          
-          // Add query parameters and hash if they exist
-          if (urlObj.search) {
-            normalizedUrl += urlObj.search
-          }
-          if (urlObj.hash) {
-            normalizedUrl += urlObj.hash
-          }
-          
+          if (urlObj.search) normalizedUrl += urlObj.search
+          if (urlObj.hash) normalizedUrl += urlObj.hash
           normalizedUrls.add(normalizedUrl)
-        } catch {
-          // Skip invalid URLs
-        }
+        } catch { /* skip invalid URLs */ }
       })
 
       const validUrls = Array.from(normalizedUrls)
-      
       if (validUrls.length === 0) {
         setError('No valid URLs found. Please check your URLs and try again.')
         setIsGenerating(false)
         return
       }
 
-      // Convert URLs to sitemap format
       const sitemapData: SitemapUrl[] = validUrls.map(url => {
         let priority = 0.5
         let changefreq: SitemapUrl['changefreq'] = changeFreq
-        
-        // Set priority based on URL type
         const path = new URL(url).pathname
         if (path === '/' || path === '') {
-          priority = 1.0 // Homepage
+          priority = 1.0
           changefreq = 'daily'
         } else if (path.includes('/blog/') || path.includes('/news/')) {
           priority = 0.6
@@ -179,20 +135,11 @@ export default function XmlSitemapGeneratorClient() {
           priority = 0.8
           changefreq = 'monthly'
         }
-
-        return {
-          url,
-          lastmod: new Date().toISOString().split('T')[0],
-          changefreq,
-          priority,
-          type: 'page'
-        }
+        return { url, lastmod: new Date().toISOString().split('T')[0], changefreq, priority, type: 'page' }
       })
 
       setSitemapUrls(sitemapData)
       generateXML(sitemapData)
-      
-      // Increment usage count and save to session storage
       const newUsageCount = usageCount + 1
       setUsageCount(newUsageCount)
       sessionStorage.setItem('sitemapGeneratorUsage', newUsageCount.toString())
@@ -204,28 +151,15 @@ export default function XmlSitemapGeneratorClient() {
     }
   }
 
-  // Crawl website function
   const crawlWebsite = async (startUrl: string, maxPages: number, maxDepth: number): Promise<string[]> => {
     try {
       const response = await fetch('/api/crawl-website', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          url: startUrl,
-          maxPages: maxPages,
-          maxDepth: maxDepth,
-          recaptchaToken: captchaValue
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: startUrl, maxPages, maxDepth, recaptchaToken: captchaValue })
       })
-
       const data = await response.json()
-      
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || 'Crawling failed')
-      }
-
+      if (!response.ok || !data.success) throw new Error(data.error || 'Crawling failed')
       return data.urls || []
     } catch (error) {
       console.error('Crawl error:', error)
@@ -236,7 +170,6 @@ export default function XmlSitemapGeneratorClient() {
   const generateXML = (urls: SitemapUrl[]) => {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
-    
     urls.forEach(urlData => {
       xml += `  <url>\n`
       xml += `    <loc>${urlData.url}</loc>\n`
@@ -245,17 +178,12 @@ export default function XmlSitemapGeneratorClient() {
       xml += `    <priority>${urlData.priority.toFixed(1)}</priority>\n`
       xml += `  </url>\n`
     })
-    
     xml += `</urlset>`
     setSitemapXML(xml)
   }
 
   const downloadSitemap = () => {
-    if (!isVerified) {
-      alert('Please complete the human verification first!')
-      return
-    }
-
+    if (!isVerified) { alert('Please complete the human verification first!'); return }
     const blob = new Blob([sitemapXML], { type: 'application/xml' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -266,18 +194,12 @@ export default function XmlSitemapGeneratorClient() {
   }
 
   const copyToClipboard = async () => {
-    if (!isVerified) {
-      alert('Please complete the human verification first!')
-      return
-    }
-
+    if (!isVerified) { alert('Please complete the human verification first!'); return }
     try {
       await navigator.clipboard.writeText(sitemapXML)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      console.error('Failed to copy: ', err)
-    }
+    } catch (err) { console.error('Failed to copy: ', err) }
   }
 
   const resetForm = () => {
@@ -292,812 +214,617 @@ export default function XmlSitemapGeneratorClient() {
     setError('')
     setIsVerified(false)
     setCaptchaValue(null)
-    if (recaptchaRef.current) {
-      recaptchaRef.current.reset()
-    }
+    if (recaptchaRef.current) recaptchaRef.current.reset()
   }
 
-  // Count URLs for display (only for manual mode)
   const urlCount = inputMode === 'manual' ? manualUrls.split('\n').filter(url => url.trim().length > 0).length : 0
 
+  const selectStyle = {
+    width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+    fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', color: 'var(--ink)',
+    outline: 'none', background: 'var(--white)', cursor: 'pointer'
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-
-      {/* Tool Section */}
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-
-            {/* H1 Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                XML Sitemap
-              </span>{' '}
-              <span className="text-primary">Generator</span>
-            </h1>
-
-            {/* Feature badges */}
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Up to 2,000 URLs
+    <>
+      {/* --- TOOL HERO --- */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,9,10,0.35)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>XML Sitemap Generator</span>
+          </nav>
+          <div className="tool-hero-badge">Free SEO Tool</div>
+          <h1 className="tool-hero-h1">
+            Free XML Sitemap <span>Generator</span>
+          </h1>
+          <p className="tool-hero-sub">
+            Make sure Google finds every page on your site. Our{' '}
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Free XML Sitemap Generator</strong>{' '}
+            creates professional, search-engine-approved sitemaps in seconds &mdash; no coding required. Add your URLs, set priorities, and download a ready-to-submit sitemap file instantly.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
+            {['Up to 2,000 URLs', 'Google-Approved Format', 'Instant Download', '100% Free'].map(label => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
+                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
               </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Google-Approved Format
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Instant Download
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
-
-            {/* Answer Capsule */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                Make sure Google finds every page on your site. Our <strong>Free XML Sitemap Generator</strong> creates professional, search-engine-approved sitemaps in seconds — no coding required. Add your URLs, set priorities, and download a ready-to-submit sitemap file instantly.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Input Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">XML Sitemap Generator</h2>
-                
-                {/* Usage Counter Display */}
-                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <span className="text-blue-600 mr-2">📊</span>
-                      <span className="text-sm font-semibold text-blue-800">Session Usage</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-lg font-bold text-blue-700">
-                        {usageLimit - usageCount} / {usageLimit}
-                      </div>
-                      <div className="text-xs text-blue-600">generations remaining</div>
-                    </div>
-                  </div>
-                  {usageCount >= usageLimit && (
-                    <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
-                      <p className="text-orange-800 text-xs font-medium">
-                        ⚠️ Session limit reached. Refresh page to continue.
-                      </p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="space-y-6">
-                  {/* Input Mode Selection */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      How would you like to create your sitemap? *
-                    </label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div
-                        onClick={() => setInputMode('crawl')}
-                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                          inputMode === 'crawl'
-                            ? 'border-primary bg-primary/5'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center mb-2">
-                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
-                            inputMode === 'crawl' ? 'border-primary bg-primary' : 'border-gray-300'
-                          }`}>
-                            {inputMode === 'crawl' && (
-                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
-                            )}
-                          </div>
-                          <h3 className="font-semibold text-gray-800">🤖 Automatic Crawling</h3>
-                        </div>
-                        <p className="text-sm text-gray-600 ml-7">
-                          Enter your website URL and let us crawl it automatically to find all pages
-                        </p>
-                        <div className="mt-2 ml-7">
-                          <span className="inline-block bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
-                            Recommended
-                          </span>
-                        </div>
-                      </div>
-
-                      <div
-                        onClick={() => setInputMode('manual')}
-                        className={`border-2 rounded-xl p-4 cursor-pointer transition-all duration-200 ${
-                          inputMode === 'manual'
-                            ? 'border-primary bg-primary/5'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center mb-2">
-                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
-                            inputMode === 'manual' ? 'border-primary bg-primary' : 'border-gray-300'
-                          }`}>
-                            {inputMode === 'manual' && (
-                              <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
-                            )}
-                          </div>
-                          <h3 className="font-semibold text-gray-800">✏️ Manual Input</h3>
-                        </div>
-                        <p className="text-sm text-gray-600 ml-7">
-                          Manually enter specific URLs you want to include in your sitemap
-                        </p>
-                        <div className="mt-2 ml-7">
-                          <span className="inline-block bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded">
-                            Precise Control
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Crawl Mode Input */}
-                  {inputMode === 'crawl' && (
-                    <>
-                      <div>
-                        <label htmlFor="crawlUrl" className="block text-sm font-semibold text-gray-700 mb-2">
-                          Website URL to Crawl *
-                        </label>
-                        <input
-                          type="url"
-                          id="crawlUrl"
-                          value={crawlUrl}
-                          onChange={(e) => setCrawlUrl(e.target.value)}
-                          placeholder="https://yourwebsite.com"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                          Enter the main URL of your website. We'll automatically discover all linked pages.
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                          <label htmlFor="maxPages" className="block text-sm font-semibold text-gray-700 mb-2">
-                            Maximum Pages to Crawl
-                          </label>
-                          <select
-                            id="maxPages"
-                            value={maxPages}
-                            onChange={(e) => setMaxPages(parseInt(e.target.value))}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                          >
-                            <option value={50}>50 pages</option>
-                            <option value={100}>100 pages</option>
-                            <option value={250}>250 pages</option>
-                            <option value={500}>500 pages</option>
-                            <option value={1000}>1,000 pages</option>
-                            <option value={2000}>2,000 pages (max)</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label htmlFor="crawlDepth" className="block text-sm font-semibold text-gray-700 mb-2">
-                            Crawl Depth
-                          </label>
-                          <select
-                            id="crawlDepth"
-                            value={crawlDepth}
-                            onChange={(e) => setCrawlDepth(parseInt(e.target.value))}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                          >
-                            <option value={1}>1 level (homepage only)</option>
-                            <option value={2}>2 levels</option>
-                            <option value={3}>3 levels (recommended)</option>
-                            <option value={4}>4 levels</option>
-                            <option value={5}>5 levels (deep crawl)</option>
-                          </select>
-                          <p className="text-xs text-gray-500 mt-1">
-                            How many clicks deep to follow links from your homepage
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                        <h3 className="text-sm font-semibold text-blue-800 mb-2">🤖 Automatic Crawling:</h3>
-                        <ul className="text-sm text-blue-700 space-y-1">
-                          <li>• Discovers pages automatically by following links</li>
-                          <li>• Respects robots.txt files and meta tags</li>
-                          <li>• Filters out non-indexable pages</li>
-                          <li>• Perfect for most websites</li>
-                        </ul>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Manual Mode Input */}
-                  {inputMode === 'manual' && (
-                    <>
-                      <div>
-                        <label htmlFor="manualUrls" className="block text-sm font-semibold text-gray-700 mb-2">
-                          Website URLs *
-                        </label>
-                        <textarea
-                          id="manualUrls"
-                          value={manualUrls}
-                          onChange={(e) => setManualUrls(e.target.value)}
-                          placeholder="Enter your website URLs, one per line:&#10;https://yourwebsite.com&#10;https://yourwebsite.com/about&#10;https://yourwebsite.com/contact&#10;https://yourwebsite.com/blog/post-1&#10;https://yourwebsite.com/products/product-1"
-                          rows={12}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 resize-none"
-                        />
-                        <div className="flex justify-between items-center mt-2">
-                          <p className="text-xs text-gray-500">
-                            Enter one URL per line (maximum 2,000 URLs)
-                          </p>
-                          <div className={`text-xs font-medium ${urlCount > 2000 ? 'text-red-600' : urlCount > 1800 ? 'text-yellow-600' : 'text-gray-500'}`}>
-                            {urlCount}/2,000 URLs
-                          </div>
-                        </div>
-                        {urlCount > 2000 && (
-                          <div className="mt-2 bg-red-50 border border-red-200 rounded-lg p-2">
-                            <p className="text-red-700 text-xs">
-                              ⚠️ Too many URLs! Please remove {urlCount - 2000} URLs to proceed.
-                            </p>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
-                        <h3 className="text-sm font-semibold text-orange-800 mb-2">✏️ Manual Input:</h3>
-                        <ul className="text-sm text-orange-700 space-y-1">
-                          <li>• Complete control over which pages to include</li>
-                          <li>• Perfect for private or password-protected sites</li>
-                          <li>• Good for new sites with few pages</li>
-                          <li>• Requires you to list all URLs manually</li>
-                        </ul>
-                      </div>
-                    </>
-                  )}
-
-                  {/* Change Frequency */}
-                  <div>
-                    <label htmlFor="changeFreq" className="block text-sm font-semibold text-gray-700 mb-2">
-                      Default Change Frequency
-                    </label>
-                    <select
-                      id="changeFreq"
-                      value={changeFreq}
-                      onChange={(e) => setChangeFreq(e.target.value as any)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
-                    >
-                      <option value="daily">Daily</option>
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                    <p className="text-xs text-gray-500 mt-1">How often your content typically changes</p>
-                  </div>
-
-                  {/* Usage Counter & Limits Notice */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                    <h3 className="text-sm font-semibold text-blue-800 mb-2">📊 Usage & Limits:</h3>
-                    <ul className="text-sm text-blue-700 space-y-1">
-                      <li>• Maximum 2,000 URLs per sitemap</li>
-                      <li>• {usageLimit - usageCount} generations remaining this session</li>
-                      <li>• Automatic priority optimization</li>
-                      <li>• Google-compliant XML format</li>
-                    </ul>
-                    {usageCount >= usageLimit && (
-                      <div className="mt-3 bg-orange-100 border border-orange-300 rounded-lg p-2">
-                        <p className="text-orange-800 text-xs font-medium">
-                          ⚠️ Session limit reached. Refresh page to continue.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Human Verification Section */}
-                  <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
-                    <div className="flex items-center mb-3">
-                      <span className="text-blue-600 mr-2">🛡️</span>
-                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
-                    </div>
-                    <p className="text-sm text-blue-700 mb-4">
-                      Please verify that you're not a robot to generate your XML sitemap.
-                    </p>
-                    
-                    <div className="mb-4">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                        onChange={handleCaptchaChange}
-                        theme="light"
-                      />
-                    </div>
-
-                    {isVerified && (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
-                        <span className="text-green-600 mr-2">✅</span>
-                        <span className="text-sm font-medium text-green-800">Verification successful! You can now generate your sitemap.</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Error Message */}
-                  {error && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-red-700 text-sm">{error}</p>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-4">
-                    <button
-                      onClick={generateSitemap}
-                      disabled={isGenerating || (inputMode === 'manual' && (!manualUrls.trim() || urlCount > 2000)) || (inputMode === 'crawl' && !crawlUrl.trim()) || !isVerified || usageCount >= usageLimit}
-                      className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
-                    >
-                      {isGenerating ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Generating Sitemap...
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                          Generate Sitemap
-                        </>
-                      )}
-                    </button>
-                    
-                    <button
-                      onClick={resetForm}
-                      className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Section */}
-              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 sm:p-8">
-                <h2 className="text-2xl font-bold mb-6 text-gray-800">
-                  {inputMode === 'crawl' ? 'Crawled Sitemap Results' : 'Generated Sitemap'}
-                </h2>
-                
-                {sitemapUrls.length === 0 ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">🗺️</span>
-                    </div>
-                    <p>Add your website URLs and complete verification to generate a professional XML sitemap</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                      <div className="bg-green-50 rounded-lg p-3 text-center">
-                        <div className="text-lg font-bold text-green-700">{sitemapUrls.length}</div>
-                        <div className="text-xs text-green-600">Total URLs</div>
-                      </div>
-                      <div className="bg-blue-50 rounded-lg p-3 text-center">
-                        <div className="text-lg font-bold text-blue-700">{Math.round(sitemapXML.length / 1024)}KB</div>
-                        <div className="text-xs text-blue-600">File Size</div>
-                      </div>
-                    </div>
-
-                    {/* Export Buttons */}
-                    <div className="flex gap-2 mb-4">
-                      <button
-                        onClick={copyToClipboard}
-                        disabled={!isVerified}
-                        className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          isVerified
-                            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        }`}
-                      >
-                        {copied ? '✅ Copied!' : '📋 Copy XML'}
-                      </button>
-                      <button
-                        onClick={downloadSitemap}
-                        disabled={!isVerified}
-                        className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          isVerified
-                            ? 'bg-primary text-white hover:bg-primary/90'
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        }`}
-                      >
-                        📥 Download
-                      </button>
-                    </div>
-
-                    {/* Preview */}
-                    <div className="bg-gray-900 rounded-xl p-4 h-64 overflow-y-auto">
-                      <pre className="text-green-400 text-xs leading-relaxed whitespace-pre-wrap">
-                        {sitemapXML.substring(0, 1000)}
-                        {sitemapXML.length > 1000 && '\n... (truncated for preview)'}
-                      </pre>
-                    </div>
-
-                    {/* URL List Preview */}
-                    <div className="border rounded-lg p-4 max-h-32 overflow-y-auto">
-                      <h3 className="text-sm font-semibold text-gray-700 mb-2">Included URLs:</h3>
-                      <div className="space-y-1 text-xs text-gray-600">
-                        {sitemapUrls.slice(0, 10).map((url, index) => (
-                          <div key={index} className="flex justify-between">
-                            <span className="truncate flex-1">{url.url}</span>
-                            <span className="ml-2 text-gray-400">{url.priority}</span>
-                          </div>
-                        ))}
-                        {sitemapUrls.length > 10 && (
-                          <div className="text-gray-400 text-center">... and {sitemapUrls.length - 10} more URLs</div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Instructions */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                      <h3 className="text-sm font-semibold text-blue-800 mb-2">📝 Next Steps:</h3>
-                      <ol className="text-sm text-blue-700 space-y-1">
-                        <li>1. Download the sitemap.xml file</li>
-                        <li>2. Upload it to your website's root directory</li>
-                        <li>3. Submit to Google Search Console</li>
-                        <li>4. Add to Bing Webmaster Tools</li>
-                        <li>5. Test at: yoursite.com/sitemap.xml</li>
-                      </ol>
-                    </div>
-
-                    {/* Verification Required Notice */}
-                    {!isVerified && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-                        <h3 className="text-sm font-semibold text-yellow-800 mb-2">🔒 Verification Required:</h3>
-                        <p className="text-sm text-yellow-700">
-                          Please complete the human verification above to download or copy your XML sitemap.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Tool Breadcrumb */}
-      <ToolBreadcrumb toolName="XML Sitemap Generator" toolSlug="xml-sitemap-generator" />
+      {/* --- TOOL INPUT SECTION --- */}
+      <div className="tool-input-section">
+        <div className="tool-input-inner" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'start' }}>
 
-      {/* About Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Help Search Engines Find Every Page on Your Website
-              </span>
-            </h2>
+          {/* LEFT BOX */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">XML Sitemap Generator</h2>
 
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Create Professional Sitemaps in Seconds (No Coding Required)</h3>
-              <p>
-                Here's a story that'll make you appreciate sitemaps: A friend launched her online store last year with 500 products. Three months later, she discovered that Google had only indexed 47 of her product pages. The rest? Invisible to search engines.
-              </p>
-              <p>
-                Turns out, her website structure was so confusing that Google's crawlers gave up trying to find everything. One properly formatted XML sitemap later, and boom - all 500+ pages got indexed within two weeks.
-              </p>
-              <p>
-                <strong>That's the power of a good sitemap.</strong>
-              </p>
-              <p>
-                Most people think search engines automatically find every page on their website. Nope. If you've got a complex site structure, new pages, or just want to make sure nothing gets missed, you need an XML sitemap.
-              </p>
-              <p>
-                <strong>Our XML Sitemap Generator</strong> creates professional, Google-approved sitemaps in seconds. No technical knowledge required.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* What's an XML Sitemap Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What's an XML Sitemap (And Why Your Website Needs One)</h2>
-            
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Think of an XML sitemap as a detailed map you give to Google saying, "Hey, here are all the important pages on my website. Please make sure you don't miss any of them."
-              </p>
-
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Here's what it actually does:</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Lists every page you want search engines to find</span>
+            {/* Usage Counter */}
+            <div style={{ marginBottom: '1.25rem', padding: '12px 16px', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="var(--blue-light)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" />
+                  </svg>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--blue-light)' }}>Session Usage</span>
                 </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Tells them when each page was last updated</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Shows which pages are most important</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Helps new pages get discovered faster</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Prevents important content from being overlooked</span>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--blue-light)' }}>{usageLimit - usageCount} / {usageLimit}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--gray-4)' }}>generations remaining</div>
                 </div>
               </div>
-
-              <div className="bg-primary/10 border border-primary/20 rounded-xl p-6 mb-6">
-                <p className="text-gray-700">
-                  <strong>Real talk:</strong> Small websites with good navigation might not desperately need one, but why take chances? Plus, if you've got more than 20-30 pages, a sitemap is basically mandatory.
-                </p>
-              </div>
-
-              <p className="text-gray-700">
-                <strong>The kicker?</strong> Google actually recommends having one, especially for larger sites, new websites, or sites that don't have many external links pointing to them.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Our Generator Beats DIY Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why Our Sitemap Generator Beats DIY</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Point, Click, Done */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🖱️ Point, Click, Done</h3>
-                <p className="text-gray-600 mb-4">No XML coding, no syntax headaches, no wondering if you got the format right.</p>
-                <h4 className="font-semibold text-gray-800 mb-2">Here's how stupidly simple it is:</h4>
-                <ul className="text-gray-600 text-sm space-y-1">
-                  <li>• Enter your website URLs</li>
-                  <li>• Complete human verification</li>
-                  <li>• Click generate</li>
-                  <li>• Download your perfect sitemap</li>
-                </ul>
-                <p className="text-gray-600 text-sm mt-3 italic">Takes literally 30 seconds.</p>
-              </div>
-
-              {/* Catches Pages You'd Miss */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">✅ Complete Control</h3>
-                <p className="text-gray-600 mb-4">You know your website better than any automated crawler. Add exactly the pages you want indexed.</p>
-                <h4 className="font-semibold text-gray-800 mb-2">Manual input means:</h4>
-                <ul className="text-gray-600 text-sm space-y-1">
-                  <li>• No missed important pages</li>
-                  <li>• No unwanted pages included</li>
-                  <li>• Complete control over priorities</li>
-                  <li>• Works with any website structure</li>
-                  <li>• Perfect for private or new sites</li>
-                </ul>
-                <p className="text-gray-600 text-sm mt-3 italic">So nothing important gets left behind.</p>
-              </div>
-
-              {/* Google-Approved Format */}
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🛡️ Google-Approved Format</h3>
-                <p className="text-gray-600 mb-4">Mess up the XML format and Google might ignore your whole sitemap.</p>
-                <h4 className="font-semibold text-gray-800 mb-2">We automatically handle:</h4>
-                <ul className="text-gray-600 text-sm space-y-1">
-                  <li>• Proper XML syntax and structure</li>
-                  <li>• Correct date formatting</li>
-                  <li>• Valid URL encoding</li>
-                  <li>• Priority and frequency settings</li>
-                  <li>• 2,000 URL limit compliance</li>
-                </ul>
-                <p className="text-gray-600 text-sm mt-3 italic">Which means your sitemap actually works instead of just sitting there looking pretty.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Use Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">How to Use the XML Sitemap Generator (Super Easy)</h2>
-            
-            <div className="space-y-6">
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Step 1: Gather Your URLs</h3>
-                <p className="text-gray-700">Create a list of all the important pages on your website that you want search engines to index. Include your homepage, about page, product pages, blog posts, and any other valuable content.</p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Step 2: Paste Your URLs</h3>
-                <p className="text-gray-700">Copy and paste your URLs into the text area, one URL per line. Make sure each URL is complete and properly formatted (starting with https:// or http://). Remember the 2,000 URL limit!</p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Step 3: Complete Verification</h3>
-                <p className="text-gray-700">Complete the human verification to prevent automated abuse and ensure fair usage of our free tool.</p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Step 4: Generate and Download</h3>
-                <p className="text-gray-700">Click generate to create your XML sitemap, then download the file and upload it to your website's root directory. Don't forget to submit it to Google Search Console!</p>
-              </div>
+              {usageCount >= usageLimit && (
+                <div style={{ marginTop: '0.75rem', padding: '8px 12px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', color: 'var(--amber)', fontSize: '0.78rem', fontWeight: 500 }}>
+                  Session limit reached. Refresh page to continue.
+                </div>
+              )}
             </div>
 
-            <div className="bg-primary/10 border border-primary/20 rounded-xl p-6 mt-8">
-              <p className="text-gray-700 text-center">
-                <strong>Pro tip:</strong> Your sitemap should live at yourdomain.com/sitemap.xml - that's where search engines expect to find it.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What Gets Included Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">What Gets Included (And What Doesn't)</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Automatically Included */}
-              <div className="bg-green-50 rounded-2xl shadow-sm border border-green-100 p-6">
-                <h3 className="text-xl font-semibold mb-4 text-green-800">✅ Automatically Included:</h3>
-                <ul className="space-y-2 text-green-700">
-                  <li>• All URLs you manually add</li>
-                  <li>• Proper priority settings (homepage = 1.0)</li>
-                  <li>• Current date as last modified</li>
-                  <li>• Appropriate change frequency</li>
-                  <li>• Valid XML formatting</li>
-                </ul>
-              </div>
-
-              {/* Smart Optimization */}
-              <div className="bg-blue-50 rounded-2xl shadow-sm border border-blue-100 p-6">
-                <h3 className="text-xl font-semibold mb-4 text-blue-800">🎯 Smart Optimization:</h3>
-                <ul className="space-y-2 text-blue-700">
-                  <li>• Homepage gets priority 1.0</li>
-                  <li>• Product/service pages get 0.8</li>
-                  <li>• Blog/news pages get 0.6</li>
-                  <li>• Other pages get 0.5</li>
-                  <li>• URL validation and cleanup</li>
-                </ul>
-              </div>
-
-              {/* Limitations */}
-              <div className="bg-yellow-50 rounded-2xl shadow-sm border border-yellow-100 p-6">
-                <h3 className="text-xl font-semibold mb-4 text-yellow-800">⚠️ Important Limits:</h3>
-                <ul className="space-y-2 text-yellow-700">
-                  <li>• Maximum 2,000 URLs per sitemap</li>
-                  <li>• Only manually added URLs included</li>
-                  <li>• Human verification required</li>
-                  <li>• Invalid URLs are excluded</li>
-                  <li>• One sitemap file generated</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore More SEO Tools Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-indigo/5">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
-              </p>
-            </div>
-
-            {/* Featured Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Keyword Density Analyzer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏷️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Meta Tag Optimizer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🤖</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create perfect robots.txt files without breaking your website.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">
-                  Try Robots.txt Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🗺️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">XML Sitemap Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Help search engines find every page on your website (up to 2,000 URLs).</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔍</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Long Tail Keyword Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Find hidden keywords that actually convert and drive traffic.</p>
-                <a href="/tools/long-tail-keyword-generator/" className="text-primary font-medium hover:underline">
-                  Try Long Tail Keyword Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit your page's SEO health and fix issues that hurt your rankings.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">
-                  Try On-Page SEO Analyzer</a> →
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <a 
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="mr-2">🛠️</span>
-                Browse All SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free • No signup required • Instant results
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Ready to Get All Your Pages Found?</h2>
-            <p className="text-lg mb-8 opacity-90">
-              Don't leave page discovery to chance. Create a professional XML sitemap that gives search engines a complete roadmap to all your important content.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button 
-                onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
-                className="bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-              >
-                🎯 Create Your XML Sitemap →
+            {/* Input Mode Selection */}
+            <label className="tool-box-label">How would you like to create your sitemap? *</label>
+            <div className="tabs" style={{ marginBottom: '0.5rem' }}>
+              <button type="button" onClick={() => setInputMode('crawl')} className={`tab${inputMode === 'crawl' ? ' active' : ''}`}>
+                Automatic Crawling
+              </button>
+              <button type="button" onClick={() => setInputMode('manual')} className={`tab${inputMode === 'manual' ? ' active' : ''}`}>
+                Manual Input
               </button>
             </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem' }}>
+              {inputMode === 'crawl'
+                ? 'Enter your website URL and let us crawl it automatically to find all pages (Recommended)'
+                : 'Manually enter specific URLs you want to include — perfect for precise control and private sites'}
+            </p>
 
-            <div className="text-center mb-6">
-              <p className="text-lg font-semibold mb-2">Professional sitemaps in 30 seconds - completely free</p>
+            {/* Crawl Mode */}
+            {inputMode === 'crawl' && (
+              <>
+                <label htmlFor="crawlUrl" className="tool-box-label">Website URL to Crawl *</label>
+                <input
+                  type="url"
+                  id="crawlUrl"
+                  className="tool-url-input"
+                  value={crawlUrl}
+                  onChange={(e) => setCrawlUrl(e.target.value)}
+                  placeholder="https://yourwebsite.com"
+                />
+                <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem', marginTop: '0.35rem' }}>
+                  Enter the main URL of your website. We&apos;ll automatically discover all linked pages.
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
+                  <div>
+                    <label htmlFor="maxPages" className="tool-box-label">Maximum Pages to Crawl</label>
+                    <select id="maxPages" value={maxPages} onChange={(e) => setMaxPages(parseInt(e.target.value))} style={selectStyle}>
+                      <option value={50}>50 pages</option>
+                      <option value={100}>100 pages</option>
+                      <option value={250}>250 pages</option>
+                      <option value={500}>500 pages</option>
+                      <option value={1000}>1,000 pages</option>
+                      <option value={2000}>2,000 pages (max)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="crawlDepth" className="tool-box-label">Crawl Depth</label>
+                    <select id="crawlDepth" value={crawlDepth} onChange={(e) => setCrawlDepth(parseInt(e.target.value))} style={selectStyle}>
+                      <option value={1}>1 level (homepage only)</option>
+                      <option value={2}>2 levels</option>
+                      <option value={3}>3 levels (recommended)</option>
+                      <option value={4}>4 levels</option>
+                      <option value={5}>5 levels (deep crawl)</option>
+                    </select>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--gray-4)', marginTop: '0.35rem' }}>How many clicks deep to follow links from your homepage</p>
+                  </div>
+                </div>
+                <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.5rem' }}>Automatic Crawling:</div>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    {['Discovers pages automatically by following links', 'Respects robots.txt files and meta tags', 'Filters out non-indexable pages', 'Perfect for most websites'].map((item, i) => (
+                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                        <span style={{ color: 'var(--blue)', flexShrink: 0, fontWeight: 700, fontSize: '0.78rem' }}>&#10003;</span>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', lineHeight: 1.5 }}>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+
+            {/* Manual Mode */}
+            {inputMode === 'manual' && (
+              <>
+                <label htmlFor="manualUrls" className="tool-box-label">Website URLs *</label>
+                <textarea
+                  id="manualUrls"
+                  value={manualUrls}
+                  onChange={(e) => setManualUrls(e.target.value)}
+                  placeholder={'Enter your website URLs, one per line:\nhttps://yourwebsite.com\nhttps://yourwebsite.com/about\nhttps://yourwebsite.com/contact\nhttps://yourwebsite.com/blog/post-1\nhttps://yourwebsite.com/products/product-1'}
+                  rows={10}
+                  style={{
+                    width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                    resize: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.85rem',
+                    color: 'var(--ink)', outline: 'none', lineHeight: 1.6, marginBottom: '0.35rem'
+                  }}
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: urlCount > 2000 ? '0.5rem' : '1.25rem' }}>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', margin: 0 }}>Enter one URL per line (maximum 2,000 URLs)</p>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 600, fontFamily: 'Space Grotesk, sans-serif', color: urlCount > 2000 ? 'var(--red)' : urlCount > 1800 ? 'var(--amber)' : 'var(--gray-4)' }}>
+                    {urlCount}/2,000
+                  </span>
+                </div>
+                {urlCount > 2000 && (
+                  <div style={{ marginBottom: '1.25rem', padding: '8px 12px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', fontSize: '0.82rem', color: 'var(--red)' }}>
+                    Too many URLs! Please remove {urlCount - 2000} URLs to proceed.
+                  </div>
+                )}
+                <div style={{ padding: '1rem 1.25rem', border: '1px solid rgba(245,158,11,0.3)', borderLeft: '4px solid var(--amber)', background: 'rgba(245,158,11,0.06)', marginBottom: '1.25rem' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--amber)', marginBottom: '0.5rem' }}>Manual Input:</div>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    {['Complete control over which pages to include', 'Perfect for private or password-protected sites', 'Good for new sites with few pages', 'Requires you to list all URLs manually'].map((item, i) => (
+                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                        <span style={{ color: 'var(--amber)', flexShrink: 0, fontWeight: 700, fontSize: '0.78rem' }}>&#10003;</span>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+
+            {/* Change Frequency */}
+            <label htmlFor="changeFreq" className="tool-box-label">Default Change Frequency</label>
+            <select id="changeFreq" value={changeFreq} onChange={(e) => setChangeFreq(e.target.value as any)} style={{ ...selectStyle, marginBottom: '0.35rem' }}>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem' }}>How often your content typically changes</p>
+
+            {/* Usage & Limits */}
+            <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
+              <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.5rem' }}>Usage &amp; Limits:</div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                {[
+                  'Maximum 2,000 URLs per sitemap',
+                  `${usageLimit - usageCount} generations remaining this session`,
+                  'Automatic priority optimization',
+                  'Google-compliant XML format',
+                ].map((item, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                    <span style={{ color: 'var(--blue)', flexShrink: 0, fontWeight: 700, fontSize: '0.78rem' }}>&#10003;</span>
+                    <span style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', lineHeight: 1.5 }}>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            
-            <p className="text-sm opacity-80">
-              <strong>Don't let great content go undiscovered. Create your sitemap with SEO Shouts and make sure Google finds everything.</strong>
-              <br />
-              <em>Built by SEO pros who understand that every page deserves a chance to rank.</em>
+
+            {/* Human Verification */}
+            <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
+              <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Human Verification Required
+              </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
+                Please verify that you&apos;re not a robot to generate your XML sitemap.
+              </p>
+              <div style={{ marginBottom: '0.5rem' }}>
+                <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''} onChange={handleCaptchaChange} theme="light" />
+              </div>
+              {isVerified && (
+                <div style={{ marginTop: '0.5rem', padding: '8px 12px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--green)' }}>
+                  &#10003; Verification successful! You can now generate your sitemap.
+                </div>
+              )}
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div style={{ marginBottom: '1rem', padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', fontSize: '0.85rem', color: 'var(--red)' }}>
+                {error}
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button
+                onClick={generateSitemap}
+                disabled={isGenerating || (inputMode === 'manual' && (!manualUrls.trim() || urlCount > 2000)) || (inputMode === 'crawl' && !crawlUrl.trim()) || !isVerified || usageCount >= usageLimit}
+                className="tool-analyze-btn"
+                style={{ flex: 1 }}
+              >
+                <div className="tool-analyze-btn-dot" />
+                {isGenerating ? (
+                  <>
+                    <svg className="animate-spin" style={{ width: 16, height: 16, marginRight: '0.4rem' }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Generating Sitemap...
+                  </>
+                ) : (
+                  'Generate Sitemap'
+                )}
+              </button>
+              <button onClick={resetForm} style={{ padding: '14px 20px', background: 'var(--gray-1)', color: 'var(--gray-5)', border: '1px solid var(--line)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif' }}>
+                Reset
+              </button>
+            </div>
+          </div>
+
+          {/* RIGHT BOX */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">
+              {inputMode === 'crawl' ? 'Crawled Sitemap Results' : 'Generated Sitemap'}
+            </h2>
+
+            {sitemapUrls.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+                <div style={{ width: 56, height: 56, background: 'var(--gray-1)', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="var(--gray-4)" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" /><path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
+                  </svg>
+                </div>
+                <p style={{ color: 'var(--gray-4)', fontSize: '0.88rem', lineHeight: 1.6, maxWidth: 260, margin: '0 auto' }}>
+                  Add your website URLs and complete verification to generate a professional XML sitemap
+                </p>
+              </div>
+            ) : (
+              <>
+                {/* Stats */}
+                <div className="stats-strip" style={{ gridTemplateColumns: 'repeat(2, 1fr)', marginBottom: '1.25rem' }}>
+                  <div className="stat-cell">
+                    <div className="stat-cell-num blue">{sitemapUrls.length}</div>
+                    <div className="stat-cell-label">Total URLs</div>
+                  </div>
+                  <div className="stat-cell" style={{ borderRight: 'none' }}>
+                    <div className="stat-cell-num">{Math.round(sitemapXML.length / 1024) || '&lt;1'}KB</div>
+                    <div className="stat-cell-label">File Size</div>
+                  </div>
+                </div>
+
+                {/* Export Buttons */}
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                  <button onClick={copyToClipboard} disabled={!isVerified} style={{ flex: 1, padding: '7px 14px', background: 'var(--gray-1)', color: isVerified ? 'var(--gray-5)' : 'var(--gray-3)', border: '1px solid var(--line)', fontWeight: 600, fontSize: '0.78rem', cursor: isVerified ? 'pointer' : 'not-allowed', opacity: isVerified ? 1 : 0.5, borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                    {copied ? '✓ Copied!' : 'Copy XML'}
+                  </button>
+                  <button onClick={downloadSitemap} disabled={!isVerified} style={{ flex: 1, padding: '7px 14px', background: isVerified ? 'var(--blue)' : 'var(--gray-2)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.78rem', cursor: isVerified ? 'pointer' : 'not-allowed', opacity: isVerified ? 1 : 0.5, borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                    Download sitemap.xml
+                  </button>
+                </div>
+
+                {/* XML Preview */}
+                <div style={{ background: '#111318', padding: '1.25rem', overflowX: 'auto', fontSize: '0.77rem', fontFamily: 'JetBrains Mono, monospace', height: 200, overflowY: 'auto', marginBottom: '1rem' }}>
+                  <pre style={{ color: '#86efac', margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                    {sitemapXML.substring(0, 1000)}
+                    {sitemapXML.length > 1000 && '\n... (truncated for preview)'}
+                  </pre>
+                </div>
+
+                {/* URL List Preview */}
+                <div style={{ border: '1px solid var(--line)', padding: '1rem 1.25rem', maxHeight: 120, overflowY: 'auto', marginBottom: '1rem' }}>
+                  <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.82rem', color: 'var(--ink)', marginBottom: '0.5rem' }}>Included URLs:</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    {sitemapUrls.slice(0, 10).map((url, index) => (
+                      <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--gray-5)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{url.url}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--gray-4)', marginLeft: '0.5rem', flexShrink: 0, fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600 }}>{url.priority}</span>
+                      </div>
+                    ))}
+                    {sitemapUrls.length > 10 && (
+                      <div style={{ fontSize: '0.78rem', color: 'var(--gray-4)', textAlign: 'center', paddingTop: '0.25rem' }}>
+                        ...and {sitemapUrls.length - 10} more URLs
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Next Steps */}
+                <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.5rem' }}>Next Steps:</div>
+                  <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                    {['Download the sitemap.xml file', "Upload it to your website's root directory", 'Submit to Google Search Console', 'Add to Bing Webmaster Tools', 'Test at: yoursite.com/sitemap.xml'].map((step, i) => (
+                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                        <span style={{ width: 18, height: 18, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.68rem', fontWeight: 700, color: '#fff', fontFamily: 'Space Grotesk, sans-serif' }}>{i + 1}</span>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', lineHeight: 1.5 }}>{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {/* Verification Required */}
+                {!isVerified && (
+                  <div style={{ marginTop: '1rem', padding: '0.875rem 1.25rem', background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.25)' }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.82rem', color: 'var(--amber)', marginBottom: '0.25rem' }}>Verification Required</div>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--gray-5)', margin: 0 }}>Complete human verification to download or copy your XML sitemap.</p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {/* --- OVERVIEW --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Overview</div>
+            <h2 className="s-title">Help Search Engines Find <span className="blue">Every Page on Your Website</span></h2>
+          </div>
+          <div className="prose-content">
+            <h3>Create Professional Sitemaps in Seconds (No Coding Required)</h3>
+            <p>
+              Here&apos;s a story that&apos;ll make you appreciate sitemaps: A friend launched her online store last year with 500 products. Three months later, she discovered that Google had only indexed 47 of her product pages. The rest? Invisible to search engines.
+            </p>
+            <p>
+              Turns out, her website structure was so confusing that Google&apos;s crawlers gave up trying to find everything. One properly formatted XML sitemap later, and boom &mdash; all 500+ pages got indexed within two weeks.
+            </p>
+            <p><strong>That&apos;s the power of a good sitemap.</strong></p>
+            <p>
+              Most people think search engines automatically find every page on their website. Nope. If you&apos;ve got a complex site structure, new pages, or just want to make sure nothing gets missed, you need an XML sitemap.
+            </p>
+            <p>
+              <strong>Our XML Sitemap Generator</strong> creates professional, Google-approved sitemaps in seconds. No technical knowledge required.
+            </p>
+
+            <h3>What&apos;s an XML Sitemap (And Why Your Website Needs One)</h3>
+            <p>
+              Think of an XML sitemap as a detailed map you give to Google saying, &ldquo;Hey, here are all the important pages on my website. Please make sure you don&apos;t miss any of them.&rdquo;
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem 2rem', margin: '1rem 0 1.5rem' }}>
+              {[
+                'Lists every page you want search engines to find',
+                'Tells them when each page was last updated',
+                'Shows which pages are most important',
+                'Helps new pages get discovered faster',
+                'Prevents important content from being overlooked',
+              ].map((item, i) => (
+                <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                  <span style={{ color: 'var(--blue)', flexShrink: 0, fontWeight: 700, fontSize: '0.82rem', marginTop: 2 }}>&#10003;</span>
+                  <span style={{ fontSize: '0.88rem', color: 'var(--gray-5)', lineHeight: 1.55 }}>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">Real talk</div>
+              <p>Small websites with good navigation might not desperately need one, but why take chances? Plus, if you&apos;ve got more than 20&ndash;30 pages, a sitemap is basically mandatory. Google actually recommends having one, especially for larger sites, new websites, or sites that don&apos;t have many external links pointing to them.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- WHY OUR GENERATOR BEATS DIY --- */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Key Features</div>
+            <h2 className="s-title">Why Our Sitemap Generator <span className="blue">Beats DIY</span></h2>
+          </div>
+          <div className="features-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            {[
+              {
+                iconPaths: ['M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-5-4H5z', 'M14 3v4h4', 'M9 13h6', 'M9 17h3'],
+                title: 'Point, Click, Done',
+                desc: 'No XML coding, no syntax headaches, no wondering if you got the format right.',
+                bullets: ['Enter your website URLs', 'Complete human verification', 'Click generate', 'Download your perfect sitemap', 'Takes literally 30 seconds.'],
+              },
+              {
+                iconPaths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'],
+                title: 'Complete Control',
+                desc: "You know your website better than any automated crawler. Add exactly the pages you want indexed.",
+                bullets: ['No missed important pages', 'No unwanted pages included', 'Complete control over priorities', 'Works with any website structure', 'Perfect for private or new sites'],
+              },
+              {
+                iconPaths: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'],
+                title: 'Google-Approved Format',
+                desc: 'Mess up the XML format and Google might ignore your whole sitemap. We handle it automatically.',
+                bullets: ['Proper XML syntax and structure', 'Correct date formatting', 'Valid URL encoding', 'Priority and frequency settings', '2,000 URL limit compliance'],
+              },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.iconPaths.map((d, j) => <path key={j} d={d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.75rem 0 0.75rem' }}>{f.desc}</p>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                  {f.bullets.map((b, j) => (
+                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                      <span style={{ color: 'var(--blue)', flexShrink: 0, fontWeight: 700, fontSize: '0.78rem', marginTop: 2 }}>&#10003;</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- HOW TO USE --- */}
+      <section className="section howto-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">How To Use</div>
+            <h2 className="s-title">How to Use the XML Sitemap Generator <span className="blue">(Super Easy)</span></h2>
+          </div>
+          <div className="steps-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {[
+              { n: '01', title: 'Gather Your URLs', desc: 'Create a list of all the important pages on your website that you want search engines to index. Include your homepage, about page, product pages, blog posts, and any other valuable content.' },
+              { n: '02', title: 'Paste Your URLs', desc: 'Copy and paste your URLs into the text area, one URL per line. Make sure each URL is complete and properly formatted (starting with https:// or http://). Remember the 2,000 URL limit!' },
+              { n: '03', title: 'Complete Verification', desc: 'Complete the human verification to prevent automated abuse and ensure fair usage of our free tool.' },
+              { n: '04', title: 'Generate and Download', desc: "Click generate to create your XML sitemap, then download the file and upload it to your website's root directory. Don't forget to submit it to Google Search Console!" },
+            ].map((s, i) => (
+              <div key={s.n} className="step-card">
+                {i < 3 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
+                  </div>
+                )}
+                <div className="step-num-big">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: '2rem', background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
+            <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
+              <strong>Pro tip:</strong> Your sitemap should live at yourdomain.com/sitemap.xml &mdash; that&apos;s where search engines expect to find it.
             </p>
           </div>
         </div>
       </section>
-    </div>
+
+      {/* --- WHAT GETS INCLUDED --- */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">What&apos;s Inside</div>
+            <h2 className="s-title">What Gets Included <span className="blue">(And What Doesn&apos;t)</span></h2>
+          </div>
+          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
+            {[
+              {
+                title: 'Automatically Included',
+                color: 'var(--green)',
+                iconPaths: ['M20 6L9 17l-5-5'],
+                items: ['All URLs you manually add', 'Proper priority settings (homepage = 1.0)', 'Current date as last modified', 'Appropriate change frequency', 'Valid XML formatting'],
+              },
+              {
+                title: 'Smart Optimization',
+                color: 'var(--blue)',
+                iconPaths: ['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z', 'M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'],
+                items: ['Homepage gets priority 1.0', 'Product/service pages get 0.8', 'Blog/news pages get 0.6', 'Other pages get 0.5', 'URL validation and cleanup'],
+              },
+              {
+                title: 'Important Limits',
+                color: 'var(--amber)',
+                iconPaths: ['M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z', 'M12 9v4', 'M12 17h.01'],
+                items: ['Maximum 2,000 URLs per sitemap', 'Only manually added URLs included', 'Human verification required', 'Invalid URLs are excluded', 'One sitemap file generated'],
+              },
+            ].map((card) => (
+              <div key={card.title} className="why-card" style={{ borderTop: `3px solid ${card.color}` }}>
+                <div className="why-card-title">
+                  <div className="why-card-icon" style={{ background: card.color }}>
+                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                      {card.iconPaths.map((d, j) => <path key={j} d={d} />)}
+                    </svg>
+                  </div>
+                  {card.title}
+                </div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 0', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                  {card.items.map((item, j) => (
+                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                      <span style={{ color: card.color, flexShrink: 0, fontWeight: 700, fontSize: '0.82rem', marginTop: 2 }}>•</span>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--gray-5)', lineHeight: 1.55 }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- RELATED TOOLS --- */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Tools</div>
+            <h2 className="s-title">Explore Our Other <span className="blue">SEO Tools</span></h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', maxWidth: 560, marginTop: '0.75rem', lineHeight: 1.6 }}>
+              Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
+            </p>
+          </div>
+          <div className="related-tools-grid">
+            {[
+              { name: 'XML Sitemap Generator', desc: 'Help search engines find every page on your website (up to 2,000 URLs).', current: true, href: '/tools/xml-sitemap-generator/', paths: ['M3 3h18v18H3z', 'M3 9h18M3 15h18M9 3v18M15 3v18'] },
+              { name: 'Robots.txt Generator', desc: 'Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.', href: '/tools/robots-txt-generator/', paths: ['M12 2a3 3 0 0 0-3 3v1H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v4h10v-4h1a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3V5a3 3 0 0 0-3-3z', 'M9 12h.01', 'M15 12h.01'] },
+              { name: 'On-Page SEO Analyzer', desc: 'Audit your page SEO health across 150+ factors with real PageSpeed data.', href: '/tools/on-page-seo-analyzer/', paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'] },
+              { name: 'Meta Tag Optimizer', desc: 'Generate perfect title tags and meta descriptions for better click-through rates.', href: '/tools/meta-tag-optimizer/', paths: ['M4 9h16', 'M4 15h16', 'M10 3 8 21', 'M16 3l-2 18'] },
+              { name: 'Keyword Density Analyzer', desc: 'Analyze keyword frequency and optimize content for SEO without over-optimization.', href: '/tools/keyword-density-analyzer/', paths: ['M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z'] },
+            ].map(t => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FINAL CTA --- */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Ready to Get All Your <span>Pages Found?</span></h2>
+          <p className="final-cta-sub">
+            Don&apos;t leave page discovery to chance. Create a professional XML sitemap that gives search engines a complete roadmap to all your important content.
+          </p>
+          <div className="final-cta-row">
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="btn-primary">
+              Create Your XML Sitemap &rarr;
+            </button>
+          </div>
+          <div className="final-cta-pills">
+            {[
+              'Professional sitemaps in 30 seconds &mdash; completely free',
+              'Supports automatic crawling and manual URL input',
+              'Google-approved XML format with smart priority optimization',
+            ].map(p => (
+              <div key={p} className="final-pill" dangerouslySetInnerHTML={{ __html: p }} />
+            ))}
+          </div>
+          <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, maxWidth: 600, margin: '1.5rem auto 0', textAlign: 'center' }}>
+            <strong style={{ color: 'rgba(255,255,255,0.6)' }}>Don&apos;t let great content go undiscovered. Create your sitemap with SEO Shouts and make sure Google finds everything.</strong>
+            <br />
+            <em>Built by SEO pros who understand that every page deserves a chance to rank.</em>
+          </p>
+        </div>
+      </div>
+    </>
   )
 }

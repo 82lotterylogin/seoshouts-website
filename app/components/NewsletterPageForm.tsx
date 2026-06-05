@@ -78,88 +78,75 @@ export default function NewsletterPageForm() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-auto mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Subscribe Now - It's Free!</h2>
-      
-      <form className="space-y-4" onSubmit={handleNewsletterSubmit}>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-            Email Address
-          </label>
+    <div className="nlf-wrap">
+      <form onSubmit={handleNewsletterSubmit}>
+        {/* First name row */}
+        <div className="nlf-name-row">
+          <span className="nlf-name-tag">FIRST_NAME</span>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            className="nlf-name-input"
+            placeholder="First name (optional)"
+            value={newsletterForm.firstName}
+            onChange={(e) => setNewsletterForm(prev => ({ ...prev, firstName: e.target.value }))}
+            disabled={newsletterForm.isLoading}
+            autoComplete="given-name"
+          />
+        </div>
+
+        {/* Email + submit row */}
+        <div className="nlf-row">
           <input
             type="email"
             id="email"
             name="email"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="nlf-email-input"
             placeholder="your@email.com"
             value={newsletterForm.email}
             onChange={(e) => setNewsletterForm(prev => ({ ...prev, email: e.target.value, error: '' }))}
             disabled={newsletterForm.isLoading}
+            autoComplete="email"
           />
-        </div>
-        
-        <div>
-          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-            First Name (Optional)
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="Your first name"
-            value={newsletterForm.firstName}
-            onChange={(e) => setNewsletterForm(prev => ({ ...prev, firstName: e.target.value }))}
-            disabled={newsletterForm.isLoading}
-          />
+          <button type="submit" className="nlf-btn" disabled={newsletterForm.isLoading}>
+            {newsletterForm.isLoading ? (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                Subscribing...
+              </>
+            ) : (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                Subscribe
+              </>
+            )}
+          </button>
         </div>
 
-        {/* reCAPTCHA Widget */}
-        <div className="flex justify-center py-4">
+        {/* reCAPTCHA */}
+        <div className="nlf-captcha">
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-            theme="light"
+            theme="dark"
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={newsletterForm.isLoading}
-          className="w-full py-3 bg-gradient-to-r from-blue-700 to-purple-700 text-white rounded-lg font-bold hover:scale-105 transition transform shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
-        >
-          {newsletterForm.isLoading ? (
-            <span className="flex items-center justify-center">
-              <svg className="animate-spin -ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Subscribing...
-            </span>
-          ) : (
-            '📧 Subscribe to SEOShouts Weekly'
-          )}
-        </button>
-
-        {/* Success Message */}
+        {/* Success */}
         {newsletterForm.isSubscribed && (
-          <div className="bg-green-100 border border-green-300 rounded-lg p-4 text-green-700 text-center">
-            ✅ Thank you! You've been successfully subscribed to our newsletter.
+          <div className="nlf-success">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            SUBSCRIBED &mdash; check your inbox for confirmation.
           </div>
         )}
-        
-        {/* Error Message */}
+
+        {/* Error */}
         {newsletterForm.error && (
-          <div className="bg-red-100 border border-red-300 rounded-lg p-4 text-red-700 text-center">
-            {newsletterForm.error}
-          </div>
+          <div className="nlf-error">{newsletterForm.error}</div>
         )}
       </form>
-      
-      <p className="text-xs text-gray-500 mt-4 text-center">
-        ✅ Free forever • ✅ Unsubscribe anytime • ✅ No spam, ever
-      </p>
     </div>
   )
 }

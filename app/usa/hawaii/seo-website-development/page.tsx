@@ -147,11 +147,6 @@ export default async function HawaiiSEOWebsiteDevelopmentPage() {
             "provider": {
               "@type": "Organization",
               "name": "SEOShouts"
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.9",
-              "reviewCount": "127"
             }
           })
         }}
@@ -1307,7 +1302,7 @@ export default async function HawaiiSEOWebsiteDevelopmentPage() {
 
               <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
                 <a
-                  href="/contact/?region=ca"
+                  href="/contact/"
                   className="group px-8 py-4 bg-yellow-400 text-gray-900 rounded-xl font-bold hover:bg-yellow-300 transition-all duration-300 shadow-2xl hover:shadow-yellow-400/50 hover:scale-105 inline-flex items-center justify-center gap-2"
                 >
                   🎯 Get Your Expert Hawaii SEO Consultation

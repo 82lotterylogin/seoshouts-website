@@ -1,0 +1,31 @@
+{
+  "extraKnownMarketplaces": {
+    "claude-code-plugins": {
+      "source": "github",
+      "repo": "anthropics/claude-code",
+      "ref": "main",
+      "path": ".claude-plugin/marketplace.json",
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-code-plugins": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(awk -F: '{print $1}')",
+      "Read(//d/seoshouts/New Design/project/seoshouts/**)",
+      "Read(//d//**)",
+      "Read(//d/Projects/seoshouts/**)",
+      "Read(//d/Rohit/**)",
+      "Bash(ls \"d:/Projects/seoshouts/New Design/\" 2>&1)",
+      "Read(//d/Projects/seoshouts/New Design/**)",
+      "Read(//d/Projects/seoshouts/New Design/project/**)",
+      "Read(//d/Projects/seoshouts/New Design/project/seoshouts/**)",
+      "Bash(Get-Content \"d:/Projects/seoshouts/New Design/project/seoshouts/Blog-Article.html\" -Raw)",
+      "Bash(grep -n \"toc\\\\|related-card p\\\\|webkit-line-clamp\" \"d:/Projects/seoshouts/New Design/project/seoshouts/Blog-Article.html\" | head -50)",
+      "Bash(grep -n \"gap\\\\|li {\" \"d:/Projects/seoshouts/New Design/project/seoshouts/Blog-Article.html\" | grep -A2 \"article-content ul\\\\|article-content ol\\\\|article-content li\" | head -20)",
+      "Bash(grep -n \"td\\\\|th\\\\|table\\\\|border\" \"d:/Projects/seoshouts/New Design/project/seoshouts/Blog-Article.html\" | grep -E \"tablewrap|\\\\.table\" | head -15)"
+    ]
+  }
+}

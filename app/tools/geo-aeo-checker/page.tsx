@@ -162,6 +162,35 @@ export default function GeoAeoCheckerPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {/* HowTo Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "How to Check and Improve Your Website's AI Search Readiness",
+          "description": "Use the free SEOShouts GEO & AEO Score Checker to audit any page across 7 AI search readiness categories and get a 0–100 composite score with specific fix recommendations.",
+          "tool": { "@type": "HowToTool", "name": "SEOShouts GEO & AEO Score Checker", "url": "https://seoshouts.com/tools/geo-aeo-checker/" },
+          "step": [
+            { "@type": "HowToStep", "position": 1, "name": "Enter Your Page URL", "text": "Type the full URL of the page you want to audit into the input field. The tool fetches your live page and analyzes its HTML and HTTP headers." },
+            { "@type": "HowToStep", "position": 2, "name": "Run the AI Readiness Audit", "text": "Click Analyze to start the audit. The tool checks 7 categories: schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and page performance." },
+            { "@type": "HowToStep", "position": 3, "name": "Review Your Score Across 7 Categories", "text": "See your overall 0–100 GEO/AEO score and individual category scores. High-impact failed checks are flagged first. Focus on A grade (85+) rather than perfect 100." },
+            { "@type": "HowToStep", "position": 4, "name": "Implement the Recommended Fixes", "text": "Follow the per-check fix recommendations. The fastest wins are: adding FAQPage schema, writing an answer capsule, converting H2s to question format, and ensuring AI crawlers are not blocked in robots.txt." }
+          ]
+        })}}
+      />
+
+      {/* Speakable Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", ".tool-hero-sub"] },
+          "url": "https://seoshouts.com/tools/geo-aeo-checker/"
+        })}}
+      />
+
       <GeoAeoCheckerClient />
     </>
   )

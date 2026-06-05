@@ -36,156 +36,114 @@ const ecommerceFeatures = [
 interface PackageCardProps {
   title: string
   badge: string
-  badgeColor: string
   price: string
   description: string
   features: string[]
-  bgGradient: string
-  borderColor: string
-  textColor: string
-  buttonBg: string
-  buttonHover: string
-  isPopular?: boolean
+  isHighlight?: boolean
 }
 
-function PackageCard({
-  title,
-  badge,
-  badgeColor,
-  price,
-  description,
-  features,
-  bgGradient,
-  borderColor,
-  textColor,
-  buttonBg,
-  buttonHover,
-  isPopular = false
-}: PackageCardProps) {
+function PackageCard({ title, badge, price, description, features, isHighlight = false }: PackageCardProps) {
   const [showAll, setShowAll] = useState(false)
   const visibleFeatures = showAll ? features : features.slice(0, 3)
   const hasMore = features.length > 3
 
   return (
-    <div className="group relative flex-shrink-0 w-[320px] sm:w-[360px] lg:w-auto">
-      {isPopular && (
-        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full shadow-lg">
-            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-            </svg>
-            <span className="text-xs font-bold text-white uppercase tracking-wide">Most Popular</span>
-          </div>
+    <div className={`wd-price-card${isHighlight ? ' wd-price-highlight' : ''}`}>
+        {isHighlight && <div className="wd-price-popular">Most Popular</div>}
+        <div className="wd-price-badge">{badge}</div>
+        <div className="wd-price-title">{title}</div>
+        <p className="wd-price-desc"><strong>Perfect for:</strong> {description}</p>
+        <div className="wd-price-amount-row">
+          <span className="wd-price-amount">{price}</span>
+          <span className="wd-price-period">/one-time</span>
         </div>
-      )}
-
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-200/50 to-slate-300/50 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
-      <div className={`relative ${bgGradient} border-2 ${borderColor} rounded-2xl p-8 hover:shadow-2xl transition-all duration-300 h-full flex flex-col`}>
-
-        <div className="mb-6">
-          <div className={`inline-flex items-center gap-2 px-3 py-1 ${badgeColor} rounded-full mb-4`}>
-            <span className={`text-xs font-semibold ${textColor} uppercase tracking-wide`}>{badge}</span>
-          </div>
-          <h3 className={`text-2xl font-bold ${textColor} mb-2`}>{title}</h3>
-          <p className={`${textColor} text-sm opacity-90`}><strong>Perfect for:</strong> {description}</p>
-        </div>
-
-        <div className="mb-6">
-          <div className="flex items-baseline gap-1">
-            <span className={`text-5xl font-bold ${textColor}`}>{price}</span>
-            <span className={`${textColor} text-sm opacity-75`}>/one-time</span>
-          </div>
-        </div>
-
-        <p className={`text-sm font-semibold ${textColor} mb-4 opacity-90`}>What extensive SEO experience delivers:</p>
-
-        <ul className="space-y-3 mb-6 flex-1">
+        <div className="wd-price-list-label">What extensive SEO experience delivers:</div>
+        <ul className="wd-price-list">
           {visibleFeatures.map((feature, index) => (
-            <li key={index} className="flex items-start gap-3">
-              <svg className={`w-5 h-5 ${isPopular ? 'text-white' : 'text-blue-600'} flex-shrink-0 mt-0.5`} fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-              </svg>
-              <span className={`text-sm ${textColor} opacity-90`} dangerouslySetInnerHTML={{ __html: feature }} />
-            </li>
+            <li key={index}><span dangerouslySetInnerHTML={{ __html: feature }} /></li>
           ))}
         </ul>
-
         {hasMore && (
           <button
             onClick={() => setShowAll(!showAll)}
-            className={`w-full text-center py-3 mb-4 ${
-              isPopular
-                ? 'bg-white/10 text-white hover:bg-white/20 border border-white/20'
-                : 'bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200'
-            } rounded-lg text-sm font-semibold transition-all duration-300`}
+            className="wd-price-toggle"
           >
             {showAll ? '− Show Less' : `+ Show ${features.length - 3} More Features`}
           </button>
         )}
-
-        <a
-          href="/contact/"
-          className={`block w-full text-center px-6 py-3.5 ${buttonBg} rounded-lg font-semibold ${buttonHover} transition-all duration-300 hover:shadow-lg`}
-        >
-          Get Started
-        </a>
+        <a href="/contact/" className="wd-price-btn">Get Started</a>
       </div>
-    </div>
   )
 }
 
 export default function PricingPackagesUSA() {
   return (
-    <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 pt-4">
-      <div className="flex lg:grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto min-w-max lg:min-w-0">
-
-        {/* Static Package */}
-        <PackageCard
-          title="SEO Optimised Static Website"
-          badge="Starter"
-          badgeColor="bg-slate-100"
-          price="$100"
-          description="Startups, solo entrepreneurs, consultants, and small business owners needing a results-driven web presence."
-          features={staticFeatures}
-          bgGradient="bg-white"
-          borderColor="border-slate-200"
-          textColor="text-slate-900"
-          buttonBg="bg-slate-900 text-white"
-          buttonHover="hover:bg-slate-800"
-        />
-
-        {/* Backend Package */}
-        <PackageCard
-          title="SEO Optimised Website with Backend"
-          badge="Professional"
-          badgeColor="bg-white/20 backdrop-blur-sm"
-          price="$250"
-          description="Growing companies, service providers, and professionals who need content management capabilities with enterprise-level SEO."
-          features={backendFeatures}
-          bgGradient="bg-gradient-to-br from-blue-600 to-indigo-600"
-          borderColor="border-blue-400"
-          textColor="text-white"
-          buttonBg="bg-white text-blue-600"
-          buttonHover="hover:bg-blue-50"
-          isPopular={true}
-        />
-
-        {/* eCommerce Package */}
-        <PackageCard
-          title="SEO Optimised eCommerce Website"
-          badge="Enterprise"
-          badgeColor="bg-blue-100"
-          price="$500"
-          description="American eCommerce brands, D2C companies, retail stores, and online sellers ready to dominate online sales."
-          features={ecommerceFeatures}
-          bgGradient="bg-white"
-          borderColor="border-slate-200"
-          textColor="text-slate-900"
-          buttonBg="bg-blue-600 text-white"
-          buttonHover="hover:bg-blue-700"
-        />
-
-      </div>
+    <>
+      <style>{`
+        .wd-price-grid { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--line); margin-top: 2.5rem; }
+        .wd-price-card { padding: 2.5rem 2.25rem 2rem; border-right: 1px solid var(--line); background: #fff; display: flex; flex-direction: column; position: relative; }
+        .wd-price-card:last-child { border-right: none; }
+        .wd-price-card.wd-price-highlight { background: var(--ink); border-right-color: rgba(255,255,255,0.08); }
+        .wd-price-badge { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 1.25rem; }
+        .wd-price-card.wd-price-highlight .wd-price-badge { color: var(--blue-light); }
+        .wd-price-popular { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--blue); color: #fff; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 14px; }
+        .wd-price-title { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; line-height: 1.3; }
+        .wd-price-card.wd-price-highlight .wd-price-title { color: #fff; }
+        .wd-price-desc { font-size: 0.8rem; color: var(--gray-5); line-height: 1.6; margin-bottom: 1.5rem; }
+        .wd-price-card.wd-price-highlight .wd-price-desc { color: rgba(255,255,255,0.52); }
+        .wd-price-amount-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--line); }
+        .wd-price-card.wd-price-highlight .wd-price-amount-row { border-bottom-color: rgba(255,255,255,0.08); }
+        .wd-price-amount { font-family: 'Space Grotesk', sans-serif; font-size: 2.75rem; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -0.04em; }
+        .wd-price-card.wd-price-highlight .wd-price-amount { color: #fff; }
+        .wd-price-period { font-size: 0.78rem; color: var(--gray-5); font-weight: 500; }
+        .wd-price-card.wd-price-highlight .wd-price-period { color: rgba(255,255,255,0.42); }
+        .wd-price-list-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-5); margin-bottom: 0.875rem; }
+        .wd-price-card.wd-price-highlight .wd-price-list-label { color: rgba(255,255,255,0.38); }
+        .wd-price-list { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-direction: column; gap: 0.625rem; flex: 1; }
+        .wd-price-list li { font-size: 0.825rem; color: var(--ink-2); line-height: 1.55; display: flex; align-items: flex-start; gap: 8px; }
+        .wd-price-card.wd-price-highlight .wd-price-list li { color: rgba(255,255,255,0.62); }
+        .wd-price-list li::before { content: '→'; color: var(--blue); font-weight: 700; flex-shrink: 0; line-height: 1.55; }
+        .wd-price-list li strong { font-weight: 600; color: var(--ink); }
+        .wd-price-card.wd-price-highlight .wd-price-list li strong { color: rgba(255,255,255,0.88); }
+        .wd-price-toggle { width: 100%; padding: 10px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid var(--line); background: transparent; color: var(--blue); cursor: pointer; margin-bottom: 1rem; transition: background 0.18s; }
+        .wd-price-toggle:hover { background: var(--gray-1); }
+        .wd-price-card.wd-price-highlight .wd-price-toggle { border-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.62); }
+        .wd-price-card.wd-price-highlight .wd-price-toggle:hover { background: rgba(255,255,255,0.05); }
+        .wd-price-btn { display: block; width: 100%; text-align: center; padding: 13px 20px; font-size: 0.9rem; font-weight: 700; text-decoration: none; transition: background 0.2s, color 0.2s; margin-top: auto; background: var(--ink); color: #fff; border: 1px solid var(--ink); }
+        .wd-price-btn:hover { background: #1a2030; }
+        .wd-price-card.wd-price-highlight .wd-price-btn { background: #fff; color: var(--ink); border-color: #fff; }
+        .wd-price-card.wd-price-highlight .wd-price-btn:hover { background: var(--gray-1); }
+        @media (max-width: 900px) {
+          .wd-price-grid { grid-template-columns: 1fr; }
+          .wd-price-card { border-right: none; border-bottom: 1px solid var(--line); }
+          .wd-price-card.wd-price-highlight { border-bottom-color: rgba(255,255,255,0.08); }
+          .wd-price-card:last-child { border-bottom: none; }
+        }
+      `}</style>
+      <div className="wd-price-grid">
+      <PackageCard
+        title="SEO Optimised Static Website"
+        badge="Starter"
+        price="$100"
+        description="Startups, solo entrepreneurs, consultants, and small business owners needing a results-driven web presence."
+        features={staticFeatures}
+      />
+      <PackageCard
+        title="SEO Optimised Website with Backend"
+        badge="Professional"
+        price="$250"
+        description="Growing companies, service providers, and professionals who need content management capabilities with enterprise-level SEO."
+        features={backendFeatures}
+        isHighlight={true}
+      />
+      <PackageCard
+        title="SEO Optimised eCommerce Website"
+        badge="Enterprise"
+        price="$500"
+        description="American eCommerce brands, D2C companies, retail stores, and online sellers ready to dominate online sales."
+        features={ecommerceFeatures}
+      />
     </div>
+    </>
   )
 }

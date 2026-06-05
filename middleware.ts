@@ -25,21 +25,10 @@ const REDIRECTIONS: { [key: string]: { to: string; statusCode: number } } = {
 
 // Function to check for redirections
 function checkRedirections(pathname: string): { redirect: boolean; to?: string; statusCode?: number } {
-  console.log(`[REDIRECT CHECK] Looking for: ${pathname}`);
-  console.log(`[REDIRECT CHECK] Available redirections:`, Object.keys(REDIRECTIONS));
-  
   const redirection = REDIRECTIONS[pathname];
-  
   if (redirection) {
-    console.log(`[REDIRECT CHECK] Found redirect: ${pathname} -> ${redirection.to} (${redirection.statusCode})`);
-    return {
-      redirect: true,
-      to: redirection.to,
-      statusCode: redirection.statusCode
-    };
+    return { redirect: true, to: redirection.to, statusCode: redirection.statusCode };
   }
-  
-  console.log(`[REDIRECT CHECK] No redirect found for: ${pathname}`);
   return { redirect: false };
 }
 
@@ -52,8 +41,6 @@ export async function middleware(request: NextRequest) {
   Object.entries(securityHeaders).forEach(([key, value]) => {
     response.headers.set(key, value);
   });
-  
-  console.log(`[MIDDLEWARE] Processing pathname: ${pathname}`);
   
   // Rate limiting for API routes
   if (pathname.startsWith('/api/')) {
@@ -86,17 +73,12 @@ export async function middleware(request: NextRequest) {
       !pathname.startsWith('/favicon') &&
       !pathname.includes('.')) {
     
-    console.log(`[MIDDLEWARE] Checking redirections for: ${pathname}`);
     const redirectionResult = checkRedirections(pathname);
-    
-    console.log(`[MIDDLEWARE] Redirection result:`, redirectionResult);
-    
+
     if (redirectionResult.redirect) {
-      const redirectUrl = redirectionResult.to!.startsWith('http') 
-        ? redirectionResult.to! 
+      const redirectUrl = redirectionResult.to!.startsWith('http')
+        ? redirectionResult.to!
         : new URL(redirectionResult.to!, request.url).toString();
-      
-      console.log(`[MIDDLEWARE] Redirecting ${pathname} to ${redirectUrl}`);
       return NextResponse.redirect(redirectUrl, redirectionResult.statusCode || 301);
     }
   }

@@ -28,8 +28,8 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Ensure readable HTML output in development
-  generateEtags: false,
+  // Enable ETags so browsers can use 304 Not Modified responses
+  generateEtags: true,
   poweredByHeader: false,
   // Webpack optimizations for memory usage
   webpack: (config, { isServer, webpack, dev }) => {

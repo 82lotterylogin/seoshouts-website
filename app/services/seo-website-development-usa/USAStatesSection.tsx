@@ -1,11 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import dynamic from 'next/dynamic'
-
-// Dynamically import the USA map to avoid SSR issues
-const USAMap = dynamic(() => import('@mirawision/usa-map-react'), { ssr: false })
 
 // State abbreviation to slug mapping for all 50 states
 const stateData: Record<string, { name: string; slug: string }> = {
@@ -61,59 +57,41 @@ const stateData: Record<string, { name: string; slug: string }> = {
   WY: { name: 'Wyoming', slug: 'wyoming' }
 }
 
-// Color gradient for states - from blue to cyan
 const getStateColor = (stateAbbr: string, isHovered: boolean) => {
-  if (isHovered) return '#3b82f6' // Bright blue on hover
-
-  // Create a colorful gradient effect based on state position
-  const colors = [
-    '#1e40af', // Dark blue
-    '#2563eb', // Blue
-    '#3b82f6', // Lighter blue
-    '#06b6d4', // Cyan
-    '#0891b2', // Dark cyan
-    '#0e7490', // Teal
-  ]
-
-  // Use state abbreviation to determine color (simple hash)
+  if (isHovered) return '#3b82f6'
+  const colors = ['#1e40af', '#2563eb', '#3b82f6', '#1d4ed8', '#1e3a8a', '#2563eb']
   const hash = stateAbbr.charCodeAt(0) + stateAbbr.charCodeAt(1)
   return colors[hash % colors.length]
 }
 
 export default function USAStatesSection() {
   const [hoveredState, setHoveredState] = useState<string | null>(null)
+  const [MapCmp, setMapCmp] = useState<React.ComponentType<any> | null>(null)
   const router = useRouter()
 
-  // Handle state click
+  // Import the map only on the client after mount — no next/dynamic, no stale chunks
+  useEffect(() => {
+    import('@mirawision/usa-map-react')
+      .then((mod) => setMapCmp(() => mod.default ?? mod.USAMap))
+      .catch(() => {/* map unavailable */})
+  }, [])
+
   const handleStateClick = (stateAbbr: string) => {
     const state = stateData[stateAbbr]
-    if (state) {
-      router.push(`/usa/${state.slug}/seo-website-development/`)
-    }
+    if (state) router.push(`/usa/${state.slug}/seo-website-development/`)
   }
 
-  // Handle state hover
-  const handleStateHover = (stateAbbr: string) => {
-    setHoveredState(stateAbbr)
-  }
-
-  // Handle mouse leave
-  const handleMouseLeave = () => {
-    setHoveredState(null)
-  }
-
-  // Create custom styles for each state with click handlers
   const stateCustomStyles = Object.keys(stateData).reduce((acc, stateAbbr) => {
     acc[stateAbbr] = {
       fill: getStateColor(stateAbbr, hoveredState === stateAbbr),
-      stroke: '#1e293b',
+      stroke: 'rgba(255,255,255,0.18)',
       strokeWidth: 1,
       cursor: 'pointer',
       transition: 'all 0.3s ease',
-      filter: hoveredState === stateAbbr ? 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.8))' : 'none',
+      filter: hoveredState === stateAbbr ? 'drop-shadow(0 0 8px rgba(59,130,246,0.8))' : 'none',
       onClick: () => handleStateClick(stateAbbr),
-      onMouseEnter: () => handleStateHover(stateAbbr),
-      onMouseLeave: handleMouseLeave,
+      onMouseEnter: () => setHoveredState(stateAbbr),
+      onMouseLeave: () => setHoveredState(null),
     }
     return acc
   }, {} as Record<string, any>)
@@ -121,68 +99,52 @@ export default function USAStatesSection() {
   const hoveredStateName = hoveredState ? stateData[hoveredState]?.name : null
 
   return (
-    <section className="relative py-12 sm:py-16 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyNTYzZWIiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtNC40MTggMy41ODItOCA4LThzOCAzLjU4MiA4IDgtMy41ODIgOC04IDgtOC0zLjU4Mi04LTh6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40"></div>
+    <section className="section svc-section">
+      <style>{`
+        .wd-usa-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; font-size: 0.95rem; font-weight: 700; padding: 8px 18px; border: 1px solid var(--blue); }
+        .wd-usa-chip-wrap { text-align: center; min-height: 40px; margin-bottom: 1.5rem; }
+        .wd-usa-map-frame { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); padding: 2rem; }
+        .wd-usa-map-inner { width: 100%; max-width: 70%; margin: 0 auto; }
+        .wd-usa-map-loading { display: flex; align-items: center; justify-content: center; min-height: 320px; color: rgba(255,255,255,0.3); font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; }
+        .wd-usa-hint { display: inline-flex; align-items: flex-start; gap: 8px; font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.55; margin-top: 1.5rem; }
+        .wd-usa-hint svg { color: var(--blue-light); flex-shrink: 0; margin-top: 2px; }
+        @media (max-width: 768px) { .wd-usa-map-inner { max-width: 100%; } .wd-usa-map-frame { padding: 1.25rem; } }
+      `}</style>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
+      <div className="section-container">
+        <div className="s-header center">
+          <div className="eyebrow light">Nationwide Coverage</div>
+          <h2 className="s-title light">SEO Website Development Service <span className="blue">By US States</span></h2>
+          <p className="s-sub light">Click on your state to learn about our professional <strong style={{ color: '#fff' }}>SEO website development services</strong></p>
+        </div>
 
-          {/* Section Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 backdrop-blur-xl rounded-full border border-white/10 shadow-lg mb-6">
-              <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+        <div className="wd-usa-chip-wrap">
+          {hoveredStateName && (
+            <div className="wd-usa-chip">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
               </svg>
-              <span className="text-sm font-semibold text-blue-100 uppercase tracking-wide">Nationwide Coverage</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="text-white">
-                SEO Website Development Service
-              </span>
-              <br/>
-              <span className="bg-gradient-to-r from-blue-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">
-                By US States
-              </span>
-            </h2>
-            <p className="text-lg sm:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Click on your state to learn about our professional <strong className="text-white">SEO website development services</strong>
-            </p>
-          </div>
-
-          {/* Hover State Display */}
-          {hoveredStateName && (
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full shadow-2xl border border-white/20 backdrop-blur-xl">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
-                </svg>
-                <span className="text-white font-bold text-lg">{hoveredStateName}</span>
-              </div>
+              {hoveredStateName}
             </div>
           )}
+        </div>
 
-          {/* Interactive USA Map */}
-          <div className="relative">
-            <div className="w-full max-w-[70%] mx-auto">
-              <USAMap
-                customStates={stateCustomStyles}
-                width="100%"
-                height="auto"
-              />
-            </div>
-
-            {/* Instructions */}
-            <div className="mt-6 text-center">
-              <p className="text-blue-200 text-sm sm:text-base">
-                <svg className="w-5 h-5 inline-block mr-2 -mt-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
-                </svg>
-                Hover and click on any state to explore our SEO website development services
-              </p>
-            </div>
+        <div className="wd-usa-map-frame">
+          <div className="wd-usa-map-inner">
+            {MapCmp ? (
+              <MapCmp customStates={stateCustomStyles} width="100%" height="auto" />
+            ) : (
+              <div className="wd-usa-map-loading">Loading map…</div>
+            )}
           </div>
-
+          <div style={{ textAlign: 'center' }}>
+            <p className="wd-usa-hint">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+              </svg>
+              Hover and click on any state to explore our SEO website development services
+            </p>
+          </div>
         </div>
       </div>
     </section>

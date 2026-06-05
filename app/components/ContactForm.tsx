@@ -142,139 +142,42 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl p-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        Get Your Free SEO Analysis
-      </h2>
-      
+    <>
       {submitStatus === 'success' && (
-        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-green-800">
-                Thank you! Your message has been sent successfully. We'll get back to you within 24 hours.
-              </p>
-            </div>
-          </div>
+        <div className="ct-form-success">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Sent &mdash; we will reply within 24 hours.</span>
         </div>
       )}
-
       {submitStatus === 'error' && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-red-800">
-                {errorMessage}
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="ct-form-error">{errorMessage}</div>
       )}
-      
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-              Full Name *
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Your full name"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address *
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              value={formData.email}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="your@email.com"
-            />
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="+91 12345 67890"
-            />
+      <form onSubmit={handleSubmit}>
+        <div className="ct-form-grid">
+          <div className="ct-field">
+            <label htmlFor="cf-name" className="ct-label">Name <span className="req">*</span></label>
+            <input type="text" id="cf-name" name="name" required className="ct-input" placeholder="Your full name" value={formData.name} onChange={handleInputChange} />
           </div>
-          
-          <div>
-            <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-              Company Name
-            </label>
-            <input
-              type="text"
-              id="company"
-              name="company"
-              value={formData.company}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Your company name"
-            />
+          <div className="ct-field">
+            <label htmlFor="cf-email" className="ct-label">Email <span className="req">*</span></label>
+            <input type="email" id="cf-email" name="email" required className="ct-input" placeholder="you@company.com" value={formData.email} onChange={handleInputChange} />
           </div>
-        </div>
-
-        <div>
-          <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">
-            Website URL
-          </label>
-          <input
-            type="url"
-            id="website"
-            name="website"
-            value={formData.website}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="https://yourwebsite.com"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
-              Service Interested In
-            </label>
-            <select
-              id="service"
-              name="service"
-              value={formData.service}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
+          <div className="ct-field">
+            <label htmlFor="cf-phone" className="ct-label">Phone <span className="opt">OPTIONAL</span></label>
+            <input type="tel" id="cf-phone" name="phone" className="ct-input" placeholder="+91 8094888157" value={formData.phone} onChange={handleInputChange} />
+          </div>
+          <div className="ct-field">
+            <label htmlFor="cf-company" className="ct-label">Company <span className="opt">OPTIONAL</span></label>
+            <input type="text" id="cf-company" name="company" className="ct-input" placeholder="Your company" value={formData.company} onChange={handleInputChange} />
+          </div>
+          <div className="ct-field full">
+            <label htmlFor="cf-website" className="ct-label">Website</label>
+            <input type="url" id="cf-website" name="website" className="ct-input" placeholder="https://yourdomain.com" value={formData.website} onChange={handleInputChange} />
+          </div>
+          <div className="ct-field">
+            <label htmlFor="cf-service" className="ct-label">Service needed</label>
+            <select id="cf-service" name="service" className="ct-select" value={formData.service} onChange={handleInputChange}>
               <option value="">Select a service</option>
               <option value="local-seo">Local SEO</option>
               <option value="ecommerce-seo">eCommerce SEO</option>
@@ -282,98 +185,58 @@ export default function ContactForm() {
               <option value="technical-audit">Technical SEO Audit</option>
               <option value="link-building">Link Building</option>
               <option value="seo-consulting">SEO Consulting</option>
-              <option value="not-sure">Not Sure - Need Guidance</option>
+              <option value="not-sure">Not sure yet</option>
             </select>
           </div>
-          
-          <div>
-            <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-2">
-              Budget Range
-            </label>
-            <select
-              id="budget"
-              name="budget"
-              value={formData.budget}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
+          <div className="ct-field">
+            <label htmlFor="cf-budget" className="ct-label">Monthly budget</label>
+            <select id="cf-budget" name="budget" className="ct-select" value={formData.budget} onChange={handleInputChange}>
               <option value="">Select budget range</option>
               {(() => {
                 const isUSA = region === 'usa'
                 const isWebDev = formData.service === 'website-development'
-
-                let options
-                if (isWebDev) {
-                  options = isUSA ? websiteDevelopmentBudgetOptionsUSA : websiteDevelopmentBudgetOptions
-                } else {
-                  options = isUSA ? generalBudgetOptionsUSA : generalBudgetOptions
-                }
-
-                return options.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))
+                const options = isWebDev
+                  ? (isUSA ? websiteDevelopmentBudgetOptionsUSA : websiteDevelopmentBudgetOptions)
+                  : (isUSA ? generalBudgetOptionsUSA : generalBudgetOptions)
+                return options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
               })()}
             </select>
           </div>
+          <div className="ct-field full">
+            <label htmlFor="cf-message" className="ct-label">Tell us more <span className="req">*</span></label>
+            <textarea id="cf-message" name="message" required className="ct-textarea" placeholder="Goals, current rankings, where you're stuck, anything else we should know&hellip;" value={formData.message} onChange={handleInputChange} />
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-            Tell Us About Your Goals *
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            rows={4}
-            required
-            value={formData.message}
-            onChange={handleInputChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="What are your main SEO goals? What challenges are you facing? Any specific questions?"
-          />
-        </div>
-
-        {/* reCAPTCHA */}
-        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-          <div className="flex justify-center">
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-              theme="light"
-            />
-          </div>
-        ) : (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
-            <p className="text-yellow-800 text-sm">
-              ⚠️ reCAPTCHA is temporarily unavailable. Form submission is still enabled.
-            </p>
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`w-full py-4 rounded-lg font-bold transition transform shadow-xl ${
-            isSubmitting
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-gradient-to-r from-blue-700 to-purple-700 text-white hover:scale-105'
-          }`}
-        >
-          {isSubmitting ? (
-            <span className="flex items-center justify-center">
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Sending...
-            </span>
+        <div className="ct-captcha">
+          {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+            <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} theme="light" />
           ) : (
-            '🎯 Get My Free SEO Analysis'
+            <div style={{ padding: '10px 14px', background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.25)', fontSize: '0.82rem', color: 'var(--amber)' }}>
+              reCAPTCHA temporarily unavailable &mdash; form submission still enabled.
+            </div>
           )}
-        </button>
+        </div>
+
+        <div className="ct-form-actions">
+          <p className="ct-privacy">
+            By submitting, you agree to our <a href="/privacy-policy/">privacy policy</a>. We never share your details.
+          </p>
+          <button type="submit" disabled={isSubmitting} className={`ct-submit-btn${submitStatus === 'success' ? ' success' : ''}`}>
+            {isSubmitting ? (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                Sending&hellip;
+              </>
+            ) : (
+              <>
+                Send enquiry
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </>
+            )}
+          </button>
+        </div>
       </form>
-    </div>
+    </>
   )
 }

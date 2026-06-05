@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import ToolBreadcrumb from '../../components/ToolBreadcrumb';
+import ShapeGrid from '../../components/ShapeGrid';
 
 export default function HTMLEditorClient() {
 
@@ -45,7 +45,7 @@ export default function HTMLEditorClient() {
   ];
 
   // ---------- Helpers ----------
-  const normalizeNBSP = (html: string) => html.replace(/&nbsp;|\u00A0/g, ' ');
+  const normalizeNBSP = (html: string) => html.replace(/&nbsp;| /g, ' ');
 
   // Close emoji picker on outside click / ESC
   useEffect(() => {
@@ -129,12 +129,12 @@ export default function HTMLEditorClient() {
             if (lower.startsWith('on')) el.removeAttribute(name);
             else if (!allowed.has(name.toUpperCase())) el.removeAttribute(name);
           });
-          
+
           // Remove all style attributes and classes for cleaning
           el.removeAttribute('style');
           el.removeAttribute('class');
           el.removeAttribute('id');
-          
+
           if (tag === 'A') {
             const a = el as HTMLAnchorElement;
             const href = a.getAttribute('href') || '';
@@ -302,7 +302,7 @@ export default function HTMLEditorClient() {
   const handleVisualChange = () => {
     if (visualRef.current) {
       let raw = visualRef.current.innerHTML;
-      
+
       // Clean up common contentEditable artifacts (but preserve br tags for normal editing)
       raw = raw
         // Remove empty paragraphs that contentEditable might create
@@ -313,7 +313,7 @@ export default function HTMLEditorClient() {
         // Clean up excessive whitespace
         .replace(/\s+/g, ' ')
         .trim();
-      
+
       const next = normalizeNBSP(raw);
       setHtmlContent(next);
       pushUndo(next);
@@ -489,7 +489,7 @@ export default function HTMLEditorClient() {
 
   const sourceClean = () => {
     let safe = sanitizeHTML(htmlContent);
-    
+
     // Additional cleaning steps to ensure clean HTML
     safe = safe
       // Remove empty paragraphs and elements
@@ -504,7 +504,7 @@ export default function HTMLEditorClient() {
       // Normalize spaces
       .replace(/\s+/g, ' ')
       .trim();
-    
+
     const pretty = domPretty(safe);
     setBoth(pretty);
     pushUndo(pretty);
@@ -558,236 +558,269 @@ ${htmlContent}
   const chars = plainText.length;
   const readingTimeMin = words > 0 ? Math.max(1, Math.round(words / 200)) : 0;
 
-  // Reusable btn styles (compact on mobile)
-  const btn = 'shrink-0 px-1 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-sm border rounded';
-  const btnSolid = 'shrink-0 px-1.5 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-sm rounded-lg';
+  // Button class constants — design system (he-* classes defined in scoped <style> below)
+  const btn = 'he-btn';
+  const btnSolid = 'he-btn-blue';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-      {/* Global styles for the visual editor */}
+    <>
+      {/* ── Scoped styles: visual editor content + editor chrome ── */}
       <style dangerouslySetInnerHTML={{
         __html: `
+        /* ---- Visual editor content ---- */
         .visual-editor {
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif !important;
           line-height: 1.6 !important;
           color: #374151 !important;
         }
-        .visual-editor p {
-          margin: 0.75em 0 !important;
-          padding: 0 !important;
-          font-size: 16px !important;
-          line-height: 1.6 !important;
+        .visual-editor p { margin: 0.75em 0 !important; padding: 0 !important; font-size: 16px !important; line-height: 1.6 !important; }
+        .visual-editor p:first-child { margin-top: 0 !important; }
+        .visual-editor p:last-child { margin-bottom: 0 !important; }
+        .visual-editor h1 { font-size: 2.25em !important; font-weight: 700 !important; margin: 1em 0 0.5em 0 !important; color: #1f2937 !important; line-height: 1.2 !important; }
+        .visual-editor h2 { font-size: 1.875em !important; font-weight: 600 !important; margin: 1em 0 0.5em 0 !important; color: #1f2937 !important; line-height: 1.3 !important; }
+        .visual-editor h3 { font-size: 1.5em !important; font-weight: 600 !important; margin: 1em 0 0.5em 0 !important; color: #1f2937 !important; line-height: 1.4 !important; }
+        .visual-editor h4 { font-size: 1.25em !important; font-weight: 600 !important; margin: 1em 0 0.5em 0 !important; color: #1f2937 !important; line-height: 1.4 !important; }
+        .visual-editor h5 { font-size: 1.125em !important; font-weight: 600 !important; margin: 1em 0 0.5em 0 !important; color: #1f2937 !important; line-height: 1.5 !important; }
+        .visual-editor h6 { font-size: 1em !important; font-weight: 600 !important; margin: 1em 0 0.5em 0 !important; color: #1f2937 !important; line-height: 1.5 !important; }
+        .visual-editor h1:first-child, .visual-editor h2:first-child, .visual-editor h3:first-child,
+        .visual-editor h4:first-child, .visual-editor h5:first-child, .visual-editor h6:first-child { margin-top: 0 !important; }
+        .visual-editor ul, .visual-editor ol { margin: 1em 0 !important; padding-left: 2em !important; }
+        .visual-editor li { margin: 0.5em 0 !important; padding: 0 !important; }
+        .visual-editor ul li { list-style-type: disc !important; }
+        .visual-editor ol li { list-style-type: decimal !important; }
+        .visual-editor strong, .visual-editor b { font-weight: 700 !important; }
+        .visual-editor em, .visual-editor i { font-style: italic !important; }
+        .visual-editor u { text-decoration: underline !important; }
+        .visual-editor s { text-decoration: line-through !important; }
+        .visual-editor a { color: #2563eb !important; text-decoration: underline !important; }
+        .visual-editor a:hover { color: #1d4ed8 !important; }
+        .visual-editor blockquote { margin: 1.5em 0 !important; padding: 1em 1.5em !important; border-left: 4px solid #2563eb !important; background-color: #f8fafc !important; font-style: italic !important; color: #475569 !important; }
+        .visual-editor table { border-collapse: collapse !important; width: 100% !important; margin: 1.5em 0 !important; border: 1px solid #d1d5db !important; }
+        .visual-editor th, .visual-editor td { border: 1px solid #d1d5db !important; padding: 0.75em !important; text-align: left !important; vertical-align: top !important; }
+        .visual-editor th { background-color: #f9fafb !important; font-weight: 600 !important; color: #374151 !important; }
+        .visual-editor pre { background-color: #f3f4f6 !important; padding: 1.5em !important; overflow-x: auto !important; margin: 1.5em 0 !important; border: 1px solid #e5e7eb !important; }
+        .visual-editor code { background-color: #f3f4f6 !important; padding: 0.25em 0.5em !important; font-family: 'Courier New', Consolas, Monaco, monospace !important; font-size: 0.875em !important; color: #dc2626 !important; border: 1px solid #e5e7eb !important; }
+        .visual-editor pre code { background: none !important; padding: 0 !important; border: none !important; color: inherit !important; }
+        .visual-editor hr { border: none !important; height: 2px !important; background-color: #e5e7eb !important; margin: 2em 0 !important; }
+        .visual-editor img { max-width: 100% !important; height: auto !important; margin: 1em 0 !important; }
+
+        /* ---- HTML Editor chrome ---- */
+        .he-topbar {
+          background: var(--ink-3);
+          border: 1px solid rgba(255,255,255,0.08);
+          padding: 0.625rem 1rem;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 0.375rem;
         }
-        .visual-editor p:first-child {
-          margin-top: 0 !important;
+        .he-topbar-label {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: rgba(255,255,255,0.6);
+          margin-right: 0.5rem;
         }
-        .visual-editor p:last-child {
-          margin-bottom: 0 !important;
+        .he-btn {
+          flex-shrink: 0;
+          padding: 4px 8px;
+          font-size: 0.72rem;
+          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.05);
+          color: rgba(255,255,255,0.65);
+          cursor: pointer;
+          font-family: 'Inter', sans-serif;
+          transition: background 0.15s, color 0.15s, border-color 0.15s;
+          line-height: 1.5;
         }
-        .visual-editor h1 {
-          font-size: 2.25em !important;
-          font-weight: 700 !important;
-          margin: 1em 0 0.5em 0 !important;
-          color: #1f2937 !important;
-          line-height: 1.2 !important;
+        .he-btn:hover {
+          background: rgba(255,255,255,0.1);
+          color: rgba(255,255,255,0.9);
+          border-color: rgba(255,255,255,0.25);
         }
-        .visual-editor h2 {
-          font-size: 1.875em !important;
-          font-weight: 600 !important;
-          margin: 1em 0 0.5em 0 !important;
-          color: #1f2937 !important;
-          line-height: 1.3 !important;
+        .he-btn-blue {
+          flex-shrink: 0;
+          background: var(--blue);
+          color: #fff;
+          border: none;
+          padding: 5px 14px;
+          font-size: 0.75rem;
+          font-weight: 700;
+          font-family: 'Space Grotesk', sans-serif;
+          cursor: pointer;
+          transition: background 0.15s;
+          line-height: 1.5;
         }
-        .visual-editor h3 {
-          font-size: 1.5em !important;
-          font-weight: 600 !important;
-          margin: 1em 0 0.5em 0 !important;
-          color: #1f2937 !important;
-          line-height: 1.4 !important;
+        .he-btn-blue:hover { background: var(--blue-dark); }
+        .he-select {
+          flex-shrink: 0;
+          padding: 4px 6px;
+          font-size: 0.72rem;
+          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.05);
+          color: rgba(255,255,255,0.65);
+          cursor: pointer;
+          font-family: 'Inter', sans-serif;
+          outline: none;
         }
-        .visual-editor h4 {
-          font-size: 1.25em !important;
-          font-weight: 600 !important;
-          margin: 1em 0 0.5em 0 !important;
-          color: #1f2937 !important;
-          line-height: 1.4 !important;
+        .he-select option { background: var(--ink-2); color: var(--white); }
+        .he-editor-box {
+          border: 1px solid rgba(255,255,255,0.08);
+          border-top: none;
+          background: var(--ink-3);
         }
-        .visual-editor h5 {
-          font-size: 1.125em !important;
-          font-weight: 600 !important;
-          margin: 1em 0 0.5em 0 !important;
-          color: #1f2937 !important;
-          line-height: 1.5 !important;
+        .he-panes {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          min-height: 500px;
         }
-        .visual-editor h6 {
-          font-size: 1em !important;
-          font-weight: 600 !important;
-          margin: 1em 0 0.5em 0 !important;
-          color: #1f2937 !important;
-          line-height: 1.5 !important;
+        .he-source-pane {
+          border-right: 1px solid rgba(255,255,255,0.08);
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
         }
-        .visual-editor h1:first-child, .visual-editor h2:first-child, 
-        .visual-editor h3:first-child, .visual-editor h4:first-child, 
-        .visual-editor h5:first-child, .visual-editor h6:first-child {
-          margin-top: 0 !important;
+        .he-visual-pane {
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+          background: #fff;
         }
-        .visual-editor ul, .visual-editor ol {
-          margin: 1em 0 !important;
-          padding-left: 2em !important;
+        .he-pane-top {
+          padding: 0.5rem 0.75rem;
+          background: var(--ink-2);
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 0.25rem;
+          flex-shrink: 0;
         }
-        .visual-editor li {
-          margin: 0.5em 0 !important;
-          padding: 0 !important;
+        .he-visual-pane .he-pane-top {
+          background: #f3f4f6;
+          border-bottom: 1px solid #e5e7eb;
         }
-        .visual-editor ul li {
-          list-style-type: disc !important;
+        .he-visual-pane .he-btn {
+          background: rgba(0,0,0,0.04);
+          border-color: #d1d5db;
+          color: #374151;
         }
-        .visual-editor ol li {
-          list-style-type: decimal !important;
+        .he-visual-pane .he-btn:hover {
+          background: rgba(37,99,235,0.08);
+          border-color: rgba(37,99,235,0.35);
+          color: #1d4ed8;
         }
-        .visual-editor strong, .visual-editor b {
-          font-weight: 700 !important;
+        .he-visual-pane .he-select {
+          background: rgba(0,0,0,0.04);
+          border-color: #d1d5db;
+          color: #374151;
         }
-        .visual-editor em, .visual-editor i {
-          font-style: italic !important;
+        .he-visual-pane .he-select option { background: #fff; color: #111; }
+        .he-pane-label {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: rgba(255,255,255,0.6);
+          margin-right: 0.375rem;
         }
-        .visual-editor u {
-          text-decoration: underline !important;
+        .he-visual-pane .he-pane-label { color: #374151; }
+        .he-pane-meta {
+          margin-left: auto;
+          font-size: 0.65rem;
+          color: rgba(255,255,255,0.28);
+          font-family: 'JetBrains Mono', monospace;
+          white-space: nowrap;
         }
-        .visual-editor s {
-          text-decoration: line-through !important;
+        .he-visual-pane .he-pane-meta { color: #9ca3af; }
+        .he-stats-bar {
+          background: var(--ink-2);
+          border-top: 1px solid rgba(255,255,255,0.08);
+          padding: 0.5rem 1rem;
+          font-size: 0.75rem;
+          color: rgba(255,255,255,0.35);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 0.5rem;
         }
-        .visual-editor a {
-          color: #2563eb !important;
-          text-decoration: underline !important;
+        .he-stats-bar strong { color: rgba(255,255,255,0.65); }
+        .he-emoji-popover {
+          border: 1px solid var(--line);
+          background: var(--white);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.14);
         }
-        .visual-editor a:hover {
-          color: #1d4ed8 !important;
+        .he-emoji-btn {
+          width: 32px;
+          height: 32px;
+          font-size: 1rem;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.1s;
         }
-        .visual-editor blockquote {
-          margin: 1.5em 0 !important;
-          padding: 1em 1.5em !important;
-          border-left: 4px solid #2563eb !important;
-          background-color: #f8fafc !important;
-          font-style: italic !important;
-          color: #475569 !important;
-        }
-        .visual-editor table {
-          border-collapse: collapse !important;
-          width: 100% !important;
-          margin: 1.5em 0 !important;
-          border: 1px solid #d1d5db !important;
-        }
-        .visual-editor th, .visual-editor td {
-          border: 1px solid #d1d5db !important;
-          padding: 0.75em !important;
-          text-align: left !important;
-          vertical-align: top !important;
-        }
-        .visual-editor th {
-          background-color: #f9fafb !important;
-          font-weight: 600 !important;
-          color: #374151 !important;
-        }
-        .visual-editor pre {
-          background-color: #f3f4f6 !important;
-          padding: 1.5em !important;
-          border-radius: 0.5rem !important;
-          overflow-x: auto !important;
-          margin: 1.5em 0 !important;
-          border: 1px solid #e5e7eb !important;
-        }
-        .visual-editor code {
-          background-color: #f3f4f6 !important;
-          padding: 0.25em 0.5em !important;
-          border-radius: 0.25rem !important;
-          font-family: 'Courier New', Consolas, Monaco, monospace !important;
-          font-size: 0.875em !important;
-          color: #dc2626 !important;
-          border: 1px solid #e5e7eb !important;
-        }
-        .visual-editor pre code {
-          background: none !important;
-          padding: 0 !important;
-          border: none !important;
-          color: inherit !important;
-        }
-        .visual-editor hr {
-          border: none !important;
-          height: 2px !important;
-          background-color: #e5e7eb !important;
-          margin: 2em 0 !important;
-        }
-        .visual-editor img {
-          max-width: 100% !important;
-          height: auto !important;
-          border-radius: 0.375rem !important;
-          margin: 1em 0 !important;
+        .he-emoji-btn:hover { background: var(--blue-pale); }
+        @media (max-width: 900px) {
+          .he-panes { grid-template-columns: 1fr; }
+          .he-source-pane { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
         }
         `
       }} />
-      
-      {/* Tool Header */}
-      <div className="container mx-auto px-4 sm:px-6 pt-8 sm:pt-12">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
-            <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-              Online HTML
-            </span>{' '}
-            <span className="text-primary">Editor</span>
-          </h1>
-          <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
-            <div className="flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
-              Live Preview
-            </div>
-            <div className="flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
-              Syntax Highlighting
-            </div>
-            <div className="flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
-              HTML, CSS &amp; JavaScript
-            </div>
-            <div className="flex items-center">
-              <span className="text-green-500 mr-2">✓</span>
-              100% Free
-            </div>
-          </div>
-          <div className="max-w-4xl mx-auto mb-6">
-            <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-              Test HTML, CSS, and JavaScript instantly in your browser. Our <strong>Free Online HTML Editor</strong> gives you a live split-screen preview with syntax highlighting — no downloads, no setup, just open and start coding.
-            </p>
+
+      {/* ─── HERO ─── */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, transparent 30%, rgba(8,9,10,0.55) 100%)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>HTML Editor</span>
+          </nav>
+          <div className="tool-hero-badge">💻 HTML Tool — Free Forever</div>
+          <h1 className="tool-hero-h1">Free Online <span>HTML5 Editor</span><br />with Live Preview</h1>
+          <p className="tool-hero-sub">Write, test, and perfect your HTML, CSS, and JavaScript instantly. Dual-pane editor with visual rich-text preview — no setup, no downloads, just open and code.</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
+            {['Live Preview', 'Syntax Highlighting', 'HTML, CSS & JavaScript', '100% Free'].map((label) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
+                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Main Tool Section */}
-      <section id="tool-section" className="py-4 sm:py-6">
-        <div className="container mx-auto px-3 sm:px-6 max-w-7xl">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100">
-            {/* Global actions */}
-            <div className="border-b border-gray-200 p-3 sm:p-4 bg-gray-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-              <div className="text-sm font-semibold text-gray-700">HTML Editor — Enhanced Toolbars</div>
-              <div className="flex flex-wrap items-center gap-1 sm:gap-2 w-full sm:w-auto">
-                <button onClick={copyHTML} className={`${btnSolid} bg-primary text-white hover:bg-primary/90`}>
-                  {copied ? '✅ Copied' : '📋 Copy'}
-                </button>
-                <button onClick={downloadHTML} className={`${btn} hover:bg-gray-100`}>{downloaded ? '✅' : '⬇️'} Download</button>
-                <button onClick={triggerImport} className={`${btn} hover:bg-gray-100`}>{importing ? '⏳' : '📂'} Import</button>
-                <input ref={fileInputRef} type="file" accept=".html,text/html,.txt" onChange={handleImport} className="hidden" />
-              </div>
-            </div>
+      {/* ─── EDITOR SECTION ─── */}
+      <div className="tool-input-section">
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          {/* Global actions bar */}
+          <div className="he-topbar">
+            <span className="he-topbar-label">HTML Editor — Enhanced Toolbars</span>
+            <button onClick={copyHTML} className={btnSolid}>
+              {copied ? '✅ Copied' : '📋 Copy'}
+            </button>
+            <button onClick={downloadHTML} className={btn}>{downloaded ? '✅' : '⬇️'} Download</button>
+            <button onClick={triggerImport} className={btn}>{importing ? '⏳' : '📂'} Import</button>
+            <input ref={fileInputRef} type="file" accept=".html,text/html,.txt" onChange={handleImport} style={{ display: 'none' }} />
+          </div>
 
-            {/* Two panes: Source TOP on mobile, LEFT on desktop, Visual BOTTOM on mobile, RIGHT on desktop */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 h-auto min-h-[500px] sm:min-h-[600px]">
-              {/* SOURCE (Top on mobile, Left on desktop) */}
-              <div className="border-r-0 lg:border-r border-gray-200 border-b lg:border-b-0 flex flex-col min-h-[250px] overflow-hidden">
-                <div className="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 flex flex-wrap items-center gap-1 sm:gap-2 shrink-0">
-                  <span className="text-xs sm:text-sm font-semibold text-gray-700 mr-2">💻 HTML Source</span>
-                  <button className="order-1 lg:order-none px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-gray-800 text-white rounded-lg" onClick={sourceClean} title="Clean / Sanitize">
-                    ⚙️ Clean
-                  </button>
+          {/* Two-pane editor */}
+          <div className="he-editor-box">
+            <div className="he-panes">
+
+              {/* SOURCE PANE */}
+              <div className="he-source-pane">
+                <div className="he-pane-top">
+                  <span className="he-pane-label">💻 HTML Source</span>
+                  <button className={btn} onClick={sourceClean} title="Clean / Sanitize">⚙️ Clean</button>
                   <button className={btn} onClick={sourceUndo} title="Undo">↶</button>
                   <button className={btn} onClick={sourceRedo} title="Redo">↷</button>
                   <button className={btn} onClick={sourceNew} title="New / Clear">🗒️</button>
@@ -795,125 +828,105 @@ ${htmlContent}
                   <button className={btn} onClick={() => setSourceFontSize(p => Math.min(28, p + 1))} title="Font +">A+</button>
                   <button className={btn} onClick={sourceCopy} title="Copy">📋</button>
                   <button className={btn} onClick={sourceSelectAll} title="Select All">▭</button>
-                  <span className="ml-auto text-[11px] sm:text-xs text-gray-600 order-last">
-                    Source: {htmlContent.length} • {sourceFontSize}px
-                  </span>
+                  <span className="he-pane-meta">Source: {htmlContent.length} · {sourceFontSize}px</span>
                 </div>
-
                 <textarea
                   id="source-textarea"
                   value={htmlContent}
                   onChange={handleSourceChange}
-                  className="flex-1 p-4 sm:p-6 font-mono text-xs sm:text-sm resize-none focus:outline-none border-0 overflow-auto min-h-[200px]"
-                  style={{ fontSize: `${sourceFontSize}px`, lineHeight: 1.6 }}
+                  style={{
+                    flex: 1,
+                    padding: '1rem 1.25rem',
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: `${sourceFontSize}px`,
+                    lineHeight: 1.6,
+                    resize: 'none',
+                    outline: 'none',
+                    border: 'none',
+                    overflow: 'auto',
+                    minHeight: '220px',
+                    background: 'var(--ink-3)',
+                    color: 'rgba(255,255,255,0.82)',
+                    display: 'block',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                  }}
                   spellCheck={false}
                   aria-label="HTML source"
                 />
               </div>
 
-              {/* VISUAL (Bottom on mobile, Right on desktop) */}
-              <div className="flex flex-col min-h-[250px] overflow-hidden">
-                {/* Visual toolbar */}
-                <div className="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 shrink-0">
-                  <div className="flex flex-wrap items-center gap-1 sm:gap-2">
-                    {/* Undo/Redo */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('undo')} className={btn} title="Undo">↶</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('redo')} className={btn} title="Redo">↷</button>
-
-                    {/* Formats dropdown */}
-                    <select
-                      className="shrink-0 px-1 py-0.5 text-xs sm:px-2 sm:py-1 sm:text-sm border rounded"
-                      defaultValue=""
-                      onChange={(e) => { handleFormatsChange(e.target.value); e.currentTarget.value = ""; }}
-                      title="Formats"
+              {/* VISUAL PANE */}
+              <div className="he-visual-pane">
+                <div className="he-pane-top">
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('undo')} className={btn} title="Undo">↶</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('redo')} className={btn} title="Redo">↷</button>
+                  <select
+                    className="he-select"
+                    defaultValue=""
+                    onChange={(e) => { handleFormatsChange(e.target.value); e.currentTarget.value = ""; }}
+                    title="Formats"
+                  >
+                    <option value="" disabled>Formats</option>
+                    <option value="H1">Heading 1</option>
+                    <option value="H2">Heading 2</option>
+                    <option value="H3">Heading 3</option>
+                    <option value="H4">Heading 4</option>
+                    <option value="P">Paragraph</option>
+                    <option value="BLOCKQUOTE">Block Quote</option>
+                    <option value="COLOR:red">Red text</option>
+                    <option value="COLOR:green">Green text</option>
+                    <option value="COLOR:blue">Blue text</option>
+                  </select>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('bold')} className={btn} style={{ fontWeight: 700 }} title="Bold">B</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('italic')} className={btn} style={{ fontStyle: 'italic' }} title="Italic">I</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('underline')} className={btn} style={{ textDecoration: 'underline' }} title="Underline">U</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('strikeThrough')} className={btn} style={{ textDecoration: 'line-through' }} title="Strikethrough">S</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyLeft')} className={btn} title="Align Left">⟸</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyCenter')} className={btn} title="Align Center">⇔</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyRight')} className={btn} title="Align Right">⟹</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyFull')} className={btn} title="Justify">≣</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('insertUnorderedList')} className={btn} title="Bulleted List">•</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('insertOrderedList')} className={btn} title="Numbered List">1.</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('outdent')} className={btn} title="Outdent">⇤</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('indent')} className={btn} title="Indent">⇥</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={makeLink} className={btn} title="Insert Link">🔗</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={removeLink} className={btn} title="Remove Link">⛔</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={insertImage} className={btn} title="Insert Image">🖼️</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => makeBlock('P')} className={btn} title="Paragraph">¶</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={insertCodeBlock} className={btn} title="Code">{'</>'}</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={insertHR} className={btn} title="Horizontal Rule">—</button>
+                  <label className={btn} style={{ cursor: 'pointer' }} title="Text Color">
+                    A<input type="color" style={{ marginLeft: '2px', width: '14px', height: '14px', verticalAlign: 'middle', cursor: 'pointer', border: 'none', padding: 0 }} onChange={(e) => applyForeColor(e.target.value)} />
+                  </label>
+                  <label className={btn} style={{ cursor: 'pointer' }} title="Background Color">
+                    A▉<input type="color" style={{ marginLeft: '2px', width: '14px', height: '14px', verticalAlign: 'middle', cursor: 'pointer', border: 'none', padding: 0 }} onChange={(e) => applyBackColor(e.target.value)} />
+                  </label>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('superscript')} className={btn} title="Superscript">x⁺</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('subscript')} className={btn} title="Subscript">x₋</button>
+                  <div style={{ position: 'relative' }}>
+                    <button
+                      ref={emojiBtnRef}
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => {
+                        setEmojiOpen((v) => !v);
+                        if (!emojiBtnRef.current) return;
+                        const r = emojiBtnRef.current.getBoundingClientRect();
+                        setEmojiPos({ top: r.bottom + 8, left: r.left });
+                      }}
+                      className={btn}
+                      title="Emoji"
+                      aria-haspopup="true"
+                      aria-expanded={emojiOpen}
                     >
-                      <option value="" disabled>Formats</option>
-                      <option value="H1">Heading 1</option>
-                      <option value="H2">Heading 2</option>
-                      <option value="H3">Heading 3</option>
-                      <option value="H4">Heading 4</option>
-                      <option value="P">Paragraph</option>
-                      <option value="BLOCKQUOTE">Block Quote</option>
-                      <option value="COLOR:red">Red text</option>
-                      <option value="COLOR:green">Green text</option>
-                      <option value="COLOR:blue">Blue text</option>
-                    </select>
-
-                    {/* Inline */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('bold')} className={`${btn} font-bold`} title="Bold">B</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('italic')} className={`${btn} italic`} title="Italic">I</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('underline')} className={`${btn} underline`} title="Underline">U</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('strikeThrough')} className={`${btn} line-through`} title="Strikethrough">S</button>
-
-                    {/* Align */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyLeft')} className={btn} title="Align Left">⟸</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyCenter')} className={btn} title="Align Center">⇔</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyRight')} className={btn} title="Align Right">⟹</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('justifyFull')} className={btn} title="Justify">≣</button>
-
-                    {/* Lists & Indent */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('insertUnorderedList')} className={btn} title="Bulleted List">•</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('insertOrderedList')} className={btn} title="Numbered List">1.</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('outdent')} className={btn} title="Outdent">⇤</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('indent')} className={btn} title="Indent">⇥</button>
-
-                    {/* Links / Media */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={makeLink} className={btn} title="Insert Link">🔗</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={removeLink} className={btn} title="Remove Link">⛔</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={insertImage} className={btn} title="Insert Image">🖼️</button>
-
-                    {/* Paragraph / Code / HR */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => makeBlock('P')} className={btn} title="Paragraph">¶</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={insertCodeBlock} className={btn} title="Code">{'</>'}</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={insertHR} className={btn} title="Horizontal Rule">—</button>
-
-                    {/* Color pickers */}
-                    <label className={`${btn} cursor-pointer`} title="Text Color">
-                      A
-                      <input type="color" className="ml-0.5 w-4 h-4 sm:w-5 sm:h-5 align-middle" onChange={(e) => applyForeColor(e.target.value)} />
-                    </label>
-                    <label className={`${btn} cursor-pointer`} title="Background Color">
-                      A▉
-                      <input type="color" className="ml-0.5 w-4 h-4 sm:w-5 sm:h-5 align-middle" onChange={(e) => applyBackColor(e.target.value)} />
-                    </label>
-
-                    {/* Sup/Sub */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('superscript')} className={btn} title="Superscript">x⁺</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('subscript')} className={btn} title="Subscript">x₋</button>
-
-                    {/* Emoji anchor button */}
-                    <div className="relative">
-                      <button
-                        ref={emojiBtnRef}
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => {
-                          setEmojiOpen((v) => !v);
-                          if (!emojiBtnRef.current) return;
-                          const r = emojiBtnRef.current.getBoundingClientRect();
-                          setEmojiPos({ top: r.bottom + 8, left: r.left });
-                        }}
-                        className={btn}
-                        title="Emoji"
-                        aria-haspopup="true"
-                        aria-expanded={emojiOpen}
-                      >
-                        😊
-                      </button>
-                    </div>
-
-                    {/* Table */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={insertTable} className={btn} title="Insert Table">▦</button>
-
-                    {/* Remove Format */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('removeFormat')} className={btn} title="Remove Formatting">⌫</button>
-
-                    {/* Font ± (wrap selection) */}
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => fontSizeStep(-1)} className={btn} title="Smaller">A−</button>
-                    <button onMouseDown={(e) => e.preventDefault()} onClick={() => fontSizeStep(1)} className={btn} title="Larger">A+</button>
+                      😊
+                    </button>
                   </div>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={insertTable} className={btn} title="Insert Table">▦</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => exec('removeFormat')} className={btn} title="Remove Formatting">⌫</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => fontSizeStep(-1)} className={btn} title="Smaller">A−</button>
+                  <button onMouseDown={(e) => e.preventDefault()} onClick={() => fontSizeStep(1)} className={btn} title="Larger">A+</button>
                 </div>
-
-                {/* Visual editor */}
                 <div
                   ref={visualRef}
                   contentEditable
@@ -921,11 +934,8 @@ ${htmlContent}
                   onKeyUp={handleVisualChange}
                   onPaste={handlePaste}
                   onKeyDown={handleKeyDown}
-                  className="visual-editor flex-1 p-4 sm:p-6 overflow-auto focus:outline-none max-w-none min-h-[200px]"
-                  style={{
-                    border: 'none',
-                    outline: 'none',
-                  }}
+                  className="visual-editor"
+                  style={{ flex: 1, padding: '1rem 1.25rem', overflow: 'auto', outline: 'none', border: 'none', minHeight: '220px', background: '#fff' }}
                   suppressContentEditableWarning
                 />
               </div>
@@ -935,14 +945,14 @@ ${htmlContent}
             {emojiOpen && (
               <div
                 ref={emojiPopoverRef}
-                className="fixed z-50 w-64 bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-64 overflow-auto"
-                style={{ top: emojiPos.top, left: emojiPos.left }}
+                className="he-emoji-popover"
+                style={{ position: 'fixed', zIndex: 50, width: '256px', padding: '0.5rem', maxHeight: '256px', overflow: 'auto', top: emojiPos.top, left: emojiPos.left }}
               >
-                <div className="grid grid-cols-6 gap-1">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '2px' }}>
                   {EMOJI.map((e) => (
                     <button
                       key={e}
-                      className="h-8 w-8 rounded hover:bg-gray-100 text-lg"
+                      className="he-emoji-btn"
                       onClick={() => {
                         document.execCommand('insertText', false, e);
                         setEmojiOpen(false);
@@ -957,638 +967,400 @@ ${htmlContent}
               </div>
             )}
 
-            {/* Stats/footer of editor card */}
-            <div className="border-t border-gray-200 px-3 sm:px-4 py-2 bg-gray-50 text-xs sm:text-sm text-gray-600">
-              Words: <strong>{words}</strong> · Characters: <strong>{chars}</strong> · Reading time: <strong>{readingTimeMin} min</strong>
-              <span className="float-right text-green-600">✅ Visual & source stay in sync</span>
+            {/* Stats footer */}
+            <div className="he-stats-bar">
+              <span>Words: <strong>{words}</strong> · Characters: <strong>{chars}</strong> · Reading time: <strong>{readingTimeMin} min</strong></span>
+              <span style={{ color: 'var(--green)', fontWeight: 600 }}>✅ Visual &amp; source stay in sync</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── FOUNDER ─── */}
+      <section className="founder-section" style={{ padding: '3rem 2rem' }}>
+        <div style={{ maxWidth: '1360px', margin: '0 auto' }}>
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <p className="founder-quote-text">&ldquo;I built this HTML editor because every time I wanted to test a quick snippet or prototype a layout, I had to either set up a local server or navigate to some clunky online tool. This editor just gets out of the way — dual pane, instant sync, and it runs entirely in your browser.&rdquo;</p>
+              <div className="founder-name">Rohit Sharma</div>
+              <div className="founder-role">Founder, SEOShouts</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Tool Breadcrumb */}
-      <ToolBreadcrumb toolName="HTML Editor" toolSlug="html-editor" />
-
-      {/* About Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Write HTML, CSS &amp; JavaScript Instantly
-              </span>
-            </h2>
-
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-4">Code Without the Complicated Setup</h3>
-              <p>
-                Ever wanted to quickly test some HTML code but didn't want to open your entire development setup? Or maybe you're learning web development and need a simple way to practice without complicated software?
-              </p>
-              <p>
-                Our HTML5 Online Editor is perfect for exactly that. Open your browser, start typing code, and watch your webpage come to life in real time.
-              </p>
-              <p>
-                <strong>Best part?</strong> No downloads, no setup, no headaches. Just pure, instant coding.
-              </p>
-            </div>
-
+      {/* ─── PROSE: About ─── */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">About This Tool</div>
+            <h2 className="s-title">Write HTML, CSS &amp; JavaScript <span className="blue">Instantly</span></h2>
+          </div>
+          <div className="prose-content">
+            <h3>Code Without the Complicated Setup</h3>
+            <p>Ever wanted to quickly test some HTML code but didn&rsquo;t want to open your entire development setup? Or maybe you&rsquo;re learning web development and need a simple way to practice without complicated software?</p>
+            <p>Our HTML5 Online Editor is perfect for exactly that. Open your browser, start typing code, and watch your webpage come to life in real time.</p>
+            <p><strong>Best part?</strong> No downloads, no setup, no headaches. Just pure, instant coding.</p>
           </div>
         </div>
       </section>
 
-      {/* What Makes This Editor Actually Useful Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What Makes This Editor Actually Useful</h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">See Your Code in Action Immediately</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Type HTML on the left, see the result on the right. Add CSS, watch it update instantly. Drop in JavaScript, see it work right away.
-              </p>
-              <p className="text-lg text-gray-700 leading-relaxed mb-4">No more:</p>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Saving files and refreshing browsers</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Setting up local servers for testing</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Wondering if your code actually works</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Switching between multiple windows and apps</span>
-                </li>
-              </ul>
-              <p className="text-gray-700 italic">Just pure, instant feedback as you code.</p>
-            </div>
+      {/* ─── FEATURES ─── */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Editor Features</div>
+            <h2 className="s-title">What Makes This Editor <span className="blue">Actually Useful</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              {
+                title: 'Live Split Preview',
+                desc: 'Type HTML on the left, see the result on the right. Add CSS, watch it update instantly. Drop in JavaScript, see it work right away.',
+                paths: ['M3 3H10V21H3z', 'M14 3H21V21H14z'],
+              },
+              {
+                title: 'Visual Rich Text Editor',
+                desc: 'Full WYSIWYG toolbar with bold, italic, lists, tables, links, images, and more. Format content without writing a single tag.',
+                paths: ['M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7', 'M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'],
+              },
+              {
+                title: 'HTML Sanitizer & Formatter',
+                desc: 'One-click Clean strips unsafe tags, removes inline styles, normalizes whitespace, and pretty-prints your markup for clean output.',
+                paths: ['M22 3H2l8 9.46V19l4 2v-8.54L22 3z'],
+              },
+              {
+                title: 'Export & Import Files',
+                desc: 'Copy HTML to clipboard, download as a full HTML file, or import existing .html files directly into the editor.',
+                paths: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M7 10L12 15L17 10', 'M12 15V3'],
+              },
+              {
+                title: 'Auto-Saves to Browser',
+                desc: 'Your work is automatically saved to browser local storage. Close the tab and come back later — your code will still be there.',
+                paths: ['M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z', 'M17 21V13H7V21', 'M7 3V8H15'],
+              },
+              {
+                title: 'Emoji Picker Built In',
+                desc: 'Insert emojis directly into your HTML content from a built-in palette of 70+ emojis — no copy-paste needed.',
+                paths: ['M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z', 'M8 14s1.5 2 4 2 4-2 4-2', 'M9 9h.01', 'M15 9h.01'],
+              },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.paths.map((p, pi) => <path key={pi} d={p} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <p className="feature-desc">{f.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Works Like the Real Development Tools You Know Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Works Like the Real Development Tools You Know</h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                We didn&rsquo;t reinvent the wheel. The editor feels familiar and gets out of the way.
-              </p>
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">What you get:</h3>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Syntax highlighting for readability</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Auto-indentation to keep everything neat</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Error hints that help catch typos early</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Bracket and tag matching so you don&rsquo;t lose structure</span>
-                </li>
-              </ul>
-              <p className="text-gray-700 italic">Good tools should feel natural, not frustrating.</p>
-            </div>
+      {/* ─── HOW-TO ─── */}
+      <section className="section howto-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Getting Started</div>
+            <h2 className="s-title">How to Use the <span className="blue">HTML5 Editor</span></h2>
           </div>
-        </div>
-      </section>
-
-      {/* Handles Everything Modern Websites Need Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Handles Everything Modern Websites Need</h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                This isn&rsquo;t just for basic HTML. Build complete, modern webpages.
-              </p>
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Full support for:</h3>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">HTML5 semantic tags and modern elements</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">CSS3 (flexbox, grid, animations, variables)</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">JavaScript for interactive functionality</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Embedding images, video, audio, and iframes</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Responsive layouts that adapt across devices</span>
-                </li>
-              </ul>
-              <p className="text-gray-700 italic">Practice real-world skills, not toy examples.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Use the HTML5 Editor Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">How to Use the HTML5 Editor</h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <ol className="space-y-6">
-                <li className="flex items-start space-x-4">
-                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-2">Start Typing</h3>
-                    <p className="text-gray-700">Open the tool and start writing HTML in the left panel. Even just &lt;h1&gt;Hello World&lt;/h1&gt; will show you how it works.</p>
+          <div className="steps-grid">
+            {[
+              { title: 'Start Typing', desc: 'Open the tool and start writing HTML in the left panel. Even just <h1>Hello World</h1> will show you how it works.', tip: '💡 Tip: Start simple and layer complexity. The live preview makes it easy to see what each change does.' },
+              { title: 'Add Some Style', desc: 'Drop in CSS between <style> tags to make your page look good. Changes reflect in the visual pane immediately.', tip: null },
+              { title: 'Make It Interactive', desc: 'Add JavaScript to create buttons, forms, animations — whatever you want your page to do.', tip: null },
+              { title: 'See It All Work', desc: 'Watch the right panel update in real time as you type. No save button needed.', tip: null },
+              { title: 'Export When Ready', desc: "Copy your code or download it when you're happy with how everything looks and works.", tip: null },
+            ].map((s, i, arr) => (
+              <div key={i} className="step-card">
+                <div className="step-num-big">{String(i + 1).padStart(2, '0')}</div>
+                <div className="step-title">{s.title}</div>
+                <p className="step-desc">{s.desc}</p>
+                {s.tip && <div className="step-tip">{s.tip}</div>}
+                {i < arr.length - 1 && (
+                  <div className="step-connector">
+                    <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
                   </div>
-                </li>
-                <li className="flex items-start space-x-4">
-                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-2">Add Some Style</h3>
-                    <p className="text-gray-700">Drop in CSS between &lt;style&gt; tags or in the CSS section to make your page look good.</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-4">
-                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-2">Make It Interactive</h3>
-                    <p className="text-gray-700">Add JavaScript to create buttons, forms, animations&mdash;whatever you want your page to do.</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-4">
-                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-2">See It All Work</h3>
-                    <p className="text-gray-700">Watch the right panel update in real time as you type. No save button needed.</p>
-                  </div>
-                </li>
-                <li className="flex items-start space-x-4">
-                  <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-2">Export When Ready</h3>
-                    <p className="text-gray-700">Copy your code or download it when you&rsquo;re happy with how everything looks and works.</p>
-                  </div>
-                </li>
-              </ol>
-              <div className="mt-8 bg-primary/10 border border-primary/20 rounded-xl p-6 text-center">
-                <p className="text-gray-700">
-                  <strong>Pro tip:</strong> Start simple and layer complexity. The live preview makes it easy to see what each change does.
-                </p>
+                )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Who Actually Uses This Tool Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Who Should Use This Tool?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 text-center">
-                <div className="text-3xl mb-4">📚</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">People Learning Web Development</h3>
-                <p className="text-gray-600">Perfect for following tutorials, trying examples, or experimenting without setup.</p>
+      {/* ─── WHY: Who should use ─── */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Who It&rsquo;s Built For</div>
+            <h2 className="s-title">Who Should Use <span className="blue">This Tool?</span></h2>
+          </div>
+          <div className="why-grid">
+            {[
+              { paths: ['M4 19.5A2.5 2.5 0 0 1 6.5 17H20', 'M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'], title: 'People Learning Web Development', body: 'Perfect for following tutorials, trying examples, or experimenting without setup. Also great for teachers and students who need a shared coding environment for assignments and demos.' },
+              { paths: ['M16 18l6-6-6-6', 'M8 6l-6 6 6 6'], title: 'Developers Who Need Quick Tests', body: 'Test a snippet, try a CSS technique, or debug some JavaScript — faster than creating new files or spinning up a local environment.' },
+              { paths: ['M3 3h7v7H3z', 'M14 3h7v7h-7z', 'M14 14h7v7h-7z', 'M3 14h7v7H3z'], title: 'Designers Prototyping Ideas', body: 'Sketch layouts, test color systems, and try typography without committing to a full design tool or development setup.' },
+              { paths: ['M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7', 'M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'], title: 'Content Creators Adding Custom Code', body: 'Building a custom widget for a blog or landing page? Test it here first before dropping it into your CMS.' },
+            ].map((w, i) => (
+              <div key={i} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">
+                    <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                      {w.paths.map((p, pi) => <path key={pi} d={p} />)}
+                    </svg>
+                  </div>
+                  {w.title}
+                </div>
+                <p className="why-card-body">{w.body}</p>
               </div>
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100 text-center">
-                <div className="text-3xl mb-4">⚡</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Developers Who Need Quick Tests</h3>
-                <p className="text-gray-600">Test a snippet, try a CSS technique, or debug some JavaScript&mdash;faster than creating new files.</p>
-              </div>
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100 text-center">
-                <div className="text-3xl mb-4">🎨</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Designers Prototyping Ideas</h3>
-                <p className="text-gray-600">Sketch layouts, test color systems, and try typography without committing to a full design.</p>
-              </div>
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100 text-center">
-                <div className="text-3xl mb-4">✍️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Content Creators Adding Custom Code</h3>
-                <p className="text-gray-600">Building a custom widget for a blog or landing page? Test it here first.</p>
-              </div>
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100 text-center">
-                <div className="text-3xl mb-4">🎓</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Teachers and Students</h3>
-                <p className="text-gray-600">Great for assignments, demos, and collaborative exercises with a shared environment.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What You Can Build With This Editor Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">What You Can Build With This Editor</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🌐 Simple Websites and Landing Pages</h3>
-                <p className="text-gray-600">Create pages with headers, navigation, content sections, and footers.</p>
+      {/* ─── WHAT YOU CAN BUILD (features) ─── */}
+      <section className="section ratio-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Possibilities</div>
+            <h2 className="s-title">What You Can <span className="blue">Build With This Editor</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              { title: 'Simple Websites & Landing Pages', desc: 'Create pages with headers, navigation, content sections, and footers — all previewed live as you type.', paths: ['M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z', 'M2 12h20', 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'] },
+              { title: 'Interactive Widgets', desc: 'Build calculators, quizzes, carousels, image galleries, and more with instant JavaScript feedback.', paths: ['M13 2L3 14h9l-1 8 10-12h-9l1-8z'] },
+              { title: 'CSS Experiments', desc: 'Try new layout techniques, test animations, and explore design systems without a build step.', paths: ['M2 17l10 5 10-5', 'M2 12l10 5 10-5', 'M12 2L2 7l10 5 10-5-10-5z'] },
+              { title: 'JavaScript Practice', desc: 'Learn DOM manipulation, events, fetch/API calls, and state patterns with instant feedback.', paths: ['M4 17l6-6-6-6', 'M12 19h8'] },
+              { title: 'Email Templates', desc: 'Draft HTML emails and preview their structure before testing in real email clients.', paths: ['M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z', 'M22 6l-10 7L2 6'] },
+              { title: 'Docs & Reusable Snippets', desc: 'Format documentation, build reusable component snippets, and copy clean markup straight out.', paths: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z', 'M14 2v6h6', 'M16 13H8', 'M16 17H8', 'M10 9H8'] },
+            ].map((f, i) => (
+              <div key={i} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.paths.map((p, pi) => <path key={pi} d={p} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <p className="feature-desc">{f.desc}</p>
               </div>
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">⚡ Interactive Widgets</h3>
-                <p className="text-gray-600">Build calculators, quizzes, carousels, image galleries, and more.</p>
-              </div>
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🎨 CSS Experiments</h3>
-                <p className="text-gray-600">Try new layout techniques, test animations, and explore design systems.</p>
-              </div>
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-8 border border-orange-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">💻 JavaScript Practice</h3>
-                <p className="text-gray-600">Learn DOM manipulation, events, fetch/API calls, and state patterns with instant feedback.</p>
-              </div>
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 border border-yellow-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">📧 Email Templates</h3>
-                <p className="text-gray-600">Draft HTML emails and preview structure before testing in clients.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Common Coding Scenarios This Tool Handles Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Common Coding Scenarios This Tool Handles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;I Want to Try This Tutorial&rdquo;</h3>
-                <p className="text-gray-600">Paste examples and see them work immediately.</p>
+      {/* ─── COMMON SCENARIOS (why-grid) ─── */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Common Scenarios</div>
+            <h2 className="s-title">Common Coding <span className="blue">Scenarios This Tool Handles</span></h2>
+          </div>
+          <div className="why-grid">
+            {[
+              { title: 'I Want to Try This Tutorial', body: 'Paste examples from any tutorial and see them render immediately — no project setup needed.', paths: ['M5 3l14 9-14 9V3z'] },
+              { title: 'Does This CSS Actually Work?', body: 'Test browser compatibility and new techniques in seconds, side by side with your source.', paths: ['M22 11.08V12a10 10 0 1 1-5.93-9.14', 'M22 4L12 14.01l-3-3'] },
+              { title: 'I Need to Debug This Code', body: 'Use the live preview and source view together to spot broken markup and styling fast.', paths: ['M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z', 'M21 21l-4.35-4.35'] },
+              { title: 'Can I Make This Responsive?', body: 'Preview across widths and tweak your breakpoints confidently before shipping anything.', paths: ['M2 3h20v14H2z', 'M8 21h8', 'M12 17v4'] },
+              { title: 'I Want to Learn by Doing', body: 'Write, see, adjust, repeat — the dual-pane loop is the fastest way to actually learn the web.', paths: ['M23 4v6h-6', 'M1 20v-6h6', 'M3.51 9a9 9 0 0 1 14.85-3.36L23 10', 'M1 14l4.64 4.36A9 9 0 0 0 20.49 15'] },
+            ].map((w, i) => (
+              <div key={i} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">
+                    <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                      {w.paths.map((p, pi) => <path key={pi} d={p} />)}
+                    </svg>
+                  </div>
+                  {w.title}
+                </div>
+                <p className="why-card-body">{w.body}</p>
               </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;Does This CSS Actually Work?&rdquo;</h3>
-                <p className="text-gray-600">Test compatibility and new techniques in seconds.</p>
-              </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;I Need to Debug This Code&rdquo;</h3>
-                <p className="text-gray-600">Use error hints and live preview to spot issues quickly.</p>
-              </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;Can I Make This Responsive?&rdquo;</h3>
-                <p className="text-gray-600">Preview across widths and tweak breakpoints confidently.</p>
-              </div>
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">&ldquo;I Want to Learn by Doing&rdquo;</h3>
-                <p className="text-gray-600">Write, see, adjust, repeat&mdash;the fastest way to learn.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Best Practices Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">Web Development Best Practices Built Into the Editor</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* HTML Guidelines */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">🏷️ HTML Guidelines</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Use semantic tags: header, nav, main, section, article</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Always include alt text for images</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Prefer strong/em over b/i for meaning</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-primary mr-2 mt-1">•</span>
-                    <span>Structure content hierarchically with headings</span>
-                  </li>
+      {/* ─── BEST PRACTICES (features) ─── */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Best Practices</div>
+            <h2 className="s-title">Web Development <span className="blue">Best Practices Built Into the Editor</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              { tag: 'HTML', title: 'HTML Guidelines', bullets: ['Use semantic tags: header, nav, main, section, article', 'Always include alt text for images', 'Prefer strong/em over b/i for meaning', 'Structure content hierarchically with headings'], paths: ['M16 18l6-6-6-6', 'M8 6l-6 6 6 6'] },
+              { tag: 'CSS', title: 'CSS Tips', bullets: ['Use flexbox and grid for modern layouts', 'Keep color contrast readable (4.5:1 minimum)', 'Use CSS variables for consistent theming', 'Make designs responsive with mobile-first approach'], paths: ['M2 17l10 5 10-5', 'M2 12l10 5 10-5', 'M12 2L2 7l10 5 10-5-10-5z'] },
+              { tag: 'JS', title: 'JavaScript Best Practices', bullets: ['Use const and let instead of var', 'Add event listeners properly', 'Handle errors gracefully with try-catch', 'Keep functions small and focused'], paths: ['M13 2L3 14h9l-1 8 10-12h-9l1-8z'] },
+            ].map((f, i) => (
+              <div key={i} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.paths.map((p, pi) => <path key={pi} d={p} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.tag} — {f.title}</div>
+                <ul style={{ margin: '0.75rem 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                  {f.bullets.map((b, bi) => (
+                    <li key={bi} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', fontSize: '0.83rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>
+                      <span style={{ color: 'var(--blue)', fontWeight: 700, flexShrink: 0, marginTop: '0.05rem' }}>·</span>
+                      <span>{b}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
-
-              {/* CSS Tips */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">🎨 CSS Tips</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Use flexbox and grid for modern layouts</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Keep color contrast readable (4.5:1 minimum)</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Use CSS variables for consistent theming</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-secondary mr-2 mt-1">•</span>
-                    <span>Make designs responsive with mobile-first approach</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* JavaScript Best Practices */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-                <h3 className="text-xl font-semibold mb-6 text-gray-800">⚡ JavaScript Best Practices</h3>
-                <ul className="space-y-3">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">•</span>
-                    <span>Use const and let instead of var</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">•</span>
-                    <span>Add event listeners properly</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">•</span>
-                    <span>Handle errors gracefully with try-catch</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 mr-2 mt-1">•</span>
-                    <span>Keep functions small and focused</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Common Mistakes Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Common HTML/CSS/JavaScript Mistakes This Tool Helps You Avoid</h2>
-            
-            <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-8">
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <span className="text-red-500 text-xl">❌</span>
-                  <span className="text-gray-700"><strong>Forgetting to close HTML tags</strong> - Live preview shows broken layouts immediately</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-red-500 text-xl">❌</span>
-                  <span className="text-gray-700"><strong>CSS syntax errors</strong> - See styles not applying in real-time</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-red-500 text-xl">❌</span>
-                  <span className="text-gray-700"><strong>JavaScript console errors</strong> - Use browser dev tools to debug easily</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-red-500 text-xl">❌</span>
-                  <span className="text-gray-700"><strong>Poor mobile responsiveness</strong> - Test different screen sizes instantly</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-red-500 text-xl">❌</span>
-                  <span className="text-gray-700"><strong>Missing accessibility features</strong> - Practice adding proper labels and alt text</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-red-500 text-xl">❌</span>
-                  <span className="text-gray-700"><strong>Inline styles everywhere</strong> - Learn to separate HTML structure from CSS presentation</span>
-                </div>
-              </div>
+      {/* ─── GOOD TO KNOW: Mistakes + Privacy + Limitations ─── */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Good to Know</div>
+            <h2 className="s-title">What This Tool Helps You <span className="blue">Get Right</span></h2>
+          </div>
+          <div className="prose-content">
+            <h3>Common HTML/CSS/JS Mistakes It Helps You Avoid</h3>
+            <ul>
+              {[
+                ['Forgetting to close HTML tags', 'the live preview shows broken layouts immediately'],
+                ['CSS syntax errors', 'you see styles fail to apply in real time'],
+                ['JavaScript console errors', 'use your browser dev tools to debug them easily'],
+                ['Poor mobile responsiveness', 'test different screen sizes instantly'],
+                ['Missing accessibility features', 'practice adding proper labels and alt text'],
+                ['Inline styles everywhere', 'learn to separate HTML structure from CSS presentation'],
+              ].map(([mistake, fix], i) => (
+                <li key={i}><strong>{mistake}</strong> — {fix}.</li>
+              ))}
+            </ul>
+
+            <div className="prose-callout">
+              <div className="prose-callout-title">Privacy &amp; Security</div>
+              <p>Everything happens in your browser. We don&rsquo;t store, save, or even see your code. No account required, no tracking, no data collection — and it keeps working offline once the page has loaded.</p>
             </div>
+
+            <h3>Honest Limitations</h3>
+            <ul>
+              <li><strong>Client-side only:</strong> runs HTML, CSS, and JavaScript — not server-side languages like PHP, Python, or Node.js.</li>
+              <li><strong>No file hosting:</strong> you&rsquo;ll need to host finished sites elsewhere.</li>
+              <li><strong>Not a full IDE:</strong> for large projects, use tools like VS Code or WebStorm.</li>
+            </ul>
+            <p>For quick testing, learning, and prototyping, though? This tool is exactly what you need.</p>
           </div>
         </div>
       </section>
 
-      {/* Privacy and Security Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Privacy and Security</h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Everything happens in your browser. We don&rsquo;t store, save, or even see your code. When you close the tab, your work is gone unless you save it yourself.
-              </p>
-              <ul className="space-y-3">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">No account required.</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">No tracking or data collection.</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Works offline after the page loads.</span>
-                </li>
-              </ul>
-            </div>
+      {/* ─── FAQ ─── */}
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+          </div>
+          <div className="faq-list">
+            {[
+              { q: 'Is this HTML editor really free?', a: 'Yes, completely free. No signup required, no hidden fees, no limitations on usage.' },
+              { q: 'Can I use this for professional projects?', a: "Absolutely! It's great for prototyping, testing code snippets, and creating HTML templates for clients." },
+              { q: 'Does it work offline?', a: 'Yes, after the page loads, you can continue coding even without an internet connection.' },
+              { q: 'Can I save my work?', a: "Your work auto-saves to your browser's local storage. You can also copy or download your code anytime." },
+              { q: 'What frameworks and libraries can I use?', a: 'You can include any client-side library via CDN links — Bootstrap, jQuery, React, Vue.js, etc.' },
+              { q: 'Is my code private and secure?', a: "Yes, everything runs in your browser. We don't store, transmit, or see your code." },
+            ].map((item, i) => (
+              <details key={i} className="faq-item">
+                <summary>{item.q}</summary>
+                <div className="faq-answer">{item.a}</div>
+              </details>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is this HTML editor really free?</h3>
-                <p className="text-gray-600">Yes, completely free. No signup required, no hidden fees, no limitations on usage.</p>
-              </div>
-              
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I use this for professional projects?</h3>
-                <p className="text-gray-600">Absolutely! It's great for prototyping, testing code snippets, and creating HTML templates for clients.</p>
-              </div>
-              
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Does it work offline?</h3>
-                <p className="text-gray-600">Yes, after the page loads, you can continue coding even without an internet connection.</p>
-              </div>
-              
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I save my work?</h3>
-                <p className="text-gray-600">Your work auto-saves to your browser's local storage. You can also copy/download your code anytime.</p>
-              </div>
-              
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">What frameworks and libraries can I use?</h3>
-                <p className="text-gray-600">You can include any client-side library via CDN links - Bootstrap, jQuery, React, Vue.js, etc.</p>
-              </div>
-              
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is my code private and secure?</h3>
-                <p className="text-gray-600">Yes, everything runs in your browser. We don't store, transmit, or see your code.</p>
-              </div>
-            </div>
+      {/* ─── RELATED TOOLS ─── */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow light">More Free Tools</div>
+            <h2 className="s-title light">Explore Our Other <span className="blue">SEO Tools</span></h2>
           </div>
-        </div>
-      </section>
-
-      {/* Limitations Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center">
-              <span className="mr-3">⚠️</span>
-              Limitations (Being Honest Here)
-            </h2>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <ul className="space-y-3">
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Client-side only: Runs HTML, CSS, and JavaScript&mdash;not server-side languages like PHP, Python, or Node.js.</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">No file hosting: You&rsquo;ll need to host finished sites elsewhere.</span>
-                </li>
-                <li className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700">Not a full IDE: For large projects, use tools like VS Code or WebStorm.</span>
-                </li>
-              </ul>
-              <p className="text-gray-700 italic mt-6">For quick testing, learning, and prototyping? This tool is perfect.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore More SEO Tools Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-indigo/5">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
-              </p>
-            </div>
-
-            {/* Featured Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📊</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Keyword Density Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Optimize your keyword usage and avoid over-optimization penalties.</p>
-                <a href="/tools/keyword-density-analyzer/" className="text-primary font-medium hover:underline">
-                  Try Keyword Density Analyzer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏷️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better CTR.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">
-                  Try Meta Tag Optimizer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">💻</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">HTML5 Editor</h3>
-                <p className="text-sm text-gray-600 mb-4">Write and test HTML, CSS, and JavaScript with instant live preview.</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🤖</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Blog Ideas Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate compelling blog topics with AI-powered content suggestions.</p>
-                <a href="/tools/blog-ideas-generator/" className="text-primary font-medium hover:underline">
-                  Try Blog Ideas Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">✍️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">AI Copywriter</h3>
-                <p className="text-sm text-gray-600 mb-4">Create persuasive copy and marketing content with AI assistance.</p>
-                <a href="/tools/ai-copywriter/" className="text-primary font-medium hover:underline">
-                  Try AI Copywriter</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔢</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Word Counter</h3>
-                <p className="text-sm text-gray-600 mb-4">Count words, characters, and analyze readability of your content.</p>
-                <a href="/tools/word-counter/" className="text-primary font-medium hover:underline">
-                  Try Word Counter</a> →
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <a 
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="mr-2">🛠️</span>
-                Browse All SEO Tools
+          <div className="related-tools-grid">
+            {[
+              {
+                current: true,
+                name: 'HTML5 Editor',
+                desc: 'Write and test HTML, CSS, and JavaScript with instant live preview.',
+                href: '/tools/html-editor/',
+                paths: ['M3 3H10V21H3z', 'M14 3H21V21H14z'],
+              },
+              {
+                current: false,
+                name: 'Keyword Density Analyzer',
+                desc: 'Optimize keyword usage and avoid over-optimization penalties.',
+                href: '/tools/keyword-density-analyzer/',
+                paths: ['M18 20V10', 'M12 20V4', 'M6 20V14'],
+              },
+              {
+                current: false,
+                name: 'Meta Tag Optimizer',
+                desc: 'Generate perfect title tags and meta descriptions for better CTR.',
+                href: '/tools/meta-tag-optimizer/',
+                paths: ['M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z', 'M7 7h.01'],
+              },
+              {
+                current: false,
+                name: 'Word Counter',
+                desc: 'Count words, characters, and analyze readability of your content.',
+                href: '/tools/word-counter/',
+                paths: ['M17 10H3', 'M21 6H3', 'M21 14H3', 'M17 18H3'],
+              },
+              {
+                current: false,
+                name: 'AI Copywriter',
+                desc: 'Create persuasive copy and marketing content with AI assistance.',
+                href: '/tools/ai-copywriter/',
+                paths: ['M13 2L3 14H12L11 22L21 10H12L13 2z'],
+              },
+            ].map((tool) => (
+              <a key={tool.href} href={tool.href} className={`related-card${tool.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {tool.paths.map((p, pi) => <path key={pi} d={p} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name">{tool.name}</div>
+                <p className="related-card-desc">{tool.desc}</p>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {tool.current ? 'CURRENT TOOL' : 'FREE TOOL'}
+                </div>
               </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free • No signup required • Instant results
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Start Coding Right Now (Final CTA) Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Start Coding Right Now</h2>
-            <p className="text-lg mb-8 opacity-90 leading-relaxed">
-              Whether a beginner or a seasoned developer, the SEOShouts HTML5 Online Editor gives a fast, focused space to write, test, and perfect your web code.
-            </p>
-            <p className="text-xl font-semibold mb-8">
-              No setup. No downloads. No complications. Just open, code, and create.
-            </p>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold mb-6 flex items-center justify-center">
-                <span className="mr-3">📋</span>
-                Get Started Immediately:
-              </h3>
-              <div className="space-y-4 text-lg">
-                <div className="flex items-start justify-center space-x-3">
-                  <span>🚀</span>
-                  <div>
-                    <strong>Open the HTML5 Editor &rarr;</strong><br/>
-                    <em className="text-white/80">Start coding in seconds&mdash;completely free</em>
-                  </div>
-                </div>
-                <div className="flex items-start justify-center space-x-3">
-                  <span>💡</span>
-                  <div>
-                    <strong>Simple enough to learn on, powerful enough for real work</strong><br/>
-                    <em className="text-white/80">Stop wrestling with development setup and start creating.</em>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-              <p className="text-xl font-bold mb-4">
-                Try SEOShouts&rsquo; HTML5 Online Editor now. Built for anyone who wants to code without the hassle.
-              </p>
-            </div>
+      {/* ─── FINAL CTA ─── */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Start <span>Coding Right Now</span></h2>
+          <p className="final-cta-sub">Whether a beginner or a seasoned developer, the SEOShouts HTML5 Online Editor gives you a fast, focused space to write, test, and perfect your web code. No setup. No downloads. No complications. Just open, code, and create.</p>
+          <div className="final-cta-row">
+            <a href="#top" className="btn-primary">🚀 Open the HTML5 Editor</a>
+            <a href="/tools/" className="btn-outline">Browse All SEO Tools</a>
+          </div>
+          <div className="final-cta-pills">
+            <span className="final-pill">100% Free Forever</span>
+            <span className="final-pill">No Signup Required</span>
+            <span className="final-pill">Works in Your Browser</span>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </>
   );
 }

@@ -144,7 +144,7 @@ export default function AdminDashboard() {
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <Link
-            href="/admin/articles"
+            href="/admin/articles/"
             className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow group"
           >
             <div className="flex items-center justify-between">
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/categories"
+            href="/admin/categories/"
             className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow group"
           >
             <div className="flex items-center justify-between">
@@ -186,7 +186,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/authors"
+            href="/admin/authors/"
             className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow group"
           >
             <div className="flex items-center justify-between">
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/images"
+            href="/admin/images/"
             className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow group"
           >
             <div className="flex items-center justify-between">
@@ -228,7 +228,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link
-            href="/admin/redirections"
+            href="/admin/redirections/"
             className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow group"
           >
             <div className="flex items-center justify-between">

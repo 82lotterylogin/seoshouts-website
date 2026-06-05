@@ -82,6 +82,22 @@ export default function LinkBuildingPage() {
         }}
       />
 
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seoshouts.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://seoshouts.com/services/" },
+              { "@type": "ListItem", "position": 3, "name": "Link Building Services", "item": "https://seoshouts.com/services/link-building/" }
+            ]
+          })
+        }}
+      />
+
       {/* FAQ Schema */}
       <script
         type="application/ld+json"
@@ -100,6 +116,14 @@ export default function LinkBuildingPage() {
           })
         }}
       />
+
+      {/* Speakable Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", ".s-sub"] },
+        "url": "https://seoshouts.com/services/link-building/"
+      })}} />
 
       <LinkBuildingPageContent />
     </>

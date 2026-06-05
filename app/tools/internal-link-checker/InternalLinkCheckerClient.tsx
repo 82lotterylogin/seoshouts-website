@@ -727,9 +727,9 @@ export default function InternalLinkCheckerClient() {
               { n: '02', title: 'Analyze the Word Cloud', desc: 'Once the crawl completes, study the visual word cloud. What you want: a diverse mix of terms at similar sizes. What signals a problem: a single keyword dominating the cloud — that indicates over-optimization that could trigger Google\'s spam detection.', tip: 'Zyppy: pages with more unique anchor text variations receive significantly more organic clicks. Diversity isn\'t just safe — it directly drives traffic.' },
               { n: '03', title: 'Review the Data Table', desc: 'Switch to the data view for granular insights — frequency count for each unique anchor, which pages each anchor points to, and source pages. Flag any anchor that appears more than 15% of the time pointing to a single URL.', tip: 'Check your distribution against the benchmarks in the ratio section below.' },
               { n: '04', title: 'Fix and Optimize', desc: 'Replace generic anchors ("click here," "read more") with descriptive phrases. Diversify over-optimized anchors using synonyms and partial matches. Add internal links to orphan pages — any page with fewer than 3 incoming internal links needs attention.', tip: 'After making changes, re-run the analysis to confirm your improvements. Monthly audits keep your anchor profile balanced.' },
-            ].map((s, i) => (
+            ].map((s, i, arr) => (
               <div key={s.n} className="step-card">
-                {i < 3 && (
+                {i < arr.length - 1 && (
                   <div className="step-connector">
                     <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
                   </div>

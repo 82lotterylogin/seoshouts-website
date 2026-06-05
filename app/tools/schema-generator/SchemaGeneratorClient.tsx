@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
+import ShapeGrid from '../../components/ShapeGrid'
 
 // Schema types interface
 interface SchemaType {
@@ -1134,1354 +1135,806 @@ ${generatedSchema}
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
+    <>
 
-      {/* Tool Section */}
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto">
-
-            {/* H1 Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-center leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Schema Markup
-              </span>{' '}
-              <span className="text-primary">Generator</span>
-            </h1>
-
-            {/* Feature badges */}
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mb-6">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                10+ Schema Types
+      {/* --- TOOL HERO --- */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(8,9,10,0.35)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Schema Generator</span>
+          </nav>
+          <div className="tool-hero-badge">Free SEO Tool</div>
+          <h1 className="tool-hero-h1">
+            Free Schema Markup <span>Generator</span>
+          </h1>
+          <p className="tool-hero-sub">
+            Help Google understand your content and earn rich results. Our{' '}
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Free Schema Markup Generator</strong>{' '}
+            creates perfect JSON-LD structured data for articles, local businesses, FAQs, products, reviews, and more — paste it in, no coding required.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
+            {['10+ Schema Types', 'JSON-LD Format', 'Google-Validated', '100% Free'].map(label => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
+                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
               </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                JSON-LD Format
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Google-Validated
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
-
-            {/* Answer Capsule */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-6">
-                Help Google understand your content and earn rich results. Our <strong>Free Schema Markup Generator</strong> creates perfect JSON-LD structured data for articles, local businesses, FAQs, products, reviews, and more — paste it in, no coding required.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Input Section */}
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900">Configure Schema</h2>
-                </div>
-
-                {/* Free Tool Notice */}
-                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <div>
-                      <span className="text-sm font-medium text-blue-900">100% Free • No Registration Required</span>
-                      <p className="text-xs text-blue-700 mt-1">Generate unlimited schema markup instantly</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-6">
-                  {/* Schema Type Selection */}
-                  <div className="relative schema-dropdown">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
-                      Select Schema Type <span className="text-red-500">*</span>
-                      <span className="text-gray-500 font-normal ml-2">({getTotalSchemaCount()} types available)</span>
-                    </label>
-                    
-                    {/* Custom Dropdown Button */}
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-sm bg-white hover:border-gray-400 text-left"
-                      >
-                        <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-                          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                          </svg>
-                        </div>
-                        <span className="block truncate">{getCurrentSchemaTypeForDisplay()}</span>
-                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                          <svg className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        </div>
-                      </button>
-
-                      {/* Custom Dropdown Menu */}
-                      {isDropdownOpen && (
-                        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-80 overflow-hidden">
-                          {/* Search Input */}
-                          <div className="p-3 border-b border-gray-200">
-                            <div className="relative">
-                              <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                              </svg>
-                              <input
-                                type="text"
-                                placeholder="Search schema types..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
-                              />
-                            </div>
-                          </div>
-
-                          {/* Dropdown Options */}
-                          <div className="max-h-60 overflow-y-auto">
-                            {getSchemaCategories().map(category => {
-                              const categoryTypes = getFilteredSchemaTypes().filter(type => type.category === category)
-                              if (categoryTypes.length === 0) return null
-                              
-                              return (
-                                <div key={category}>
-                                  <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide bg-gray-50 border-b border-gray-100">
-                                    {category} ({categoryTypes.length})
-                                  </div>
-                                  {categoryTypes.map(type => (
-                                    <button
-                                      key={type.id}
-                                      type="button"
-                                      onClick={() => {
-                                        setForm(prev => ({ ...prev, schemaType: type.id }))
-                                        setSchemaData({})
-                                        setIsDropdownOpen(false)
-                                        setSearchTerm('')
-                                      }}
-                                      className={`w-full text-left px-4 py-3 hover:bg-blue-50 border-b border-gray-100 last:border-b-0 ${
-                                        form.schemaType === type.id ? 'bg-blue-100 text-blue-900' : 'text-gray-700'
-                                      }`}
-                                    >
-                                      <div className="flex items-center">
-                                        <span className="mr-3 text-lg">{getSchemaIcon(type.category)}</span>
-                                        <div>
-                                          <div className="font-medium">{type.name}</div>
-                                          <div className="text-xs text-gray-500">{type.description}</div>
-                                        </div>
-                                      </div>
-                                    </button>
-                                  ))}
-                                </div>
-                              )
-                            })}
-                            
-                            {getFilteredSchemaTypes().length === 0 && (
-                              <div className="px-4 py-8 text-center text-gray-500">
-                                <svg className="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                <p className="text-sm">No schema types found</p>
-                                <p className="text-xs">Try a different search term</p>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <p className="text-xs text-gray-500 mt-2">Choose the schema type that best matches your content</p>
-                  </div>
-
-                  {/* Page URL */}
-                  <div>
-                    <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-3">
-                      Page URL <span className="text-gray-500 font-normal">(Optional)</span>
-                    </label>
-                    <div className="relative">
-                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                      </div>
-                      <input
-                        type="url"
-                        id="url"
-                        value={form.url}
-                        onChange={(e) => setForm(prev => ({ ...prev, url: e.target.value }))}
-                        placeholder="https://example.com/page"
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-400"
-                      />
-                    </div>
-                    <p className="text-xs text-gray-500 mt-2">URL where this schema will be implemented</p>
-                  </div>
-
-                  {/* Dynamic Form Fields */}
-                  <div className="space-y-4 max-h-96 overflow-y-auto overflow-x-visible">
-                    {renderFormFields()}
-                  </div>
-
-                  {/* Human Verification Section */}
-                  <div className="border-2 border-blue-200 bg-blue-50 rounded-xl p-4">
-                    <div className="flex items-center mb-3">
-                      <span className="text-blue-600 mr-2">🛡️</span>
-                      <span className="text-sm font-semibold text-blue-800">Human Verification Required</span>
-                    </div>
-                    <p className="text-sm text-blue-700 mb-4">
-                      Please verify that you're not a robot to generate schema markup.
-                    </p>
-                    
-                    <div className="mb-4">
-                      <ReCAPTCHA
-                        ref={recaptchaRef}
-                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                        onChange={handleCaptchaChange}
-                        theme="light"
-                      />
-                    </div>
-
-                    {isVerified && (
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center">
-                        <span className="text-green-600 mr-2">✅</span>
-                        <span className="text-sm font-medium text-green-800">Verification successful! You can now generate schema.</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Error Message */}
-                  {error && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-red-700 text-sm">{error}</p>
-                    </div>
-                  )}
-
-                  {/* Action Buttons */}
-                  <div className="flex gap-4">
-                    <button
-                      onClick={generateSchema}
-                      disabled={loading || !isVerified}
-                      className="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center"
-                    >
-                      {loading ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Generating Schema...
-                        </>
-                      ) : (
-                        <>
-                          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                          </svg>
-                          {!isVerified ? 'Complete Verification First' : 'Generate Schema'}
-                        </>
-                      )}
-                    </button>
-                    
-                    <button
-                      onClick={resetForm}
-                      className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-                    >
-                      Reset
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Section */}
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900">Generated Schema</h2>
-                </div>
-                
-                {generatedSchema === '' ? (
-                  <div className="text-center py-12 text-gray-500">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">🔧</span>
-                    </div>
-                    <p>Configure your schema type and generate JSON-LD markup</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {/* Action Buttons */}
-                    <div className="flex gap-2 mb-4 flex-wrap">
-                      <button
-                        onClick={copyToClipboard}
-                        className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
-                      >
-                        {copied ? '✅ Copied!' : '📋 Copy Schema'}
-                      </button>
-                      <button
-                        onClick={downloadJSON}
-                        className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
-                      >
-                        💾 Download JSON
-                      </button>
-                      <button
-                        onClick={validateSchema}
-                        disabled={loading}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
-                      >
-                        {loading ? '⏳ Validating...' : '✅ Validate'}
-                      </button>
-                    </div>
-
-                    {/* External Testing Links */}
-                    <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                      <h4 className="font-semibold text-blue-800 mb-2">🔍 Test Your Schema Online</h4>
-                      <div className="flex gap-2 flex-wrap">
-                        <button
-                          onClick={() => handleTestingToolClick('google')}
-                          className="px-3 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 transition-colors"
-                        >
-                          📊 Google Rich Results Test
-                        </button>
-                        <button
-                          onClick={() => handleTestingToolClick('schema')}
-                          className="px-3 py-2 bg-green-600 text-white rounded text-sm font-medium hover:bg-green-700 transition-colors"
-                        >
-                          ✅ Schema.org Validator
-                        </button>
-                      </div>
-                      <p className="text-xs text-blue-600 mt-2">
-                        🚀 Click to copy schema and open testing tool with step-by-step instructions!
-                      </p>
-                      {copied && (
-                        <div className="mt-2 text-green-700 text-sm font-medium">
-                          ✅ Schema copied to clipboard! Check the instructions in the popup.
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Validation Results */}
-                    {validationResult && (
-                      <div className={`p-4 rounded-lg border ${
-                        validationResult.isValid 
-                          ? 'bg-green-50 border-green-200' 
-                          : 'bg-red-50 border-red-200'
-                      }`}>
-                        <div className="flex items-center mb-2">
-                          <span className={`mr-2 ${validationResult.isValid ? 'text-green-600' : 'text-red-600'}`}>
-                            {validationResult.isValid ? '✅' : '❌'}
-                          </span>
-                          <span className={`font-semibold ${validationResult.isValid ? 'text-green-800' : 'text-red-800'}`}>
-                            {validationResult.isValid ? 'Schema is Valid!' : 'Schema has Errors'}
-                          </span>
-                        </div>
-                        {validationResult.warnings.length > 0 && (
-                          <div className="text-sm text-yellow-700">
-                            <strong>Warnings:</strong>
-                            <ul className="list-disc list-inside mt-1">
-                              {validationResult.warnings.map((warning: string, index: number) => (
-                                <li key={index}>{warning}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Schema Code Display */}
-                    <div className="bg-gray-900 text-white p-4 rounded-lg overflow-x-auto text-sm font-mono max-h-96">
-                      <div className="text-purple-400 mb-2">&lt;script type="application/ld+json"&gt;</div>
-                      <pre className="text-green-300 pl-0">{generatedSchema}</pre>
-                      <div className="text-purple-400 mt-2">&lt;/script&gt;</div>
-                    </div>
-
-                    <div className="mt-4 text-sm text-gray-500">
-                      Generated {form.schemaType} schema markup ready for implementation
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Modern Breadcrumb Navigation */}
-      <section className="pt-0 pb-8 bg-gradient-to-r from-gray-50 to-blue-50/30">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <nav className="flex justify-center" aria-label="Breadcrumb">
-              <div className="bg-white/90 backdrop-blur-lg rounded-full shadow-lg border border-white/20 px-8 py-4 hover:shadow-xl transition-all duration-300">
-                <ol className="flex items-center space-x-1">
-                  <li>
-                    <a href="/" className="group flex items-center space-x-3 text-sm font-medium text-gray-600 hover:text-primary transition-all duration-200">
-                      <div className="w-8 h-8 bg-gray-100 group-hover:bg-primary/10 rounded-lg flex items-center justify-center transition-all duration-200">
-                        <svg className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                      </div>
-                      <span>Home</span>
-                    </a>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 mx-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                    <a href="/tools/" className="group flex items-center space-x-3 text-sm font-medium text-gray-600 hover:text-primary transition-all duration-200">
-                      <div className="w-8 h-8 bg-gray-100 group-hover:bg-primary/10 rounded-lg flex items-center justify-center transition-all duration-200">
-                        <svg className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </div>
-                      <span>SEO Tools</span>
-                    </a>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="w-5 h-5 mx-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                        <span className="text-sm font-semibold text-primary">Schema Generator</span>
-                      </div>
-                    </div>
-                  </li>
-                </ol>
-              </div>
-            </nav>
-          </div>
-        </div>
-      </section>
+      {/* --- TOOL INPUT SECTION --- */}
+      <div className="tool-input-section">
+        <div className="tool-input-inner" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'start' }}>
 
-      {/* Author Expertise Callout */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 sm:p-8">
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-white text-2xl font-bold">RS</span>
-                  </div>
-                </div>
+          {/* -- LEFT BOX — Configure Schema -- */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Configure Schema</h2>
+
+            {/* Free Tool Notice */}
+            <div style={{ marginBottom: '1.25rem', padding: '12px 16px', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="var(--blue-light)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Built by Rohit Sharma — 13+ Years in Technical SEO</h3>
-                  <p className="text-gray-700 text-sm sm:text-base mb-3">"I built this schema generator because every free tool I found either supported only 5–10 schema types or locked the useful ones behind a paid plan. SEOShouts' generator covers all 39 essential schema.org types with advanced property builders—the tool I wish existed when I was starting out with structured data."</p>
-                  <p className="text-sm text-gray-600">— Rohit Sharma, Founder | <a href="/meet-the-experts/" className="text-primary hover:underline font-medium">Meet Our Experts</a></p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Overview Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">The Most Advanced Schema Generator Available - Completely Free</h2>
-              <p>
-                A schema markup generator creates structured data in JSON-LD format that helps search engines understand your website content, enabling rich snippets, knowledge graph inclusion, and enhanced search results across 39+ schema.org types including Organization, Article, Product, Event, and specialized business schemas.
-              </p>
-              <p>
-                <strong>Built for SEO professionals, developers, and marketers</strong> who need reliable, valid schema markup that actually improves search rankings and rich snippet appearance with zero coding knowledge required.
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                39+ Schema Types
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Intelligent Form Builder
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Google Rich Results Integration
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Multi-Field Support
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free, No Login
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What is Schema Markup Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What is Schema Markup and Why Does It Improve Rankings?</h2>
-
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Schema markup is structured data code that tells search engines exactly what your content means—not just what it says. Instead of letting Google guess whether "Apple" means the fruit or the company, schema explicitly defines entities, relationships, and attributes using schema.org vocabulary.
-              </p>
-
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                According to Searchmetrics analysis of 10,000 URLs, websites with schema markup rank an average of 4 positions higher than those without. While correlation doesn't equal causation, the ranking boost comes from improved click-through rates (CTR) that signal quality to Google's algorithm.
-              </p>
-
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Here's what schema markup does for your website:</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>Rich snippets in SERPs</strong> - Star ratings, prices, images, FAQs displayed directly in search results</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>36% higher CTR on average</strong> - Enhanced results attract significantly more clicks (Search Engine Land data)</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>Voice search optimization</strong> - Essential for Google Assistant, Alexa, Siri answers</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>Knowledge graph inclusion</strong> - Appear in Google's knowledge panels and entity carousel</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>Local SEO dominance</strong> - Critical for Google Business Profile and local pack rankings</span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-gray-700"><strong>E-commerce conversion boost</strong> - Product schema with pricing/availability increases sales by 30% (Google research)</span>
-                </div>
-              </div>
-
-              <div className="bg-primary/10 border border-primary/20 rounded-xl p-6">
-                <p className="text-gray-700 text-center">
-                  <strong>Bottom line:</strong> Schema markup is the difference between a basic blue link and a rich, engaging result that dominates search real estate and drives qualified traffic.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Our Schema Generator Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why Our Schema Generator Outperforms Competitors</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Comprehensive Coverage */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🎯 39+ Schema Types - Most Comprehensive Available</h3>
-                <p className="text-gray-600 mb-4">Support for 39+ carefully selected schema.org types organized across 11 categories—more than any free generator. From basic Organization to specialized MedicalCondition, Drug, Vehicle, and SportsEvent schemas competitors ignore.</p>
-                <h4 className="font-semibold text-gray-800 mb-2">What sets us apart:</h4>
-                <ul className="text-gray-600 text-sm space-y-1">
-                  <li>• 39+ schema types vs 10-15 for most competitors</li>
-                  <li>• 11 industry-specific categories with visual organization</li>
-                  <li>• Advanced schemas: FAQ builder, How-To steps, AggregateRating</li>
-                  <li>• Regular updates when Google adds new rich result eligibility</li>
-                </ul>
-              </div>
-
-              {/* AI-Powered Intelligence */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">🤖 Intelligent Form Builder with Multi-Field Support</h3>
-                <p className="text-gray-600 mb-4">Dynamic forms that adapt based on your selected schema type, with advanced builders for complex properties like addresses, geo-coordinates, ratings, FAQ pairs, and step-by-step instructions.</p>
-                <h4 className="font-semibold text-gray-800 mb-2">Smart features:</h4>
-                <ul className="text-gray-600 text-sm space-y-1">
-                  <li>• Dynamic field generation per schema type</li>
-                  <li>• Address builder (street, city, state, postal, country)</li>
-                  <li>• Geographic coordinates (latitude/longitude)</li>
-                  <li>• FAQ builder for unlimited Q&A pairs</li>
-                  <li>• Step-by-step builder for How-To content</li>
-                  <li>• Aggregate rating system with customizable scale</li>
-                  <li>• Helpful examples and real-time validation</li>
-                </ul>
-              </div>
-
-              {/* Validation & Testing */}
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">✅ Direct Google Rich Results Test Integration</h3>
-                <p className="text-gray-600 mb-4">One-click access to Google's Rich Results Test and Schema.org Validator. Copy your generated markup and open testing tools instantly—no manual copy-paste between tabs.</p>
-                <h4 className="font-semibold text-gray-800 mb-2">Validation features:</h4>
-                <ul className="text-gray-600 text-sm space-y-1">
-                  <li>• Built-in schema validation before export</li>
-                  <li>• Direct Rich Results Test integration</li>
-                  <li>• Schema.org Validator quick access</li>
-                  <li>• Error detection with fix recommendations</li>
-                  <li>• Required field enforcement</li>
-                  <li>• Best practice compliance checking</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Key Features Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Advanced Features That Make Schema Generation Easy</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 text-center">
-                <div className="text-3xl mb-4">⚡</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Instant JSON-LD Generation</h3>
-                <p className="text-gray-600">Generate perfect JSON-LD markup in seconds. No coding knowledge required—intelligent forms guide you through required and optional properties with contextual examples.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100 text-center">
-                <div className="text-3xl mb-4">🔧</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Category-Based Organization</h3>
-                <p className="text-gray-600">39 schema types organized into 11 logical categories (Business, Content, E-commerce, Events, People, Jobs, Creative, Places, Technology, Medical, Automotive) with emoji icons and searchable dropdown.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100 text-center">
-                <div className="text-3xl mb-4">💾</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Multiple Export Options</h3>
-                <p className="text-gray-600">Download as JSON files, copy to clipboard with one click, or get ready-to-use JSON-LD code snippets for immediate implementation in your HTML &lt;head&gt; section.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100 text-center">
-                <div className="text-3xl mb-4">🎯</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">No Login Required</h3>
-                <p className="text-gray-600">Completely free with zero usage limits. No account creation, no email signup, no credit card. Generate unlimited schema markup with just reCAPTCHA verification per session.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100 text-center">
-                <div className="text-3xl mb-4">🔄</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Advanced Property Builders</h3>
-                <p className="text-gray-600">Specialized builders for complex schema properties: PostalAddress with full field breakdown, GeoCoordinates for location data, AggregateRating for reviews, FAQ pairs for question pages, and step-by-step instructions for How-To content.</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border border-teal-100 text-center">
-                <div className="text-3xl mb-4">📱</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Mobile-Optimized Interface</h3>
-                <p className="text-gray-600">Responsive design with Tailwind CSS works perfectly on desktop, tablet, and mobile. Generate schema markup anywhere, anytime, on any device.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Comparison Table Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">How Does Our Schema Generator Compare to Other Tools?</h2>
-            <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-              Most free schema generators support 10-15 basic types. We offer 39+ carefully selected schemas organized by industry, with advanced multi-field builders and direct Google Rich Results Test integration.
-            </p>
-
-            <div className="overflow-x-auto">
-              <table className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100 border-b border-gray-200">
-                    <th className="px-6 py-4 text-left font-semibold text-gray-800">Feature</th>
-                    <th className="px-6 py-4 text-left font-semibold text-primary">SEO Shouts</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-600">Merkle</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-600">TechnicalSEO</th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-600">Schema.org</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-gray-200">
-                    <td className="px-6 py-4 font-semibold text-gray-700">Schema Types Supported</td>
-                    <td className="px-6 py-4 text-primary font-semibold">39+</td>
-                    <td className="px-6 py-4 text-gray-600">15</td>
-                    <td className="px-6 py-4 text-gray-600">12</td>
-                    <td className="px-6 py-4 text-gray-600">All (complex)</td>
-                  </tr>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="px-6 py-4 font-semibold text-gray-700">Advanced Property Builders</td>
-                    <td className="px-6 py-4 text-primary">✓ Address, Geo, FAQ, Steps, Rating</td>
-                    <td className="px-6 py-4 text-gray-600">Basic only</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                  </tr>
-                  <tr className="border-b border-gray-200">
-                    <td className="px-6 py-4 font-semibold text-gray-700">Category Organization</td>
-                    <td className="px-6 py-4 text-primary">✓ 11 categories with search</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                  </tr>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="px-6 py-4 font-semibold text-gray-700">Google Rich Results Integration</td>
-                    <td className="px-6 py-4 text-primary">✓ One-click test</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                  </tr>
-                  <tr className="border-b border-gray-200">
-                    <td className="px-6 py-4 font-semibold text-gray-700">No Login Required</td>
-                    <td className="px-6 py-4 text-primary">✓</td>
-                    <td className="px-6 py-4 text-gray-600">✓</td>
-                    <td className="px-6 py-4 text-gray-600">✓</td>
-                    <td className="px-6 py-4 text-gray-600">✓</td>
-                  </tr>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="px-6 py-4 font-semibold text-gray-700">Export Options</td>
-                    <td className="px-6 py-4 text-primary">Copy + Download JSON</td>
-                    <td className="px-6 py-4 text-gray-600">Copy only</td>
-                    <td className="px-6 py-4 text-gray-600">Copy only</td>
-                    <td className="px-6 py-4 text-gray-600">Manual coding</td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 font-semibold text-gray-700">Mobile Responsive</td>
-                    <td className="px-6 py-4 text-primary">✓</td>
-                    <td className="px-6 py-4 text-gray-600">✓</td>
-                    <td className="px-6 py-4 text-gray-600">Partial</td>
-                    <td className="px-6 py-4 text-gray-600">✗</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Use Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">How to Use the Schema Generator (Step by Step)</h2>
-            
-            <div className="space-y-6">
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">1</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Choose Your Schema Type</h3>
-                  <p className="text-gray-700">Select from 39 schema types using the searchable dropdown with category filtering. Categories include Business, Content, E-commerce, Events, People, and specialized types.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">2</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Fill in the Required Information</h3>
-                  <p className="text-gray-700">Complete the dynamically generated form fields with your specific information. Required fields are marked with asterisks (*) and include contextual examples.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">3</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Add Optional Properties</h3>
-                  <p className="text-gray-700">Include additional properties to make your schema more comprehensive. Use advanced builders for addresses, geo-coordinates, ratings, FAQ pairs, and step instructions.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">4</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Complete Human Verification</h3>
-                  <p className="text-gray-700">Verify with Google reCAPTCHA (one-time per session) to ensure high-quality results and prevent automated abuse of the tool.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">5</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Generate and Validate</h3>
-                  <p className="text-gray-700">Click generate to create your JSON-LD schema markup. The tool automatically validates required fields and provides error feedback if needed.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">6</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Export and Test</h3>
-                  <p className="text-gray-700">Copy to clipboard or download as JSON file. Use the integrated Google Rich Results Test button to validate your schema immediately.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4">
-                <span className="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold flex-shrink-0">7</span>
-                <div>
-                  <h3 className="font-semibold text-gray-800 mb-2">Implement on Your Website</h3>
-                  <p className="text-gray-700">Paste the generated JSON-LD code into the &lt;head&gt; section of your HTML page. JSON-LD is Google's recommended format and doesn't require inline markup.</p>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--blue-light)' }}>100% Free • No Registration Required</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--gray-4)', marginTop: 2 }}>Generate unlimited schema markup instantly</div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 bg-primary/10 border border-primary/20 rounded-xl p-6">
-              <p className="text-gray-700 text-center">
-                <strong>Pro tip:</strong> Always test with Google's Rich Results Test after implementation. Not all schema types are eligible for rich results—check Google's documentation for current eligibility.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* All Available Schema Types Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-12 text-center text-gray-800">All {getTotalSchemaCount()} Schema Types Available in This Tool</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Business & Organizations */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-                <div className="text-3xl mb-4">🏢</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Business & Organizations (8 types)</h3>
-                <p className="text-gray-600 mb-3">Perfect for company websites, local businesses, and professional services.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Organization - Company/business information</li>
-                  <li>• LocalBusiness - Local business with physical location</li>
-                  <li>• Corporation - Large corporation or public company</li>
-                  <li>• Restaurant - Restaurant or food service business</li>
-                  <li>• Hotel - Hotel or accommodation business</li>
-                  <li>• Store - Retail store or shop</li>
-                  <li>• ProfessionalService - Professional service provider</li>
-                  <li>• MedicalBusiness - Medical practice or healthcare</li>
-                </ul>
-              </div>
-
-              {/* Content & Articles */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100">
-                <div className="text-3xl mb-4">📝</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Content & Articles (8 types)</h3>
-                <p className="text-gray-600 mb-3">Ideal for blogs, news sites, and content marketing.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Article - News article or blog post</li>
-                  <li>• BlogPosting - Blog post or blog article</li>
-                  <li>• NewsArticle - News article or journalism content</li>
-                  <li>• Review - Product/service/business review</li>
-                  <li>• FAQ Page - Frequently Asked Questions page</li>
-                  <li>• How-To - Step-by-step instructions or tutorial</li>
-                  <li>• Recipe - Cooking recipe or food preparation</li>
-                  <li>• Video - Video content or media</li>
-                </ul>
-              </div>
-
-              {/* E-commerce & Products */}
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100">
-                <div className="text-3xl mb-4">🛍️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">E-commerce & Products (3 types)</h3>
-                <p className="text-gray-600 mb-3">Essential for online stores and product listings.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Product - Physical or digital product listing</li>
-                  <li>• Offer - Product or service offer</li>
-                  <li>• AggregateOffer - Multiple offers for same product</li>
-                </ul>
-              </div>
-
-              {/* Events & Activities */}
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 border border-orange-100">
-                <div className="text-3xl mb-4">📅</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Events & Activities (4 types)</h3>
-                <p className="text-gray-600 mb-3">Great for conferences, webinars, and local events.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Event - Conference, webinar, or event listing</li>
-                  <li>• Course - Educational course or training program</li>
-                  <li>• Webinar - Online webinar or virtual event</li>
-                  <li>• SportsEvent - Sports game or competition</li>
-                </ul>
-              </div>
-
-              {/* People & Jobs */}
-              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-100">
-                <div className="text-3xl mb-4">👤</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">People & Jobs (3 types)</h3>
-                <p className="text-gray-600 mb-3">For personal profiles and job listings.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Person - Individual person profile</li>
-                  <li>• JobPosting - Job opening or employment opportunity</li>
-                  <li>• Employee - Employee information and role</li>
-                </ul>
-              </div>
-
-              {/* Creative Works */}
-              <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border border-teal-100">
-                <div className="text-3xl mb-4">🎨</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Creative Works (3 types)</h3>
-                <p className="text-gray-600 mb-3">For books, movies, and creative content.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Book - Published book or e-book</li>
-                  <li>• Movie - Film or movie information</li>
-                  <li>• MusicAlbum - Music album or collection</li>
-                </ul>
-              </div>
-
-              {/* Places & Locations */}
-              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
-                <div className="text-3xl mb-4">📍</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Places & Locations (3 types)</h3>
-                <p className="text-gray-600 mb-3">For geographic locations and attractions.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Place - Generic place or location</li>
-                  <li>• TouristAttraction - Tourist destination or attraction</li>
-                  <li>• LodgingBusiness - Hotel, motel, or accommodation</li>
-                </ul>
-              </div>
-
-              {/* Technology & Software */}
-              <div className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-6 border border-pink-100">
-                <div className="text-3xl mb-4">💻</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Technology & Software (3 types)</h3>
-                <p className="text-gray-600 mb-3">For apps, software, and digital products.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• SoftwareApplication - Software app or program</li>
-                  <li>• WebApplication - Web-based application or service</li>
-                  <li>• MobileApplication - Mobile app for smartphones/tablets</li>
-                </ul>
-              </div>
-
-              {/* Medical & Health */}
-              <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-6 border border-red-100">
-                <div className="text-3xl mb-4">🏥</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Medical & Health (2 types)</h3>
-                <p className="text-gray-600 mb-3">For healthcare and medical information.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• MedicalCondition - Health condition or disease</li>
-                  <li>• Drug - Pharmaceutical drug or medication</li>
-                </ul>
-              </div>
-
-              {/* Automotive */}
-              <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-2xl p-6 border border-gray-100">
-                <div className="text-3xl mb-4">🚗</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Automotive (2 types)</h3>
-                <p className="text-gray-600 mb-3">For vehicles and automotive content.</p>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• Vehicle - Car, motorcycle, or other vehicle</li>
-                  <li>• Car - Automobile or car</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="text-center mt-8">
-              <p className="text-gray-600">
-                <strong>Complete coverage of {getTotalSchemaCount()} essential schema types!</strong> From basic business information to complex structured data, generate professional JSON-LD markup for any website.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* What Schema Types to Implement First Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What Schema Types Should You Implement First?</h2>
-            <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-              Not all schema types carry equal SEO weight. Prioritize based on your website type and Google's current rich result eligibility:
-            </p>
-
-            <div className="space-y-8">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">High Priority (Implement First):</h3>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-green-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Organization/LocalBusiness</strong> - Every website needs this for brand entity recognition and knowledge graph inclusion
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-green-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Article/BlogPosting</strong> - Content sites get article rich results with thumbnail, date, author in SERPs
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-green-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Product</strong> - E-commerce sites see 30% conversion boost from price/availability rich snippets (Google data)
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-green-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>FAQ Page</strong> - Expandable FAQ rich results dominate SERP real estate, increase CTR by 35%
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-green-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>How-To</strong> - Step-by-step rich results with images appear for instructional content queries
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">Medium Priority (Implement After Core Types):</h3>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-blue-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Event</strong> - Events appear in dedicated Google Events search with rich details
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-blue-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Recipe</strong> - Food blogs get visual recipe cards with ratings, cook time, calories
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-blue-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Video</strong> - Video rich results show thumbnail, duration, and can appear in video carousel
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-blue-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Review</strong> - Star ratings in SERPs increase CTR for review content
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8 border border-purple-100">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">Specialized (Industry-Specific):</h3>
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>JobPosting</strong> - Job listings appear in Google for Jobs with salary, location filters
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>Course</strong> - Educational content gets course provider rich results
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>MedicalCondition/Drug</strong> - Healthcare sites benefit from medical knowledge graph integration
-                    </div>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="text-purple-600 font-bold mt-1">•</span>
-                    <div>
-                      <strong>SoftwareApplication</strong> - App listings show ratings, price, platform compatibility
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-primary/10 border border-primary/20 rounded-xl p-6">
-                <p className="text-gray-700 text-center">
-                  According to BrightEdge research, websites implementing 3+ relevant schema types see 30% higher visibility in rich results compared to single-schema implementations.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>What is schema markup and why does it matter for SEO?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Schema markup is structured data code (JSON-LD format) that explicitly tells search engines what your content means—defining entities, relationships, and attributes using schema.org vocabulary. It matters because pages with schema rank 4 positions higher on average (Searchmetrics data) due to enhanced CTR from rich snippets, which signals quality to Google's algorithm.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>How many schema types does this generator support?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Our schema generator currently supports 39+ of the most popular and useful schema.org types, organized across 11 categories (Business, Content, E-commerce, Events, People, Jobs, Creative, Places, Technology, Medical, Automotive). This is significantly more than the 10-15 types offered by most free generators.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>Is the generated schema markup valid and Google-compliant?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Yes, all generated schema markup follows schema.org standards and Google's structured data guidelines. We provide built-in validation, enforce required fields, and offer direct integration with Google's Rich Results Test so you can verify compliance before implementation.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>What makes your schema generator better than competitors?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Four key differentiators: (1) 39+ schema types versus 10–15 for most tools, (2) Advanced property builders for addresses, geo-coordinates, FAQs, steps, and ratings, (3) Direct Google Rich Results Test integration with one-click access, (4) Category-based organization with searchable dropdown and visual icons. Plus it's completely free with no login required.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>Can I customize schema types or add custom properties?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Our generator provides all standard schema.org properties for each type through intelligent form builders. For highly specialized custom properties not in our forms, you can generate the base schema and manually add custom properties to the exported JSON-LD code before implementation.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>How do I implement the generated schema on my website?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Copy the generated JSON-LD code and paste it into the &lt;head&gt; section of your HTML page, preferably before the closing &lt;/head&gt; tag. JSON-LD is Google's recommended format because it doesn't require inline markup—all structured data lives in a single script tag. For WordPress sites, use a plugin like Schema Pro or Yoast SEO to add the code without editing theme files.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>Does this tool help with rich snippets in Google?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Yes! Our schema generator creates markup optimized for Google's rich snippets. However, rich result eligibility varies by schema type—not all types trigger enhanced SERP displays. Use our integrated Google Rich Results Test button to verify if your specific schema is eligible. According to Search Engine Land, pages with rich snippets get 36% higher CTR on average.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>Is there a limit on usage or do I need to create an account?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  The tool is completely free with zero usage limits and no account required. You only need to complete Google reCAPTCHA verification once per session to prevent automated abuse. No email signup, no credit card, no restrictions—generate unlimited schema markup anytime.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>What's the difference between JSON-LD and Microdata formats?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  JSON-LD (JavaScript Object Notation for Linked Data) is a script tag in the &lt;head&gt; section, while Microdata requires inline markup within HTML elements. Google explicitly recommends JSON-LD because it's easier to implement, maintain, and validate. Our generator outputs only JSON-LD—the modern, preferred format for structured data.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>Can I generate schema for multiple pages at once?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Currently, our generator creates schema for one page/entity at a time for accuracy. However, many schema types (like Organization, LocalBusiness, Person) are site-wide and only need to be implemented once in your template. For e-commerce sites with hundreds of products, consider using dynamic schema generation through your CMS or a schema plugin that pulls from your product database.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>How do the advanced property builders work (FAQ, How-To, Address)?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Advanced builders provide specialized interfaces for complex schema properties: The FAQ builder lets you add unlimited question-answer pairs with proper Question schema nesting. The How-To builder creates step-by-step instructions with optional images and tools. The Address builder breaks down PostalAddress into street, city, state, postal code, and country fields. GeoCoordinates builder accepts latitude/longitude for precise location data. AggregateRating builder includes score, scale, and review count for star ratings.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>Will schema markup improve my search rankings directly?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  Schema doesn't directly boost rankings like backlinks or content quality, but it indirectly improves rankings through enhanced CTR. Searchmetrics found pages with schema rank 4 positions higher on average because rich snippets attract more clicks. Higher CTR signals quality to Google's algorithm, creating a ranking boost over time. Schema also helps with voice search and knowledge graph inclusion—both increasingly important for visibility.
-                </div>
-              </details>
-
-              <details className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all self-start">
-                <summary className="cursor-pointer p-4 font-semibold text-gray-900 flex items-center justify-between">
-                  <span className="text-base flex items-center">
-                    <span className="text-primary mr-2">▸</span>What happens after I implement schema on my site?
-                  </span>
-                  <span className="text-primary text-xl group-open:rotate-90 transition-transform ml-2 flex-shrink-0">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-gray-700 text-sm leading-relaxed border-t border-gray-100 pt-3 mt-2">
-                  After implementation: (1) Validate with Google Rich Results Test to check for errors, (2) Submit your sitemap to Google Search Console to expedite crawling, (3) Monitor Search Console's "Enhancements" section for schema-related issues or valid item counts, (4) Rich results typically appear within 1–4 weeks after Google recrawls and validates your markup.
-                </div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore More SEO Tools Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-indigo-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🏗️</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate JSON-LD structured data for 39+ schema types with advanced property builders.</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔬</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">On-Page SEO Analyzer</h3>
-                <p className="text-sm text-gray-600 mb-4">Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.</p>
-                <a href="/tools/on-page-seo-analyzer/" className="text-primary font-medium hover:underline">Try On-Page SEO Analyzer</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔗</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Internal Link Checker</h3>
-                <p className="text-sm text-gray-600 mb-4">Visualize anchor text distribution and audit internal link structure across your site.</p>
-                <a href="/tools/internal-link-checker/" className="text-primary font-medium hover:underline">Try Internal Link Checker</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🤖</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Robots.txt Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.</p>
-                <a href="/tools/robots-txt-generator/" className="text-primary font-medium hover:underline">Try Robots.txt Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🚫</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Disavow File Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate Google-compliant disavow files from any backlink export format with dedupe and whitelist.</p>
-                <a href="/tools/disavow-file-generator/" className="text-primary font-medium hover:underline">Try Disavow File Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">📝</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Meta Tag Optimizer</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect title tags and meta descriptions for better click-through rates.</p>
-                <a href="/tools/meta-tag-optimizer/" className="text-primary font-medium hover:underline">Try Meta Tag Optimizer</a> →
-              </div>
-            </div>
-
-            <div className="text-center">
-              <a
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="mr-2">🛠️</span>
-                Browse All SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free • No signup required • Instant results
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Start Generating Professional Schema Markup Today</h2>
-            <p className="text-lg mb-8 opacity-90">
-              Stop leaving rich snippets to chance. Create professional, Google-compliant schema markup that search engines understand and reward with enhanced search results, knowledge graph inclusion, and 36% higher click-through rates on average.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            {/* Schema Type Selection */}
+            <label className="tool-box-label">
+              Select Schema Type * <span style={{ fontWeight: 400, color: 'var(--gray-4)' }}>({getTotalSchemaCount()} types available)</span>
+            </label>
+            <div className="schema-dropdown" style={{ position: 'relative', marginBottom: '0.35rem' }}>
               <button
-                onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
-                className="bg-white text-primary px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl"
+                type="button"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                style={{
+                  width: '100%', padding: '13px 16px', border: '1px solid var(--gray-3)',
+                  background: 'var(--white)', color: 'var(--ink)', fontSize: '0.9rem',
+                  fontFamily: 'Inter, sans-serif', cursor: 'pointer', textAlign: 'left',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', outline: 'none'
+                }}
               >
-                🔧 Use the Schema Generator →
+                <span>{getCurrentSchemaTypeForDisplay()}</span>
+                <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="var(--gray-4)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
+                  style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s', flexShrink: 0 }}>
+                  <path d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {isDropdownOpen && (
+                <div style={{ position: 'absolute', zIndex: 50, width: '100%', marginTop: 4, background: '#fff', border: '1px solid var(--gray-3)', boxShadow: '0 8px 32px rgba(0,0,0,0.12)', maxHeight: 320, overflow: 'hidden' }}>
+                  <div style={{ padding: '0.75rem', borderBottom: '1px solid var(--line)' }}>
+                    <div style={{ position: 'relative' }}>
+                      <svg style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }} width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="var(--gray-4)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" />
+                      </svg>
+                      <input
+                        type="text"
+                        placeholder="Search schema types..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{ width: '100%', paddingLeft: 32, paddingRight: 12, paddingTop: 8, paddingBottom: 8, border: '1px solid var(--gray-3)', fontSize: '0.85rem', outline: 'none', fontFamily: 'Inter, sans-serif' }}
+                      />
+                    </div>
+                  </div>
+                  <div style={{ maxHeight: 240, overflowY: 'auto' }}>
+                    {getSchemaCategories().map(category => {
+                      const categoryTypes = getFilteredSchemaTypes().filter(type => type.category === category)
+                      if (categoryTypes.length === 0) return null
+                      return (
+                        <div key={category}>
+                          <div style={{ padding: '6px 12px', fontSize: '0.7rem', fontWeight: 700, color: 'var(--gray-5)', textTransform: 'uppercase', letterSpacing: '0.08em', background: 'var(--gray-1)', borderBottom: '1px solid var(--line)' }}>
+                            {category} ({categoryTypes.length})
+                          </div>
+                          {categoryTypes.map(type => (
+                            <button
+                              key={type.id}
+                              type="button"
+                              onClick={() => {
+                                setForm(prev => ({ ...prev, schemaType: type.id }))
+                                setSchemaData({})
+                                setIsDropdownOpen(false)
+                                setSearchTerm('')
+                              }}
+                              style={{
+                                width: '100%', textAlign: 'left', padding: '10px 12px', cursor: 'pointer',
+                                background: form.schemaType === type.id ? 'rgba(37,99,235,0.08)' : 'var(--white)',
+                                border: 'none', borderBottom: '1px solid var(--line)',
+                                fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', display: 'block'
+                              }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <span style={{ fontSize: '1rem' }}>{getSchemaIcon(type.category)}</span>
+                                <div>
+                                  <div style={{ fontWeight: 600, color: form.schemaType === type.id ? 'var(--blue)' : 'var(--ink)' }}>{type.name}</div>
+                                  <div style={{ fontSize: '0.75rem', color: 'var(--gray-4)' }}>{type.description}</div>
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )
+                    })}
+                    {getFilteredSchemaTypes().length === 0 && (
+                      <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--gray-4)' }}>
+                        <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" style={{ margin: '0 auto 0.5rem', display: 'block' }}>
+                          <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+                        </svg>
+                        <p style={{ fontSize: '0.85rem', marginBottom: 4 }}>No schema types found</p>
+                        <p style={{ fontSize: '0.78rem' }}>Try a different search term</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem' }}>Choose the schema type that best matches your content</p>
+
+            {/* Page URL */}
+            <label className="tool-box-label" htmlFor="url">
+              Page URL <span style={{ fontWeight: 400, color: 'var(--gray-4)' }}>(Optional)</span>
+            </label>
+            <input
+              type="url"
+              id="url"
+              className="tool-url-input"
+              value={form.url}
+              onChange={(e) => setForm(prev => ({ ...prev, url: e.target.value }))}
+              placeholder="https://example.com/page"
+            />
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem', marginTop: '0.35rem' }}>URL where this schema will be implemented</p>
+
+            {/* Dynamic Form Fields */}
+            <div style={{ maxHeight: '24rem', overflowY: 'auto', overflowX: 'visible', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.25rem' }}>
+              {renderFormFields()}
+            </div>
+
+            {/* Human Verification */}
+            <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
+              <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Human Verification Required
+              </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
+                Please verify that you&apos;re not a robot to generate schema markup.
+              </p>
+              <div style={{ marginBottom: '0.5rem' }}>
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                  onChange={handleCaptchaChange}
+                  theme="light"
+                />
+              </div>
+              {isVerified && (
+                <div style={{ marginTop: '0.5rem', padding: '8px 12px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--green)' }}>
+                  &#10003; Verification successful! You can now generate schema.
+                </div>
+              )}
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div style={{ marginBottom: '1rem', padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', fontSize: '0.85rem', color: 'var(--red)' }}>
+                {error}
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '0.75rem' }}>
+              <button
+                onClick={generateSchema}
+                disabled={loading || !isVerified}
+                className="tool-analyze-btn"
+                style={{ flex: 1 }}
+              >
+                <div className="tool-analyze-btn-dot" />
+                {loading ? (
+                  <>
+                    <svg className="animate-spin" style={{ width: 16, height: 16, marginRight: '0.4rem' }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Generating Schema...
+                  </>
+                ) : (
+                  !isVerified ? 'Complete Verification First' : 'Generate Schema'
+                )}
+              </button>
+              <button
+                onClick={resetForm}
+                style={{ padding: '14px 20px', background: 'var(--gray-1)', color: 'var(--gray-5)', border: '1px solid var(--line)', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif' }}
+              >
+                Reset
               </button>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm opacity-90 mb-6">
-              <div className="flex items-center justify-center space-x-2">
-                <span>🚀</span>
-                <span>39+ schema types with intelligent form builders—no coding required</span>
+          {/* -- RIGHT BOX — Generated Schema -- */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Generated Schema</h2>
+
+            {generatedSchema === '' ? (
+              <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>
+                <div style={{ width: 56, height: 56, background: 'var(--gray-1)', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="var(--gray-4)" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
+                  </svg>
+                </div>
+                <p style={{ color: 'var(--gray-4)', fontSize: '0.88rem', lineHeight: 1.6, maxWidth: 260, margin: '0 auto' }}>
+                  Configure your schema type and generate JSON-LD markup
+                </p>
               </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>✅</span>
-                <span>Direct Google Rich Results Test integration for instant validation</span>
+            ) : (
+              <div>
+                {/* Export Buttons */}
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                  <button onClick={copyToClipboard} style={{ padding: '7px 14px', background: 'var(--gray-1)', color: 'var(--gray-5)', border: '1px solid var(--line)', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                    {copied ? '✓ Copied!' : 'Copy Schema'}
+                  </button>
+                  <button onClick={downloadJSON} style={{ padding: '7px 14px', background: 'var(--blue)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                    Download JSON
+                  </button>
+                  <button onClick={validateSchema} disabled={loading} style={{ padding: '7px 14px', background: 'rgba(22,163,74,0.1)', color: 'var(--green)', border: '1px solid rgba(22,163,74,0.25)', fontWeight: 600, fontSize: '0.78rem', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                    {loading ? 'Validating...' : 'Validate'}
+                  </button>
+                </div>
+
+                {/* Testing Tools */}
+                <div style={{ marginBottom: '1rem', padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.5rem' }}>Test Your Schema Online</div>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+                    <button onClick={() => handleTestingToolClick('google')} style={{ padding: '7px 14px', background: 'var(--blue)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                      Google Rich Results Test
+                    </button>
+                    <button onClick={() => handleTestingToolClick('schema')} style={{ padding: '7px 14px', background: 'rgba(22,163,74,0.1)', color: 'var(--green)', border: '1px solid rgba(22,163,74,0.25)', fontWeight: 600, fontSize: '0.78rem', cursor: 'pointer', borderRadius: 4, fontFamily: 'Space Grotesk, sans-serif' }}>
+                      Schema.org Validator
+                    </button>
+                  </div>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--blue-dark)' }}>
+                    Click to copy schema and open testing tool with step-by-step instructions!
+                  </p>
+                  {copied && (
+                    <div style={{ marginTop: '0.5rem', fontSize: '0.82rem', fontWeight: 600, color: 'var(--green)' }}>
+                      Schema copied to clipboard! Check the instructions in the popup.
+                    </div>
+                  )}
+                </div>
+
+                {/* Validation Result */}
+                {validationResult && (
+                  <div style={{
+                    padding: '1rem 1.25rem', marginBottom: '1rem',
+                    background: validationResult.isValid ? 'rgba(22,163,74,0.08)' : 'rgba(220,38,38,0.08)',
+                    border: `1px solid ${validationResult.isValid ? 'rgba(22,163,74,0.25)' : 'rgba(220,38,38,0.2)'}`
+                  }}>
+                    <div style={{ fontWeight: 600, fontSize: '0.88rem', color: validationResult.isValid ? 'var(--green)' : 'var(--red)', marginBottom: '0.4rem' }}>
+                      {validationResult.isValid ? '✓ Schema is Valid!' : '✗ Schema has Errors'}
+                    </div>
+                    {validationResult.warnings.length > 0 && (
+                      <div style={{ fontSize: '0.85rem', color: 'var(--amber)' }}>
+                        <strong>Warnings:</strong>
+                        <ul style={{ listStyle: 'disc', paddingLeft: '1.25rem', marginTop: '0.25rem' }}>
+                          {validationResult.warnings.map((warning: string, index: number) => (
+                            <li key={index}>{warning}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Schema Code */}
+                <div style={{ background: '#111318', padding: '1.25rem', overflowX: 'auto', fontSize: '0.8rem', fontFamily: 'JetBrains Mono, monospace', maxHeight: '24rem', overflowY: 'auto' }}>
+                  <div style={{ color: '#c084fc', marginBottom: '0.5rem' }}>&lt;script type=&quot;application/ld+json&quot;&gt;</div>
+                  <pre style={{ color: '#86efac', margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{generatedSchema}</pre>
+                  <div style={{ color: '#c084fc', marginTop: '0.5rem' }}>&lt;/script&gt;</div>
+                </div>
+
+                <div style={{ marginTop: '0.75rem', fontSize: '0.78rem', color: 'var(--gray-4)' }}>
+                  Generated {form.schemaType} schema markup ready for implementation
+                </div>
               </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>📊</span>
-                <span>Improve rankings through enhanced CTR from rich snippets</span>
+            )}
+          </div>
+
+        </div>
+      </div>
+
+      {/* --- FOUNDER QUOTE --- */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in Technical SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;I built this schema generator because every free tool I found either supported only 5–10 schema types or locked the useful ones behind a paid plan. SEOShouts&apos; generator covers all 39 essential schema.org types with advanced property builders—the tool I wish existed when I was starting out with structured data.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts &middot;{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            <p className="text-sm mt-6 opacity-90">
-              <strong>Create professional schema markup with SEO Shouts' advanced Schema Generator!</strong>
-              <br />
-              <em>Trusted by thousands of SEO professionals, developers, and marketers worldwide for reliable, valid structured data.</em>
+      {/* --- WHAT IS SCHEMA MARKUP --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Overview</div>
+            <h2 className="s-title">What is Schema Markup and Why Does It <span className="blue">Improve Rankings?</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>The Most Advanced Schema Generator Available — Completely Free</p>
+            <p>
+              A schema markup generator creates structured data in JSON-LD format that helps search engines understand your website content, enabling rich snippets, knowledge graph inclusion, and enhanced search results across 39+ schema.org types including Organization, Article, Product, Event, and specialized business schemas.
+            </p>
+            <p>
+              <strong>Built for SEO professionals, developers, and marketers</strong> who need reliable, valid schema markup that actually improves search rankings and rich snippet appearance with zero coding knowledge required.
+            </p>
+            <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexWrap: 'wrap', gap: '0.5rem 2rem', margin: '1rem 0 1.5rem' }}>
+              {['39+ Schema Types', 'Intelligent Form Builder', 'Google Rich Results Integration', 'Multi-Field Support', '100% Free, No Login'].map(pill => (
+                <li key={pill} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.82rem' }}>&#10003;</span>
+                  <span style={{ fontSize: '0.88rem', color: 'var(--gray-5)' }}>{pill}</span>
+                </li>
+              ))}
+            </ul>
+            <p>
+              Schema markup is structured data code that tells search engines exactly what your content means—not just what it says. Instead of letting Google guess whether &ldquo;Apple&rdquo; means the fruit or the company, schema explicitly defines entities, relationships, and attributes using schema.org vocabulary.
+            </p>
+            <p>
+              According to Searchmetrics analysis of 10,000 URLs, websites with schema markup rank an average of 4 positions higher than those without. While correlation doesn&apos;t equal causation, the ranking boost comes from improved click-through rates (CTR) that signal quality to Google&apos;s algorithm.
+            </p>
+            <h3>Here&apos;s what schema markup does for your website:</h3>
+            <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem 2rem', margin: '1rem 0 1.5rem' }}>
+              {[
+                { bold: 'Rich snippets in SERPs', rest: ' — Star ratings, prices, images, FAQs displayed directly in search results' },
+                { bold: '36% higher CTR on average', rest: ' — Enhanced results attract significantly more clicks (Search Engine Land data)' },
+                { bold: 'Voice search optimization', rest: ' — Essential for Google Assistant, Alexa, Siri answers' },
+                { bold: 'Knowledge graph inclusion', rest: ' — Appear in Google\'s knowledge panels and entity carousel' },
+                { bold: 'Local SEO dominance', rest: ' — Critical for Google Business Profile and local pack rankings' },
+                { bold: 'E-commerce conversion boost', rest: ' — Product schema with pricing/availability increases sales by 30% (Google research)' },
+              ].map((item, i) => (
+                <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                  <span style={{ color: 'var(--blue)', flexShrink: 0, fontWeight: 700, fontSize: '0.82rem', marginTop: 2 }}>&#10003;</span>
+                  <span style={{ fontSize: '0.88rem', color: 'var(--gray-5)', lineHeight: 1.55 }}>
+                    <strong>{item.bold}</strong>{item.rest}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">Bottom Line</div>
+              <p>Schema markup is the difference between a basic blue link and a rich, engaging result that dominates search real estate and drives qualified traffic.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- KEY FEATURES --- */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Key Features</div>
+            <h2 className="s-title">Advanced Features That Make <span className="blue">Schema Generation Easy</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              { paths: ['M13 10V3L4 14h7v7l9-11h-7z'], title: 'Instant JSON-LD Generation', desc: 'Generate perfect JSON-LD markup in seconds. No coding knowledge required—intelligent forms guide you through required and optional properties with contextual examples.' },
+              { paths: ['M12 2L2 7l10 5 10-5-10-5', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'], title: 'Category-Based Organization', desc: '39 schema types organized into 11 logical categories (Business, Content, E-commerce, Events, People, Jobs, Creative, Places, Technology, Medical, Automotive) with searchable dropdown.' },
+              { paths: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M7 10l5 5 5-5', 'M12 15V3'], title: 'Multiple Export Options', desc: 'Download as JSON files, copy to clipboard with one click, or get ready-to-use JSON-LD code snippets for immediate implementation in your HTML <head> section.' },
+              { paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'], title: 'No Login Required', desc: 'Completely free with zero usage limits. No account creation, no email signup, no credit card. Generate unlimited schema markup with just reCAPTCHA verification per session.' },
+              { paths: ['M12 20h9', 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'], title: 'Advanced Property Builders', desc: 'Specialized builders for complex schema properties: PostalAddress with full field breakdown, GeoCoordinates for location data, AggregateRating for reviews, FAQ pairs for question pages, and step-by-step instructions for How-To content.' },
+              { paths: ['M12 18h.01', 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z'], title: 'Mobile-Optimized Interface', desc: 'Responsive design works perfectly on desktop, tablet, and mobile. Generate schema markup anywhere, anytime, on any device.' },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.paths.map((d, j) => <path key={j} d={d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.75rem 0 0' }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- HOW TO USE --- */}
+      <section className="section howto-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">How To Use</div>
+            <h2 className="s-title">How to Use the Schema Generator <span className="blue">(Step by Step)</span></h2>
+          </div>
+          <div className="steps-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            {[
+              { num: '01', title: 'Choose Your Schema Type', desc: 'Select from 39 schema types using the searchable dropdown with category filtering. Categories include Business, Content, E-commerce, Events, People, and specialized types.' },
+              { num: '02', title: 'Fill in the Required Information', desc: 'Complete the dynamically generated form fields with your specific information. Required fields are marked with asterisks (*) and include contextual examples.' },
+              { num: '03', title: 'Add Optional Properties', desc: 'Include additional properties to make your schema more comprehensive. Use advanced builders for addresses, geo-coordinates, ratings, FAQ pairs, and step instructions.' },
+              { num: '04', title: 'Complete Human Verification', desc: 'Verify with Google reCAPTCHA (one-time per session) to ensure high-quality results and prevent automated abuse of the tool.' },
+              { num: '05', title: 'Generate and Validate', desc: 'Click generate to create your JSON-LD schema markup. The tool automatically validates required fields and provides error feedback if needed.' },
+              { num: '06', title: 'Export and Test', desc: 'Copy to clipboard or download as JSON file. Use the integrated Google Rich Results Test button to validate your schema immediately.' },
+              { num: '07', title: 'Implement on Your Website', desc: "Paste the generated JSON-LD code into the <head> section of your HTML page. JSON-LD is Google's recommended format and doesn't require inline markup." },
+            ].map((step, i) => (
+              <div key={step.num} className="step-card" style={{
+                borderRight: i % 3 === 2 ? 'none' : '1px solid var(--line)',
+                borderBottom: i < 6 ? '1px solid var(--line)' : 'none',
+                gridColumn: i === 6 ? '2' : undefined
+              }}>
+                {i % 3 !== 2 && i < 6 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
+                  </div>
+                )}
+                <div className="step-num-big">{step.num}</div>
+                <div className="step-title">{step.title}</div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.5rem 0 0' }}>{step.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: '2rem', background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
+            <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
+              <strong>Pro tip:</strong> Always test with Google&apos;s Rich Results Test after implementation. Not all schema types are eligible for rich results—check Google&apos;s documentation for current eligibility.
             </p>
           </div>
         </div>
       </section>
-    </div>
+
+      {/* --- WHY OUR GENERATOR --- */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Why Choose Us</div>
+            <h2 className="s-title">Why Our Schema Generator <span className="blue">Outperforms Competitors</span></h2>
+          </div>
+          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
+            {[
+              {
+                title: '39+ Schema Types — Most Comprehensive Available',
+                iconPaths: ['M12 2L2 7l10 5 10-5-10-5', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'],
+                body: 'Support for 39+ carefully selected schema.org types organized across 11 categories—more than any free generator. From basic Organization to specialized MedicalCondition, Drug, Vehicle, and SportsEvent schemas competitors ignore.',
+                bullets: ['39+ schema types vs 10-15 for most competitors', '11 industry-specific categories with visual organization', 'Advanced schemas: FAQ builder, How-To steps, AggregateRating', 'Regular updates when Google adds new rich result eligibility'],
+              },
+              {
+                title: 'Intelligent Form Builder with Multi-Field Support',
+                iconPaths: ['M12 20h9', 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'],
+                body: 'Dynamic forms that adapt based on your selected schema type, with advanced builders for complex properties like addresses, geo-coordinates, ratings, FAQ pairs, and step-by-step instructions.',
+                bullets: ['Dynamic field generation per schema type', 'Address builder (street, city, state, postal, country)', 'Geographic coordinates (latitude/longitude)', 'FAQ builder for unlimited Q&A pairs', 'Step-by-step builder for How-To content', 'Aggregate rating system with customizable scale', 'Helpful examples and real-time validation'],
+              },
+              {
+                title: 'Direct Google Rich Results Test Integration',
+                iconPaths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'],
+                body: "One-click access to Google's Rich Results Test and Schema.org Validator. Copy your generated markup and open testing tools instantly—no manual copy-paste between tabs.",
+                bullets: ['Built-in schema validation before export', 'Direct Rich Results Test integration', 'Schema.org Validator quick access', 'Error detection with fix recommendations', 'Required field enforcement', 'Best practice compliance checking'],
+              },
+            ].map((card) => (
+              <div key={card.title} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">
+                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      {card.iconPaths.map((d, j) => <path key={j} d={d} />)}
+                    </svg>
+                  </div>
+                  {card.title}
+                </div>
+                <div className="why-card-body">{card.body}</div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 0', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                  {card.bullets.map((b, j) => (
+                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                      <span style={{ color: 'var(--blue)', flexShrink: 0, fontWeight: 700, fontSize: '0.78rem', marginTop: 2 }}>&#10003;</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- COMPARISON TABLE --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">How Does Our Schema Generator <span className="blue">Compare to Other Tools?</span></h2>
+          </div>
+          <p style={{ color: 'var(--gray-4)', fontSize: '0.95rem', maxWidth: 680, marginBottom: '2rem', lineHeight: 1.6 }}>
+            Most free schema generators support 10-15 basic types. We offer 39+ carefully selected schemas organized by industry, with advanced multi-field builders and direct Google Rich Results Test integration.
+          </p>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid var(--line)', fontSize: '0.88rem' }}>
+              <thead>
+                <tr style={{ background: 'var(--ink)', color: '#fff' }}>
+                  {['Feature', 'SEO Shouts', 'Merkle', 'TechnicalSEO', 'Schema.org'].map((h, i) => (
+                    <th key={h} style={{ padding: '14px 20px', textAlign: 'left', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.82rem', color: i === 1 ? 'var(--blue-light)' : i === 0 ? '#fff' : 'rgba(255,255,255,0.6)' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: 'Schema Types Supported', us: '39+', merkle: '15', tech: '12', schema: 'All (complex)' },
+                  { feature: 'Advanced Property Builders', us: '✓ Address, Geo, FAQ, Steps, Rating', merkle: 'Basic only', tech: '✗', schema: '✗' },
+                  { feature: 'Category Organization', us: '✓ 11 categories with search', merkle: '✗', tech: '✗', schema: '✗' },
+                  { feature: 'Google Rich Results Integration', us: '✓ One-click test', merkle: '✗', tech: '✗', schema: '✗' },
+                  { feature: 'No Login Required', us: '✓', merkle: '✓', tech: '✓', schema: '✓' },
+                  { feature: 'Export Options', us: 'Copy + Download JSON', merkle: 'Copy only', tech: 'Copy only', schema: 'Manual coding' },
+                  { feature: 'Mobile Responsive', us: '✓', merkle: '✓', tech: 'Partial', schema: '✗' },
+                ].map((row, i) => (
+                  <tr key={row.feature} style={{ background: i % 2 === 0 ? 'var(--white)' : 'var(--gray-1)', borderBottom: '1px solid var(--line)' }}>
+                    <td style={{ padding: '12px 20px', fontWeight: 600, color: 'var(--ink)' }}>{row.feature}</td>
+                    <td style={{ padding: '12px 20px', color: 'var(--blue)', fontWeight: 600 }}>{row.us}</td>
+                    <td style={{ padding: '12px 20px', color: 'var(--gray-5)' }}>{row.merkle}</td>
+                    <td style={{ padding: '12px 20px', color: 'var(--gray-5)' }}>{row.tech}</td>
+                    <td style={{ padding: '12px 20px', color: 'var(--gray-5)' }}>{row.schema}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* --- ALL SCHEMA TYPES --- */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Schema Types</div>
+            <h2 className="s-title">All {getTotalSchemaCount()} Schema Types <span className="blue">Available in This Tool</span></h2>
+          </div>
+          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', marginTop: '3rem' }}>
+            {[
+              { cat: 'Business & Organizations (8 types)', iconPaths: ['M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z', 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'], desc: 'Perfect for company websites, local businesses, and professional services.', items: ['Organization — Company/business information', 'LocalBusiness — Local business with physical location', 'Corporation — Large corporation or public company', 'Restaurant — Restaurant or food service business', 'Hotel — Hotel or accommodation business', 'Store — Retail store or shop', 'ProfessionalService — Professional service provider', 'MedicalBusiness — Medical practice or healthcare'] },
+              { cat: 'Content & Articles (8 types)', iconPaths: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z', 'M14 2v6h6', 'M16 13H8', 'M16 17H8', 'M10 9H8'], desc: 'Ideal for blogs, news sites, and content marketing.', items: ['Article — News article or blog post', 'BlogPosting — Blog post or blog article', 'NewsArticle — News article or journalism content', 'Review — Product/service/business review', 'FAQ Page — Frequently Asked Questions page', 'How-To — Step-by-step instructions or tutorial', 'Recipe — Cooking recipe or food preparation', 'Video — Video content or media'] },
+              { cat: 'E-commerce & Products (3 types)', iconPaths: ['M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z', 'M3 6h18', 'M16 10a4 4 0 0 1-8 0'], desc: 'Essential for online stores and product listings.', items: ['Product — Physical or digital product listing', 'Offer — Product or service offer', 'AggregateOffer — Multiple offers for same product'] },
+              { cat: 'Events & Activities (4 types)', iconPaths: ['M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z', 'M16 2v4', 'M8 2v4', 'M3 10h18'], desc: 'Great for conferences, webinars, and local events.', items: ['Event — Conference, webinar, or event listing', 'Course — Educational course or training program', 'Webinar — Online webinar or virtual event', 'SportsEvent — Sports game or competition'] },
+              { cat: 'People & Jobs (3 types)', iconPaths: ['M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2', 'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'], desc: 'For personal profiles and job listings.', items: ['Person — Individual person profile', 'JobPosting — Job opening or employment opportunity', 'Employee — Employee information and role'] },
+              { cat: 'Creative Works (3 types)', iconPaths: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z', 'M14 2v6h6', 'M16 13H8'], desc: 'For books, movies, and creative content.', items: ['Book — Published book or e-book', 'Movie — Film or movie information', 'MusicAlbum — Music album or collection'] },
+              { cat: 'Places & Locations (3 types)', iconPaths: ['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z', 'M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'], desc: 'For geographic locations and attractions.', items: ['Place — Generic place or location', 'TouristAttraction — Tourist destination or attraction', 'LodgingBusiness — Hotel, motel, or accommodation'] },
+              { cat: 'Technology & Software (3 types)', iconPaths: ['M2 3h20a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z', 'M8 21h8', 'M12 17v4'], desc: 'For apps, software, and digital products.', items: ['SoftwareApplication — Software app or program', 'WebApplication — Web-based application or service', 'MobileApplication — Mobile app for smartphones/tablets'] },
+              { cat: 'Medical & Health (2 types)', iconPaths: ['M22 12h-4l-3 9L9 3l-3 9H2'], desc: 'For healthcare and medical information.', items: ['MedicalCondition — Health condition or disease', 'Drug — Pharmaceutical drug or medication'] },
+              { cat: 'Automotive (2 types)', iconPaths: ['M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v2', 'M16 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0', 'M7 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0'], desc: 'For vehicles and automotive content.', items: ['Vehicle — Car, motorcycle, or other vehicle', 'Car — Automobile or car'] },
+            ].map((card) => (
+              <div key={card.cat} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">
+                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      {card.iconPaths.map((d, j) => <path key={j} d={d} />)}
+                    </svg>
+                  </div>
+                  {card.cat}
+                </div>
+                <div className="why-card-body">{card.desc}</div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 0', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                  {card.items.map((item, j) => (
+                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
+                      <span style={{ color: 'var(--blue)', flexShrink: 0, fontSize: '0.75rem', marginTop: 3 }}>•</span>
+                      <span style={{ fontSize: '0.82rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <p style={{ color: 'var(--gray-5)', fontSize: '0.9rem' }}>
+              <strong>Complete coverage of {getTotalSchemaCount()} essential schema types!</strong> From basic business information to complex structured data, generate professional JSON-LD markup for any website.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- WHAT TO IMPLEMENT FIRST --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Implementation Guide</div>
+            <h2 className="s-title">What Schema Types Should You <span className="blue">Implement First?</span></h2>
+          </div>
+          <p style={{ color: 'var(--gray-4)', fontSize: '0.95rem', maxWidth: 680, marginBottom: '2.5rem', lineHeight: 1.6 }}>
+            Not all schema types carry equal SEO weight. Prioritize based on your website type and Google&apos;s current rich result eligibility:
+          </p>
+          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            {[
+              {
+                num: '01',
+                label: 'High Priority',
+                sub: 'Implement First',
+                accent: 'var(--green)',
+                accentBg: 'rgba(22,163,74,0.08)',
+                iconPaths: ['M13 10V3L4 14h7v7l9-11h-7z'],
+                items: [
+                  { bold: 'Organization/LocalBusiness', rest: ' — Brand entity recognition and knowledge graph inclusion' },
+                  { bold: 'Article/BlogPosting', rest: ' — Article rich results with thumbnail, date, author in SERPs' },
+                  { bold: 'Product', rest: ' — 30% conversion boost from price/availability rich snippets' },
+                  { bold: 'FAQ Page', rest: ' — Expandable FAQ results dominate SERP real estate, +35% CTR' },
+                  { bold: 'How-To', rest: ' — Step-by-step rich results with images for instructional queries' },
+                ],
+              },
+              {
+                num: '02',
+                label: 'Medium Priority',
+                sub: 'After Core Types',
+                accent: 'var(--blue)',
+                accentBg: 'rgba(37,99,235,0.06)',
+                iconPaths: ['M3 3v18h18', 'm19 9-5 5-4-4-3 3'],
+                items: [
+                  { bold: 'Event', rest: ' — Dedicated Google Events search with rich details' },
+                  { bold: 'Recipe', rest: ' — Visual recipe cards with ratings, cook time, calories' },
+                  { bold: 'Video', rest: ' — Rich results show thumbnail, duration, appear in video carousel' },
+                  { bold: 'Review', rest: ' — Star ratings in SERPs increase CTR for review content' },
+                ],
+              },
+              {
+                num: '03',
+                label: 'Specialized',
+                sub: 'Industry-Specific',
+                accent: 'var(--gray-5)',
+                accentBg: 'var(--gray-1)',
+                iconPaths: ['M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z', 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'],
+                items: [
+                  { bold: 'JobPosting', rest: ' — Google for Jobs listings with salary, location filters' },
+                  { bold: 'Course', rest: ' — Educational content gets course provider rich results' },
+                  { bold: 'MedicalCondition/Drug', rest: ' — Healthcare sites and medical knowledge graph' },
+                  { bold: 'SoftwareApplication', rest: ' — App listings with ratings, price, platform compatibility' },
+                ],
+              },
+            ].map((card) => (
+              <div key={card.label} className="why-card" style={{ borderTop: `3px solid ${card.accent}`, position: 'relative' }}>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  width: 28, height: 28, background: card.accentBg, border: `1px solid ${card.accent}`,
+                  marginBottom: '0.75rem'
+                }}>
+                  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke={card.accent} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                    {card.iconPaths.map((d, j) => <path key={j} d={d} />)}
+                  </svg>
+                </div>
+                <div className="why-card-title" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '0.15rem', marginBottom: '0.25rem' }}>
+                  <span style={{ color: card.accent, fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: 'Space Grotesk, sans-serif' }}>{card.label}</span>
+                  <span>{card.sub}</span>
+                </div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 0', display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                  {card.items.map((item, j) => (
+                    <li key={j} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                      <span style={{ color: card.accent, flexShrink: 0, fontWeight: 700, fontSize: '0.8rem', marginTop: 2 }}>•</span>
+                      <span style={{ fontSize: '0.83rem', color: 'var(--gray-5)', lineHeight: 1.55 }}>
+                        <strong style={{ color: 'var(--ink)' }}>{item.bold}</strong>{item.rest}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="prose-callout" style={{ marginTop: '1.5rem' }}>
+            <p style={{ margin: 0 }}>According to BrightEdge research, websites implementing 3+ relevant schema types see 30% higher visibility in rich results compared to single-schema implementations.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FAQ --- */}
+      <section className="section faq-section" style={{ background: 'var(--gray-1)' }}>
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+            <p className="s-sub">Everything you need to know about schema markup and this generator.</p>
+          </div>
+          <div className="faq-list">
+            {[
+              { q: 'What is schema markup and why does it matter for SEO?', a: "Schema markup is structured data code (JSON-LD format) that explicitly tells search engines what your content means—defining entities, relationships, and attributes using schema.org vocabulary. It matters because pages with schema rank 4 positions higher on average (Searchmetrics data) due to enhanced CTR from rich snippets, which signals quality to Google's algorithm." },
+              { q: 'How many schema types does this generator support?', a: 'Our schema generator currently supports 39+ of the most popular and useful schema.org types, organized across 11 categories (Business, Content, E-commerce, Events, People, Jobs, Creative, Places, Technology, Medical, Automotive). This is significantly more than the 10-15 types offered by most free generators.' },
+              { q: 'Is the generated schema markup valid and Google-compliant?', a: "Yes, all generated schema markup follows schema.org standards and Google's structured data guidelines. We provide built-in validation, enforce required fields, and offer direct integration with Google's Rich Results Test so you can verify compliance before implementation." },
+              { q: 'What makes your schema generator better than competitors?', a: "Four key differentiators: (1) 39+ schema types versus 10–15 for most tools, (2) Advanced property builders for addresses, geo-coordinates, FAQs, steps, and ratings, (3) Direct Google Rich Results Test integration with one-click access, (4) Category-based organization with searchable dropdown and visual icons. Plus it's completely free with no login required." },
+              { q: 'Can I customize schema types or add custom properties?', a: 'Our generator provides all standard schema.org properties for each type through intelligent form builders. For highly specialized custom properties not in our forms, you can generate the base schema and manually add custom properties to the exported JSON-LD code before implementation.' },
+              { q: 'How do I implement the generated schema on my website?', a: "Copy the generated JSON-LD code and paste it into the <head> section of your HTML page, preferably before the closing </head> tag. JSON-LD is Google's recommended format because it doesn't require inline markup—all structured data lives in a single script tag. For WordPress sites, use a plugin like Schema Pro or Yoast SEO to add the code without editing theme files." },
+              { q: 'Does this tool help with rich snippets in Google?', a: "Yes! Our schema generator creates markup optimized for Google's rich snippets. However, rich result eligibility varies by schema type—not all types trigger enhanced SERP displays. Use our integrated Google Rich Results Test button to verify if your specific schema is eligible. According to Search Engine Land, pages with rich snippets get 36% higher CTR on average." },
+              { q: 'Is there a limit on usage or do I need to create an account?', a: 'The tool is completely free with zero usage limits and no account required. You only need to complete Google reCAPTCHA verification once per session to prevent automated abuse. No email signup, no credit card, no restrictions—generate unlimited schema markup anytime.' },
+              { q: "What's the difference between JSON-LD and Microdata formats?", a: "JSON-LD (JavaScript Object Notation for Linked Data) is a script tag in the <head> section, while Microdata requires inline markup within HTML elements. Google explicitly recommends JSON-LD because it's easier to implement, maintain, and validate. Our generator outputs only JSON-LD—the modern, preferred format for structured data." },
+              { q: 'Can I generate schema for multiple pages at once?', a: "Currently, our generator creates schema for one page/entity at a time for accuracy. However, many schema types (like Organization, LocalBusiness, Person) are site-wide and only need to be implemented once in your template. For e-commerce sites with hundreds of products, consider using dynamic schema generation through your CMS or a schema plugin that pulls from your product database." },
+              { q: 'How do the advanced property builders work (FAQ, How-To, Address)?', a: 'Advanced builders provide specialized interfaces for complex schema properties: The FAQ builder lets you add unlimited question-answer pairs with proper Question schema nesting. The How-To builder creates step-by-step instructions with optional images and tools. The Address builder breaks down PostalAddress into street, city, state, postal code, and country fields. GeoCoordinates builder accepts latitude/longitude for precise location data. AggregateRating builder includes score, scale, and review count for star ratings.' },
+              { q: 'Will schema markup improve my search rankings directly?', a: "Schema doesn't directly boost rankings like backlinks or content quality, but it indirectly improves rankings through enhanced CTR. Searchmetrics found pages with schema rank 4 positions higher on average because rich snippets attract more clicks. Higher CTR signals quality to Google's algorithm, creating a ranking boost over time. Schema also helps with voice search and knowledge graph inclusion—both increasingly important for visibility." },
+              { q: 'What happens after I implement schema on my site?', a: 'After implementation: (1) Validate with Google Rich Results Test to check for errors, (2) Submit your sitemap to Google Search Console to expedite crawling, (3) Monitor Search Console\'s "Enhancements" section for schema-related issues or valid item counts, (4) Rich results typically appear within 1–4 weeks after Google recrawls and validates your markup.' },
+            ].map(faq => (
+              <details key={faq.q} className="faq-item">
+                <summary>{faq.q}</summary>
+                <div className="faq-answer">{faq.a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- RELATED TOOLS --- */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Tools</div>
+            <h2 className="s-title">Explore Our Other <span className="blue">SEO Tools</span></h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', maxWidth: 560, marginTop: '0.75rem', lineHeight: 1.6 }}>
+              Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
+            </p>
+          </div>
+          <div className="related-tools-grid">
+            {[
+              { name: 'Schema Generator', desc: 'Generate JSON-LD structured data for 39+ schema types with advanced property builders.', current: true, href: '/tools/schema-generator/', paths: ['M12 2L2 7l10 5 10-5-10-5', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'] },
+              { name: 'On-Page SEO Analyzer', desc: 'Audit 150+ on-page SEO factors with real Google PageSpeed data and Core Web Vitals.', href: '/tools/on-page-seo-analyzer/', paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'] },
+              { name: 'Internal Link Checker', desc: 'Visualize anchor text distribution and audit internal link structure across your site.', href: '/tools/internal-link-checker/', paths: ['M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71', 'M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'] },
+              { name: 'Robots.txt Generator', desc: 'Create robots.txt rules that control crawler access, including AI crawlers like GPTBot.', href: '/tools/robots-txt-generator/', paths: ['M12 2a3 3 0 0 0-3 3v1H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v4h10v-4h1a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3V5a3 3 0 0 0-3-3z', 'M9 12h.01', 'M15 12h.01'] },
+              { name: 'Meta Tag Optimizer', desc: 'Generate perfect title tags and meta descriptions for better click-through rates.', href: '/tools/meta-tag-optimizer/', paths: ['M4 9h16', 'M4 15h16', 'M10 3 8 21', 'M16 3l-2 18'] },
+            ].map(t => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FINAL CTA --- */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Start Generating Professional <span>Schema Markup Today</span></h2>
+          <p className="final-cta-sub">
+            Stop leaving rich snippets to chance. Create professional, Google-compliant schema markup that search engines understand and reward with enhanced search results, knowledge graph inclusion, and 36% higher click-through rates on average.
+          </p>
+          <div className="final-cta-row">
+            <button
+              onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
+              className="btn-primary"
+            >
+              Use the Schema Generator →
+            </button>
+          </div>
+          <div className="final-cta-pills">
+            {[
+              '39+ schema types with intelligent form builders — no coding required',
+              'Direct Google Rich Results Test integration for instant validation',
+              'Improve rankings through enhanced CTR from rich snippets',
+            ].map(p => (
+              <div key={p} className="final-pill">{p}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+    </>
   )
 }
+
 
 // FAQ Builder Component
 function FAQBuilder({ questions, onChange }: { questions: any[], onChange: (questions: any[]) => void }) {

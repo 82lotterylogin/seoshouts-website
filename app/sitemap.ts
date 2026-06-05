@@ -31,6 +31,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.3,
     },
     {
+      url: `${baseUrl}/terms/`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
       url: `${baseUrl}/founder/`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
@@ -70,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'seo-meta-writer',
     'blog-ideas-generator',
     'trending-hashtag-finder',
-    'anchor-cloud',
+    // anchor-cloud removed — permanently redirects to /tools/internal-link-checker/
   ].map(tool => ({
     url: `${baseUrl}/tools/${tool}/`,
     lastModified: new Date(),
@@ -94,6 +100,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'ecommerce-seo',
     'link-building',
     'seo-consulting',
+    'technical-seo-audit',
     'seo-website-development',
     'seo-website-development-usa',
   ].map(service => ({
