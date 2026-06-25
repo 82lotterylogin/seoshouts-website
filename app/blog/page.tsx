@@ -4,6 +4,7 @@ import BlogSidebarSubscription from "../components/BlogSidebarSubscription";
 import BlogArticleGrid from "./BlogArticleGrid";
 import Link from 'next/link';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
 // COMPREHENSIVE SEO METADATA
@@ -168,6 +169,21 @@ async function fetchBlogArticles(searchParams?: { [key: string]: string | string
   }
 }
 
+// Resolve a category NAME (used by legacy ?category= filter URLs) to its archive slug.
+// Returns null if the category can't be found, so the caller can fall through to the
+// normal blog listing instead of redirecting to a broken /categories/ URL.
+async function fetchCategorySlugByName(name: string): Promise<string | null> {
+  try {
+    const { getDatabase } = await import('../lib/database');
+    const db = getDatabase();
+    const row = db.prepare('SELECT slug FROM categories WHERE name = ?').get(name) as { slug: string } | undefined;
+    return row?.slug ?? null;
+  } catch (error) {
+    console.error('Error resolving category slug:', error);
+    return null;
+  }
+}
+
 // Fetch categories from our database
 async function fetchCategories() {
   try {
@@ -230,6 +246,18 @@ function safeWordCount(content: any): number {
 
 export default async function BlogPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const resolvedSearchParams = await searchParams;
+
+  // Legacy ?category= filter URLs duplicate the /blog/ page (same title, H1, meta).
+  // Redirect them to the canonical category archive page to consolidate ranking signals.
+  // Note: redirect() must run outside any surrounding try/catch — it throws NEXT_REDIRECT.
+  const categoryParam = resolvedSearchParams.category;
+  if (typeof categoryParam === 'string' && categoryParam.trim()) {
+    const categorySlug = await fetchCategorySlugByName(categoryParam);
+    if (categorySlug) {
+      redirect(`/categories/${categorySlug}/`);
+    }
+  }
+
   const { articles } = await fetchBlogArticles(resolvedSearchParams);
   const categories = await fetchCategories();
   const activeCategory = resolvedSearchParams.category as string | undefined;

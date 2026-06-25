@@ -408,6 +408,8 @@ export default async function HomePage() {
               <img
                 src="/images/team/rohit-sharma.jpg"
                 alt="Rohit Sharma — Founder, SEOShouts"
+                width={500}
+                height={500}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
               />
               <div className="about-founder-tag">
@@ -532,7 +534,7 @@ export default async function HomePage() {
                 <div className="blog-img-wrap">
                   {post.featured_image ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={post.featured_image} alt={post.title} className="blog-img-real" />
+                    <img src={post.featured_image} alt={post.title} className="blog-img-real" width={1280} height={720} />
                   ) : null}
                   {post.category && <span className="blog-tag-pill">{post.category.name}</span>}
                 </div>

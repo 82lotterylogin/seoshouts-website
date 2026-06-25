@@ -358,7 +358,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
           <div className="ba-meta-grid">
             <div className="ba-meta-cell ba-author-cell">
               {article.author.avatar_url ? (
-                <img src={article.author.avatar_url} alt={article.author.name} />
+                <img src={article.author.avatar_url} alt={article.author.name} width={40} height={40} />
               ) : (
                 <div style={{ width: 40, height: 40, background: 'var(--blue)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif", flexShrink: 0 }}>
                   {article.author.name.split(' ').map((n: string) => n[0]).join('')}
@@ -413,6 +413,8 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
             <img
               src={article.featured_image}
               alt={article.featured_image_alt || article.title}
+              width={1280}
+              height={720}
             />
           </div>
         </div>
