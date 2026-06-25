@@ -579,7 +579,7 @@ export default function SeoWebDevPageContent({ blogPosts }: { blogPosts: any[] }
             <div className="wd-team-cards">
               <div className="wd-team-card">
                 <div className="wd-team-card-img">
-                  <img src="/images/team/rohit-sharma.jpg" alt="Rohit Sharma" />
+                  <img src="/images/team/rohit-sharma.jpg" alt="Rohit Sharma" width={500} height={500} />
                 </div>
                 <div className="wd-team-card-info">
                   <div className="wd-team-card-name">Rohit Sharma</div>
@@ -588,7 +588,7 @@ export default function SeoWebDevPageContent({ blogPosts }: { blogPosts: any[] }
               </div>
               <div className="wd-team-card">
                 <div className="wd-team-card-img">
-                  <img src="/images/team/ajay-porwal.jpg" alt="Ajay Porwal" />
+                  <img src="/images/team/ajay-porwal.jpg" alt="Ajay Porwal" width={500} height={500} />
                 </div>
                 <div className="wd-team-card-info">
                   <div className="wd-team-card-name">Ajay Porwal</div>
@@ -909,7 +909,7 @@ export default function SeoWebDevPageContent({ blogPosts }: { blogPosts: any[] }
                 <article key={post.id} className="wd-blog-card">
                   <div className="wd-blog-img">
                     {post.featured_image ? (
-                      <img src={post.featured_image} alt={post.title || 'Blog post image'} />
+                      <img src={post.featured_image} alt={post.title || 'Blog post image'} width={1280} height={720} />
                     ) : (
                       <div className="wd-blog-img-placeholder">
                         {index === 0 ? (
