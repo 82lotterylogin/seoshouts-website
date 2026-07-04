@@ -52,6 +52,7 @@ const FAQ_ITEMS = [
   { q: 'How often should I run the GEO/AEO checker?', a: "Run it after any significant content update, after adding schema markup, after changing your robots.txt, and monthly as part of your regular SEO audit. Track your score over time to measure the impact of individual improvements." },
   { q: 'Does improving my GEO/AEO score hurt traditional SEO?', a: "No — the signals this tool checks (schema markup, E-E-A-T, content structure, FAQ sections) are all positive signals for traditional Google search rankings too. GEO/AEO optimization and traditional SEO are complementary, not competing." },
   { q: 'What should I fix first after getting my score?', a: "Fix High-impact failed checks first. The tool sorts your issues by impact level. Typically, the fastest wins are: adding FAQPage schema (if missing), writing an answer capsule, converting H2s to question format, and ensuring AI crawlers are not blocked." },
+  { q: 'What makes this the best AEO checking tool to start with?', a: "Most AEO checking tools either audit a single signal (like schema) or sit behind a paid subscription. This checker runs 30+ checks across all seven categories that influence AI citations: schema markup, AI crawler access, content structure, E-E-A-T, FAQ readiness, technical signals, and performance, and it is completely free with no login. It also explains how to fix every failed check, so it works as both an AEO checker and a prioritized to-do list." },
 ]
 
 // The 7 weighted audit categories (points sum to 100). Used by the score-composition explorer.
@@ -375,10 +376,10 @@ export default function GeoAeoCheckerClient() {
           </nav>
           <div className="tool-hero-badge">Free SEO Tool</div>
           <h1 className="tool-hero-h1">
-            Free GEO &amp; AEO Score Checker — <span>AI Search Readiness Audit</span>
+            Free AEO Checker &amp; GEO Score Tool — <span>AI Search Readiness Audit</span>
           </h1>
           <p className="tool-hero-sub">
-            A GEO/AEO score checker audits your web page across seven AI readiness categories — schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and performance — returning a 0–100 score with specific fixes for every failed check.
+            An AEO checker audits your web page across seven AI readiness categories — schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and performance — returning a 0–100 score with specific fixes for every failed check.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
             {['7-Category Audit', 'AI Crawler Detection', '30+ Checks', 'Free · No Login'].map((label) => (

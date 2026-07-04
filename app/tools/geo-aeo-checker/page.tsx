@@ -42,10 +42,15 @@ const faqItems = [
     answer:
       'Fix High-impact failed checks first. The tool sorts your issues by impact level. Typically, the fastest wins are: adding FAQPage schema (if missing), writing an answer capsule, converting H2s to question format, and ensuring AI crawlers are not blocked.',
   },
+  {
+    question: 'What makes this the best AEO checking tool to start with?',
+    answer:
+      'Most AEO checking tools either audit a single signal (like schema) or sit behind a paid subscription. This checker runs 30+ checks across all seven categories that influence AI citations: schema markup, AI crawler access, content structure, E-E-A-T, FAQ readiness, technical signals, and performance, and it is completely free with no login. It also explains how to fix every failed check, so it works as both an AEO checker and a prioritized to-do list.',
+  },
 ]
 
 export const metadata: Metadata = {
-  title: 'Free GEO & AEO Score Checker — AI Search Readiness Audit | SEOShouts',
+  title: 'Free AEO Checker & GEO Score Tool — 30+ AI Checks | SEOShouts',
   description:
     "Check your website's GEO and AEO readiness score. Audits schema, AI crawler access, content structure, E-E-A-T & FAQ signals across 7 categories. Free, instant.",
   keywords:
@@ -55,7 +60,7 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/geo-aeo-checker/',
   },
   openGraph: {
-    title: 'Free GEO & AEO Score Checker — AI Search Readiness Audit',
+    title: 'Free AEO Checker & GEO Score Tool — 30+ AI Checks',
     description:
       'Is your website ready for AI search? Get a 0–100 GEO/AEO score with actionable fixes across 7 categories.',
     url: 'https://seoshouts.com/tools/geo-aeo-checker/',
@@ -64,7 +69,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free GEO & AEO Score Checker — AI Search Readiness Audit',
+    title: 'Free AEO Checker & GEO Score Tool — 30+ AI Checks',
     description:
       'Audit schema markup, AI crawler access, E-E-A-T signals, FAQ readiness & more. Free, no login.',
   },
@@ -78,10 +83,23 @@ export default function GeoAeoCheckerPage() {
   const softwareApplicationSchema = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'GEO & AEO Score Checker',
+    name: 'SEOShouts AEO Checker & GEO Score Tool',
     url: 'https://seoshouts.com/tools/geo-aeo-checker/',
-    applicationCategory: 'WebApplication',
-    operatingSystem: 'Any',
+    applicationCategory: 'BrowserApplication',
+    applicationSubCategory: 'SEO Tool',
+    operatingSystem: 'Any (Web Browser)',
+    softwareVersion: '1.1',
+    datePublished: '2026-01-15',
+    dateModified: '2026-07-04',
+    publisher: {
+      '@type': 'Organization',
+      name: 'SEOShouts',
+      url: 'https://seoshouts.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://seoshouts.com/logo.png',
+      },
+    },
     offers: {
       '@type': 'Offer',
       price: '0',

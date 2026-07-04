@@ -687,7 +687,7 @@ export default function InternalLinkCheckerClient() {
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">Key Features</div>
-            <h2 className="s-title">Key features of our <span className="blue">internal link checker</span></h2>
+            <h2 className="s-title">Internal link analysis and visualization <span className="blue">features</span></h2>
           </div>
           <div className="features-grid">
             {[
@@ -718,7 +718,7 @@ export default function InternalLinkCheckerClient() {
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">How To Use</div>
-            <h2 className="s-title">How to audit your internal link anchors <span className="blue">(step-by-step)</span></h2>
+            <h2 className="s-title">How to run an internal linking audit <span className="blue">(step-by-step)</span></h2>
             <p className="s-sub">Optimizing your internal linking structure is one of the fastest ways to improve rankings without building a single backlink. A Databox study found that 42% of SEO experts spend equal time on internal links as external links.</p>
           </div>
           <div className="steps-grid">

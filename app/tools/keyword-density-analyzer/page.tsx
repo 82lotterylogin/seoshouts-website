@@ -52,17 +52,38 @@ export default function KeywordDensityAnalyzer() {
             "name": "Keyword Density Analyzer",
             "description": "Analyze keyword density and optimize your content for SEO. Free keyword density checker with detailed analysis, recommendations, and top keyword insights.",
             "url": "https://seoshouts.com/tools/keyword-density-analyzer/",
-            "applicationCategory": "SEO Tool",
-            "operatingSystem": "Web Browser",
+            "applicationCategory": "BrowserApplication",
+            "applicationSubCategory": "SEO Tool",
+            "operatingSystem": "Any (Web Browser)",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "author": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "url": "https://seoshouts.com/meet-the-experts/",
+              "jobTitle": "SEO Consultant & Founder",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "SEOShouts",
+                "url": "https://seoshouts.com"
+              }
+            },
+            "publisher": {
               "@type": "Organization",
-              "name": "SEOShouts"
-            }
+              "name": "SEOShouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png"
+              }
+            },
+            "featureList": ["Word & Phrase Frequency Analysis","Multi-Word Phrase Density","Over-Optimization Detection","Instant In-Browser Analysis","Free Unlimited Checks","No Login Required"],
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2026-07-04"
           })
         }}
       />

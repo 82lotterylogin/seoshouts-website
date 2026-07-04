@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import SchemaGeneratorClient from './SchemaGeneratorClient'
 
 export const metadata: Metadata = {
-  title: 'Free Schema Markup Generator (JSON-LD) — 39 Types | SEOShouts',
+  title: 'Free Online Schema Markup Generator — 39 JSON-LD Types | SEOShouts',
   description: 'Generate valid JSON-LD schema markup in seconds. 39 schema types including Organization, Article, Product, FAQ, Event & LocalBusiness. Built-in Google Rich Results Test. No signup.',
   keywords: 'schema markup generator, schema generator, JSON-LD generator, structured data generator, schema markup, SEO schema, rich snippets',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/schema-generator/',
   },
   openGraph: {
-    title: 'Free Schema Markup Generator (JSON-LD) — 39 Types',
+    title: 'Free Online Schema Markup Generator — 39 JSON-LD Types',
     description: 'Generate valid JSON-LD schema markup in seconds. 39 schema types with built-in Google Rich Results Test integration. Free, no signup.',
     url: 'https://seoshouts.com/tools/schema-generator/',
     siteName: 'SEOShouts',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Schema Markup Generator (JSON-LD) — 39 Types',
+    title: 'Free Online Schema Markup Generator — 39 JSON-LD Types',
     description: 'Generate valid JSON-LD schema markup in seconds. 39 schema types with built-in Google Rich Results Test integration. Free, no signup.',
     images: ['https://seoshouts.com/images/schema-generator-og.jpg'],
   },

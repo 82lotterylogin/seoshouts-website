@@ -95,10 +95,18 @@ export default function HtaccessGeneratorPage() {
           __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
-            name: '.htaccess Generator',
+            name: 'SEOShouts .htaccess Generator',
             url: 'https://seoshouts.com/tools/htaccess-generator/',
-            applicationCategory: 'WebApplication',
-            operatingSystem: 'Any',
+            applicationCategory: 'BrowserApplication',
+            applicationSubCategory: 'SEO Tool',
+            operatingSystem: 'Any (Web Browser)',
+            author: {
+              '@type': 'Person',
+              name: 'Rohit Sharma',
+              url: 'https://seoshouts.com/meet-the-experts/',
+              jobTitle: 'SEO Consultant & Founder',
+              worksFor: { '@type': 'Organization', name: 'SEOShouts', url: 'https://seoshouts.com' },
+            },
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
             description:
               'Free .htaccess generator for Apache servers. Create redirects, security headers, GZIP compression, browser caching rules, and CMS-specific presets instantly.',
@@ -112,7 +120,8 @@ export default function HtaccessGeneratorPage() {
               'PHP Settings',
             ],
             softwareVersion: '1.0',
-            dateModified: '2026-02-24',
+            datePublished: '2026-02-24',
+            dateModified: '2026-07-04',
             publisher: {
               '@type': 'Organization',
               name: 'SEOShouts',

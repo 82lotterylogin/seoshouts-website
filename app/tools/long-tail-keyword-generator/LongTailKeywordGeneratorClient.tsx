@@ -197,7 +197,7 @@ export default function LongTailKeywordGeneratorClient() {
             Discover Profitable Keywords Your Competitors Are Missing
           </h2>
           <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
-            Ever feel like you&apos;re fighting for scraps with the same keywords everyone else targets? Smart marketers know the real opportunity lies in long tail keywords - those longer, more specific phrases that people actually search for when they&apos;re ready to buy something.
+            A long tail keyword generator expands any seed keyword into hundreds of longer, more specific search phrases with lower competition and higher buying intent. Pick your country and language, generate suggestions in seconds, and export the full list for free, no signup needed.
           </p>
           <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
             <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Our Long Tail Keyword Generator</strong> helps you uncover hundreds of these hidden gems in seconds. No more guessing what people might search for. No more competing for impossible keywords. Just real, profitable keyword opportunities waiting to be discovered.

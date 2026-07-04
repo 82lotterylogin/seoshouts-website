@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import AICopywriterClient from './AICopywriterClient'
 
 export const metadata: Metadata = {
-  title: 'Free AI Copywriting Tool — Ads, Web Copy & More | SEOShouts',
+  title: 'Free AI Copywriter — Ads, Web Copy & More | SEOShouts',
   description: 'Generate high-converting copy for ads, product descriptions, emails, and more. Professional AI copywriting tool with multiple variations and optimization tips.',
   keywords: 'AI copywriter, copywriting tool, ad copy generator, product description generator, email marketing copy, sales copy',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/ai-copywriter/',
   },
   openGraph: {
-    title: 'Free AI Copywriting Tool — Ads, Web Copy & More | SEOShouts',
+    title: 'Free AI Copywriter — Ads, Web Copy & More | SEOShouts',
     description: 'Generate high-converting copy for ads, product descriptions, emails, and more. Professional AI copywriting tool with multiple variations and optimization tips.',
     url: 'https://seoshouts.com/tools/ai-copywriter/',
     siteName: 'SEOShouts',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free AI Copywriting Tool — Ads, Web Copy & More | SEOShouts',
+    title: 'Free AI Copywriter — Ads, Web Copy & More | SEOShouts',
     description: 'Generate high-converting copy for ads, product descriptions, emails, and more. Professional AI copywriting tool.',
   },
 }
@@ -36,17 +36,38 @@ export default function AICopywriter() {
             "name": "AI Copywriter",
             "description": "Generate high-converting copy for ads, product descriptions, emails, and more. Professional AI copywriting tool with multiple variations and optimization tips.",
             "url": "https://seoshouts.com/tools/ai-copywriter/",
-            "applicationCategory": "SEO Tool",
-            "operatingSystem": "Web Browser",
+            "applicationCategory": "BrowserApplication",
+            "applicationSubCategory": "SEO Tool",
+            "operatingSystem": "Any (Web Browser)",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "author": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "url": "https://seoshouts.com/meet-the-experts/",
+              "jobTitle": "SEO Consultant & Founder",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "SEOShouts",
+                "url": "https://seoshouts.com"
+              }
+            },
+            "publisher": {
               "@type": "Organization",
-              "name": "SEOShouts"
-            }
+              "name": "SEOShouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png"
+              }
+            },
+            "featureList": ["AI Ad Copy Generation","Website & Landing Page Copy","Multiple Copy Formats","Instant Results","Free Daily Usage","No Login Required"],
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2026-07-04"
           })
         }}
       />

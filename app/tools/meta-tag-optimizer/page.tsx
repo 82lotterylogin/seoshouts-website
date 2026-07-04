@@ -36,17 +36,38 @@ export default function MetaTagOptimizer() {
             "name": "Meta Tag Optimizer",
             "description": "Create compelling title tags and meta descriptions that get clicked. Free meta tag generator with real-time SERP preview and optimization tips.",
             "url": "https://seoshouts.com/tools/meta-tag-optimizer/",
-            "applicationCategory": "SEO Tool",
-            "operatingSystem": "Web Browser",
+            "applicationCategory": "BrowserApplication",
+            "applicationSubCategory": "SEO Tool",
+            "operatingSystem": "Any (Web Browser)",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "author": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "url": "https://seoshouts.com/meet-the-experts/",
+              "jobTitle": "SEO Consultant & Founder",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "SEOShouts",
+                "url": "https://seoshouts.com"
+              }
+            },
+            "publisher": {
               "@type": "Organization",
-              "name": "SEOShouts"
-            }
+              "name": "SEOShouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png"
+              }
+            },
+            "featureList": ["Live SERP Preview","Title & Description Length Checking","Keyword Placement Analysis","Instant Optimization Feedback","Free Unlimited Use","No Login Required"],
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2026-07-04"
           })
         }}
       />

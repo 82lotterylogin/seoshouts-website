@@ -180,7 +180,7 @@ function BlogIdeasGeneratorClient() {
           </nav>
           <div className="tool-hero-badge">Free AI Tool</div>
           <h1 className="tool-hero-h1">
-            Free Blog Ideas <span>Generator</span>
+            Free Blog Ideas &amp; Topic <span>Generator</span>
           </h1>
           <p className="tool-hero-sub">
             Never stare at a blank screen again. Get unlimited fresh, engaging topics in seconds &mdash; mixing
@@ -812,6 +812,7 @@ function BlogIdeasGeneratorClient() {
               { q: 'Can I change the suggested titles?', a: "Of course! These are starting points, not commandments. Tweak them to fit your voice and style." },
               { q: 'How often should I generate new ideas?', a: "Whenever you're planning content. Some people batch it monthly, others prefer to generate as needed. Do whatever works for your workflow." },
               { q: "What if I don't like any of the suggestions?", a: 'Try different keywords or be more specific. Sometimes "social media marketing" gives you different results than "Instagram marketing for restaurants."' },
+              { q: 'Is this blog topic generator really free?', a: 'Yes. No account, no credit card, no locked features. There is a fair-use daily limit to keep the AI fast for everyone, but every feature of the blog topic generator is available to every user at no cost.' },
             ].map((item) => (
               <details key={item.q} className="faq-item reveal">
                 <summary>{item.q}</summary>

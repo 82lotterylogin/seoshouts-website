@@ -367,7 +367,7 @@ export default function KeywordDifficultyCheckerClient() {
             Find Out Which Keywords You Can Actually Rank For
           </h2>
           <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
-            Ever spent months trying to rank for a keyword, only to realize later that you needed the SEO budget of Amazon to compete? Yeah, we&apos;ve all been there.
+            A keyword difficulty checker scores any search term from 1 to 100 based on how hard it is to outrank the pages currently ranking on page one. Check keyword difficulty in bulk, pick a target country for location-specific scores, and export everything to CSV, free with no signup.
           </p>
           <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
             <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Here&apos;s the thing:</strong> Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks won&apos;t get you to page one. Others look hard but are actually achievable with the right strategy.
@@ -681,9 +681,88 @@ export default function KeywordDifficultyCheckerClient() {
 
             <div style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
               <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                Most people pick keywords based on search volume alone. Smart marketers balance volume with difficulty.
+                Most people pick keywords based on search volume alone. Smart marketers balance volume with difficulty. Once you find winnable keywords, run them through our <a href="/tools/long-tail-keyword-generator/" style={{ color: 'var(--blue)', fontWeight: 600 }}>long tail keyword generator</a> to expand them into full topic clusters, or read our guide on <a href="/blog/how-to-build-pillar-pages-seo/" style={{ color: 'var(--blue)', fontWeight: 600 }}>building pillar pages for competitive keywords</a>.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW TO CHECK KEYWORD DIFFICULTY ─── */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header center">
+            <div className="eyebrow">Step by Step</div>
+            <h2 className="s-title">How to Check Keyword Difficulty <span className="blue">in 4 Steps</span></h2>
+          </div>
+          <div className="prose-content">
+            <ol style={{ listStyle: 'none', padding: 0, margin: '0.5rem 0 0', display: 'flex', flexDirection: 'column', gap: '1.25rem', counterReset: 'step' }}>
+              {[
+                { title: 'Enter your keywords', text: 'Paste keywords one per line or separated by commas. The tool checks keyword difficulty in bulk, so you can score an entire keyword list in one run instead of checking terms one at a time.' },
+                { title: 'Choose your target location', text: 'Keyword difficulty varies by country: a term that is brutally competitive in the US can be wide open in India or Australia. Pick the market you actually sell in for location-specific scores.' },
+                { title: 'Click "Check Difficulty"', text: 'Each keyword gets a difficulty score from 1 to 100. Green scores (under 30) are realistic targets for newer sites, yellow and orange need solid content plus links, and red (71+) demands serious authority.' },
+                { title: 'Export and prioritize', text: 'Download your scored list as CSV, then sort by difficulty. Target the low-difficulty keywords with decent volume first: those are the battles you can win this quarter.' },
+              ].map((step, i) => (
+                <li key={step.title} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                  <div style={{ width: 36, height: 36, background: 'var(--blue)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1rem', flexShrink: 0 }}>{i + 1}</div>
+                  <div>
+                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--ink)', marginBottom: '0.25rem' }}>{step.title}</strong>
+                    <span style={{ fontSize: '0.92rem', color: 'var(--gray-5)', lineHeight: 1.65 }}>{step.text}</span>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FAQ ─── */}
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+          </div>
+          <div className="faq-list">
+            {[
+              {
+                q: 'What is a keyword difficulty score?',
+                a: 'A keyword difficulty score is a number from 1 to 100 that estimates how hard it is to rank on the first page of Google for a specific search term. It is calculated from the strength of the pages that currently rank: their domain authority, backlink profiles, and content quality. A score under 30 means low competition, 31 to 50 is achievable with solid content, 51 to 70 requires strong authority, and 71+ demands significant resources and time.'
+              },
+              {
+                q: 'How do I check keyword difficulty for free?',
+                a: 'Paste your keywords into the checker above, choose your target country, and click "Check Difficulty". You get instant difficulty scores for every keyword with no signup, no credit card, and no trial limits. Each session allows 8 analyses, and every analysis can score multiple keywords at once.'
+              },
+              {
+                q: 'Can I check keyword difficulty in bulk?',
+                a: 'Yes. This is a bulk keyword difficulty checker: enter your whole keyword list separated by commas or new lines and every term is scored in a single run. You can then export all scores to CSV to sort and prioritize your keyword strategy in a spreadsheet.'
+              },
+              {
+                q: 'Does keyword difficulty change by location?',
+                a: 'Significantly. Competition for the same keyword differs between countries because different sites rank in each market. A keyword with difficulty 65 in the United States might score 35 in India or 40 in Australia. That is why this tool includes a location selector, so you measure difficulty in the market you actually target rather than a global average.'
+              },
+              {
+                q: 'How is this different from Moz or Semrush difficulty scores?',
+                a: 'Every tool calculates difficulty differently, so scores are not interchangeable. Moz leans heavily on its Domain Authority metric, Semrush factors in its own backlink index, and Ahrefs counts referring domains of ranking pages. Our checker analyzes the competitive strength of the current top-ranking results for your chosen location. The absolute numbers matter less than the relative comparison: use one tool consistently and compare keywords against each other.'
+              },
+              {
+                q: 'What is a good keyword difficulty for a new website?',
+                a: 'New websites should target keywords with difficulty scores under 30. Sites with little authority and few backlinks rarely crack page one for competitive terms, no matter how good the content is. Build traffic with low-difficulty, long tail keywords first, then use that authority to attack medium-difficulty terms after 6 to 12 months.'
+              },
+              {
+                q: 'Should I ignore high difficulty keywords completely?',
+                a: 'No, but treat them as long-term goals rather than quick wins. High-difficulty keywords usually have the most volume and commercial value. The smart play is a pillar page strategy: rank for dozens of related low-difficulty long tail terms first, interlink them into a cluster, and let that combined authority push your pillar page up for the hard head term.'
+              },
+              {
+                q: 'Is this keyword difficulty checker really free?',
+                a: 'Yes, completely free. No account, no credit card, no premium tier hiding the real features. You get bulk analysis, location-specific scoring, and CSV export at no cost. The session limit of 8 analyses exists only to keep the tool fast for everyone, and it resets when you refresh the page.'
+              },
+            ].map(item => (
+              <details key={item.q} className="faq-item">
+                <summary>{item.q}</summary>
+                <div className="faq-answer">{item.a}</div>
+              </details>
+            ))}
           </div>
         </div>
       </section>

@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import HTMLEditorClient from './HTMLEditorClient'
 
 export const metadata: Metadata = {
-  title: 'Free Online HTML Editor — Live Preview & Clean Code | SEOShouts',
+  title: 'Free Online HTML5 Editor — Live Preview & Clean Code | SEOShouts',
   description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview. Free web development tool.',
   keywords: 'HTML editor, online HTML editor, live preview HTML, code editor, HTML CSS JS editor, web development tool',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/html-editor/',
   },
   openGraph: {
-    title: 'Free Online HTML Editor — Live Preview & Clean Code | SEOShouts',
+    title: 'Free Online HTML5 Editor — Live Preview & Clean Code | SEOShouts',
     description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview. Free web development tool.',
     url: 'https://seoshouts.com/tools/html-editor/',
     siteName: 'SEOShouts',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Online HTML Editor — Live Preview & Clean Code | SEOShouts',
+    title: 'Free Online HTML5 Editor — Live Preview & Clean Code | SEOShouts',
     description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview.',
     images: ['https://seoshouts.com/images/html-editor-og.jpg'],
   },
@@ -52,17 +52,38 @@ export default function HTMLEditor() {
             "name": "HTML Editor",
             "description": "Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview. Free web development tool.",
             "url": "https://seoshouts.com/tools/html-editor/",
-            "applicationCategory": "SEO Tool",
-            "operatingSystem": "Web Browser",
+            "applicationCategory": "BrowserApplication",
+            "applicationSubCategory": "SEO Tool",
+            "operatingSystem": "Any (Web Browser)",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "author": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "url": "https://seoshouts.com/meet-the-experts/",
+              "jobTitle": "SEO Consultant & Founder",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "SEOShouts",
+                "url": "https://seoshouts.com"
+              }
+            },
+            "publisher": {
               "@type": "Organization",
-              "name": "SEOShouts"
-            }
+              "name": "SEOShouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png"
+              }
+            },
+            "featureList": ["Live HTML Preview","Syntax Highlighting","HTML, CSS & JavaScript Editing","Clean Code Output","Runs Entirely in Browser","No Login Required"],
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2026-07-04"
           })
         }}
       />

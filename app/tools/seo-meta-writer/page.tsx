@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import SeoMetaWriterClient from './SeoMetaWriterClient'
 
 export const metadata: Metadata = {
-  title: 'Free AI Meta Title & Description Generator | SEOShouts',
+  title: 'Free AI Meta Writer — Title & Description Generator | SEOShouts',
   description: 'Generate SEO-optimized meta titles and descriptions with AI. Boost your click-through rates with compelling, keyword-rich meta tags. Free tool, no signup required.',
   keywords: 'SEO meta title generator, meta description generator, AI meta tags, SEO optimization, title tag generator, SERP optimization',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/seo-meta-writer/',
   },
   openGraph: {
-    title: 'Free AI Meta Title & Description Generator | SEOShouts',
+    title: 'Free AI Meta Writer — Title & Description Generator | SEOShouts',
     description: 'Generate SEO-optimized meta titles and descriptions with AI. Boost your click-through rates with compelling, keyword-rich meta tags. Free tool, no signup required.',
     url: 'https://seoshouts.com/tools/seo-meta-writer/',
     siteName: 'SEOShouts',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free AI Meta Title & Description Generator | SEOShouts',
+    title: 'Free AI Meta Writer — Title & Description Generator | SEOShouts',
     description: 'Generate SEO-optimized meta titles and descriptions with AI. Boost your click-through rates with compelling, keyword-rich meta tags.',
     images: ['https://seoshouts.com/images/seo-meta-writer-og.jpg'],
   },
@@ -52,17 +52,38 @@ export default function SeoMetaWriter() {
             "name": "SEO Meta Writer",
             "description": "Generate SEO-optimized meta titles and descriptions with AI. Boost your click-through rates with compelling, keyword-rich meta tags. Free tool, no signup required.",
             "url": "https://seoshouts.com/tools/seo-meta-writer/",
-            "applicationCategory": "SEO Tool",
-            "operatingSystem": "Web Browser",
+            "applicationCategory": "BrowserApplication",
+            "applicationSubCategory": "SEO Tool",
+            "operatingSystem": "Any (Web Browser)",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "author": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "url": "https://seoshouts.com/meet-the-experts/",
+              "jobTitle": "SEO Consultant & Founder",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "SEOShouts",
+                "url": "https://seoshouts.com"
+              }
+            },
+            "publisher": {
               "@type": "Organization",
-              "name": "SEOShouts"
-            }
+              "name": "SEOShouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png"
+              }
+            },
+            "featureList": ["AI Meta Title Generation","AI Meta Description Generation","Length-Compliant Output","Keyword-Optimized Suggestions","Instant Results","No Login Required"],
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2026-07-04"
           })
         }}
       />

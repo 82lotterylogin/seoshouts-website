@@ -198,8 +198,8 @@ export default function InternalLinkCheckerPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "HowTo",
-            "name": "How to Audit Your Internal Link Anchor Text",
-            "description": "Step-by-step guide to analyzing and optimizing your website's internal link anchor text using the SEOShouts Internal Link Checker.",
+            "name": "How to Run an Internal Linking Audit",
+            "description": "Step-by-step guide to running an internal linking audit and optimizing anchor text using the SEOShouts Internal Link Checker.",
             "totalTime": "PT5M",
             "tool": {
               "@type": "HowToTool",

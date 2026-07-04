@@ -260,7 +260,7 @@ function SEOMetaWriterClient() {
           </nav>
           <div className="tool-hero-badge">Free AI Tool</div>
           <h1 className="tool-hero-h1">
-            AI SEO Meta Title &amp; <span>Description Writer</span>
+            Free AI Meta Writer — <span>SEO Title &amp; Description Generator</span>
           </h1>
           <p className="tool-hero-sub">
             Generate AI-powered meta titles and descriptions that actually get clicks. Our Free SEO Meta Writer creates perfectly optimized, character-aware meta tags tailored to your content type — for better click-through rates from search results.
