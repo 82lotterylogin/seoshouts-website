@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import ToolBreadcrumb from '@/app/components/ToolBreadcrumb';
+import ShapeGrid from '../../components/ShapeGrid';
 
 interface HashtagResult {
   tag: string;
@@ -15,18 +15,17 @@ interface Platform {
   id: string;
   name: string;
   icon: string;
-  color: string;
   maxHashtags: number;
   popularity: number;
 }
 
 const platforms: Platform[] = [
-  { id: 'instagram', name: 'Instagram', icon: '📷', color: 'from-pink-500 to-purple-600', maxHashtags: 30, popularity: 95 },
-  { id: 'twitter', name: 'Twitter/X', icon: '🐦', color: 'from-blue-400 to-blue-600', maxHashtags: 10, popularity: 85 },
-  { id: 'youtube', name: 'YouTube', icon: '📺', color: 'from-red-500 to-red-600', maxHashtags: 15, popularity: 90 },
-  { id: 'linkedin', name: 'LinkedIn', icon: '💼', color: 'from-blue-600 to-blue-800', maxHashtags: 5, popularity: 75 },
-  { id: 'pinterest', name: 'Pinterest', icon: '📌', color: 'from-red-400 to-pink-500', maxHashtags: 20, popularity: 70 },
-  { id: 'threads', name: 'Threads', icon: '🧵', color: 'from-gray-800 to-black', maxHashtags: 10, popularity: 60 },
+  { id: 'instagram', name: 'Instagram', icon: '📷', maxHashtags: 30, popularity: 95 },
+  { id: 'twitter', name: 'Twitter/X', icon: '🐦', maxHashtags: 10, popularity: 85 },
+  { id: 'youtube', name: 'YouTube', icon: '📺', maxHashtags: 15, popularity: 90 },
+  { id: 'linkedin', name: 'LinkedIn', icon: '💼', maxHashtags: 5, popularity: 75 },
+  { id: 'pinterest', name: 'Pinterest', icon: '📌', maxHashtags: 20, popularity: 70 },
+  { id: 'threads', name: 'Threads', icon: '🧵', maxHashtags: 10, popularity: 60 },
 ];
 
 const languages = [
@@ -247,656 +246,539 @@ export default function TrendingHashtagFinderClient() {
     }
   };
 
+  const tabDefs = [
+    { id: 'generate', name: 'AI Generate', icon: '🤖' },
+    { id: 'trending', name: 'Trending Now', icon: '🔥' },
+    ...(selectedPlatform.id !== 'linkedin' ? [{ id: 'competitor', name: 'Competitor Analysis', icon: '🕵️' }] : []),
+    { id: 'bulk', name: 'Bulk Generate', icon: '📦' },
+  ];
+
+  const selectStyle: React.CSSProperties = {
+    width: '100%', border: '1px solid var(--gray-3)', padding: '11px 14px',
+    fontFamily: 'Inter, sans-serif', fontSize: '0.85rem', color: 'var(--ink)',
+    outline: 'none', background: 'var(--white)', cursor: 'pointer',
+  };
+
   return (
     <>
-      {/* Tool Section */}
-      <section className="py-8 sm:py-12 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-7xl mx-auto">
+      {/* --- TOOL HERO --- */}
+      <div id="top" className="tool-hero">
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'all' }}>
+          <ShapeGrid direction="diagonal" speed={0.4} borderColor="rgba(37,99,235,0.22)" squareSize={52} hoverFillColor="rgba(37,99,235,0.2)" hoverTrailAmount={6} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, transparent 30%, rgba(8,9,10,0.9) 100%)', pointerEvents: 'none' }} />
+        <div className="tool-hero-inner">
+          <nav className="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span className="breadcrumb-sep">/</span>
+            <a href="/tools/">SEO Tools</a>
+            <span className="breadcrumb-sep">/</span>
+            <span style={{ color: 'rgba(255,255,255,0.5)' }}>Trending Hashtag Finder</span>
+          </nav>
+          <div className="tool-hero-badge">#️⃣ Social Media Tool — Free Forever</div>
+          <h1 className="tool-hero-h1">
+            Free Trending Hashtag Finder: <span>AI Generation</span>, Trending Discovery &amp; Competitor Analysis
+          </h1>
+          <p className="tool-hero-sub">
+            A trending hashtag finder analyzes what is actually gaining engagement right now across a platform, so you are not guessing between #love and #entrepreneur. SEOShouts&apos; free tool covers{' '}
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>6+ platforms</strong>{' '}
+            with AI-powered generation from your content description, live trending discovery, competitor hashtag analysis, and bulk generation for up to 50 posts at once.
+          </p>
+        </div>
+      </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Input Section */}
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <span className="text-blue-600 text-lg">#️⃣</span>
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900">Generate Hashtags</h2>
+      {/* --- TOOL INPUT SECTION --- */}
+      <div className="tool-input-section">
+        <div className="tool-input-inner" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'start' }}>
+
+          {/* LEFT BOX: Controls */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Generate Hashtags</h2>
+            <p className="tool-box-sub">100% free, no registration required. Generate unlimited hashtags for all platforms.</p>
+
+            {/* Settings Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div>
+                <label className="tool-box-label">Platform</label>
+                <select
+                  value={selectedPlatform.id}
+                  onChange={(e) => setSelectedPlatform(platforms.find(p => p.id === e.target.value) || platforms[0])}
+                  style={selectStyle}
+                >
+                  {platforms.map((platform) => (
+                    <option key={platform.id} value={platform.id}>
+                      {platform.icon} {platform.name} (Max: {platform.maxHashtags})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="tool-box-label">Language</label>
+                <select
+                  value={selectedLanguage.code}
+                  onChange={(e) => setSelectedLanguage(languages.find(l => l.code === e.target.value) || languages[0])}
+                  style={selectStyle}
+                >
+                  {languages.map((lang) => (
+                    <option key={lang.code} value={lang.code}>
+                      {lang.flag} {lang.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="tool-box-label">Category</label>
+                <select
+                  value={selectedCategory.id}
+                  onChange={(e) => setSelectedCategory(categories.find(c => c.id === e.target.value) || categories[0])}
+                  style={selectStyle}
+                >
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.icon} {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="tool-box-label">Time Period</label>
+                <select
+                  value={selectedTimePeriod.id}
+                  onChange={(e) => setSelectedTimePeriod(timePeriods.find(t => t.id === e.target.value) || timePeriods[2])}
+                  style={selectStyle}
+                >
+                  {timePeriods.map((period) => (
+                    <option key={period.id} value={period.id}>
+                      {period.icon} {period.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Tab Navigation */}
+            <div className="filter-chips" style={{ marginBottom: '1.5rem' }}>
+              {tabDefs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`fchip${activeTab === tab.id ? ' active' : ''}`}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <span>{tab.icon}</span>
+                  <span>{tab.name}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'generate' && (
+              <div>
+                <label className="tool-box-label" htmlFor="content-desc">Describe Your Content</label>
+                <textarea
+                  id="content-desc"
+                  value={contentDescription}
+                  onChange={(e) => setContentDescription(e.target.value)}
+                  placeholder="Describe what your post is about... (e.g., 'sunset photography at the beach', 'healthy breakfast recipe', 'workout motivation')"
+                  rows={4}
+                  style={{
+                    width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                    resize: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem',
+                    color: 'var(--ink)', outline: 'none', lineHeight: 1.6, marginBottom: '1.25rem'
+                  }}
+                />
+                <button onClick={generateHashtags} disabled={!contentDescription.trim() || isLoading} className="btn-primary" style={{ width: '100%', justifyContent: 'center', opacity: (!contentDescription.trim() || isLoading) ? 0.5 : 1, cursor: (!contentDescription.trim() || isLoading) ? 'not-allowed' : 'pointer' }}>
+                  {isLoading ? 'Generating AI Hashtags…' : '🤖 Generate AI Hashtags'}
+                </button>
+              </div>
+            )}
+
+            {activeTab === 'trending' && (
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '0.9rem', color: 'var(--gray-5)', marginBottom: '1.25rem' }}>
+                  Discover what&apos;s trending right now on {selectedPlatform.name} in {selectedCategory.name}
+                </p>
+                <button onClick={findTrendingHashtags} disabled={isLoading} className="btn-primary" style={{ width: '100%', justifyContent: 'center', opacity: isLoading ? 0.5 : 1, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+                  {isLoading ? 'Finding Trending Hashtags…' : '🔥 Find Trending Hashtags'}
+                </button>
+              </div>
+            )}
+
+            {activeTab === 'competitor' && (
+              <div>
+                <label className="tool-box-label" htmlFor="competitor-handle">Competitor Username/Handle</label>
+                <input
+                  type="text"
+                  id="competitor-handle"
+                  className="tool-url-input"
+                  value={competitorHandle}
+                  onChange={(e) => setCompetitorHandle(e.target.value)}
+                  placeholder="Enter competitor's username (without @)"
+                  style={{ marginBottom: '1.25rem' }}
+                />
+                <button onClick={analyzeCompetitor} disabled={!competitorHandle.trim() || isLoading} className="btn-primary" style={{ width: '100%', justifyContent: 'center', opacity: (!competitorHandle.trim() || isLoading) ? 0.5 : 1, cursor: (!competitorHandle.trim() || isLoading) ? 'not-allowed' : 'pointer' }}>
+                  {isLoading ? 'Analyzing…' : '🕵️ Analyze Competitor'}
+                </button>
+              </div>
+            )}
+
+            {activeTab === 'bulk' && (
+              <div>
+                <label className="tool-box-label" htmlFor="bulk-content">Bulk Content Descriptions (one per line, max 50)</label>
+                <textarea
+                  id="bulk-content"
+                  value={bulkContent}
+                  onChange={(e) => setBulkContent(e.target.value)}
+                  placeholder={`Enter multiple content descriptions, one per line:\n\nSunset beach photography\nHealthy breakfast recipe\nMorning workout routine\nTravel tips for Europe\nFashion outfit inspiration`}
+                  rows={6}
+                  style={{
+                    width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                    resize: 'none', fontFamily: 'Inter, sans-serif', fontSize: '0.9rem',
+                    color: 'var(--ink)', outline: 'none', lineHeight: 1.6, marginBottom: '0.35rem'
+                  }}
+                />
+                <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem' }}>
+                  {bulkContent.split('\n').filter(line => line.trim()).length}/50 posts
+                </p>
+                <button onClick={generateBulkHashtags} disabled={!bulkContent.trim() || isLoading} className="btn-primary" style={{ width: '100%', justifyContent: 'center', opacity: (!bulkContent.trim() || isLoading) ? 0.5 : 1, cursor: (!bulkContent.trim() || isLoading) ? 'not-allowed' : 'pointer' }}>
+                  {isLoading ? 'Generating…' : '📦 Generate Bulk Hashtags'}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT BOX: Results */}
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Generated Hashtags</h2>
+
+            {results.length > 0 ? (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-4)' }}>Found {results.length} hashtags for {selectedPlatform.name}</span>
+                  <button
+                    onClick={() => copyHashtags(results.map(r => r.tag))}
+                    style={{
+                      padding: '6px 14px', background: copiedIndex === -1 ? 'var(--green)' : 'var(--blue)', color: '#fff',
+                      border: 'none', fontSize: '0.75rem', fontWeight: 600,
+                      cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif', flexShrink: 0
+                    }}
+                  >
+                    📋 {copiedIndex === -1 ? 'Copied!' : 'Copy All'}
+                  </button>
                 </div>
 
-                {/* Free Tool Notice */}
-                <div className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <div>
-                      <span className="text-sm font-medium text-blue-900">100% Free • No Registration Required</span>
-                      <p className="text-xs text-blue-700 mt-1">Generate unlimited hashtags for all platforms</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: 380, overflowY: 'auto' }}>
+                  {results.slice(0, 10).map((result, index) => (
+                    <div key={index} style={{ background: 'var(--gray-1)', border: '1px solid var(--line)', padding: '0.75rem 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <span style={{ fontWeight: 700, color: 'var(--blue)', fontFamily: 'Space Grotesk, sans-serif' }}>#{result.tag}</span>
+                        <div style={{ fontSize: '0.72rem', color: 'var(--gray-4)', marginTop: '0.2rem' }}>
+                          {result.posts.toLocaleString()} posts • {result.engagement} engagement {getTrendIcon(result.trend)}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => copyHashtags([result.tag], index)}
+                        style={{
+                          padding: '5px 12px', background: copiedIndex === index ? 'var(--green)' : 'var(--blue)', color: '#fff',
+                          border: 'none', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif', flexShrink: 0
+                        }}
+                      >
+                        {copiedIndex === index ? '✓' : 'Copy'}
+                      </button>
                     </div>
-                  </div>
-                </div>
-
-                {/* Settings Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  {/* Platform Selector */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Platform</label>
-                    <select
-                      value={selectedPlatform.id}
-                      onChange={(e) => setSelectedPlatform(platforms.find(p => p.id === e.target.value) || platforms[0])}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      {platforms.map((platform) => (
-                        <option key={platform.id} value={platform.id}>
-                          {platform.icon} {platform.name} (Max: {platform.maxHashtags})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Language Selector */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
-                    <select
-                      value={selectedLanguage.code}
-                      onChange={(e) => setSelectedLanguage(languages.find(l => l.code === e.target.value) || languages[0])}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      {languages.map((lang) => (
-                        <option key={lang.code} value={lang.code}>
-                          {lang.flag} {lang.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Category Selector */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select
-                      value={selectedCategory.id}
-                      onChange={(e) => setSelectedCategory(categories.find(c => c.id === e.target.value) || categories[0])}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>
-                          {cat.icon} {cat.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Time Period */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Time Period</label>
-                    <select
-                      value={selectedTimePeriod.id}
-                      onChange={(e) => setSelectedTimePeriod(timePeriods.find(t => t.id === e.target.value) || timePeriods[2])}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                      {timePeriods.map((period) => (
-                        <option key={period.id} value={period.id}>
-                          {period.icon} {period.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Tab Navigation */}
-                <div className="grid grid-cols-2 gap-2 mb-6">
-                  {[
-                    { id: 'generate', name: 'AI Generate', icon: '🤖' },
-                    { id: 'trending', name: 'Trending Now', icon: '🔥' },
-                    ...(selectedPlatform.id !== 'linkedin' ? [{ id: 'competitor', name: 'Competitor Analysis', icon: '🕵️' }] : []),
-                    { id: 'bulk', name: 'Bulk Generate', icon: '📦' },
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id as any)}
-                      className={`px-4 py-3 rounded-lg font-medium transition-all duration-200 text-center min-h-[48px] flex items-center justify-center ${
-                        activeTab === tab.id
-                          ? 'bg-blue-600 text-white shadow-md'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      <span className="mr-1">{tab.icon}</span>
-                      <span className="whitespace-nowrap">{tab.name}</span>
-                    </button>
                   ))}
                 </div>
 
-                {/* Tab Content */}
-                {activeTab === 'generate' && (
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Describe Your Content
-                      </label>
-                      <textarea
-                        value={contentDescription}
-                        onChange={(e) => setContentDescription(e.target.value)}
-                        placeholder="Describe what your post is about... (e.g., 'sunset photography at the beach', 'healthy breakfast recipe', 'workout motivation')"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                        rows={4}
-                      />
-                    </div>
-
-                    <button
-                      onClick={generateHashtags}
-                      disabled={!contentDescription.trim() || isLoading}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isLoading ? (
-                        <>
-                          <div className="animate-spin inline-block w-4 h-4 mr-3 border-2 border-white border-t-transparent rounded-full"></div>
-                          Generating AI Hashtags...
-                        </>
-                      ) : (
-                        '🤖 Generate AI Hashtags'
-                      )}
-                    </button>
-                  </div>
-                )}
-
-                {activeTab === 'trending' && (
-                  <div className="text-center">
-                    <p className="text-gray-600 mb-4">
-                      Discover what's trending right now on {selectedPlatform.name} in {selectedCategory.name}
-                    </p>
-                    <button
-                      onClick={findTrendingHashtags}
-                      disabled={isLoading}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50"
-                    >
-                      {isLoading ? (
-                        <>
-                          <div className="animate-spin inline-block w-4 h-4 mr-3 border-2 border-white border-t-transparent rounded-full"></div>
-                          Finding Trending Hashtags...
-                        </>
-                      ) : (
-                        '🔥 Find Trending Hashtags'
-                      )}
-                    </button>
-                  </div>
-                )}
-
-                {activeTab === 'competitor' && (
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Competitor Username/Handle
-                      </label>
-                      <input
-                        type="text"
-                        value={competitorHandle}
-                        onChange={(e) => setCompetitorHandle(e.target.value)}
-                        placeholder="Enter competitor's username (without @)"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <button
-                      onClick={analyzeCompetitor}
-                      disabled={!competitorHandle.trim() || isLoading}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isLoading ? (
-                        <>
-                          <div className="animate-spin inline-block w-4 h-4 mr-3 border-2 border-white border-t-transparent rounded-full"></div>
-                          Analyzing...
-                        </>
-                      ) : (
-                        '🕵️ Analyze Competitor'
-                      )}
-                    </button>
-                  </div>
-                )}
-
-                {activeTab === 'bulk' && (
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Bulk Content Descriptions (One per line, max 50)
-                      </label>
-                      <textarea
-                        value={bulkContent}
-                        onChange={(e) => setBulkContent(e.target.value)}
-                        placeholder={`Enter multiple content descriptions, one per line:\n\nSunset beach photography\nHealthy breakfast recipe\nMorning workout routine\nTravel tips for Europe\nFashion outfit inspiration`}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                        rows={6}
-                      />
-                      <p className="text-xs text-gray-500 mt-1">
-                        {bulkContent.split('\n').filter(line => line.trim()).length}/50 posts
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={generateBulkHashtags}
-                      disabled={!bulkContent.trim() || isLoading}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isLoading ? (
-                        <>
-                          <div className="animate-spin inline-block w-4 h-4 mr-3 border-2 border-white border-t-transparent rounded-full"></div>
-                          Generating...
-                        </>
-                      ) : (
-                        '📦 Generate Bulk Hashtags'
-                      )}
-                    </button>
-                  </div>
+                {results.length > 10 && (
+                  <p style={{ fontSize: '0.72rem', color: 'var(--gray-4)', textAlign: 'center', marginTop: '0.75rem' }}>
+                    Showing first 10 results. Use &ldquo;Copy All&rdquo; to get all {results.length} hashtags.
+                  </p>
                 )}
               </div>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--gray-4)' }}>
+                <span style={{ fontSize: '2.5rem', display: 'block', marginBottom: '1rem' }}>🎯</span>
+                <p style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--gray-5)', marginBottom: '0.4rem' }}>No hashtags generated yet</p>
+                <p style={{ fontSize: '0.85rem' }}>Use the options on the left to generate hashtags for your content</p>
+              </div>
+            )}
+          </div>
 
-              {/* Results Preview Section */}
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                    <span className="text-green-600 text-lg">📊</span>
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900">Generated Hashtags</h2>
+        </div>
+      </div>
+
+      {/* --- FOUNDER QUOTE --- */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;Hashtags are the last place most creators still guess instead of check. I built this to remove the guessing: real trending data where the platform exposes it, AI-matched suggestions from your actual content everywhere else, so every post gets tags that fit the platform&apos;s current algorithm, not last year&apos;s advice.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- OVERVIEW --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Overview</div>
+            <h2 className="s-title">What is a trending hashtag finder <span className="blue">and why does it beat guessing?</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>A trending hashtag finder analyzes what tags are actively driving reach and engagement on a platform right now, then matches them to your content, instead of you picking between #love, #instagood, and a competitor&apos;s hashtag list and hoping. This tool covers Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads with platform-specific optimization: Instagram supports up to 30 hashtags, LinkedIn performs best with 3 to 5, and treating them the same wastes reach on both.</p>
+            <p>Four modes cover the situations creators actually face: <strong>AI Generate</strong> turns a content description into relevant hashtags, <strong>Trending Now</strong> surfaces what is gaining traction on your chosen platform and category, <strong>Competitor Analysis</strong> reveals what tags a rival account is using successfully, and <strong>Bulk Generate</strong> processes up to 50 post descriptions in one pass for content calendars.</p>
+            <p>Hashtags are discovery infrastructure, not decoration. They categorize your post, expose it to searches and feeds beyond your existing followers, and connect you to the community around a topic. Getting them right measurably changes reach; getting them wrong (irrelevant, banned, or oversaturated tags) can suppress a post&apos;s distribution entirely on some platforms.</p>
+            <p>Once your hashtag strategy is set, keep the rest of your content SEO-tight with the <a href="/tools/ai-copywriter/" style={{ color: 'var(--blue)' }}>AI copywriter</a> for captions and the <a href="/tools/blog-ideas-generator/" style={{ color: 'var(--blue)' }}>blog ideas generator</a> for longer-form topics that pair with your social push.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FEATURES --- */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Features</div>
+            <h2 className="s-title">Why this hashtag tool <span className="blue">beats a static list</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              { iconPaths: ['M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z', 'm12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z'], title: '6+ Platform Support', desc: 'Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads, each with its own tag-count limit and optimization strategy.' },
+              { iconPaths: ['M13 2L3 14h9l-1 8 10-12h-9l1-8z'], title: 'Real-Time Trending Data', desc: 'Live trending hashtags with time-period filters (last hour to last 30 days) for maximum relevance to the current moment.' },
+              { iconPaths: ['M12 8V4H8', 'M4 8h16', 'M4 16h16', 'M8 20h8'], title: 'AI-Powered Generation', desc: 'Describe your content in a sentence and get hashtags matched to your actual topic, not a generic niche list.' },
+              { iconPaths: ['M11 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v4', 'M15 15l5 5m-5 0 5-5'], title: 'Competitor Intelligence', desc: 'Analyze any competitor\'s hashtag strategy and find the tags they are winning with that you are not using yet.' },
+              { iconPaths: ['M2 12h20', 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'], title: '12+ Languages', desc: 'Multi-language support with cultural context, so hashtag suggestions match regional trends, not just English defaults.' },
+              { iconPaths: ['M3 3v18h18', 'M18.7 8l-5.1 5.2-2.8-2.7L7 14.3'], title: 'Engagement Analytics', desc: 'Post counts, engagement level, and trend direction (rising, stable, falling) per hashtag so you pick tags with real traction.' },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.iconPaths.map((d, j) => <path key={j} d={d} />)}
+                  </svg>
                 </div>
+                <div className="feature-title">{f.title}</div>
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.75rem 0 0' }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                {results.length > 0 ? (
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600">Found {results.length} hashtags for {selectedPlatform.name}</span>
-                      <button
-                        onClick={() => copyHashtags(results.map(r => r.tag))}
-                        className={`px-4 py-2 text-sm rounded-lg font-semibold transition-all duration-200 ${
-                          copiedIndex === -1
-                            ? 'bg-green-600 text-white'
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}
-                      >
-                        📋 {copiedIndex === -1 ? 'Copied!' : 'Copy All'}
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-3 max-h-96 overflow-y-auto">
-                      {results.slice(0, 10).map((result, index) => (
-                        <div key={index} className="bg-gray-50 rounded-lg p-3 flex justify-between items-center">
-                          <div className="flex-1">
-                            <span className="font-semibold text-purple-600">#{result.tag}</span>
-                            <div className="text-xs text-gray-500 mt-1">
-                              {result.posts.toLocaleString()} posts • {result.engagement} engagement {getTrendIcon(result.trend)}
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => copyHashtags([result.tag], index)}
-                            className={`px-3 py-1 text-xs rounded font-medium transition-all duration-200 ${
-                              copiedIndex === index
-                                ? 'bg-green-600 text-white'
-                                : 'bg-blue-600 text-white hover:bg-blue-700'
-                            }`}
-                          >
-                            {copiedIndex === index ? '✓' : 'Copy'}
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-
-                    {results.length > 10 && (
-                      <p className="text-xs text-gray-500 text-center">
-                        Showing first 10 results. Use "Copy All" to get all {results.length} hashtags.
-                      </p>
-                    )}
-                  </div>
-                ) : (
-                  <div className="text-center text-gray-500 py-12">
-                    <span className="text-4xl mb-4 block">🎯</span>
-                    <p className="text-lg font-medium mb-2">No hashtags generated yet</p>
-                    <p className="text-sm">Use the options on the left to generate hashtags for your content</p>
+      {/* --- HOW TO USE --- */}
+      <section className="section howto-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">How To Use</div>
+            <h2 className="s-title">How to find trending hashtags <span className="blue">in under a minute</span></h2>
+          </div>
+          <div className="steps-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {[
+              { n: '01', title: 'Choose Your Platform', desc: 'Select Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, or Threads. Each platform gets its own tag-count limit and strategy applied automatically.' },
+              { n: '02', title: 'Set Language, Category & Time', desc: 'Narrow results to your niche, language, and how recent the trend needs to be, from the last hour to the last 30 days.' },
+              { n: '03', title: 'Pick a Generation Mode', desc: 'AI Generate from a content description, pull live Trending Now data, run a Competitor Analysis, or Bulk Generate for up to 50 posts at once.' },
+              { n: '04', title: 'Copy & Publish', desc: 'Copy individual hashtags or the full set with one click, then paste into your post. No signup, no rate-limited paywall.' },
+            ].map((s, i, arr) => (
+              <div key={s.n} className="step-card">
+                {i < arr.length - 1 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
                   </div>
                 )}
+                <div className="step-num-big">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
               </div>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Tool Breadcrumb */}
-      <ToolBreadcrumb toolName="Trending Hashtag Finder" toolSlug="trending-hashtag-finder" />
-
-      {/* Header Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-indigo-50 to-gray-50 py-16 sm:py-20">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-full font-medium mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full mr-2"></span>
-              Free Social Media Tool
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                Advanced Hashtag Discovery Tool
-              </span>
-              <br />
-              <span className="text-primary">6+ Platforms with Real-Time Trending Analysis</span>
-            </h1>
-
-            <div className="max-w-3xl mx-auto space-y-4 text-lg leading-relaxed text-gray-600">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">The Most Comprehensive Free Hashtag Tool Online</h2>
-              <p>
-                Discover viral hashtags across 6+ social media platforms with real-time trending analysis, AI-powered generation, competitor insights, and strategic optimization for maximum reach and engagement.
-              </p>
-              <p>
-                <strong>Built for content creators, social media managers, and marketers</strong> who want to maximize their reach with data-driven hashtag strategies that actually work.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-600 mt-8">
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                6+ Social Platforms
+      {/* --- PLATFORM LIMITS --- */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Platform Guide</div>
+            <h2 className="s-title">Hashtag count and strategy <span className="blue">by platform</span></h2>
+            <p className="s-sub">The same 10 hashtags that help on Instagram can look like spam on LinkedIn. Match the count to the platform.</p>
+          </div>
+          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
+            {[
+              { title: 'Instagram: up to 30', color: 'var(--blue)', body: 'Mix 2-3 broad tags (100K+ posts), 5-7 medium tags (10K-100K), and the rest niche-specific tags under 10K posts to avoid getting buried by top creators.' },
+              { title: 'Twitter/X: 1-2 max', color: 'var(--blue)', body: 'More than two hashtags measurably hurts engagement on Twitter. Pick the single most relevant trending tag and let the rest of the tweet carry the reach.' },
+              { title: 'LinkedIn: 3-5', color: 'var(--blue)', body: 'Professional, specific tags outperform broad ones. Industry and role-specific tags (#B2BMarketing) beat generic ones (#business) for a professional audience.' },
+              { title: 'YouTube: 3-15 in description', color: 'var(--blue)', body: 'The first 3 tags appear above the title. Put your most important keyword-matching tags first; the rest support search and suggested-video placement.' },
+              { title: 'Pinterest: 2-5 per pin', color: 'var(--blue)', body: 'Pinterest treats hashtags as a minor signal behind keyword-rich titles and descriptions. Use a handful of specific, searchable tags rather than a long list.' },
+              { title: 'Threads: emerging norms', color: 'var(--blue)', body: 'Threads hashtag support and impact are still evolving. Use 1-3 relevant tags and prioritize the caption text, which currently carries more discovery weight.' },
+            ].map((card) => (
+              <div key={card.title} className="why-card" style={{ borderTop: `3px solid ${card.color}` }}>
+                <div className="why-card-title">{card.title}</div>
+                <div className="why-card-body">{card.body}</div>
               </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                AI-Powered Generation
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Real-Time Trending Data
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                Competitor Analysis
-              </div>
-              <div className="flex items-center">
-                <span className="text-green-500 mr-2">✓</span>
-                100% Free
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What are Hashtags Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">What are Hashtags (And Why Your Content Needs Them)</h2>
-
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Hashtags are like digital billboards for your content. They help categorize your posts, make them discoverable to new audiences, and connect you with communities interested in your niche. The right hashtags can dramatically increase your reach, engagement, and follower growth.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-blue-50 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-blue-900 mb-3">🎯 Discoverability</h3>
-                  <p className="text-blue-800">Help new audiences find your content through hashtag searches and feeds, expanding your reach beyond your current followers.</p>
+      {/* --- MISTAKES --- */}
+      <section className="section mistakes-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Common Mistakes</div>
+            <h2 className="s-title">5 hashtag mistakes that <span className="blue">quietly kill reach</span></h2>
+          </div>
+          <div className="mistakes-grid">
+            {[
+              { n: '01', title: 'Using Only Oversaturated Tags', body: 'A tag with 50 million posts buries yours within seconds. Mix broad tags with medium and niche ones so your post has a realistic window of visibility.', bad: '#love #instagood #photooftheday #happy (all 100M+ posts)', good: '2 broad + 5 medium (10K-500K) + rest niche-specific' },
+              { n: '02', title: 'Copying a Competitor\'s Full List Verbatim', body: 'Their audience, posting time, and account authority differ from yours. Use competitor analysis to find candidate tags, then test a subset against your own engagement data.', bad: 'Pasting a competitor\'s exact 30 hashtags unchanged', good: 'Borrowing 5-8 relevant tags, adding your own niche-specific set' },
+              { n: '03', title: 'Same Hashtag Set on Every Post', body: 'Platforms increasingly flag identical hashtag blocks reused across posts as spam-like behavior, which can suppress reach. Rotate and tailor tags per post.', bad: 'The same 30-tag block pasted under every single post', good: 'A core set of 5-8 rotated with 10-15 post-specific tags' },
+              { n: '04', title: 'Ignoring Platform-Specific Tag Counts', body: 'Thirty hashtags on LinkedIn reads as spam; two hashtags on Instagram leaves reach on the table. Match the count to the platform, not a one-size rule.', bad: '15 hashtags on a LinkedIn post', good: '3-5 specific, professional tags on LinkedIn' },
+              { n: '05', title: 'Never Checking Trend Direction', body: 'A hashtag with huge historical volume but a falling trend is riding a wave that already broke. Rising and stable tags at your size bracket outperform dying broad tags.', bad: 'Picking tags purely by total post count', good: 'Checking the rising/stable/falling indicator before selecting' },
+            ].map(m => (
+              <div key={m.n} className="mistake-card">
+                <div className="mistake-card-top">
+                  <div className="mistake-num">Mistake {m.n}</div>
+                  <div className="mistake-title">{m.title}</div>
+                  <div className="mistake-body-text">{m.body}</div>
                 </div>
-
-                <div className="bg-green-50 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-green-900 mb-3">📈 Engagement</h3>
-                  <p className="text-green-800">Relevant hashtags can increase likes, comments, and shares by connecting your content with interested communities.</p>
-                </div>
-
-                <div className="bg-purple-50 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-purple-900 mb-3">🏷️ Categorization</h3>
-                  <p className="text-purple-800">Organize your content into topics and themes, making it easier for users to find related posts in your profile.</p>
-                </div>
-
-                <div className="bg-orange-50 rounded-lg p-6">
-                  <h3 className="text-xl font-semibold text-orange-900 mb-3">🌐 Community</h3>
-                  <p className="text-orange-800">Join conversations and communities around specific topics, building connections with like-minded creators and audiences.</p>
+                <div className="code-example">
+                  <div className="code-bad"><span className="code-label">✗</span><span className="code-text">{m.bad}</span></div>
+                  <div className="code-good"><span className="code-label">✓</span><span className="code-text">{m.good}</span></div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Revolutionary Features That Make Our Tool Stand Out
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Unlike other hashtag tools that give you basic suggestions, our advanced analyzer provides comprehensive insights to help you dominate social media.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                {
-                  icon: "🚀",
-                  title: "6+ Platform Support",
-                  description: "Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads with platform-specific optimization strategies."
-                },
-                {
-                  icon: "🔥",
-                  title: "Real-Time Trending Data",
-                  description: "Live trending hashtags updated continuously with time-period analysis and geographic insights for maximum relevance."
-                },
-                {
-                  icon: "🤖",
-                  title: "AI-Powered Generation",
-                  description: "Advanced AI analyzes your content description to suggest the most relevant and effective hashtags for your specific niche."
-                },
-                {
-                  icon: "🕵️",
-                  title: "Competitor Intelligence",
-                  description: "Analyze any competitor's hashtag strategy and discover opportunities they're missing in your industry."
-                },
-                {
-                  icon: "🌍",
-                  title: "12+ Languages",
-                  description: "Multi-language support with cultural context awareness for global reach and regional trending insights."
-                },
-                {
-                  icon: "📊",
-                  title: "Engagement Analytics",
-                  description: "See post counts, engagement rates, and trending patterns to choose hashtags that actually drive results."
-                }
-              ].map((feature, index) => (
-                <div key={index} className="bg-white rounded-2xl p-8 hover:shadow-lg transition-shadow border border-gray-100">
-                  <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+      {/* --- CHECKLIST --- */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Pre-Publish Checklist</div>
+            <h2 className="s-title">Hashtag checklist <span className="blue">before every post</span></h2>
+          </div>
+          <div className="checklist-grid">
+            {[
+              { title: '📊 Relevance', items: ['Every tag actually matches the post content', 'No banned or shadowbanned tags included', 'Mix of broad, medium, and niche-specific tags', 'Language matches your target audience'] },
+              { title: '🎯 Platform Fit', items: ['Tag count matches the platform norm', 'Trend direction checked (rising or stable preferred)', 'Not identical to your last 5 posts', 'Placement correct (caption vs first comment vs description)'] },
+              { title: '🔧 Strategy', items: ['At least one tag under 10K posts for visibility', 'Competitor-informed tags added where relevant', 'Category and time period matched the campaign', 'Results copied and tested, not guessed'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* How to Use Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                How to Use Our Hashtag Finder
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Follow these simple steps to discover trending hashtags and boost your social media performance
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                {
-                  step: "1",
-                  title: "Choose Platform",
-                  description: "Select your target social media platform from Instagram, Twitter, YouTube, LinkedIn, Pinterest, or Threads.",
-                  color: "blue"
-                },
-                {
-                  step: "2",
-                  title: "Set Parameters",
-                  description: "Choose your language, content category, and time period for the most relevant hashtag suggestions.",
-                  color: "green"
-                },
-                {
-                  step: "3",
-                  title: "Generate Hashtags",
-                  description: "Use AI generation, trending discovery, competitor analysis, or bulk generation based on your needs.",
-                  color: "purple"
-                },
-                {
-                  step: "4",
-                  title: "Copy & Use",
-                  description: "Copy individual hashtags or the entire set and paste them into your social media posts for maximum reach.",
-                  color: "orange"
-                }
-              ].map((step, index) => (
-                <div key={index} className="text-center">
-                  <div className={`w-16 h-16 mx-auto mb-6 rounded-full bg-${step.color}-100 flex items-center justify-center`}>
-                    <span className={`text-2xl font-bold text-${step.color}-600`}>{step.step}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                </div>
-              ))}
-            </div>
+      {/* --- FAQ --- */}
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+          </div>
+          <div className="faq-list">
+            {[
+              { q: 'How many platforms does this hashtag finder support?', a: 'Six-plus popular social platforms: Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads, each with its own optimization strategy and recommended hashtag count.' },
+              { q: 'Are the hashtags real trending data?', a: 'For supported platforms like Twitter and LinkedIn, the tool uses real API data. For others, it provides strategically curated hashtags based on current trends and platform best practices.' },
+              { q: 'Can I analyze a competitor\'s hashtags?', a: 'Yes. The competitor analysis mode lets you enter any public handle and see the hashtag strategy behind their posts, so you can find tags they use successfully that you have missed.' },
+              { q: 'How do I use the generated hashtags?', a: 'Copy individual hashtags with the per-tag copy button, or use Copy All to grab the entire generated set, then paste directly into your post caption or description.' },
+              { q: 'Does this tool help increase engagement?', a: 'It gives you the data needed to choose better: post counts, engagement level, and trend direction per hashtag, so you pick tags with real current traction instead of guessing from memory.' },
+              { q: 'Is this hashtag finder free?', a: 'Yes, completely free with reasonable rate limits to keep the service fast for everyone. No signup, no watermark, no hashtag-count paywall.' },
+            ].map(faq => (
+              <details key={faq.q} className="faq-item">
+                <summary>{faq.q}</summary>
+                <div className="faq-answer">{faq.a}</div>
+              </details>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Frequently Asked Questions</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">How many platforms does this tool support?</h3>
-                <p className="text-gray-600">Our hashtag finder currently supports 6+ popular social media platforms including Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads, with platform-specific optimization strategies.</p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Are the hashtags real trending data?</h3>
-                <p className="text-gray-600">Yes! For supported platforms like Twitter and LinkedIn, we use real API data. For others, we provide strategically curated hashtags based on current trends and platform best practices.</p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Can I analyze competitor hashtags?</h3>
-                <p className="text-gray-600">Absolutely! Our competitor analysis feature lets you analyze any competitor's hashtag strategy and discover opportunities they're missing in your industry (available for most platforms).</p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">How do I use the generated hashtags?</h3>
-                <p className="text-gray-600">Simply copy the hashtags using our copy buttons and paste them into your social media posts. We provide both individual hashtag copying and bulk copy for all hashtags.</p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Does this tool help increase engagement?</h3>
-                <p className="text-gray-600">Yes! Our tool provides engagement analytics and trending patterns to help you choose hashtags that actually drive results and increase your content visibility.</p>
-              </div>
-
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Is there a limit on usage?</h3>
-                <p className="text-gray-600">The tool is completely free with reasonable rate limits to ensure quality service for all users. Simply refresh if you need to generate more hashtags after extensive use.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Explore More SEO Tools Section */}
-      <section className="py-16 bg-gradient-to-br from-primary/5 to-indigo/5">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Explore Our Other SEO Tools</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover our complete suite of free SEO tools designed to help you optimize your website, improve rankings, and drive more organic traffic.
-              </p>
-            </div>
-
-            {/* Featured Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">#️⃣</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Trending Hashtag Finder</h3>
-                <p className="text-sm text-gray-600 mb-4">Find viral hashtags across 6+ social media platforms with AI analysis.</p>
-                <span className="text-green-600 font-medium">✓ Current Tool</span>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔧</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Schema Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Generate perfect JSON-LD schema markup for any website type.</p>
-                <a href="/tools/schema-generator/" className="text-primary font-medium hover:underline">
-                  Try Schema Generator</a> →
-              </div>
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
-                <div className="text-3xl mb-3">🔍</div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Long Tail Keyword Generator</h3>
-                <p className="text-sm text-gray-600 mb-4">Find hidden keywords that actually convert and drive traffic.</p>
-                <a href="/tools/long-tail-keyword-generator/" className="text-primary font-medium hover:underline">
-                  Try Long Tail Keyword Generator</a> →
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <a
-                href="/tools/"
-                className="inline-flex items-center bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <span className="mr-2">🛠️</span>
-                Browse All SEO Tools
-              </a>
-              <p className="text-sm text-gray-500 mt-3">
-                All tools are 100% free • No signup required • Instant results
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="py-16 bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6">Start Discovering Trending Hashtags Today</h2>
-            <p className="text-lg mb-8 opacity-90">
-              Stop guessing which hashtags to use. Discover trending hashtags that actually drive engagement, reach new audiences, and grow your social media presence with data-driven insights.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <button
-                onClick={() => window.scrollTo({ top: 200, behavior: 'smooth' })}
-                className="bg-white text-primary px-8 py-3 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-300"
-              >
-                #️⃣ Use the Hashtag Finder →
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm opacity-90">
-              <div className="flex items-center justify-center space-x-2">
-                <span>🚀</span>
-                <span>Find trending hashtags in seconds - no signup required</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>✅</span>
-                <span>Real-time data from multiple social platforms</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <span>📊</span>
-                <span>Increase your reach and engagement with strategic hashtags</span>
-              </div>
-            </div>
-
-            <p className="text-sm mt-6 opacity-80">
-              <strong>Discover viral hashtags with SEO Shouts' advanced Hashtag Finder!</strong>
-              <br />
-              <em>Trusted by thousands of content creators, social media managers, and marketers worldwide for effective hashtag strategies.</em>
+      {/* --- RELATED TOOLS --- */}
+      <section className="section related-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Tools</div>
+            <h2 className="s-title">More Tools in the <span className="blue">SEOShouts Suite</span></h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.95rem', maxWidth: 560, marginTop: '0.75rem', lineHeight: 1.6 }}>
+              Discover our complete suite of free SEO and content tools designed to help you optimize, rank, and create better content.
             </p>
           </div>
+          <div className="related-tools-grid">
+            {[
+              { name: 'Trending Hashtag Finder', desc: 'Find viral hashtags across 6+ social media platforms with AI analysis.', current: true, href: '/tools/trending-hashtag-finder/', paths: ['M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z', 'm12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z'] },
+              { name: 'AI Copywriter', desc: 'Generate high-converting copy for ads, captions, and marketing content with AI.', href: '/tools/ai-copywriter/', paths: ['M12 20h9', 'M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z'] },
+              { name: 'Blog Ideas Generator', desc: 'Never run out of blog topics with AI-powered idea generation.', href: '/tools/blog-ideas-generator/', paths: ['M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'] },
+              { name: 'SEO Meta Writer', desc: 'Generate compelling meta titles and descriptions with AI.', href: '/tools/seo-meta-writer/', paths: ['M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z', 'M7 7h.01'] },
+              { name: 'Schema Generator', desc: 'Build structured data markup for 39+ schema types, no coding required.', href: '/tools/schema-generator/', paths: ['M12 2L2 7l10 5 10-5-10-5', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'] },
+            ].map(t => (
+              <div key={t.name} className={`related-card${t.current ? ' current' : ''}`}>
+                <div className="related-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    {t.paths.map((d, i) => <path key={i} d={d} />)}
+                  </svg>
+                </div>
+                <div className="related-card-name"><a href={t.href}>{t.name}</a></div>
+                <div className="related-card-desc">{t.desc}</div>
+                <div className="related-card-status">
+                  <div className="related-card-status-dot" />
+                  {t.current ? 'Current tool' : 'Free — no login'}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* --- FINAL CTA --- */}
+      <div className="final-cta">
+        <div className="final-cta-bg" />
+        <div className="final-cta-inner">
+          <h2 className="final-cta-title">Start Finding <span>Trending Hashtags Today</span></h2>
+          <p className="final-cta-sub">
+            Stop guessing which hashtags to use. Discover trending hashtags that actually drive engagement, reach new audiences, and grow your social presence with data-driven insights.
+          </p>
+          <div className="final-cta-row">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="btn-primary"
+            >
+              #️⃣ Use the Hashtag Finder
+            </button>
+            <a href="/contact/" className="btn-outline">Get Expert Help</a>
+          </div>
+          <div className="final-cta-pills">
+            {[
+              'Real-Time Data — Trending hashtags updated across 6+ platforms',
+              'AI Matched — Suggestions generated from your actual content',
+              'Completely Free — No signup, no rate-limited paywall',
+            ].map(p => (
+              <div key={p} className="final-pill">{p}</div>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

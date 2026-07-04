@@ -3,11 +3,11 @@ import TrendingHashtagFinderClient from './TrendingHashtagFinderClient';
 
 export const metadata: Metadata = {
   title: 'Free Trending Hashtag Finder & Generator - Discover Viral Hashtags | SEOShouts',
-  description: 'Find trending hashtags across 15+ social media platforms. Generate viral hashtags for Instagram, TikTok, Twitter, LinkedIn & more. Real-time hashtag analytics, difficulty scores & competitor insights - completely free!',
-  keywords: 'hashtag finder, trending hashtags, hashtag generator, Instagram hashtags, TikTok hashtags, Twitter hashtags, social media hashtags, viral hashtags, hashtag analytics, free hashtag tool',
+  description: 'Find trending hashtags across 6+ social media platforms. Generate viral hashtags for Instagram, Twitter/X, YouTube, LinkedIn, Pinterest & Threads. Real-time trending data, AI generation & competitor analysis - completely free!',
+  keywords: 'hashtag finder, trending hashtags, hashtag generator, Instagram hashtags, Twitter hashtags, LinkedIn hashtags, social media hashtags, viral hashtags, free hashtag tool',
   openGraph: {
     title: 'Free Trending Hashtag Finder & Generator | SEOShouts',
-    description: 'Discover trending hashtags across 15+ platforms with real-time analytics, difficulty scores & AI-powered generation. The most comprehensive free hashtag tool on the internet.',
+    description: 'Discover trending hashtags across 6+ platforms with real-time analytics, AI-powered generation, and competitor analysis. Completely free, no signup required.',
     type: 'website',
     url: 'https://seoshouts.com/tools/trending-hashtag-finder/',
     images: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Free Trending Hashtag Finder & Generator | SEOShouts',
-    description: 'Find viral hashtags across 15+ social platforms with real-time trending analysis & AI generation.',
+    description: 'Find viral hashtags across 6+ social platforms with real-time trending analysis & AI generation.',
     images: ['https://seoshouts.com/og-image.jpg'],
   },
   alternates: {
@@ -35,7 +35,7 @@ const jsonLd = {
   '@type': 'WebApplication',
   name: 'Trending Hashtag Finder & Generator',
   applicationCategory: 'Social Media Tool',
-  description: 'Free tool to find trending hashtags and generate viral hashtags across 15+ social media platforms with real-time analytics.',
+  description: 'Free tool to find trending hashtags and generate viral hashtags across 6+ social media platforms with real-time analytics.',
   url: 'https://seoshouts.com/tools/trending-hashtag-finder/',
   provider: {
     '@type': 'Organization',
@@ -49,13 +49,11 @@ const jsonLd = {
   },
   featureList: [
     'Real-time trending hashtag discovery',
-    'Multi-platform support (15+ platforms)',
+    'Multi-platform support (6+ platforms)',
     'AI-powered hashtag generation',
-    'Hashtag difficulty scoring',
     'Competitor hashtag analysis',
+    'Bulk hashtag generation',
     'Multi-language support',
-    'Viral potential prediction',
-    'Custom hashtag creation'
   ],
 };
 
@@ -74,12 +72,12 @@ const faqLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: 'How many platforms does this tool support?', acceptedAnswer: { '@type': 'Answer', text: 'The hashtag finder currently supports 6+ popular social media platforms including Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads, with platform-specific optimization strategies.' } },
-    { '@type': 'Question', name: 'Are the hashtags real trending data?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. For supported platforms like Twitter and LinkedIn, real API data is used. For others, strategically curated hashtags are provided based on current trends and platform best practices.' } },
-    { '@type': 'Question', name: 'Can I analyze competitor hashtags?', acceptedAnswer: { '@type': 'Answer', text: "The competitor analysis feature lets you analyze any competitor's hashtag strategy and discover opportunities they're missing in your industry (available for most platforms)." } },
-    { '@type': 'Question', name: 'How do I use the generated hashtags?', acceptedAnswer: { '@type': 'Answer', text: 'Copy the hashtags using the copy buttons and paste them into your social media posts. Both individual hashtag copying and bulk copy are supported.' } },
-    { '@type': 'Question', name: 'Does this tool help increase engagement?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The tool provides engagement analytics and trending patterns to help you choose hashtags that actually drive results and increase your content visibility.' } },
-    { '@type': 'Question', name: 'Is there a limit on usage?', acceptedAnswer: { '@type': 'Answer', text: 'The tool is completely free with reasonable rate limits to ensure quality service for all users.' } },
+    { '@type': 'Question', name: 'How many platforms does this hashtag finder support?', acceptedAnswer: { '@type': 'Answer', text: 'Six-plus popular social platforms: Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads, each with its own optimization strategy and recommended hashtag count.' } },
+    { '@type': 'Question', name: 'Are the hashtags real trending data?', acceptedAnswer: { '@type': 'Answer', text: 'For supported platforms like Twitter and LinkedIn, the tool uses real API data. For others, it provides strategically curated hashtags based on current trends and platform best practices.' } },
+    { '@type': 'Question', name: "Can I analyze a competitor's hashtags?", acceptedAnswer: { '@type': 'Answer', text: 'Yes. The competitor analysis mode lets you enter any public handle and see the hashtag strategy behind their posts, so you can find tags they use successfully that you have missed.' } },
+    { '@type': 'Question', name: 'How do I use the generated hashtags?', acceptedAnswer: { '@type': 'Answer', text: 'Copy individual hashtags with the per-tag copy button, or use Copy All to grab the entire generated set, then paste directly into your post caption or description.' } },
+    { '@type': 'Question', name: 'Does this tool help increase engagement?', acceptedAnswer: { '@type': 'Answer', text: 'It gives you the data needed to choose better: post counts, engagement level, and trend direction per hashtag, so you pick tags with real current traction instead of guessing from memory.' } },
+    { '@type': 'Question', name: 'Is this hashtag finder free?', acceptedAnswer: { '@type': 'Answer', text: 'Yes, completely free with reasonable rate limits to keep the service fast for everyone. No signup, no watermark, no hashtag-count paywall.' } },
   ],
 };
 
