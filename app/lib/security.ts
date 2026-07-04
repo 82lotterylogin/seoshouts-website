@@ -2,7 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 
-// Rate limiting storage (in production, use Redis or database)
+// ponytail: in-memory maps — per-instance and reset on serverless cold start,
+// so limits are soft on Vercel. Move to Upstash Redis if abuse or AI cost shows up.
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 export const dailyRateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
@@ -140,9 +141,9 @@ export function getSecurityHeaders(): Record<string, string> {
       "default-src 'self'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' *.google.com *.gstatic.com *.googleapis.com cdn.tiny.cloud *.tiny.cloud",
       "style-src 'self' 'unsafe-inline' *.googleapis.com *.gstatic.com cdn.tiny.cloud *.tiny.cloud",
-      "img-src 'self' data: blob: *.google.com *.gstatic.com *.storyblok.com cdn.tiny.cloud *.tiny.cloud",
+      "img-src 'self' data: blob: *.google.com *.gstatic.com cdn.tiny.cloud *.tiny.cloud",
       "font-src 'self' *.googleapis.com *.gstatic.com cdn.tiny.cloud *.tiny.cloud",
-      "connect-src 'self' *.google.com *.googleapis.com *.storyblok.com *.sendinblue.com *.brevo.com api.brevo.com cdn.tiny.cloud *.tiny.cloud",
+      "connect-src 'self' *.google.com *.googleapis.com *.sendinblue.com *.brevo.com api.brevo.com cdn.tiny.cloud *.tiny.cloud",
       "frame-src 'self' *.google.com",
       "object-src 'none'",
       "base-uri 'self'",

@@ -224,11 +224,6 @@ CMS CRUD:
 - `/api/redirections/check/`
 - `/api/redirections/middleware/`
 
-### 3.8 Test / Debug APIs
-- `/api/test-author/`
-- `/api/test-email/`
-- `/api/test-redirections/`
-
 ## 4. Components (Name, Location, Purpose, Usage)
 
 This section covers all component groups in the repo. Generated state-page component copies are documented as a family/pattern to avoid duplicating 250+ nearly identical entries.
@@ -788,9 +783,6 @@ Current API route files present:
 - `app/api/pinterest-hashtags/route.ts`
 - `app/api/redirections/check/route.ts`
 - `app/api/redirections/middleware/route.ts`
-- `app/api/test-author/route.ts`
-- `app/api/test-email/route.ts`
-- `app/api/test-redirections/route.ts`
 - `app/api/trending-hashtags/route.ts`
 - `app/api/twitter-hashtags/route.ts`
 - `app/api/usage-limit/route.ts`

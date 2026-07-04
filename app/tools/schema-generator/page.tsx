@@ -2,18 +2,18 @@ import { Metadata } from 'next'
 import SchemaGeneratorClient from './SchemaGeneratorClient'
 
 export const metadata: Metadata = {
-  title: 'Free Online Schema Generator - 39 Types - No Login - No Signup - SEOShouts',
-  description: 'Free online schema generator with 39 schema types. Generate JSON-LD markup instantly - no login, no signup required. Organization, Article, Product, Event schemas & more.',
-  keywords: 'schema generator, JSON-LD generator, structured data, schema markup, SEO schema, rich snippets',
+  title: 'Free Schema Markup Generator (JSON-LD) — 39 Types | SEOShouts',
+  description: 'Generate valid JSON-LD schema markup in seconds. 39 schema types including Organization, Article, Product, FAQ, Event & LocalBusiness. Built-in Google Rich Results Test. No signup.',
+  keywords: 'schema markup generator, schema generator, JSON-LD generator, structured data generator, schema markup, SEO schema, rich snippets',
   metadataBase: new URL('https://seoshouts.com'),
   alternates: {
     canonical: 'https://seoshouts.com/tools/schema-generator/',
   },
   openGraph: {
-    title: 'Free Online Schema Generator - 39 Types - No Login - No Signup - SEOShouts',
-    description: 'Free online schema generator with 39 schema types. Generate JSON-LD markup instantly - no login, no signup required. Organization, Article, Product, Event schemas & more.',
+    title: 'Free Schema Markup Generator (JSON-LD) — 39 Types',
+    description: 'Generate valid JSON-LD schema markup in seconds. 39 schema types with built-in Google Rich Results Test integration. Free, no signup.',
     url: 'https://seoshouts.com/tools/schema-generator/',
-    siteName: 'SEO Shouts',
+    siteName: 'SEOShouts',
     type: 'website',
     images: [
       {
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Online Schema Generator - 39 Types - No Login - No Signup - SEOShouts',
-    description: 'Free online schema generator with 39 schema types. Generate JSON-LD markup instantly - no login, no signup required.',
+    title: 'Free Schema Markup Generator (JSON-LD) — 39 Types',
+    description: 'Generate valid JSON-LD schema markup in seconds. 39 schema types with built-in Google Rich Results Test integration. Free, no signup.',
     images: ['https://seoshouts.com/images/schema-generator-og.jpg'],
   },
   robots: {
@@ -49,20 +49,141 @@ export default function SchemaGenerator() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Schema Generator",
-            "description": "Free online schema generator with 39 schema types. Generate JSON-LD markup instantly - no login, no signup required. Organization, Article, Product, Event schemas & more.",
+            "name": "SEOShouts Schema Markup Generator",
+            "description": "Free schema markup generator supporting 39 schema.org types. Generates valid JSON-LD structured data with built-in validation and direct Google Rich Results Test integration. No signup required.",
             "url": "https://seoshouts.com/tools/schema-generator/",
-            "applicationCategory": "SEO Tool",
-            "operatingSystem": "Web Browser",
+            "applicationCategory": "BrowserApplication",
+            "applicationSubCategory": "SEO Tool",
+            "operatingSystem": "Any (Web Browser)",
             "offers": {
               "@type": "Offer",
               "price": "0",
               "priceCurrency": "USD"
             },
             "author": {
+              "@type": "Person",
+              "name": "Rohit Sharma",
+              "url": "https://seoshouts.com/meet-the-experts/",
+              "jobTitle": "SEO Consultant & Founder",
+              "worksFor": {
+                "@type": "Organization",
+                "name": "SEOShouts",
+                "url": "https://seoshouts.com"
+              }
+            },
+            "publisher": {
               "@type": "Organization",
-              "name": "SEOShouts"
-            }
+              "name": "SEOShouts",
+              "url": "https://seoshouts.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://seoshouts.com/logo.png"
+              }
+            },
+            "featureList": [
+              "39 Schema.org Types Across 11 Categories",
+              "Valid JSON-LD Output",
+              "Built-in Required Field Validation",
+              "Google Rich Results Test Integration",
+              "FAQ, How-To, Address & Rating Builders",
+              "No Login Required"
+            ],
+            "softwareVersion": "2.0",
+            "datePublished": "2024-01-01",
+            "dateModified": "2026-07-02"
+          })
+        }}
+      />
+
+      {/* FAQPage Schema — mirrors the visible FAQ section */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is schema markup and why does it matter for SEO?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Schema markup is structured data code (JSON-LD format) that explicitly tells search engines what your content means — defining entities, relationships, and attributes using schema.org vocabulary. It matters because pages with schema rank higher on average due to enhanced CTR from rich snippets, which signals quality to Google's algorithm."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many schema types does this generator support?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The generator supports 39+ of the most popular schema.org types, organized across 11 categories: Business, Content, E-commerce, Events, People, Jobs, Creative, Places, Technology, Medical, and Automotive. This is significantly more than the 10-15 types offered by most free generators."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is the generated schema markup valid and Google-compliant?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. All generated markup follows schema.org standards and Google's structured data guidelines, with built-in validation, enforced required fields, and direct integration with Google's Rich Results Test so you can verify compliance before implementation."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I implement the generated schema on my website?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Copy the generated JSON-LD code and paste it into the <head> section of your HTML page, preferably before the closing </head> tag. JSON-LD is Google's recommended format because all structured data lives in a single script tag. For WordPress sites, use a plugin like Schema Pro or Yoast SEO to add the code without editing theme files."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What's the difference between JSON-LD and Microdata formats?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "JSON-LD is a script tag in the <head> section, while Microdata requires inline markup within HTML elements. Google explicitly recommends JSON-LD because it's easier to implement, maintain, and validate. This generator outputs only JSON-LD — the modern, preferred format."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does this tool help with rich snippets in Google?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. The generator creates markup optimized for Google's rich results. Eligibility varies by schema type — not all types trigger enhanced SERP displays — so use the integrated Google Rich Results Test button to verify your specific schema."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will schema markup improve my search rankings directly?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Schema doesn't directly boost rankings like backlinks or content quality, but it indirectly improves rankings through enhanced CTR from rich snippets. Schema also helps with voice search and AI search visibility — increasingly important as answer engines rely on structured data to understand pages."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is there a limit on usage or do I need to create an account?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The tool is completely free with zero usage limits and no account required. No email signup, no credit card, no restrictions — generate unlimited schema markup anytime."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I customize schema types or add custom properties?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The generator provides all standard schema.org properties for each type through form builders. For specialized custom properties, generate the base schema and manually add properties to the exported JSON-LD code before implementation."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens after I implement schema on my site?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "After implementation: validate with Google Rich Results Test, submit your sitemap in Google Search Console, and monitor the Enhancements section for schema issues. Rich results typically appear within 1-4 weeks after Google recrawls and validates your markup."
+                }
+              }
+            ]
           })
         }}
       />

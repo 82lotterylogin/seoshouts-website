@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import BlogIdeasGeneratorClient from './BlogIdeasGeneratorClient'
 
 export const metadata: Metadata = {
-  title: 'Free Blog Ideas Generator Tool — Never Stare at a Blank Screen Again | SEO Shouts',
+  title: 'Free Blog Ideas Generator — AI-Powered Topics | SEOShouts',
   description: 'Get unlimited AI-powered blog ideas instantly. Break through writer\'s block with creative topics and angles tailored to your niche. Free content idea generator.',
   keywords: 'blog ideas generator, content ideas, blog topics, AI writing tool, content marketing, blog inspiration, writing prompts',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,10 +10,10 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/blog-ideas-generator/',
   },
   openGraph: {
-    title: 'Free Blog Ideas Generator Tool — Never Stare at a Blank Screen Again | SEO Shouts',
+    title: 'Free Blog Ideas Generator — AI-Powered Topics | SEOShouts',
     description: 'Get unlimited AI-powered blog ideas instantly. Break through writer\'s block with creative topics and angles tailored to your niche. Free content idea generator.',
     url: 'https://seoshouts.com/tools/blog-ideas-generator/',
-    siteName: 'SEO Shouts',
+    siteName: 'SEOShouts',
     type: 'website',
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Blog Ideas Generator Tool — Never Stare at a Blank Screen Again | SEO Shouts',
+    title: 'Free Blog Ideas Generator — AI-Powered Topics | SEOShouts',
     description: 'Get unlimited AI-powered blog ideas instantly. Break through writer\'s block with creative topics and angles tailored to your niche.',
     images: ['https://seoshouts.com/images/blog-ideas-generator-og.jpg'],
   },

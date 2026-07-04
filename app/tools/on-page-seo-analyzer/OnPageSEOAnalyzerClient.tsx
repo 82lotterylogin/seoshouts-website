@@ -1823,8 +1823,8 @@ DETAILED ANALYSIS:
             Professional SEO Analysis Tool
           </div>
           <h1 className="tool-hero-h1">
-            Advanced On-Page SEO Analyzer<br />
-            <span>Complete Website Analysis with 150+ Factors</span>
+            Free On-Page SEO Checker<br />
+            <span>Analyze 150+ Ranking Factors on Any Page</span>
           </h1>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.75rem' }}>
             {['150+ SEO Factors', 'Core Web Vitals', 'Real PageSpeed Data', '100% Free'].map(pill => (

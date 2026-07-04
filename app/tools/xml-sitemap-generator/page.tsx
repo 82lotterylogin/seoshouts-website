@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import XmlSitemapGeneratorClient from './XmlSitemapGeneratorClient'
 
 export const metadata: Metadata = {
-  title: 'Free XML Sitemap Generator Tool | SEO Shouts',
+  title: 'Free XML Sitemap Generator — sitemap.xml in Seconds | SEOShouts',
   description: 'Generate XML sitemaps instantly for better search engine indexing. Free sitemap generator supports up to 500 URLs with custom priority and frequency settings.',
   keywords: 'XML sitemap generator, sitemap creator, SEO sitemap, website sitemap, search engine optimization',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,10 +10,10 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/xml-sitemap-generator/',
   },
   openGraph: {
-    title: 'Free XML Sitemap Generator Tool | SEO Shouts',
+    title: 'Free XML Sitemap Generator — sitemap.xml in Seconds | SEOShouts',
     description: 'Generate XML sitemaps instantly for better search engine indexing. Free sitemap generator supports up to 500 URLs with custom priority and frequency settings.',
     url: 'https://seoshouts.com/tools/xml-sitemap-generator/',
-    siteName: 'SEO Shouts',
+    siteName: 'SEOShouts',
     type: 'website',
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free XML Sitemap Generator Tool | SEO Shouts',
+    title: 'Free XML Sitemap Generator — sitemap.xml in Seconds | SEOShouts',
     description: 'Generate XML sitemaps instantly for better search engine indexing. Free sitemap generator supports up to 500 URLs.',
     images: ['https://seoshouts.com/images/xml-sitemap-generator-og.jpg'],
   },

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Enhanced in-memory storage with better persistence across restarts
+// ponytail: in-memory, per-instance — the 5/day limit is soft on Vercel (resets on
+// cold start, not shared across instances). Move to Upstash Redis if AI costs spike.
 interface UsageData {
   [fingerprint: string]: {
     count: number

@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import KeywordDifficultyCheckerClient from './KeywordDifficultyCheckerClient'
 
 export const metadata: Metadata = {
-  title: 'Free Keyword Difficulty Checker Tool | SEO Shouts',
+  title: 'Free Keyword Difficulty Checker — Score Any Keyword | SEOShouts',
   description: 'Stop wasting time on impossible keywords. Free keyword difficulty checker shows which keywords you can actually rank for with difficulty scores.',
   keywords: 'keyword difficulty checker, keyword competition analysis, SEO difficulty tool, keyword ranking difficulty',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,10 +10,10 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/keyword-difficulty-checker/',
   },
   openGraph: {
-    title: 'Free Keyword Difficulty Checker Tool | SEO Shouts',
+    title: 'Free Keyword Difficulty Checker — Score Any Keyword | SEOShouts',
     description: 'Stop wasting time on impossible keywords. Free keyword difficulty checker shows which keywords you can actually rank for with difficulty scores.',
     url: 'https://seoshouts.com/tools/keyword-difficulty-checker/',
-    siteName: 'SEO Shouts',
+    siteName: 'SEOShouts',
     type: 'website',
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Keyword Difficulty Checker Tool | SEO Shouts',
+    title: 'Free Keyword Difficulty Checker — Score Any Keyword | SEOShouts',
     description: 'Stop wasting time on impossible keywords. Free keyword difficulty checker shows which keywords you can actually rank for.',
     images: ['https://seoshouts.com/images/keyword-difficulty-checker-og.jpg'],
   },

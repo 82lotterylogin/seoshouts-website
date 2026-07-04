@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import HTMLEditorClient from './HTMLEditorClient'
 
 export const metadata: Metadata = {
-  title: 'Online HTML5 Editor - Free Online Editor & Preview Tool',
+  title: 'Free Online HTML Editor — Live Preview & Clean Code | SEOShouts',
   description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview. Free web development tool.',
   keywords: 'HTML editor, online HTML editor, live preview HTML, code editor, HTML CSS JS editor, web development tool',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,10 +10,10 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/html-editor/',
   },
   openGraph: {
-    title: 'Online HTML5 Editor - Free Online Editor & Preview Tool',
+    title: 'Free Online HTML Editor — Live Preview & Clean Code | SEOShouts',
     description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview. Free web development tool.',
     url: 'https://seoshouts.com/tools/html-editor/',
-    siteName: 'SEO Shouts',
+    siteName: 'SEOShouts',
     type: 'website',
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Online HTML5 Editor - Free Online Editor & Preview Tool',
+    title: 'Free Online HTML Editor — Live Preview & Clean Code | SEOShouts',
     description: 'Professional HTML5 editor with live preview and syntax highlighting. Edit HTML, CSS, and JavaScript online with real-time preview.',
     images: ['https://seoshouts.com/images/html-editor-og.jpg'],
   },
@@ -97,6 +97,9 @@ export default function HTMLEditor() {
           })
         }}
       />
+
+      {/* FAQPage Schema — mirrors the visible FAQ section */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this HTML editor really free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No signup required, no hidden fees, no limitations on usage."}},{"@type":"Question","name":"Can I use this for professional projects?","acceptedAnswer":{"@type":"Answer","text":"Absolutely! It's great for prototyping, testing code snippets, and creating HTML templates for clients."}},{"@type":"Question","name":"Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"Yes, after the page loads, you can continue coding even without an internet connection."}},{"@type":"Question","name":"Can I save my work?","acceptedAnswer":{"@type":"Answer","text":"Your work auto-saves to your browser's local storage. You can also copy or download your code anytime."}},{"@type":"Question","name":"What frameworks and libraries can I use?","acceptedAnswer":{"@type":"Answer","text":"You can include any client-side library via CDN links — Bootstrap, jQuery, React, Vue.js, etc."}},{"@type":"Question","name":"Is my code private and secure?","acceptedAnswer":{"@type":"Answer","text":"Yes, everything runs in your browser. We don't store, transmit, or see your code."}}]}) }} />
 
       <HTMLEditorClient />
     </>

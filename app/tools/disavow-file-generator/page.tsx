@@ -140,11 +140,25 @@ export default function DisavowFileGeneratorPage() {
     })),
   }
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://seoshouts.com/' },
+      { '@type': 'ListItem', position: 2, name: 'SEO Tools', item: 'https://seoshouts.com/tools/' },
+      { '@type': 'ListItem', position: 3, name: 'Disavow File Generator', item: 'https://seoshouts.com/tools/disavow-file-generator/' },
+    ],
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <script
         type="application/ld+json"

@@ -4,74 +4,55 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
-- `npm run dev` - Start development server with turbopack
-- `npm run build` - Build for production (configured as static export)
-- `npm run start` - Start production server 
-- `npm run lint` - Run ESLint (currently configured to be permissive for deployment)
+- `npm run dev` - Start development server
+- `npm run build` - Build for production (server-rendered, NOT static export)
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint (permissive; build bypasses lint and TS errors — see next.config.ts)
 
 ## Project Architecture
 
-This is a Next.js 15 application using the App Router architecture, configured as a static export for SEO-focused website deployment.
+Next.js 15 (App Router) SEO website, server-rendered and deployed on Vercel. Static export was removed to support the built-in admin CMS.
 
-### Core Architecture Patterns
+### Content: SQLite CMS (not Storyblok)
 
-**Static Export Configuration**: The site is configured for static export (`output: 'export'`) with aggressive ESLint and TypeScript bypasses for deployment. This is intentional for the current deployment setup.
+Blog content lives in `blog.db` (better-sqlite3), committed to the repo. Schema: articles, authors, categories, images, article_tags, redirections, admin_users. Access layer: `app/lib/database.ts`.
 
-**App Router Structure**: Uses Next.js App Router with file-based routing in the `/app` directory.
+- Content workflow: edit locally via the admin panel (`/admin`), commit `blog.db`. Vercel's filesystem is ephemeral — anything written by the admin panel in production is lost on the next cold start/deploy, so treat the production admin as read-only.
+- `admin_users` rows are recreated on boot from `ADMIN_EMAIL`/`ADMIN_PASSWORD` env vars (`app/lib/auth.ts` → `initializeAdminUser`). Never commit rows in that table.
+- Storyblok has been fully removed (client, components, and dependencies). The founder page article count now reads from blog.db.
 
-**Content Management**: Integrates with Storyblok CMS for blog content through server-side data fetching patterns in `app/lib/storyblok.ts`.
+### Admin system
 
-**Component Architecture**: 
-- Layout components with complex dropdown menus and state management in `app/layout.tsx`
-- Reusable components in `app/components/` for newsletters, blog posts, forms, etc.
-- AI-powered tools in `app/tools/` directories with their own page components
+- `/admin` pages protected by JWT cookie (`admin-auth`) checked in `middleware.ts`.
+- `/api/admin/*` routes each call `requireAuth()` from `app/lib/auth.ts` (middleware does NOT cover them — the path check is `/admin`, not `/api/admin`).
+- Auth: jose JWT (24h), bcryptjs cost 12, httpOnly/secure/sameSite-strict cookie. `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` env vars are required — the app throws at boot without them.
 
-### Key Integrations
+### Middleware (`middleware.ts`)
 
-**Storyblok CMS**: Blog content is managed through Storyblok with server-side rendering. The integration uses both direct client calls and React components for visual editing.
+Runs on every non-static request: security headers, in-memory API rate limiting (soft on Vercel — per-instance), hardcoded 301 redirect map, admin JWT check. Note: redirects also exist in `redirections-cache.json` + `scripts/sync-redirects.js` and in the blog.db `redirections` table — the middleware map is the one that actually serves; keep it as the source of truth.
 
-**Firebase**: Currently uses mock/simulated data for view counts and analytics (see `app/lib/firebase.ts`). The actual Firebase integration is disabled in favor of consistent simulation.
+### Key integrations
 
-**Google AI (Gemini)**: Integrated for AI-powered tools including blog idea generation, copywriting, and meta tag generation through API routes in `app/api/`.
+- **Google AI (Gemini)**: AI tools (blog ideas, copywriting, meta tags) via `GEMINI_API_KEY` in `/app/api/` routes. Per-user daily limits in `/api/usage-limit` are in-memory and soft.
+- **Firebase**: mock only — view counts are simulated in `app/lib/firebase.ts`; real Firebase is disabled.
+- **Email**: nodemailer (SMTP env vars) for contact forms and newsletter (Brevo API).
+- **External APIs**: YouTube Data API, Google PageSpeed (env keys).
 
-**Email Integration**: Uses nodemailer for contact forms and newsletter subscriptions.
+### Content structure
 
-### Styling & UI
+- **SEO tools**: 19 free tools in `/app/tools/`, backed by API routes in `/app/api/`. Design rules in `docs/tool-redesign-contract.md` and `docs/tool-template.md`.
+- **Service pages**: `/app/services/` (local SEO, eCommerce SEO, link building, technical audits, consulting, website development). Own CLAUDE.md in that directory.
+- **Blog**: `/app/blog/` rendering from blog.db; own CLAUDE.md in that directory.
+- **USA state pages**: 50 programmatic pages in `/app/usa/`, generated by `scripts/generate-state-pages.js`.
 
-**TailwindCSS**: Comprehensive custom design system with:
-- Custom color palette (primary: #2563EB, secondary: #059669, accent: #DC2626)
-- Extended typography configuration for blog content
-- Custom animations and responsive design patterns
+## Styling & UI
 
-**Design Patterns**: Modern glassmorphism effects, gradient text, sophisticated hover states, and mobile-first responsive design throughout.
-
-### Content Structure
-
-**SEO Tools**: Multiple free SEO tools located in `/app/tools/` including keyword analyzers, meta tag optimizers, HTML editors, etc.
-
-**Service Pages**: Professional SEO service pages in `/app/services/` covering local SEO, eCommerce SEO, link building, technical audits, and consulting.
-
-**Blog System**: Storyblok-powered blog with reading progress, social sharing, table of contents, and related posts functionality.
+TailwindCSS with a custom design system (primary #2563EB, secondary #059669, accent #DC2626). Site-wide rules live in the project memory and `docs/design.md` — key ones: no border-radius, no emojis on service pages (SVG icons in blue squares), alternate section backgrounds, per-page CSS prefixes (`wd-`, `ba-`, `cp-`).
 
 ## Development Notes
 
-**TypeScript**: Configured with strict settings but deployment bypasses are in place. Follow existing patterns for component typing.
-
-**State Management**: Uses React hooks for local state. Complex state like dropdown menus and cookie consent managed in the root layout.
-
-**API Routes**: All API endpoints are in `/app/api/` and handle AI content generation, form submissions, and newsletter subscriptions.
-
-**Image Optimization**: Configured for unoptimized images due to static export requirement.
-
-**SEO Implementation**: Comprehensive SEO with structured data, meta tags, OpenGraph, and Twitter cards implemented throughout the application.
-
-## Common Development Patterns
-
-When working with this codebase:
-
-- Follow the existing component patterns with Tailwind utility classes
-- Use the established color scheme and typography system
-- Implement proper TypeScript interfaces for new components
-- Add proper ARIA labels and semantic HTML for accessibility
-- Include structured data (JSON-LD) for new pages when appropriate
-- Test responsive design on mobile, tablet, and desktop breakpoints
+- **Build bypasses**: `ignoreBuildErrors` and `ignoreDuringBuilds` are on in next.config.ts; there are no tests. TypeScript is effectively advisory — be extra careful with cross-file changes.
+- **Images**: unoptimized (`images.unoptimized: true`); uploads land in `public/uploads/` and are committed.
+- **layout.tsx** already adds `paddingTop: 99` to `<main>` — pages must not add their own `<main>` wrapper.
+- **SEO**: structured data (JSON-LD), meta/OpenGraph/Twitter cards throughout; API routes send `X-Robots-Tag: noindex` (vercel.json).
+- Follow existing component patterns, the established color/typography system, proper ARIA labels, and test mobile/tablet/desktop breakpoints.

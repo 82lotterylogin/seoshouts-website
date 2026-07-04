@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import MetaTagOptimizerClient from './MetaTagOptimizerClient'
 
 export const metadata: Metadata = {
-  title: 'Free Meta Tag Generator and Optimizer Tool | SEO Shouts',
+  title: 'Free Meta Tag Generator & Optimizer — Live SERP Preview | SEOShouts',
   description: 'Create compelling title tags and meta descriptions that get clicked. Free meta tag generator with real-time SERP preview and optimization tips.',
   keywords: 'meta tag generator, title tag optimizer, meta description tool, SERP preview, SEO meta tags',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,15 +10,15 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/meta-tag-optimizer/',
   },
   openGraph: {
-    title: 'Free Meta Tag Generator and Optimizer Tool | SEO Shouts',
+    title: 'Free Meta Tag Generator & Optimizer — Live SERP Preview | SEOShouts',
     description: 'Create compelling title tags and meta descriptions that get clicked. Free meta tag generator with real-time SERP preview and optimization tips.',
     url: 'https://seoshouts.com/tools/meta-tag-optimizer/',
-    siteName: 'SEO Shouts',
+    siteName: 'SEOShouts',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Meta Tag Generator and Optimizer Tool | SEO Shouts',
+    title: 'Free Meta Tag Generator & Optimizer — Live SERP Preview | SEOShouts',
     description: 'Create compelling title tags and meta descriptions that get clicked. Free meta tag generator with real-time SERP preview.',
   },
 }
@@ -103,6 +103,9 @@ export default function MetaTagOptimizer() {
         "speakable": { "@type": "SpeakableSpecification", "cssSelector": ["h1", ".tool-hero-sub"] },
         "url": "https://seoshouts.com/tools/meta-tag-optimizer/"
       })}} />
+
+      {/* FAQPage Schema — mirrors the visible FAQ section */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are meta tags really important for SEO?","acceptedAnswer":{"@type":"Answer","text":"Yes, absolutely! Meta tags directly impact click-through rates and help search engines understand your content."}},{"@type":"Question","name":"Can I use this for client projects?","acceptedAnswer":{"@type":"Answer","text":"Absolutely! It's great for agencies, freelancers, and professionals optimizing client websites."}},{"@type":"Question","name":"What's the ideal title tag length?","acceptedAnswer":{"@type":"Answer","text":"Keep titles between 30-60 characters. Our tool shows real-time character counts with color-coded validation."}},{"@type":"Question","name":"How do I implement the generated code?","acceptedAnswer":{"@type":"Answer","text":"Copy the HTML code and paste it in your page's <head> section, or use SEO plugins like Yoast."}},{"@type":"Question","name":"Do I need keywords in meta descriptions?","acceptedAnswer":{"@type":"Answer","text":"Include your primary keyword naturally, but write for humans first. Avoid keyword stuffing."}},{"@type":"Question","name":"Are social media tags included?","acceptedAnswer":{"@type":"Answer","text":"Yes, we generate Open Graph and Twitter Card tags for optimal social media sharing."}}]}) }} />
 
       <MetaTagOptimizerClient />
     </>

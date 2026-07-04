@@ -198,7 +198,7 @@ function safeWordCount(content: any): number {
   }
   
   if (typeof content === 'object') {
-    // Handle rich text format from Storyblok
+    // Defensive fallback for rich-text object structures (blog.db stores HTML strings)
     if (content.content && Array.isArray(content.content)) {
       let textContent = '';
       const extractText = (nodes: any[]): string => {

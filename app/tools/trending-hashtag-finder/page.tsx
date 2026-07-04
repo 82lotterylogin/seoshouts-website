@@ -69,6 +69,20 @@ const breadcrumbLd = {
   ],
 };
 
+// mirrors the visible FAQ section in TrendingHashtagFinderClient
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    { '@type': 'Question', name: 'How many platforms does this tool support?', acceptedAnswer: { '@type': 'Answer', text: 'The hashtag finder currently supports 6+ popular social media platforms including Instagram, Twitter/X, YouTube, LinkedIn, Pinterest, and Threads, with platform-specific optimization strategies.' } },
+    { '@type': 'Question', name: 'Are the hashtags real trending data?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. For supported platforms like Twitter and LinkedIn, real API data is used. For others, strategically curated hashtags are provided based on current trends and platform best practices.' } },
+    { '@type': 'Question', name: 'Can I analyze competitor hashtags?', acceptedAnswer: { '@type': 'Answer', text: "The competitor analysis feature lets you analyze any competitor's hashtag strategy and discover opportunities they're missing in your industry (available for most platforms)." } },
+    { '@type': 'Question', name: 'How do I use the generated hashtags?', acceptedAnswer: { '@type': 'Answer', text: 'Copy the hashtags using the copy buttons and paste them into your social media posts. Both individual hashtag copying and bulk copy are supported.' } },
+    { '@type': 'Question', name: 'Does this tool help increase engagement?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The tool provides engagement analytics and trending patterns to help you choose hashtags that actually drive results and increase your content visibility.' } },
+    { '@type': 'Question', name: 'Is there a limit on usage?', acceptedAnswer: { '@type': 'Answer', text: 'The tool is completely free with reasonable rate limits to ensure quality service for all users.' } },
+  ],
+};
+
 export default function TrendingHashtagFinderPage() {
   return (
     <>
@@ -79,6 +93,10 @@ export default function TrendingHashtagFinderPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
       />
       <TrendingHashtagFinderClient />
     </>

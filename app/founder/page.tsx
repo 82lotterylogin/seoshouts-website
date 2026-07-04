@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { getAllStories } from '../lib/storyblok'
+import { getDatabase } from '../lib/database'
 import ShapeGrid from '../components/ShapeGrid'
 
 export const metadata: Metadata = {
@@ -281,13 +281,21 @@ function fdIcon(name: string) {
 }
 
 export default async function FounderPage() {
-  // Get actual articles from Storyblok for dynamic count
-  const allBlogPosts = await getAllStories("blog_post");
-  const rohitArticles = allBlogPosts.filter((post: any) =>
-    post.content.author?.content?.name === "Rohit Sharma" ||
-    post.content.author?.content?.slug === "rohit-sharma" ||
-    !post.content.author // If no author specified, assume it's Rohit's
-  );
+  // Dynamic count of Rohit's published articles from the SQLite CMS (blog.db)
+  let rohitArticleCount = 0;
+  try {
+    const db = getDatabase();
+    const row = db.prepare(`
+      SELECT COUNT(*) as count
+      FROM articles a
+      JOIN authors auth ON a.author_id = auth.id
+      WHERE a.status = 'published' AND auth.slug = 'rohit-sharma'
+    `).get() as { count: number };
+    rohitArticleCount = row?.count ?? 0;
+  } catch (error) {
+    console.error('Error counting founder articles:', error);
+  }
+  const rohitArticles = { length: rohitArticleCount };
 
   const expertise = [
     { title: "Technical SEO", description: "crawl/indexation fixes, site architecture, internal linking systems, structured data, migrations, Core Web Vitals guidance.", icon: "technical" },

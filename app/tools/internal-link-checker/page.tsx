@@ -243,43 +243,13 @@ export default function InternalLinkCheckerPage() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://seoshouts.com/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "SEO Tools",
-                "item": "https://seoshouts.com/tools/"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "Internal Link Checker",
-                "item": "https://seoshouts.com/tools/internal-link-checker/"
-              }
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seoshouts.com/" },
+              { "@type": "ListItem", "position": 2, "name": "SEO Tools", "item": "https://seoshouts.com/tools/" },
+              { "@type": "ListItem", "position": 3, "name": "Internal Link Checker", "item": "https://seoshouts.com/tools/internal-link-checker/" }
             ]
           })
         }}
       />
-
-      {/* HowTo Schema */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": "How to Audit Your Website's Internal Links and Anchor Text",
-        "description": "Use the free SEOShouts Internal Link Checker to crawl your site, visualize anchor text distribution, and find internal linking issues that hurt your SEO.",
-        "tool": { "@type": "HowToTool", "name": "SEOShouts Internal Link Checker", "url": "https://seoshouts.com/tools/internal-link-checker/" },
-        "step": [
-          { "@type": "HowToStep", "position": 1, "name": "Enter Your Domain", "text": "Type your homepage URL into the input field. The crawler reads your website's HTML, extracting anchor text across up to 500 pages to build a comprehensive map of your internal linking structure." },
-          { "@type": "HowToStep", "position": 2, "name": "Analyze the Word Cloud", "text": "Study the visual anchor text word cloud. Look for a diverse mix of terms at similar sizes. A single keyword dominating the cloud indicates over-optimization that could trigger Google's spam detection." },
-          { "@type": "HowToStep", "position": 3, "name": "Review the Data Table", "text": "Switch to the data view for granular insights: frequency count for each unique anchor, which pages each anchor points to, and source pages. Flag any anchor appearing more than 15% of the time on a single URL." },
-          { "@type": "HowToStep", "position": 4, "name": "Fix and Optimize", "text": "Replace generic anchors ('click here', 'read more') with descriptive phrases. Diversify over-optimized anchors using synonyms and partial matches. Add internal links to orphan pages that have fewer than 3 incoming internal links." }
-        ]
-      })}} />
 
       {/* Speakable Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
