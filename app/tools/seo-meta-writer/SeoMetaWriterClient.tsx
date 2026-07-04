@@ -163,6 +163,8 @@ function SEOMetaWriterClient() {
     { q: 'Can I use this for different languages?', a: 'Yes, our AI supports multiple languages and understands cultural nuances for different markets.' },
     { q: 'Will this replace human copywriters?', a: 'No, but it makes them more efficient. Use AI for speed and volume, humans for strategy and final polish.' },
     { q: 'Is this tool completely free?', a: 'Yes, completely free with no registration required. Generate as many meta tags as you need.' },
+    { q: 'What is an AI meta writer?', a: 'An AI meta writer is a tool that reads your page content and automatically generates search-optimized meta titles and descriptions: correct lengths, natural keyword placement, and click-worthy phrasing. It replaces manual metadata drafting with a generate-and-pick workflow that takes seconds per page.' },
+    { q: 'Do you offer meta tag writing services?', a: 'Yes. If you want experts to handle metadata across your entire site, titles, descriptions, and Open Graph tags written, implemented, and tested, our SEO consulting team offers that as a service. The free tool covers individual pages; the service covers full-site rollouts and migrations.' },
   ]
 
   const relatedTools = [
@@ -565,44 +567,37 @@ function SEOMetaWriterClient() {
       </div>
 
 
-      {/* ── ABOUT ────────────────────────────────────────────────────────────── */}
-      <section className="section prose-section">
+      {/* ── FOUNDER QUOTE ────────────────────────────────────────────────────── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
         <div className="section-container">
-          <div className="s-header reveal" style={{ marginBottom: 0 }}>
-            <p className="eyebrow">About This Tool</p>
-            <h2 className="s-title">Write Perfect Meta Tags in Seconds</h2>
-            <p className="s-sub">Generate AI-powered meta titles and descriptions that actually get clicks. Perfect for content creators, agencies, and businesses who want better search results.</p>
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;I have written meta descriptions for thousands of pages by hand, and by page 40 of any batch, quality collapses. That is exactly the job AI should do: generate five strong, on-length options per page, so the human spends thirty seconds picking a winner instead of ten minutes fighting a blank text box.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── INTRO STORY ──────────────────────────────────────────────────────── */}
+      {/* ── OVERVIEW ─────────────────────────────────────────────────────────── */}
       <section className="section why-section">
         <div className="section-container">
           <div className="s-header reveal">
-            <p className="eyebrow">The Problem</p>
-            <h2 className="s-title">Stop Staring at Blank Screens Trying to Write Meta Tags</h2>
+            <p className="eyebrow">Overview</p>
+            <h2 className="s-title">What is an AI meta writer <span className="blue">and when do you need one?</span></h2>
           </div>
           <div className="prose-content reveal">
-            <p>
-              Picture this: It's 11 PM, you've got 47 blog posts that need meta descriptions, and your brain feels like mush.
-              You stare at the blank text box for the fifth time today, typing "Best tips for..." then deleting it because it sounds terrible.
-            </p>
-            <p><strong>Sound familiar?</strong></p>
-            <p>
-              I've been there. Spent way too many late nights trying to craft the "perfect" meta description, only to end up with something boring like
-              "Learn about our services and how we can help your business grow." Yawn.
-            </p>
-            <p>
-              <strong>Here's what changed everything:</strong> AI that actually understands SEO and writes like a human.
-            </p>
-            <p>
-              Our <strong>AI SEO Meta Title and Description Generator</strong> doesn't just stuff keywords into templates.
-              It analyzes your content, understands what makes people click, and creates meta tags that actually work.
-            </p>
-            <div className="prose-callout">
-              <p>Ready to never write another boring meta tag again? Use the tool above.</p>
-            </div>
+            <p>An AI meta writer is a tool that reads your page title and content, then generates search-optimized meta titles and meta descriptions automatically: correct lengths, keyword placement, and click-worthy phrasing included. It replaces the slowest part of on-page SEO, writing dozens of unique descriptions by hand, with a thirty-second generate-and-pick workflow.</p>
+            <p>The typical use case: you have 47 blog posts that need meta descriptions, a batch of product pages launching Friday, or a client site migration where every page needs fresh metadata. A meta tag writer produces multiple options per page so you keep editorial control without doing the drafting.</p>
+            <p>Unlike template tools that rearrange your keywords, this SEO meta tag writer analyzes what your page is actually about, understands user intent, and writes like a human. Every option comes with live character counts so nothing gets truncated in the results.</p>
+            <p>After generating, paste your chosen title and description into our <a href="/tools/meta-tag-optimizer/" style={{ color: 'var(--blue)' }}>meta tag optimizer</a> to preview the exact Google SERP appearance and export the complete HTML tag set. And if you would rather have experts handle metadata across your whole site as a service, our <a href="/services/seo-consulting/" style={{ color: 'var(--blue)' }}>SEO consulting team</a> does exactly that.</p>
           </div>
         </div>
       </section>
@@ -866,6 +861,88 @@ function SEOMetaWriterClient() {
                   {t.title}
                 </p>
                 <p className="why-card-body">{t.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── COMPARISON ───────────────────────────────────────────────────────── */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEOShouts vs other <span className="blue">meta writing tools</span></h2>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  {['Feature', 'SEOShouts', 'ChatGPT (raw)', 'Copy.ai', 'Jasper', 'Writesonic'].map((c, i) => (
+                    <th key={c} className={i === 1 ? 'highlight' : ''}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Purpose-Built for Meta Tags', '✅', '❌ (Needs prompting)', '✅ Template', '✅ Template', '✅ Template'],
+                  ['Character Count Enforcement', '✅ Automatic', '❌ (Often ignores)', '❌', '✅', '❌'],
+                  ['Multiple Options Per Run', '✅ 3-5 angles', 'Depends on prompt', '✅', '✅', '✅'],
+                  ['SEO Length Rules Built In', '✅', '❌', '❌', '✅', '❌'],
+                  ['No Login Required', '✅', '❌ (Account)', '❌ (Account)', '❌ (Account)', '❌ (Account)'],
+                  ['Cost', 'Free forever', 'Free/$20 mo', '$49+/mo', '$39+/mo', '$16+/mo'],
+                ].map((row, ri) => (
+                  <tr key={ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className={ci === 1 ? 'highlight-col' : ''}>
+                        {cell.startsWith('✅') ? <span className="check-yes">{cell}</span> :
+                         cell.startsWith('❌') ? <span className="check-no">{cell.replace('❌', '✗')}</span> :
+                         cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="comparison-cards">
+            <div style={{ background: 'var(--green-bg)', border: '1px solid #86efac', borderLeft: '4px solid var(--green)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: '#14532d', marginBottom: '0.6rem' }}>When to Choose SEOShouts</h3>
+              <p style={{ fontSize: '0.9rem', color: '#166534', lineHeight: 1.7 }}>Use this meta writer when you need <strong>on-length, SEO-correct metadata fast</strong> without engineering prompts or paying for a general-purpose AI writing suite. The length rules, keyword placement, and multi-angle output are built in, not something you have to specify every time.</p>
+            </div>
+            <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: 'var(--blue-dark)', marginBottom: '0.6rem' }}>When You Might Need More</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--blue-dark)', lineHeight: 1.7 }}>If you produce long-form articles, ad campaigns, and emails alongside metadata, a full AI writing platform consolidates the workflow. For metadata specifically, this free tool matches or beats their template output.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CHECKLIST ────────────────────────────────────────────────────────── */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <div className="eyebrow">Quality Checklist</div>
+            <h2 className="s-title">Meta copy checklist <span className="blue">(before you paste it live)</span></h2>
+            <p className="s-sub">AI drafts it, you own it. Thirty seconds of checks per page keeps the quality bar high.</p>
+          </div>
+          <div className="checklist-grid reveal">
+            {[
+              { title: '📊 Accuracy', items: ['Title honestly describes what the page delivers', 'Description matches the page\'s actual content', 'No claims the page cannot back up', 'Brand name spelled and placed correctly'] },
+              { title: '🎯 Click Appeal', items: ['Primary keyword appears early in the title', 'Description contains one concrete reason to click', 'No duplicate of a competitor\'s phrasing', 'Reads naturally aloud, no keyword lists'] },
+              { title: '🔧 Technical Fit', items: ['Title within 60 characters', 'Description within 160 characters', 'Verified in a SERP preview before publishing', 'Unique across the site, no reused descriptions'] },
+              { title: '🏗️ Workflow', items: ['Best option picked from multiple AI variants', 'Edited for brand voice where needed', 'Implemented via CMS SEO fields or head tags', 'CTR monitored in Search Console after 4 weeks'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>

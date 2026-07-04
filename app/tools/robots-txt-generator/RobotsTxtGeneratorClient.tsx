@@ -492,6 +492,25 @@ export default function RobotsTxtGeneratorClient() {
         </div>
       </div>
 
+      {/* --- FOUNDER QUOTE --- */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in Technical SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;Robots.txt is the highest-stakes small file on any website: one wrong line and Google stops crawling your entire site. I have fixed that exact disaster for more clients than I can count, almost always a hand-edited file with one typo. This generator exists so the file is correct by construction.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- OVERVIEW --- */}
       <section className="section prose-section">
         <div className="section-container">
@@ -702,6 +721,78 @@ export default function RobotsTxtGeneratorClient() {
                   ))}
                 </ul>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- WORDPRESS DEEP DIVE --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">WordPress Guide</div>
+            <h2 className="s-title">Robots.txt generator for WordPress: <span className="blue">the complete setup</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>WordPress is the platform where robots.txt mistakes happen most, because WordPress serves a <strong>virtual robots.txt</strong> by default. There is no physical file until you create one, and plugins can silently override it. Here is the setup that works:</p>
+            <h3>The ideal WordPress robots.txt</h3>
+            <p>Select the WordPress preset in the generator above and you get exactly this structure: block <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>/wp-admin/</code> and <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>/wp-includes/</code>, but explicitly allow <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>/wp-admin/admin-ajax.php</code> (many themes and plugins call it from the front end) and <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>/wp-content/uploads/</code> (your images need to be crawlable to rank in image search).</p>
+            <h3>Three ways to install it on WordPress</h3>
+            <ul>
+              <li><strong>SEO plugin (easiest):</strong> Yoast SEO (Tools → File editor) and Rank Math (General Settings → Edit robots.txt) both let you paste the generated file directly. The plugin serves it, no FTP needed.</li>
+              <li><strong>Upload via FTP or file manager:</strong> save the generated file as <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>robots.txt</code> and place it in your site root (the same folder as wp-config.php). A physical file always beats the virtual one.</li>
+              <li><strong>Hosting panel:</strong> most managed WordPress hosts (Hostinger, SiteGround, WP Engine) include a file manager where you can create the file in the web root.</li>
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">The WordPress mistakes to avoid</div>
+              <p>Never block <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>/wp-content/</code> wholesale, that kills your CSS, JavaScript, and images, and Google demotes pages it cannot render. And do not use robots.txt to hide a page from search results: blocked pages can still appear in Google with no description. Use a <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>noindex</code> tag for that instead.</p>
+            </div>
+            <p>Once your file is live, verify your whole setup with the <a href="/tools/on-page-seo-analyzer/" style={{ color: 'var(--blue)' }}>on-page SEO analyzer</a> and generate a matching <a href="/tools/xml-sitemap-generator/" style={{ color: 'var(--blue)' }}>XML sitemap</a> to reference in the file.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- TEST & SUBMIT --- */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Verify &amp; Deploy</div>
+            <h2 className="s-title">How to test and submit your <span className="blue">robots.txt file</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>A robots.txt file fails silently, nothing errors, pages just quietly drop out of crawling. Always verify after uploading:</p>
+            <ul>
+              <li><strong>Check it loads:</strong> visit <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>yoursite.com/robots.txt</code> in a browser. You should see exactly the file you generated, not a plugin default or a 404.</li>
+              <li><strong>Test in Search Console:</strong> Google Search Console&apos;s robots.txt report (Settings → robots.txt) shows the fetched file, when it was last crawled, and any parse errors, line by line.</li>
+              <li><strong>Spot-check critical URLs:</strong> use the URL Inspection tool on your homepage, a key product page, and a CSS file. All three should show &ldquo;Crawl allowed: Yes.&rdquo;</li>
+              <li><strong>Mind the AI crawlers:</strong> the generator includes toggles for GPTBot, ClaudeBot, PerplexityBot, and Google-Extended. Blocking them removes you from AI search answers, an increasingly expensive place to be invisible. Check your AI readiness with our <a href="/tools/geo-aeo-checker/" style={{ color: 'var(--blue)' }}>free AEO checker</a> before deciding.</li>
+            </ul>
+            <p>Changes take effect at the next crawl, usually within 24 hours for active sites. Keep a copy of your previous file before replacing it, rollback is the fastest fix if traffic dips.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FAQ --- */}
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+            <p className="s-sub">Everything you need to know about robots.txt files.</p>
+          </div>
+          <div className="faq-list">
+            {[
+              { q: 'What is a robots.txt file?', a: 'Robots.txt is a plain text file at your website\'s root that tells search engine crawlers which parts of your site they may and may not crawl. Well-behaved bots (Googlebot, Bingbot, and major AI crawlers) read it before crawling anything else. It controls crawling, not indexing: use a noindex tag to keep a page out of search results.' },
+              { q: 'How do I create a robots.txt for WordPress?', a: 'Select the WordPress preset in the generator above, it blocks /wp-admin/ and /wp-includes/ while keeping admin-ajax.php and your uploads folder crawlable. Then install it via your SEO plugin (Yoast: Tools > File editor; Rank Math: General Settings > Edit robots.txt) or upload the file to your site root via FTP.' },
+              { q: 'Where do I upload the robots.txt file?', a: 'Always in the root of your domain, so it loads at yoursite.com/robots.txt. Subdirectories do not work: search engines only check the root. On WordPress, an SEO plugin can serve it for you without touching FTP.' },
+              { q: 'Can robots.txt hide a page from Google?', a: 'Not reliably. Robots.txt blocks crawling, but a blocked URL can still appear in results (with no description) if other sites link to it. To keep a page out of Google, allow crawling and add a noindex meta tag, or protect it with a login.' },
+              { q: 'Should I block AI crawlers like GPTBot?', a: 'It depends on your goals. Blocking GPTBot, ClaudeBot, and PerplexityBot keeps your content out of AI training and AI search answers, which also means zero visibility when customers ask AI assistants for recommendations. Most businesses now allow AI crawlers for the visibility. The generator gives you per-bot toggles either way.' },
+              { q: 'Is this robots.txt generator free?', a: 'Yes, completely free with no signup. Pick your platform preset, toggle the rules you need, preview the exact file, and download it. Templates cover WordPress, Shopify, eCommerce, and custom sites.' },
+            ].map(faq => (
+              <details key={faq.q} className="faq-item">
+                <summary>{faq.q}</summary>
+                <div className="faq-answer">{faq.a}</div>
+              </details>
             ))}
           </div>
         </div>

@@ -42,6 +42,16 @@ const faqItems = [
     answer:
       'Yes, but some rules may conflict with or duplicate Cloudflare settings. Cloudflare may already handle HTTPS, caching, and compression at the CDN level.',
   },
+  {
+    question: 'How do I test my .htaccess file before going live?',
+    answer:
+      'Three-step protocol: validate the syntax by deploying to a staging copy first (a syntax error takes the whole site to a 500), test each redirect with a curl -I request to confirm the status code and Location header, and finally click through your key pages plus one deliberately wrong URL to confirm the error page. The rules this generator produces are syntax-checked patterns, so testing focuses on your paths, not the grammar.',
+  },
+  {
+    question: 'Why does my site show a 500 error after uploading .htaccess?',
+    answer:
+      'A 500 error immediately after upload almost always means a syntax error or a directive your host does not allow (often mod_headers or mod_expires not enabled). Restore your backup file first, then re-add the generated blocks one at a time to isolate the offending rule.',
+  },
 ]
 
 export const metadata: Metadata = {

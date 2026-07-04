@@ -576,6 +576,25 @@ export default function XmlSitemapGeneratorClient() {
         </div>
       </div>
 
+      {/* ── FOUNDER QUOTE ── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in Technical SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;An XML sitemap is the cheapest indexing insurance that exists: one file that tells Google every URL you want crawled. I have audited stores where half the catalog was invisible to search purely because no sitemap existed. Generate it, submit it in Search Console, and that entire class of problem disappears.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- OVERVIEW --- */}
       <section className="section prose-section">
         <div className="section-container">
@@ -755,6 +774,32 @@ export default function XmlSitemapGeneratorClient() {
                   ))}
                 </ul>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- FAQ --- */}
+      <section className="section faq-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">FAQ</div>
+            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+            <p className="s-sub">Everything you need to know about XML sitemaps.</p>
+          </div>
+          <div className="faq-list">
+            {[
+              { q: 'What is an XML sitemap?', a: 'An XML sitemap is a file listing every URL on your website that you want search engines to crawl and index, along with optional metadata like last-modified dates and priority. Search engines read it to discover pages they might otherwise miss, especially new pages, deep pages, and pages with few internal links.' },
+              { q: 'Is this XML sitemap generator free?', a: 'Yes, completely free with no signup, no page-limit paywall, and no watermarks. Enter your site URL, let the crawler collect your pages, and download a standards-compliant sitemap.xml ready to upload.' },
+              { q: 'Do I need a sitemap if my site is small?', a: 'Google can usually find every page on a well-linked small site without one, but a sitemap still helps: it speeds up discovery of new content and gives you Search Console indexing reports per URL. Since generating one takes under a minute, there is no reason to skip it.' },
+              { q: 'Where do I upload the sitemap file?', a: 'Place sitemap.xml in your website root so it loads at yoursite.com/sitemap.xml. Then reference it in your robots.txt file (Sitemap: https://yoursite.com/sitemap.xml) and submit it in Google Search Console under Indexing > Sitemaps.' },
+              { q: 'How often should I update my sitemap?', a: 'Whenever you add, remove, or significantly change pages. For frequently updated sites, regenerate monthly or use a CMS plugin that maintains the sitemap automatically. A stale sitemap with deleted URLs wastes crawl budget and produces Search Console errors.' },
+              { q: 'How many URLs can one sitemap contain?', a: 'The protocol limit is 50,000 URLs or 50MB uncompressed per file. Larger sites split URLs across multiple sitemaps tied together by a sitemap index file. This generator handles standard sites well within the single-file limit.' },
+            ].map(faq => (
+              <details key={faq.q} className="faq-item">
+                <summary>{faq.q}</summary>
+                <div className="faq-answer">{faq.a}</div>
+              </details>
             ))}
           </div>
         </div>

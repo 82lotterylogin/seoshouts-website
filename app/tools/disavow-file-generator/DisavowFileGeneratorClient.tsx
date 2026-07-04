@@ -44,6 +44,7 @@ const FAQ_ITEMS = [
   { q: 'How long does it take for Google to process a disavow file?', a: 'Google typically processes new or updated disavow files within a few days. However, ranking changes resulting from the disavow may take several weeks to months to manifest, depending on your crawl frequency and the severity of the link issues.' },
   { q: 'Can I update my disavow file after submitting?', a: 'Yes. Uploading a new disavow file replaces the previous one entirely — it does not add to it. Always maintain a master disavow file that you update and re-upload. Never submit a partial list expecting it to merge with your previous submission.' },
   { q: 'Do I need to disavow nofollow backlinks?', a: 'No. Nofollow links (rel="nofollow") are already ignored by Google for ranking purposes. Including them in your disavow file is harmless but unnecessary. The disavow tool is intended for followed links that pass PageRank.' },
+  { q: 'How do I make a disavow file from scratch?', a: 'Collect your toxic domains from a backlink audit, then either type them into this generator (it handles the formatting automatically) or create a plain UTF-8 .txt file manually: one entry per line, domain:example.com for whole domains, full URLs for single pages, and # for comment lines. Save as .txt and upload it at google.com/webmasters/tools/disavow-links in Search Console.' },
 ]
 
 function makeEntryId(index: number): string {
@@ -912,6 +913,40 @@ export default function DisavowFileGeneratorClient() {
                 <div className="faq-answer">{item.a}</div>
               </details>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FORMAT / TEMPLATE / EXAMPLE ── white */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Format Reference</div>
+            <h2 className="s-title">Disavow file format, template <span className="blue">and example</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>Google Search Console accepts exactly one format: a plain UTF-8 text file with a <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>.txt</code> extension, maximum 2MB, one entry per line. Here is a complete disavow file example you can use as a template:</p>
+            <div style={{ background: '#111318', padding: '1.25rem', margin: '1.5rem 0', overflowX: 'auto' }}>
+              <pre style={{ color: '#86efac', margin: 0, fontSize: '0.82rem', fontFamily: 'JetBrains Mono, monospace', whiteSpace: 'pre-wrap' }}>{`# Disavow file for example.com
+# Created: July 2026 after link audit
+# Spam domains found in backlink profile
+
+# Whole domains (covers every current and future link)
+domain:spammy-directory.xyz
+domain:paid-links-network.info
+domain:casino-link-farm.top
+
+# Individual URLs (only this specific page is disavowed)
+https://otherwise-fine-blog.com/spun-article-linking-to-us/
+https://forum-example.net/thread/spam-comment-page-12`}</pre>
+            </div>
+            <p>The three rules that matter:</p>
+            <ul>
+              <li><strong><code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>domain:</code> entries</strong> disavow every link from that domain, including subdomains and any links it adds in the future. Google recommends this form for nearly all spam cleanup.</li>
+              <li><strong>Plain URL entries</strong> disavow only that exact page. Use them when a legitimate site has one bad page linking to you.</li>
+              <li><strong><code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>#</code> comment lines</strong> are ignored by Google. Use them to date your audits, future-you will thank you when updating the file.</li>
+            </ul>
+            <p>You do not need to memorize any of this: the generator above produces a correctly formatted file from pasted URLs or domains, deduplicates entries, protects whitelisted domains, and exports the finished .txt ready for <a href="https://search.google.com/search-console/disavow-links" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--blue)' }}>Search Console&apos;s disavow tool</a>. Before disavowing anything, review your anchor profile with the <a href="/tools/internal-link-checker/" style={{ color: 'var(--blue)' }}>internal link checker</a> and read our guide on <a href="/blog/link-equity/" style={{ color: 'var(--blue)' }}>how link equity actually flows</a>.</p>
           </div>
         </div>
       </section>

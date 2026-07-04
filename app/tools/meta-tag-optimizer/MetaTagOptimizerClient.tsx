@@ -306,20 +306,36 @@ export default function MetaTagOptimizerClient() {
         </div>
       </div>
 
+      {/* --- FOUNDER QUOTE --- */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;Titles and descriptions are the only part of your SEO that searchers actually see before they click. I have watched pages jump 40% in traffic with zero ranking change, purely from rewriting the title tag. This meta tag optimization tool exists so you can see exactly what Google will show, before you publish, not after.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- OVERVIEW --- */}
       <section className="section prose-section">
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">Overview</div>
-            <h2 className="s-title">Generate Optimized Meta Tags <span className="blue">for Better SEO</span></h2>
+            <h2 className="s-title">What is a meta tag optimization tool <span className="blue">and why does CTR depend on it?</span></h2>
           </div>
           <div className="prose-content">
-            <p>
-              Create compelling title tags and meta descriptions that get clicked. Our free tool includes real-time SERP preview, character count validation, and generates complete meta tag code for your website.
-            </p>
-            <p>
-              Perfect for SEO professionals, web developers, and content creators who want to optimize their pages for search engines and improve click-through rates from Google.
-            </p>
+            <p>A meta tag optimization tool helps you write, validate, and preview the HTML tags that control how your page appears in search results: the title tag, the meta description, canonical and viewport tags, plus the Open Graph and Twitter Card tags that shape social link previews. This one adds a live Google SERP preview and color-coded character validation, so you see truncation problems before Google&apos;s users do.</p>
+            <p>Meta tags matter because they are your listing&apos;s advertisement. Rankings decide whether you appear; the title and description decide whether anyone clicks. A page ranking fifth with a compelling, complete title routinely out-earns a page ranking third with a truncated or generic one.</p>
+            <p>Perfect for SEO professionals, web developers, and content creators who want every published page to be search-engine ready from day one. If you want AI to draft the copy for you first, use our <a href="/tools/seo-meta-writer/" style={{ color: 'var(--blue)' }}>AI meta writer</a>, then paste the results here to validate lengths and generate the full tag set.</p>
 
             <h3>Why meta tags matter for SEO:</h3>
 
@@ -431,12 +447,12 @@ export default function MetaTagOptimizerClient() {
           </div>
           <div className="steps-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
             {[
-              { n: '01', title: 'Enter Your Content', desc: 'Input your page title, meta description, keywords, and URL. Our tool provides real-time character count and optimization suggestions.' },
-              { n: '02', title: 'Preview SERP Appearance', desc: 'See exactly how your page will appear in Google search results with our live SERP preview feature.' },
-              { n: '03', title: 'Generate Complete Code', desc: 'Get ready-to-use HTML meta tag code including Open Graph and Twitter Card tags for social media sharing.' },
-            ].map((s, i) => (
+              { n: '01', title: 'Enter Your Content', desc: 'Input your page title, meta description, keywords, and URL. Our tool provides real-time character count and optimization suggestions as you type.', tip: 'Write the description as a one-sentence pitch: what the page delivers plus a reason to click.' },
+              { n: '02', title: 'Preview SERP Appearance', desc: 'See exactly how your page will appear in Google search results with the live SERP preview. Truncated titles and cut-off descriptions are visible instantly, before publishing.', tip: 'Front-load your primary keyword in the first 30 characters of the title, that part always survives truncation.' },
+              { n: '03', title: 'Generate Complete Code', desc: 'Get ready-to-use HTML meta tag code including canonical, Open Graph, and Twitter Card tags. Copy with one click and paste into your page\'s <head> section or your CMS SEO plugin fields.', tip: 'After implementing, re-check the page with the on-page SEO analyzer to confirm every tag is picked up.' },
+            ].map((s, i, arr) => (
               <div key={s.n} className="step-card">
-                {i < 2 && (
+                {i < arr.length - 1 && (
                   <div className="step-connector">
                     <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
                   </div>
@@ -444,6 +460,7 @@ export default function MetaTagOptimizerClient() {
                 <div className="step-num-big">{s.n}</div>
                 <div className="step-title">{s.title}</div>
                 <div className="step-desc">{s.desc}</div>
+                {s.tip && <div className="step-tip">💡 Tip: {s.tip}</div>}
               </div>
             ))}
           </div>
@@ -506,6 +523,204 @@ export default function MetaTagOptimizerClient() {
         </div>
       </section>
 
+      {/* --- LENGTH LIMITS TABLE --- */}
+      <section className="section ratio-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Length Guide</div>
+            <h2 className="s-title">Title tag and meta description <span className="blue">length limits (2026)</span></h2>
+            <p className="s-sub">Google truncates by pixel width, not characters, but these character ranges keep you safely inside the limits on both desktop and mobile.</p>
+          </div>
+          <table className="ratio-table">
+            <thead>
+              <tr>
+                {['Element', 'Optimal Length', 'Hard Limit', 'What Happens Beyond It'].map(h => <th key={h}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { el: 'Title Tag', opt: '30–60 characters', limit: '~600 pixels', beyond: 'Truncated with "..." or rewritten by Google', cls: 'risk-safe' },
+                { el: 'Meta Description', opt: '120–160 characters', limit: '~920 pixels desktop, less on mobile', beyond: 'Cut mid-sentence, weakening the pitch', cls: 'risk-safe' },
+                { el: 'OG Title (social)', opt: '40–60 characters', limit: '~88 characters', beyond: 'Clipped in Facebook/LinkedIn link cards', cls: 'risk-warn' },
+                { el: 'OG Description', opt: '60–110 characters', limit: '~200 characters', beyond: 'Hidden entirely on some placements', cls: 'risk-warn' },
+                { el: 'Meta Keywords', opt: 'Not used by Google since 2009', limit: 'n/a', beyond: 'Ignored, harmless but optional', cls: 'risk-bad' },
+              ].map(r => (
+                <tr key={r.el}>
+                  <td className="ratio-anchor-type">{r.el}</td>
+                  <td className="ratio-pct">{r.opt}</td>
+                  <td>{r.limit}</td>
+                  <td><span className={`ratio-risk ${r.cls}`}>{r.beyond}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="ratio-note">
+            <strong>Reality check:</strong> Google rewrites roughly 60% of title tags it considers suboptimal. The best defense is a title that already matches the query: primary keyword early, honest description of the page, within the pixel limit. Titles built that way get kept; clickbait and keyword strings get rewritten.
+          </div>
+        </div>
+      </section>
+
+      {/* --- MISTAKES SECTION --- */}
+      <section className="section mistakes-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Common Mistakes</div>
+            <h2 className="s-title">5 meta tag mistakes that <span className="blue">kill click-through rates</span></h2>
+            <p className="s-sub">Run your existing pages through the optimizer above and check for these patterns.</p>
+          </div>
+          <div className="mistakes-grid">
+            {[
+              { n: '01', title: 'Duplicate Titles Across Pages', body: 'When dozens of pages share one boilerplate title, Google cannot tell them apart and searchers get no reason to click any of them. Every indexable page needs a unique title describing that specific page.', bad: '"Home | Acme Corp" on 40 different pages', good: '"Waterproof Hiking Boots for Women | Acme Corp" per page' },
+              { n: '02', title: 'Stuffing Keywords Into the Title', body: 'Keyword-string titles look spammy to users and are the #1 trigger for Google rewriting your title entirely. One primary keyword plus a benefit beats five comma-separated keywords.', bad: '"SEO Tools, Free SEO Tools, Best SEO Software, SEO Checker"', good: '"19 Free SEO Tools That Replace Paid Subscriptions"' },
+              { n: '03', title: 'Missing or Auto-Generated Descriptions', body: 'Leave the description empty and Google grabs an arbitrary page snippet, often navigation text or a cookie notice. You surrender your one chance to pitch the click.', bad: 'Description: "Home About Services Contact Menu Login"', good: 'A 150-character pitch stating what the page delivers and why it beats the other nine results' },
+              { n: '04', title: 'Ignoring Social Preview Tags', body: 'Without Open Graph and Twitter Card tags, shared links render as bare URLs or with random images. Every share loses the visual real estate that drives social clicks.', bad: 'Link shared on LinkedIn shows no image, no headline', good: 'og:title, og:description, and og:image produce a full preview card' },
+              { n: '05', title: 'Front-Loading Branding Instead of Keywords', body: 'Starting every title with your brand name pushes the keyword out of the visible window on mobile. Brand goes at the end; the topic goes first, where truncation cannot eat it.', bad: '"Acme Corporation Private Limited | Best Hiking Boots"', good: '"Best Hiking Boots for Monsoon Treks | Acme"' },
+            ].map(m => (
+              <div key={m.n} className="mistake-card">
+                <div className="mistake-card-top">
+                  <div className="mistake-num">Mistake {m.n}</div>
+                  <div className="mistake-title">{m.title}</div>
+                  <div className="mistake-body-text">{m.body}</div>
+                </div>
+                <div className="code-example">
+                  <div className="code-bad"><span className="code-label">✗</span><span className="code-text">{m.bad}</span></div>
+                  <div className="code-good"><span className="code-label">✓</span><span className="code-text">{m.good}</span></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- TITLE TAG DEEP DIVE --- */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Title Tag Optimization</div>
+            <h2 className="s-title">How to write title tags that <span className="blue">earn the click</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>The title tag is the single highest-leverage line of text on any page. Here is the formula that consistently survives Google&apos;s rewriting and wins clicks:</p>
+            <ul>
+              <li><strong>Primary keyword in the first 30 characters.</strong> Mobile truncates hardest; the front of the title always survives.</li>
+              <li><strong>One concrete differentiator.</strong> A number, a year, &ldquo;free,&rdquo; a speed claim: &ldquo;39 JSON-LD Types,&rdquo; &ldquo;in Under 5 Minutes.&rdquo; Specificity beats adjectives.</li>
+              <li><strong>Match the dominant intent.</strong> If the top results all say &ldquo;checker,&rdquo; a title saying &ldquo;analysis platform&rdquo; fights the query. Mirror the language searchers use.</li>
+              <li><strong>Brand last, if at all.</strong> &ldquo;| SEOShouts&rdquo; at the end builds recognition without spending the visible window.</li>
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">The rewrite test</div>
+              <p>Before publishing, ask: if Google showed this title against the exact query I target, would a searcher know what they get and why it beats the other results? If yes, Google usually keeps your title. If it is vague, branded-first, or stuffed, expect a rewrite, and rewrites almost always convert worse than a well-crafted original.</p>
+            </div>
+            <p>Use the live preview above as a title tag optimizer: type variants, watch the truncation point, and keep the version that reads best at a glance.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- WHICH TAGS MATTER --- */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tag Reference</div>
+            <h2 className="s-title">Which meta tags still matter <span className="blue">in 2026 (and which are dead)</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>The generated code block includes every tag with a legitimate job. Knowing what each one does keeps you from cargo-culting dead tags or deleting live ones:</p>
+            <ul>
+              <li><strong>Title and meta description:</strong> the CTR pair. Description is not a ranking factor, but Google bolds query words inside it, which visibly lifts clicks.</li>
+              <li><strong>Canonical:</strong> prevents duplicate-content dilution when a page is reachable at multiple URLs. One canonical per page, always absolute.</li>
+              <li><strong>Viewport:</strong> required for mobile rendering; without it your page fails mobile-friendliness checks outright.</li>
+              <li><strong>Robots:</strong> &ldquo;index, follow&rdquo; is the default and technically redundant, but explicit beats implicit when debugging indexing issues.</li>
+              <li><strong>Open Graph and Twitter Cards:</strong> control social link previews everywhere links get shared, including in messaging apps. Increasingly read by AI assistants when summarizing pages.</li>
+              <li><strong>Meta keywords:</strong> ignored by Google since 2009. The tool includes it because a few regional engines still read it, but never spend effort on it.</li>
+            </ul>
+            <p>For structured data beyond meta tags, JSON-LD schema for rich results, generate it with our <a href="/tools/schema-generator/" style={{ color: 'var(--blue)' }}>free schema markup generator</a> and validate the whole page with the <a href="/tools/on-page-seo-analyzer/" style={{ color: 'var(--blue)' }}>on-page SEO analyzer</a>.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* --- COMPARISON SECTION --- */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEOShouts vs other <span className="blue">meta tag tools</span></h2>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  {['Feature', 'SEOShouts', 'SEOptimer', 'ToTheWeb', 'Yoast (plugin)', 'Rank Math (plugin)'].map((c, i) => (
+                    <th key={c} className={i === 1 ? 'highlight' : ''}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Live Google SERP Preview', '✅', '✅', '✅', '✅', '✅'],
+                  ['Character Validation', '✅ Color-coded', '✅', '✅', '✅', '✅'],
+                  ['Full HTML Tag Set Output', '✅', '❌ (Title/desc only)', '❌ (Preview only)', '❌ (WP fields)', '❌ (WP fields)'],
+                  ['Open Graph + Twitter Tags', '✅', '❌', '❌', '✅', '✅'],
+                  ['Works Without WordPress', '✅', '✅', '✅', '❌', '❌'],
+                  ['No Login Required', '✅', '✅', '✅', '❌ (Install)', '❌ (Install)'],
+                  ['Cost', 'Free forever', 'Free (limited)', 'Free', 'Free/$99 yr', 'Free/$59 yr'],
+                ].map((row, ri) => (
+                  <tr key={ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className={ci === 1 ? 'highlight-col' : ''}>
+                        {cell.startsWith('✅') ? <span className="check-yes">{cell}</span> :
+                         cell.startsWith('❌') ? <span className="check-no">{cell.replace('❌', '✗')}</span> :
+                         cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="comparison-cards">
+            <div style={{ background: 'var(--green-bg)', border: '1px solid #86efac', borderLeft: '4px solid var(--green)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: '#14532d', marginBottom: '0.6rem' }}>When to Choose SEOShouts</h3>
+              <p style={{ fontSize: '0.9rem', color: '#166534', lineHeight: 1.7 }}>Use this optimizer when you need <strong>preview plus complete ready-to-paste code</strong> for any platform: custom sites, static builds, Shopify, Webflow, or client handoffs. Preview-only tools make you write the HTML yourself; plugin tools lock you into WordPress.</p>
+            </div>
+            <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: 'var(--blue-dark)', marginBottom: '0.6rem' }}>When You Might Need More</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--blue-dark)', lineHeight: 1.7 }}>If you run WordPress and want meta fields managed inside the CMS with templates and bulk editing, Yoast or Rank Math is the right home for day-to-day management. Use this tool to craft and test the copy; store the winner in your plugin.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- CHECKLIST SECTION --- */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Publishing Checklist</div>
+            <h2 className="s-title">Meta tag checklist <span className="blue">(before every publish)</span></h2>
+            <p className="s-sub">Two minutes per page. Every box unchecked is CTR left on the table.</p>
+          </div>
+          <div className="checklist-grid">
+            {[
+              { title: '📊 Title Tag', items: ['Unique across the entire site', 'Primary keyword in first 30 characters', '30-60 characters, verified in the preview', 'Contains one concrete differentiator (number, year, benefit)', 'Brand at the end, not the start'] },
+              { title: '🎯 Meta Description', items: ['120-160 characters, no mid-sentence truncation', 'Primary keyword included naturally (Google bolds it)', 'States what the page delivers plus a reason to click', 'Unique, not duplicated from another page', 'Written for humans, no keyword lists'] },
+              { title: '🔧 Technical Tags', items: ['Canonical URL absolute and correct', 'Viewport set to responsive', 'Robots directive intentional (index, follow)', 'Charset UTF-8 declared', 'Language attribute matches page content'] },
+              { title: '🏗️ Social Tags', items: ['og:title and og:description present', 'og:image points to a real 1200x630 image', 'twitter:card set to summary_large_image', 'Preview tested by sharing to a private channel', 'og:url matches the canonical'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* --- FAQ --- */}
       <section className="section faq-section">
         <div className="section-container">
@@ -516,12 +731,14 @@ export default function MetaTagOptimizerClient() {
           </div>
           <div className="faq-list">
             {[
-              { q: 'Are meta tags really important for SEO?', a: 'Yes, absolutely! Meta tags directly impact click-through rates and help search engines understand your content.' },
-              { q: 'Can I use this for client projects?', a: "Absolutely! It's great for agencies, freelancers, and professionals optimizing client websites." },
-              { q: "What's the ideal title tag length?", a: 'Keep titles between 30-60 characters. Our tool shows real-time character counts with color-coded validation.' },
-              { q: 'How do I implement the generated code?', a: "Copy the HTML code and paste it in your page's <head> section, or use SEO plugins like Yoast." },
-              { q: 'Do I need keywords in meta descriptions?', a: 'Include your primary keyword naturally, but write for humans first. Avoid keyword stuffing.' },
-              { q: 'Are social media tags included?', a: 'Yes, we generate Open Graph and Twitter Card tags for optimal social media sharing.' },
+              { q: 'What is a meta tag optimization tool?', a: 'A meta tag optimization tool helps you write, validate, and preview the HTML meta tags that control how your page appears in search results and social shares. This one combines a live Google SERP preview, color-coded character validation for titles and descriptions, and a complete generated tag set including canonical, Open Graph, and Twitter Card markup.' },
+              { q: 'Are meta tags really important for SEO?', a: 'Yes. The title tag is a direct ranking signal, and both title and description control your click-through rate from search results. Two pages at the same position can differ in traffic by 30-40% purely on the strength of their meta tags, because searchers choose the listing that best promises what they want.' },
+              { q: 'What is the ideal title tag length?', a: 'Keep titles between 30 and 60 characters. Google truncates by pixel width (about 600 pixels), so 60 characters is the safe ceiling. Put your primary keyword in the first 30 characters, that portion survives truncation on every device.' },
+              { q: 'What is the ideal meta description length?', a: 'Aim for 120 to 160 characters. Below 120 wastes the space Google gives you; above 160 gets cut mid-sentence, usually right where your call to action was. The color-coded counter in the tool marks the optimal band as you type.' },
+              { q: 'Do meta keywords still matter?', a: 'No. Google has ignored the meta keywords tag since 2009, and no major engine uses it for ranking. The tool includes the field for completeness and for the few regional engines that still read it, but never spend optimization effort there.' },
+              { q: 'Why does Google rewrite my title tags?', a: 'Google rewrites titles it judges too long, keyword-stuffed, boilerplate, or mismatched to the query, industry studies put the rewrite rate around 60%. Titles that state the page topic honestly, lead with the keyword, and stay inside the pixel limit are the ones Google keeps.' },
+              { q: 'How do I implement the generated code?', a: 'Copy the HTML block and paste it inside your page\'s <head> section. On WordPress, transfer the title and description into your SEO plugin fields (Yoast, Rank Math) instead, the plugin renders the tags for you. On Shopify, Webflow, and most site builders, each page has dedicated SEO fields for the same values.' },
+              { q: 'Are social media tags included?', a: 'Yes. The generated code includes Open Graph tags (og:title, og:description, og:url, og:image) for Facebook, LinkedIn, and WhatsApp previews, plus Twitter Card markup for X. These tags are also increasingly read by AI assistants when they summarize and cite pages.' },
             ].map(faq => (
               <details key={faq.q} className="faq-item">
                 <summary>{faq.q}</summary>

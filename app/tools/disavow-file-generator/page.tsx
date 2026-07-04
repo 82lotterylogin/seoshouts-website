@@ -42,6 +42,11 @@ const faqItems = [
     answer:
       'No. Nofollow links (rel="nofollow") are already ignored by Google for ranking purposes. Including them in your disavow file is harmless but unnecessary. The disavow tool is intended for followed links that pass PageRank.',
   },
+  {
+    question: 'How do I make a disavow file from scratch?',
+    answer:
+      'Collect your toxic domains from a backlink audit, then either type them into this generator (it handles the formatting automatically) or create a plain UTF-8 .txt file manually: one entry per line, domain:example.com for whole domains, full URLs for single pages, and # for comment lines. Save as .txt and upload it in Google Search Console\'s disavow tool.',
+  },
 ]
 
 const howToSteps = [

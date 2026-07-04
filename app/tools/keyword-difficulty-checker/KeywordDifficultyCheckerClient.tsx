@@ -358,31 +358,14 @@ export default function KeywordDifficultyCheckerClient() {
             <span className="breadcrumb-sep">/</span>
             <span style={{ color: 'rgba(255,255,255,0.5)' }}>Keyword Difficulty Checker</span>
           </nav>
-          <div className="tool-hero-badge">Free SEO Tool</div>
+          <div className="tool-hero-badge">📊 Keyword Research Tool — Free Forever</div>
           <h1 className="tool-hero-h1">
-            Free Keyword Difficulty Checker Tool<br />
-            <span>Stop Wasting Time on Impossible Keywords</span>
+            Free Keyword Difficulty Checker: <span>Bulk Scores</span>, By Location &amp; CSV Export
           </h1>
-          <h2 style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 600, fontSize: '1.1rem', marginTop: '0.75rem', marginBottom: '0.75rem', fontFamily: 'Space Grotesk, sans-serif', maxWidth: '900px' }}>
-            Find Out Which Keywords You Can Actually Rank For
-          </h2>
-          <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
-            A keyword difficulty checker scores any search term from 1 to 100 based on how hard it is to outrank the pages currently ranking on page one. Check keyword difficulty in bulk, pick a target country for location-specific scores, and export everything to CSV, free with no signup.
+          <p className="tool-hero-sub">
+            A keyword difficulty checker scores any search term from 1 to 100 based on how hard it is to outrank the pages currently on page one of Google. SEOShouts&apos; free keyword difficulty tool checks{' '}
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>up to 20 keywords in bulk</strong>, adjusts scores for 48 target countries, and exports everything to CSV with no signup, no credit card, and no trial limits.
           </p>
-          <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
-            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Here&apos;s the thing:</strong> Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks won&apos;t get you to page one. Others look hard but are actually achievable with the right strategy.
-          </p>
-          <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
-            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Our Keyword Difficulty Checker</strong> tells you exactly which category your target keywords fall into. No more guessing. No more wasted effort. Just clear data to help you pick battles you can actually win.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
-            {['Instant Difficulty Scores', 'Bulk Analysis', 'CSV Export', '100% Free'].map(label => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>✓</span>
-                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -634,84 +617,328 @@ export default function KeywordDifficultyCheckerClient() {
         </div>
       </div>
 
-      {/* ─── WHAT IS KEYWORD DIFFICULTY ─── */}
-      <section className="section prose-section">
+      {/* ─── FOUNDER QUOTE ─── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
         <div className="section-container">
-          <div className="s-header center">
-            <h2 className="s-title">What Is Keyword Difficulty <span className="blue">(And Why It Can Make or Break Your SEO)</span></h2>
-          </div>
-          <div className="prose-content">
-            <p>
-              Keyword difficulty is basically a score that tells you how hard it&apos;ll be to rank on the first page of Google for a specific keyword. Think of it as your SEO reality check.
-            </p>
-
-            <h3>Here&apos;s what the scores mean:</h3>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem 2rem', margin: '1rem 0 1.5rem' }}>
-              {[
-                { color: '#16a34a', label: '0-30:', text: 'Low competition - Good opportunities for new or smaller sites' },
-                { color: '#ca8a04', label: '31-50:', text: 'Medium competition - Achievable with solid content and some links' },
-                { color: '#ea580c', label: '51-70:', text: 'High competition - Need strong domain authority and great content' },
-                { color: '#dc2626', label: '71-100:', text: 'Very high - Requires significant resources and time' },
-              ].map(item => (
-                <div key={item.label} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
-                  <div style={{ width: 14, height: 14, borderRadius: '50%', background: item.color, flexShrink: 0, marginTop: 3 }} />
-                  <span style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>
-                    <strong>{item.label}</strong> {item.text}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            <h3>Why this matters more than you think:</h3>
-
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {[
-                'Targeting easy keywords = faster results and early wins',
-                'Going after impossible keywords = months of frustration',
-                'Finding the sweet spot = steady traffic growth you can actually achieve',
-                'Understanding competition = smarter resource allocation',
-              ].map(item => (
-                <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
-                  <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, marginTop: 2 }}>✓</span>
-                  <span style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
-              <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                Most people pick keywords based on search volume alone. Smart marketers balance volume with difficulty. Once you find winnable keywords, run them through our <a href="/tools/long-tail-keyword-generator/" style={{ color: 'var(--blue)', fontWeight: 600 }}>long tail keyword generator</a> to expand them into full topic clusters, or read our guide on <a href="/blog/how-to-build-pillar-pages-seo/" style={{ color: 'var(--blue)', fontWeight: 600 }}>building pillar pages for competitive keywords</a>.
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;The most expensive mistake in SEO is spending six months chasing a keyword you were never going to rank for. I built this keyword difficulty checker so anyone can see, before writing a single word, whether a keyword is a realistic target or a trap. Pick battles you can win first, and the hard keywords become winnable later.&rdquo;
               </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── HOW TO CHECK KEYWORD DIFFICULTY ─── */}
-      <section className="section prose-section alt">
+      {/* ─── WHAT IS SECTION ─── */}
+      <section className="section prose-section">
         <div className="section-container">
-          <div className="s-header center">
-            <div className="eyebrow">Step by Step</div>
-            <h2 className="s-title">How to Check Keyword Difficulty <span className="blue">in 4 Steps</span></h2>
+          <div className="s-header">
+            <div className="eyebrow">Overview</div>
+            <h2 className="s-title">What is keyword difficulty <span className="blue">and why does it make or break your SEO?</span></h2>
           </div>
           <div className="prose-content">
-            <ol style={{ listStyle: 'none', padding: 0, margin: '0.5rem 0 0', display: 'flex', flexDirection: 'column', gap: '1.25rem', counterReset: 'step' }}>
-              {[
-                { title: 'Enter your keywords', text: 'Paste keywords one per line or separated by commas. The tool checks keyword difficulty in bulk, so you can score an entire keyword list in one run instead of checking terms one at a time.' },
-                { title: 'Choose your target location', text: 'Keyword difficulty varies by country: a term that is brutally competitive in the US can be wide open in India or Australia. Pick the market you actually sell in for location-specific scores.' },
-                { title: 'Click "Check Difficulty"', text: 'Each keyword gets a difficulty score from 1 to 100. Green scores (under 30) are realistic targets for newer sites, yellow and orange need solid content plus links, and red (71+) demands serious authority.' },
-                { title: 'Export and prioritize', text: 'Download your scored list as CSV, then sort by difficulty. Target the low-difficulty keywords with decent volume first: those are the battles you can win this quarter.' },
-              ].map((step, i) => (
-                <li key={step.title} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                  <div style={{ width: 36, height: 36, background: 'var(--blue)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1rem', flexShrink: 0 }}>{i + 1}</div>
-                  <div>
-                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--ink)', marginBottom: '0.25rem' }}>{step.title}</strong>
-                    <span style={{ fontSize: '0.92rem', color: 'var(--gray-5)', lineHeight: 1.65 }}>{step.text}</span>
+            <p>Keyword difficulty is a score from 1 to 100 that estimates how hard it is to rank on the first page of Google for a specific search term. The score is calculated from the competitive strength of the pages that currently rank: their domain authority, backlink profiles, and content quality. The higher the score, the more authority and effort you need to break into the top 10.</p>
+            <p>Think of it as your SEO reality check. Not all keywords are worth your time. Some are so competitive that even perfect content and hundreds of backlinks will not get you to page one. Others look hard but are achievable with the right strategy. A keyword difficulty check tells you which category each term falls into before you invest a single hour of work.</p>
+            <p>Most people pick keywords based on search volume alone. Smart marketers balance volume against difficulty, because a keyword you can actually rank for at 500 searches per month beats a keyword you will never rank for at 50,000. Targeting easy keywords produces faster results and early wins. Chasing impossible keywords produces months of frustration and zero traffic.</p>
+            <p>This is why an SEO keyword difficulty tool belongs at the very start of your keyword research workflow: score first, then decide what to write. Once you find winnable keywords, run them through our <a href="/tools/long-tail-keyword-generator/" style={{ color: 'var(--blue)' }}>long tail keyword generator</a> to expand them into full topic clusters, or read our guide on <a href="/blog/how-to-build-pillar-pages-seo/" style={{ color: 'var(--blue)' }}>building pillar pages for competitive keywords</a>.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FEATURES SECTION ─── */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Key Features</div>
+            <h2 className="s-title">Bulk scoring, location targeting and <span className="blue">export built in</span></h2>
+          </div>
+          <div className="features-grid">
+            {[
+              { icon: 'M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01', title: 'Bulk Keyword Difficulty Checker', desc: 'Score up to 20 keywords in a single run instead of checking terms one at a time. Paste your whole list separated by commas or new lines and get a difficulty score for every keyword at once.' },
+              { icon: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z', title: 'Keyword Difficulty by Location', desc: 'Competition for the same keyword differs wildly between countries. Choose from 48 target countries so your scores reflect the market you actually sell in, not a global average.', unique: true },
+              { icon: 'M3 3v18h18 M19 9l-5 5-4-4-3 3', title: '1-100 Difficulty Scale with Labels', desc: 'Every keyword gets a clear score and a plain-English label: Low (1-30), Medium (31-50), High (51-70), or Very High (71-100). No decoding required, green means go.' },
+              { icon: 'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0 M12 12m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0 M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0', title: 'Search Intent Detection', desc: 'Each keyword is classified as informational, commercial, transactional, or local. Intent decides what kind of page can rank, so you know whether to write a guide or a product page.' },
+              { icon: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3', title: 'CSV Export and Copy', desc: 'Download every scored keyword as a CSV file or copy results to your clipboard. Sort by difficulty in a spreadsheet and hand a prioritized keyword list to your content team in minutes.' },
+              { icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', title: 'Zero Barriers', desc: 'No login, no credit card, no trial countdown. Enter keywords and get difficulty scores immediately. Free for every analysis, every time.' },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.icon.split(' M').map((d, j) => <path key={j} d={j === 0 ? d : 'M' + d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <div className="feature-desc">{f.desc}</div>
+                {(f as any).unique && <div className="feature-unique">Rare in free tools</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW TO SECTION ─── */}
+      <section className="section howto-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">How To Use</div>
+            <h2 className="s-title">How to check keyword difficulty <span className="blue">in 4 steps</span></h2>
+            <p className="s-sub">From raw keyword list to prioritized content plan in under two minutes. No account, no learning curve.</p>
+          </div>
+          <div className="steps-grid">
+            {[
+              { n: '01', title: 'Enter Your Keywords', desc: 'Paste keywords one per line or separated by commas into the field above. The tool checks keyword difficulty in bulk, so you can score an entire keyword list in one run instead of checking terms one at a time.', tip: 'Mix head terms and long tail variations in the same batch. The side-by-side scores instantly show where the easy wins hide.' },
+              { n: '02', title: 'Choose Your Target Location', desc: 'Keyword difficulty varies by country. A term that is brutally competitive in the United States can be wide open in India or Australia, because different sites rank in each market. Pick the country you actually sell in.', tip: 'If you serve multiple markets, run the same list once per country and compare the exported CSVs.' },
+              { n: '03', title: 'Run the Difficulty Check', desc: 'Click Check Difficulty and each keyword gets a score from 1 to 100 plus a label. Green scores under 30 are realistic targets for newer sites. Yellow and orange need solid content plus links. Red scores above 70 demand serious authority.', tip: 'Also note the detected search intent. A low-difficulty keyword with transactional intent is the single best target on any list.' },
+              { n: '04', title: 'Export and Prioritize', desc: 'Download your scored list as CSV, then sort by difficulty. Target the low-difficulty keywords with decent volume first: those are the battles you can win this quarter. Park the Very High terms as long-term pillar goals.', tip: 'Feed your winners into our long tail keyword generator to expand each one into a full topic cluster.' },
+            ].map((s, i, arr) => (
+              <div key={s.n} className="step-card">
+                {i < arr.length - 1 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
                   </div>
-                </li>
+                )}
+                <div className="step-num-big">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
+                {s.tip && <div className="step-tip">💡 Tip: {s.tip}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY SECTION ─── */}
+      <section className="section why-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Why It Matters</div>
+            <h2 className="s-title">Why difficulty beats volume as your <span className="blue">first filter</span></h2>
+            <p className="s-sub">Search volume tells you the size of the prize. Difficulty tells you whether you can actually win it. Filter by difficulty first and every hour of content work starts compounding.</p>
+          </div>
+          <div className="why-grid">
+            {[
+              { title: 'Easy Keywords Deliver Compounding Wins', icon: '⚡', body: 'Ranking for a cluster of low-difficulty keywords builds real traffic, engagement signals, and internal linking targets within weeks. Each win adds authority that makes the next, slightly harder keyword easier to take. Impossible keywords deliver nothing while you wait.' },
+              { title: 'It Is a SERP Reality Check', icon: '📡', body: 'A difficulty score summarizes who you are actually up against: the domain authority, backlink depth, and content quality of the current top 10. If every ranking page is a DR 80+ brand, no on-page tweak will save you. Knowing that before you write is the whole point.' },
+              { title: 'It Allocates Your Budget Intelligently', icon: '🎯', body: 'Content and links cost money. Scoring your keyword list first means your budget flows to terms with a realistic payback window instead of vanity head terms. Agencies run this exact triage for every client; the tool gives you the same discipline for free.' },
+              { title: 'It Reveals Location Arbitrage', icon: '🌍', body: 'The same keyword can score 65 in the United States and 35 in India, Australia, or the UAE, because different sites compete in each market. Checking keyword difficulty by location uncovers markets where page one is still up for grabs.' },
+            ].map((c) => (
+              <div key={c.title} className="why-card">
+                <div className="why-card-title">
+                  <div className="why-card-icon">{c.icon}</div>
+                  {c.title}
+                </div>
+                <div className="why-card-body">{c.body}</div>
+              </div>
+            ))}
+          </div>
+          <div className="alert-box">
+            <div className="alert-box-title">⚠️ The Volume Trap</div>
+            <div className="alert-box-body">The most common keyword research failure is sorting by search volume and targeting the top of the list. High volume almost always means high difficulty, so new and mid-authority sites spend months producing content that never leaves page five. Score difficulty first, sort ascending, and work upward as your authority grows.</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── SCORE BANDS SECTION ─── */}
+      <section className="section ratio-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Score Guide</div>
+            <h2 className="s-title">What is a good keyword <span className="blue">difficulty score?</span></h2>
+            <p className="s-sub">A &ldquo;good&rdquo; score depends on your site&apos;s authority. Use this table to match score bands to what it actually takes to rank, and who should target them.</p>
+          </div>
+          <table className="ratio-table">
+            <thead>
+              <tr>
+                {['Score', 'Level', 'What It Takes to Rank', 'Best For'].map(h => <th key={h}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { score: '1–30', level: 'Low', takes: 'Solid, comprehensive content. Few or no backlinks needed.', best: 'New websites, blogs under 1 year old', cls: 'risk-safe' },
+                { score: '31–50', level: 'Medium', takes: 'Strong content plus a handful of quality links and good internal linking.', best: 'Sites with 6-12 months of consistent publishing', cls: 'risk-safe' },
+                { score: '51–70', level: 'High', takes: 'Established domain authority, excellent content, and an active link profile.', best: 'Authority sites attacking a proven topic cluster', cls: 'risk-warn' },
+                { score: '71–100', level: 'Very High', takes: 'Years of authority, significant budget, and a pillar-cluster strategy.', best: 'Long-term goals only, never quick wins', cls: 'risk-bad' },
+              ].map(r => (
+                <tr key={r.score}>
+                  <td className="ratio-pct">{r.score}</td>
+                  <td><span className={`ratio-risk ${r.cls}`}>{r.level}</span></td>
+                  <td>{r.takes}</td>
+                  <td className="ratio-anchor-type">{r.best}</td>
+                </tr>
               ))}
-            </ol>
+            </tbody>
+          </table>
+          <div className="ratio-note">
+            <strong>Rule of thumb:</strong> a new website should build its first 6 to 12 months of content almost entirely on keywords scoring under 30. Rank for dozens of those, interlink them into clusters, and the 31-50 band opens up naturally. Treat anything above 70 as a destination, not a starting point.
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MISTAKES SECTION ─── */}
+      <section className="section mistakes-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Common Mistakes</div>
+            <h2 className="s-title">5 keyword difficulty mistakes <span className="blue">(and how to fix them)</span></h2>
+            <p className="s-sub">These are the patterns that quietly waste months of content effort. Check your keyword list against each one.</p>
+          </div>
+          <div className="mistakes-grid">
+            {[
+              { n: '01', title: 'Sorting by Volume, Ignoring Difficulty', body: 'Volume-first keyword selection sends new sites straight at terms dominated by high-authority brands. The content is good, the rankings never come, and the project loses faith in SEO. Difficulty is the filter that prevents this.', bad: 'Targeting "seo tools" (74 difficulty, 90K volume) with a 3-month-old site', good: 'Targeting "free seo tools for small business" (22 difficulty) and winning in weeks' },
+              { n: '02', title: 'Using Global Scores for a Local Market', body: 'Difficulty calculated against US search results says nothing about ranking in India, Australia, or Germany. Different sites compete in each country. Always score against the market you actually serve.', bad: 'US difficulty score used to plan content for an Indian audience', good: 'Same keyword list scored with India selected as the target country' },
+              { n: '03', title: 'Comparing Scores Across Different Tools', body: 'Moz, Semrush, Ahrefs, and SEOShouts each calculate difficulty differently, so a 40 in one tool is not a 40 in another. Scores are relative rankings within one tool, not absolute truths.', bad: '"Ahrefs says 25 but this tool says 45, one of them is wrong"', good: 'Pick one tool, score the whole list with it, and compare keywords against each other' },
+              { n: '04', title: 'Ignoring Search Intent Behind the Score', body: 'A rankable keyword with the wrong intent still produces nothing. If the top 10 results are all product pages, a blog post will not rank there no matter how low the difficulty score is.', bad: 'Writing a blog guide for "buy running shoes online" because difficulty is low', good: 'Matching page type to intent: guides for informational, product pages for transactional' },
+              { n: '05', title: 'Abandoning Hard Keywords Entirely', body: 'High-difficulty keywords usually carry the most volume and commercial value. The mistake is attacking them head-on or ignoring them completely. The fix is the pillar-cluster route: win the easy satellites first.', bad: 'Deleting every keyword above 50 difficulty from the plan', good: 'Ranking 20 long tail cluster posts first, then pointing their authority at the pillar term' },
+            ].map(m => (
+              <div key={m.n} className="mistake-card">
+                <div className="mistake-card-top">
+                  <div className="mistake-num">Mistake {m.n}</div>
+                  <div className="mistake-title">{m.title}</div>
+                  <div className="mistake-body-text">{m.body}</div>
+                </div>
+                <div className="code-example">
+                  <div className="code-bad"><span className="code-label">✗</span><span className="code-text">{m.bad}</span></div>
+                  <div className="code-good"><span className="code-label">✓</span><span className="code-text">{m.good}</span></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW SCORES ARE CALCULATED — PROSE ─── */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Under the Hood</div>
+            <h2 className="s-title">How is keyword difficulty <span className="blue">actually calculated?</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>Every SEO tool answers the same question, how strong are the pages currently ranking, but each one weighs the evidence differently. That is why the same keyword returns different numbers in different tools.</p>
+            <ul>
+              <li><strong>Moz</strong> leans heavily on its Domain Authority and Page Authority metrics of the ranking results.</li>
+              <li><strong>Ahrefs</strong> counts referring domains pointing at the current top 10, so its score is almost purely a backlink metric.</li>
+              <li><strong>Semrush</strong> blends its own authority score with backlink data and SERP features.</li>
+              <li><strong>SEOShouts</strong> analyzes the competitive strength of the top-ranking results for your chosen country, factoring in keyword length, intent signals, and brand dominance in the SERP.</li>
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">The scores are relative, not absolute</div>
+              <p>No tool can promise that a 35 will rank and a 55 will not, because your own site&apos;s authority is half the equation. What every difficulty score does reliably is <strong>rank keywords against each other</strong>. Score your whole list in one tool, sort it, and the order of attack becomes obvious.</p>
+            </div>
+            <p>Keyword length is one of the strongest natural predictors: single-word head terms are almost always brutal, while questions and 4+ word phrases sit at the easy end. That is exactly why long tail keywords are the standard entry point for newer sites.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FROM SCORES TO STRATEGY — PROSE ALT ─── */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Strategy</div>
+            <h2 className="s-title">Turning difficulty scores into a <span className="blue">content plan</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>A scored keyword list is only useful if it changes what you publish next. Here is the workflow we use on client sites:</p>
+            <ul>
+              <li><strong>Bucket by band.</strong> Split your exported CSV into Low (1-30), Medium (31-50), and High (51+) sheets. The Low sheet is your next quarter of content.</li>
+              <li><strong>Expand every winner.</strong> Take each low-difficulty keyword and generate 10 to 20 long tail variations with our <a href="/tools/long-tail-keyword-generator/" style={{ color: 'var(--blue)' }}>free long tail keyword tool</a>. Variations of an easy keyword are usually easy too.</li>
+              <li><strong>Cluster and interlink.</strong> Group related keywords into one pillar page plus supporting posts, and link them together with descriptive anchors. Our guide to <a href="/blog/how-to-build-pillar-pages-seo/" style={{ color: 'var(--blue)' }}>pillar page strategy</a> covers the full structure.</li>
+              <li><strong>Verify on-page quality.</strong> Before publishing, run each draft URL through the <a href="/tools/on-page-seo-analyzer/" style={{ color: 'var(--blue)' }}>on-page SEO analyzer</a> so an easy keyword is not lost to a weak page.</li>
+              <li><strong>Re-score quarterly.</strong> Difficulty shifts as competitors publish and SERPs change. Re-run your target list every quarter and promote keywords between buckets.</li>
+            </ul>
+            <p>This loop, score, expand, cluster, publish, re-score, is how small sites systematically out-rank bigger ones: never fighting battles they cannot win, always banking wins that compound.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── COMPARISON SECTION ─── */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEOShouts vs other <span className="blue">keyword difficulty tools</span></h2>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  {['Feature', 'SEOShouts', 'Moz', 'Semrush', 'Ahrefs', 'Keyword Planner'].map((c, i) => (
+                    <th key={c} className={i === 1 ? 'highlight' : ''}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Free Difficulty Scores', '✅', 'Limited (10/mo)', 'Limited (10/day)', '❌ (Paid only)', '❌ (No KD metric)'],
+                  ['Bulk Checking (Free)', '✅ 20 per run', '❌', '❌', '❌', '❌'],
+                  ['Location-Specific Scores', '✅ 48 countries', '✅', '✅', '✅', '✅'],
+                  ['Search Intent Detection', '✅', '✅', '✅', '✅', '❌'],
+                  ['CSV Export (Free)', '✅', '❌', '❌', '❌', '✅'],
+                  ['No Login Required', '✅', '❌', '❌', '❌', '❌ (Google account)'],
+                  ['Cost', 'Free forever', '$99+/mo', '$139+/mo', '$129+/mo', 'Free (ads account)'],
+                ].map((row, ri) => (
+                  <tr key={ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className={ci === 1 ? 'highlight-col' : ''}>
+                        {cell === '✅' ? <span className="check-yes">{cell}</span> :
+                         cell === '❌' ? <span className="check-no">✗</span> :
+                         cell.startsWith('✅') ? <span className="check-yes">{cell}</span> :
+                         cell.startsWith('❌') ? <span className="check-no">{cell.replace('❌ ', '✗ ')}</span> :
+                         cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="comparison-cards">
+            <div style={{ background: 'var(--green-bg)', border: '1px solid #86efac', borderLeft: '4px solid var(--green)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: '#14532d', marginBottom: '0.6rem' }}>When to Choose SEOShouts</h3>
+              <p style={{ fontSize: '0.9rem', color: '#166534', lineHeight: 1.7 }}>Use this tool when you need <strong>fast, free difficulty triage</strong> of a keyword list: scoring a content plan, validating ideas before writing, or checking a market you are entering. Bulk scoring plus CSV export with zero login is a combination the paid suites reserve for subscribers.</p>
+            </div>
+            <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: 'var(--blue-dark)', marginBottom: '0.6rem' }}>When You Might Need More</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--blue-dark)', lineHeight: 1.7 }}>If you need historical difficulty trends, clickstream-based volume data, or competitor keyword gap analysis at enterprise scale, the paid platforms earn their subscriptions. For picking what to write next, this free checker covers the decision that matters most.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CHECKLIST SECTION ─── */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Research Checklist</div>
+            <h2 className="s-title">Keyword difficulty checklist <span className="blue">(before you write)</span></h2>
+            <p className="s-sub">Run every planned article through this checklist. Two minutes here saves weeks of writing content that cannot rank.</p>
+          </div>
+          <div className="checklist-grid">
+            {[
+              { title: '📊 Score the Keyword', items: ['Difficulty score checked for the exact target country', 'Score band matches your site\'s current authority level', 'At least 3 variations scored, not just the head term', 'Volume justifies the effort at this difficulty'] },
+              { title: '🎯 Verify the Intent', items: ['Detected intent matches the page type you plan to build', 'Top 10 results manually reviewed for content format', 'SERP features noted (AI Overview, featured snippet, local pack)', 'No brand-dominated SERP (5+ big brands = skip)'] },
+              { title: '🔧 Plan the Page', items: ['One primary keyword per page, no cannibalization', 'Long tail variations mapped as H2/H3 subtopics', 'Internal links planned from existing related content', 'Draft will be checked with the on-page SEO analyzer before publishing'] },
+              { title: '🏗️ Fit the Cluster', items: ['Keyword assigned to a pillar or cluster, not orphaned', 'Easy cluster keywords scheduled before the hard pillar term', 'Re-score reminder set for next quarter', 'Progress tracked in Search Console after indexing'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

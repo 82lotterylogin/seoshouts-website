@@ -160,10 +160,10 @@ export default function KeywordDifficultyChecker() {
             "totalTime": "PT2M",
             "tool": { "@type": "HowToTool", "name": "SEOShouts Keyword Difficulty Checker" },
             "step": [
-              { "@type": "HowToStep", "position": 1, "name": "Enter your keywords", "text": "Paste keywords one per line or separated by commas. The tool checks keyword difficulty in bulk, so you can score an entire keyword list in one run instead of checking terms one at a time." },
-              { "@type": "HowToStep", "position": 2, "name": "Choose your target location", "text": "Keyword difficulty varies by country: a term that is brutally competitive in the US can be wide open in India or Australia. Pick the market you actually sell in for location-specific scores." },
-              { "@type": "HowToStep", "position": 3, "name": "Click Check Difficulty", "text": "Each keyword gets a difficulty score from 1 to 100. Green scores under 30 are realistic targets for newer sites, yellow and orange need solid content plus links, and red 71+ demands serious authority." },
-              { "@type": "HowToStep", "position": 4, "name": "Export and prioritize", "text": "Download your scored list as CSV, then sort by difficulty. Target the low-difficulty keywords with decent volume first: those are the battles you can win this quarter." }
+              { "@type": "HowToStep", "position": 1, "name": "Enter Your Keywords", "text": "Paste keywords one per line or separated by commas. The tool checks keyword difficulty in bulk, so you can score an entire keyword list in one run instead of checking terms one at a time." },
+              { "@type": "HowToStep", "position": 2, "name": "Choose Your Target Location", "text": "Keyword difficulty varies by country: a term that is brutally competitive in the US can be wide open in India or Australia. Pick the market you actually sell in for location-specific scores." },
+              { "@type": "HowToStep", "position": 3, "name": "Run the Difficulty Check", "text": "Each keyword gets a difficulty score from 1 to 100. Green scores under 30 are realistic targets for newer sites, yellow and orange need solid content plus links, and red 71+ demands serious authority." },
+              { "@type": "HowToStep", "position": 4, "name": "Export and Prioritize", "text": "Download your scored list as CSV, then sort by difficulty. Target the low-difficulty keywords with decent volume first: those are the battles you can win this quarter." }
             ]
           })
         }}

@@ -738,11 +738,11 @@ export default function GeoAeoCheckerClient() {
       </section>
 
       {/* ── WHAT ARE GEO AND AEO ─────────────────────────────────────────────── */}
-      <section className="section why-section">
+      <section className="section prose-section">
         <div className="section-container">
           <div className="s-header reveal">
             <p className="eyebrow">The New SEO Landscape</p>
-            <h2 className="s-title">What Are GEO and AEO — and Why Do They Matter?</h2>
+            <h2 className="s-title">What are GEO and AEO <span className="blue">and why do they matter?</span></h2>
           </div>
           <div className="prose-content reveal">
             <p>GEO (Generative Engine Optimization) and AEO (Answer Engine Optimization) are the two dominant optimization frameworks for AI-era search. While traditional SEO focuses on ranking in blue-link search results, GEO and AEO focus on getting your content cited, extracted, and surfaced by AI systems — including Google AI Overviews, ChatGPT, Perplexity, Claude, Gemini, and Copilot.</p>
@@ -755,11 +755,11 @@ export default function GeoAeoCheckerClient() {
       </section>
 
       {/* ── THE 7 CATEGORIES ─────────────────────────────────────────────────── */}
-      <section className="section prose-section">
+      <section className="section prose-section alt">
         <div className="section-container">
           <div className="s-header reveal">
             <p className="eyebrow">Audit Breakdown</p>
-            <h2 className="s-title">The 7 Categories This Tool Audits</h2>
+            <h2 className="s-title">The 7 categories this AEO checking tool <span className="blue">audits</span></h2>
           </div>
           {/* Bento grid — tile prominence reflects point weight (Schema 20 + Crawler 18 are featured) */}
           <div className="geo-bento reveal">
@@ -787,11 +787,11 @@ export default function GeoAeoCheckerClient() {
       </section>
 
       {/* ── HOW TO READ YOUR SCORE ───────────────────────────────────────────── */}
-      <section className="section why-section">
+      <section className="section ratio-section">
         <div className="section-container">
           <div className="s-header reveal">
             <p className="eyebrow">Score Guide</p>
-            <h2 className="s-title">How to Read Your GEO/AEO Score</h2>
+            <h2 className="s-title">How to read your AEO and <span className="blue">GEO score</span></h2>
           </div>
           <div className="reveal" style={{ border: '1px solid var(--line)', overflow: 'hidden', marginTop: '2.5rem' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -854,12 +854,43 @@ export default function GeoAeoCheckerClient() {
         </div>
       </section>
 
+      {/* ── FASTEST GEO/AEO WINS ─────────────────────────────────────────────── */}
+      <section className="section features-section">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <p className="eyebrow">Quick Wins</p>
+            <h2 className="s-title">The Fastest GEO/AEO Wins (High Score Impact, Low Effort)</h2>
+            <p className="s-sub">If your score is below 60, these changes will have the biggest immediate impact:</p>
+          </div>
+          <div className="features-grid reveal">
+            {[
+              { id: 'faq',        title: 'Add FAQPage Schema',        text: 'This single change is responsible for more AI citation improvements than any other. Use our Schema Generator to create FAQPage markup.', extra: 'Impact: +8–15 points.' },
+              { id: 'content',    title: 'Write an Answer Capsule',   text: 'A 120–300 character direct-answer paragraph as the first content on the page. No preamble — just a factual answer to the primary question.', extra: 'AI models extract this as the page summary.' },
+              { id: 'eeat',       title: 'Convert H2s to Questions',  text: 'Change "Our Services" to "What SEO Services Does SEOShouts Offer?" AI models match user question intent to question-format headings directly.', extra: 'Convert 2–3 H2s per page.' },
+              { id: 'schema',     title: 'Add Organization Schema',   text: 'Organization schema with sameAs links to your LinkedIn, Twitter/X, YouTube, and other profiles tells AI models that your brand is a real entity with verified presence across the web.', extra: '' },
+              { id: 'ai-crawl',   title: 'Unblock AI Crawlers',       text: 'Check your robots.txt for blocks on GPTBot, ClaudeBot, PerplexityBot, and Google-Extended. Use our Robots.txt Generator to fix this correctly.', extra: '' },
+              { id: 'technical',  title: 'Track & Re-Test Weekly',    text: 'After implementing fixes, re-run this checker weekly. AI crawlers re-index pages within days. Schema changes show in rich results within 2–4 weeks.', extra: 'Citation frequency increases in 4–12 weeks.' },
+            ].map((item, i) => (
+              <div key={i} className="feature-card">
+                <div className="feature-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    {getCategoryIconPaths(item.id).map((d, j) => <path key={j} d={d} />)}
+                  </svg>
+                </div>
+                <h3 className="feature-title">{item.title}</h3>
+                <p className="feature-desc">{item.text}{item.extra && <> <strong>{item.extra}</strong></>}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── GEO VS AEO VS SEO ────────────────────────────────────────────────── */}
       <section className="section prose-section">
         <div className="section-container">
           <div className="s-header reveal">
             <p className="eyebrow">Framework Comparison</p>
-            <h2 className="s-title">GEO vs. AEO vs. SEO — What&apos;s the Difference?</h2>
+            <h2 className="s-title">GEO vs AEO vs SEO: <span className="blue">what&apos;s the difference?</span></h2>
           </div>
           <div className="reveal" style={{ border: '1px solid var(--line)', overflow: 'auto', marginTop: '2.5rem' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 640 }}>
@@ -895,43 +926,12 @@ export default function GeoAeoCheckerClient() {
         </div>
       </section>
 
-      {/* ── FASTEST GEO/AEO WINS ─────────────────────────────────────────────── */}
-      <section className="section features-section">
-        <div className="section-container">
-          <div className="s-header reveal">
-            <p className="eyebrow">Quick Wins</p>
-            <h2 className="s-title">The Fastest GEO/AEO Wins (High Score Impact, Low Effort)</h2>
-            <p className="s-sub">If your score is below 60, these changes will have the biggest immediate impact:</p>
-          </div>
-          <div className="features-grid reveal">
-            {[
-              { id: 'faq',        title: 'Add FAQPage Schema',        text: 'This single change is responsible for more AI citation improvements than any other. Use our Schema Generator to create FAQPage markup.', extra: 'Impact: +8–15 points.' },
-              { id: 'content',    title: 'Write an Answer Capsule',   text: 'A 120–300 character direct-answer paragraph as the first content on the page. No preamble — just a factual answer to the primary question.', extra: 'AI models extract this as the page summary.' },
-              { id: 'eeat',       title: 'Convert H2s to Questions',  text: 'Change "Our Services" to "What SEO Services Does SEOShouts Offer?" AI models match user question intent to question-format headings directly.', extra: 'Convert 2–3 H2s per page.' },
-              { id: 'schema',     title: 'Add Organization Schema',   text: 'Organization schema with sameAs links to your LinkedIn, Twitter/X, YouTube, and other profiles tells AI models that your brand is a real entity with verified presence across the web.', extra: '' },
-              { id: 'ai-crawl',   title: 'Unblock AI Crawlers',       text: 'Check your robots.txt for blocks on GPTBot, ClaudeBot, PerplexityBot, and Google-Extended. Use our Robots.txt Generator to fix this correctly.', extra: '' },
-              { id: 'technical',  title: 'Track & Re-Test Weekly',    text: 'After implementing fixes, re-run this checker weekly. AI crawlers re-index pages within days. Schema changes show in rich results within 2–4 weeks.', extra: 'Citation frequency increases in 4–12 weeks.' },
-            ].map((item, i) => (
-              <div key={i} className="feature-card">
-                <div className="feature-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    {getCategoryIconPaths(item.id).map((d, j) => <path key={j} d={d} />)}
-                  </svg>
-                </div>
-                <h3 className="feature-title">{item.title}</h3>
-                <p className="feature-desc">{item.text}{item.extra && <> <strong>{item.extra}</strong></>}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── TESTING AI VISIBILITY ────────────────────────────────────────────── */}
-      <section className="section howto-section">
+      <section className="section why-section">
         <div className="section-container">
           <div className="s-header reveal">
             <p className="eyebrow">Verification Protocol</p>
-            <h2 className="s-title">Testing Your AI Visibility After Optimization</h2>
+            <h2 className="s-title">Testing your AI visibility <span className="blue">after optimization</span></h2>
             <p className="s-sub">Improving your score is step one. Verifying it with real AI citation tests is step two. Here&apos;s the weekly testing protocol we recommend:</p>
           </div>
           <div className="why-grid reveal" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '2.5rem' }}>

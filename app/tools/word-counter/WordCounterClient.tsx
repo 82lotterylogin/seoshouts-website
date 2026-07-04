@@ -253,6 +253,25 @@ export default function WordCounterClient() {
         </div>
       </div>
 
+      {/* ── FOUNDER QUOTE ── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;Length limits are everywhere in content work: meta descriptions, ad copy, social posts, editorial word counts. A word counter sounds trivial until you realize how many times a day you paste text somewhere just to measure it. This one is instant, private, and free, the way a utility should be.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── ABOUT ── white (prose-section default) */}
       <section className="section prose-section">
         <div className="section-container">

@@ -498,23 +498,37 @@ export default function AICopywriterClient() {
         </div>
       </div>
 
+      {/* ── FOUNDER QUOTE ── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;Good copy is the multiplier on everything else in marketing: the same ad spend, the same rankings, the same email list produce wildly different revenue depending on the words. This AI copywriter gives every business access to proven frameworks like AIDA and PAS without hiring an agency for every headline.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── ABOUT ── white (prose-section default) */}
       <section className="section prose-section">
         <div className="section-container">
           <div className="s-header reveal">
-            <h2 className="s-title">Write Like a Pro in Seconds</h2>
-            <p className="s-sub">AI-generated copy using proven frameworks — ready to customize and deploy.</p>
+            <div className="eyebrow">Overview</div>
+            <h2 className="s-title">What is an AI copywriter <span className="blue">and what can it write for you?</span></h2>
           </div>
           <div className="prose-content reveal">
-            <h3>Generate High-Converting Copy with AI</h3>
-            <p>
-              Create compelling ad copy, product descriptions, emails, and marketing content that converts. Our AI
-              uses proven copywriting frameworks to generate multiple variations for A/B testing.
-            </p>
-            <p>
-              Perfect for marketers, business owners, and content creators who need professional copy fast. No
-              experience required &mdash; just describe your product and let AI do the rest.
-            </p>
+            <p>An AI copywriter is a tool that generates marketing copy, ad headlines, product descriptions, emails, landing page sections, and social posts, from a short description of your product and audience. Instead of staring at a blank page, you describe what you sell, pick a tone, and receive multiple ready-to-edit variations built on proven copywriting frameworks.</p>
+            <p>This free AI copywriting tool is tuned for SEO copywriting as well as ads: you can specify target keywords and the AI weaves them into the copy naturally, so your landing pages and product descriptions support your rankings while they sell. That combination, conversion frameworks plus keyword awareness, is what separates SEO copywriting AI from generic text generators.</p>
+            <p>Perfect for marketers, business owners, and content creators who need professional copy fast. No experience required: describe your product, choose a tone, and let the AI do the drafting while you keep the editorial control.</p>
+            <p>Pair it with the rest of the free suite: generate topics with the <a href="/tools/blog-ideas-generator/" style={{ color: 'var(--blue)' }}>blog ideas generator</a>, write the page copy here, then finish with metadata from the <a href="/tools/seo-meta-writer/" style={{ color: 'var(--blue)' }}>AI meta writer</a>.</p>
           </div>
         </div>
       </section>
@@ -730,6 +744,132 @@ export default function AICopywriterClient() {
         </div>
       </section>
 
+      {/* ── SEO COPYWRITING DEEP DIVE ── white */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <div className="eyebrow">SEO Copywriting</div>
+            <h2 className="s-title">Using AI for SEO copywriting <span className="blue">without sounding like AI</span></h2>
+          </div>
+          <div className="prose-content reveal">
+            <p>SEO copywriting is the craft of writing pages that rank in search and convert the visitors they attract. AI accelerates it dramatically, if you feed it the right inputs and edit the output like an owner:</p>
+            <ul>
+              <li><strong>Give it the keyword and the intent.</strong> &ldquo;Write a product description for waterproof hiking boots targeting the keyword &lsquo;monsoon trekking shoes&rsquo; for buyers comparing options&rdquo; produces usable copy. &ldquo;Write about shoes&rdquo; produces filler.</li>
+              <li><strong>Generate variations, then splice.</strong> The best final copy is usually the headline from variation two, the body from variation one, and a CTA you sharpen yourself.</li>
+              <li><strong>Keep the facts yours.</strong> AI drafts structure and phrasing; your numbers, guarantees, and product specifics are what make the copy credible and impossible for competitors to clone.</li>
+              <li><strong>Read it aloud before publishing.</strong> Anything you would not say to a customer face to face gets cut. That single edit removes most &ldquo;AI flavor.&rdquo;</li>
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">Does Google penalize AI copy?</div>
+              <p>No. Google&apos;s guidance is explicit: it rewards helpful content regardless of how it is produced, and penalizes unhelpful content the same way. AI-drafted copy that is accurate, specific, and edited for your audience performs exactly like human-written copy, because by the time you publish it, it is.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FRAMEWORKS ── gray */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <div className="eyebrow">Frameworks</div>
+            <h2 className="s-title">The copywriting frameworks <span className="blue">behind the output</span></h2>
+          </div>
+          <div className="prose-content reveal">
+            <p>The generator does not improvise. Every variation is structured on a framework that has sold products for decades:</p>
+            <ul>
+              <li><strong>AIDA (Attention, Interest, Desire, Action):</strong> the classic arc for ads and landing pages. Hook with the headline, build relevance, stack desire with benefits, close with one clear action.</li>
+              <li><strong>PAS (Problem, Agitate, Solution):</strong> the strongest structure for audiences aware of their pain. Name the problem, make its cost vivid, present your product as the release.</li>
+              <li><strong>Before-After-Bridge:</strong> paint life with the problem, life without it, and position your product as the bridge. Ideal for email and social.</li>
+              <li><strong>FAB (Features, Advantages, Benefits):</strong> the product-description workhorse: what it is, what it does, what that means for the buyer.</li>
+            </ul>
+            <p>Knowing which framework each variation uses makes editing faster: you are not judging &ldquo;is this good copy,&rdquo; you are judging &ldquo;did the framework land for my audience,&rdquo; a much easier call.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── COMPARISON ── white */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEOShouts vs other <span className="blue">AI copywriting tools</span></h2>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  {['Feature', 'SEOShouts', 'Copy.ai', 'Jasper', 'Writesonic', 'ChatGPT (raw)'].map((c, i) => (
+                    <th key={c} className={i === 1 ? 'highlight' : ''}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Free Tier', '✅ 5 generations/day', 'Limited (2K words)', '❌ (Trial only)', 'Limited', '✅'],
+                  ['Copywriting Frameworks Built In', '✅ AIDA, PAS, BAB', '✅', '✅', '✅', '❌ (Prompt yourself)'],
+                  ['SEO Keyword Integration', '✅', '❌', '✅', '✅', '❌ (Manual)'],
+                  ['8 Tone Options', '✅', '✅', '✅', '✅', 'Prompt-dependent'],
+                  ['No Login Required', '✅', '❌', '❌', '❌', '❌'],
+                  ['Commercial Use Rights', '✅', '✅', '✅', '✅', '✅'],
+                  ['Cost', 'Free forever', '$49+/mo', '$39+/mo', '$16+/mo', 'Free/$20 mo'],
+                ].map((row, ri) => (
+                  <tr key={ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className={ci === 1 ? 'highlight-col' : ''}>
+                        {cell.startsWith('✅') ? <span className="check-yes">{cell}</span> :
+                         cell.startsWith('❌') ? <span className="check-no">{cell.replace('❌', '✗')}</span> :
+                         cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="comparison-cards">
+            <div style={{ background: 'var(--green-bg)', border: '1px solid #86efac', borderLeft: '4px solid var(--green)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: '#14532d', marginBottom: '0.6rem' }}>When to Choose SEOShouts</h3>
+              <p style={{ fontSize: '0.9rem', color: '#166534', lineHeight: 1.7 }}>Use this tool for <strong>fast, framework-driven copy with SEO keywords built in</strong>: ads, product descriptions, emails, and landing sections, without creating an account or engineering prompts. Five free generations a day covers most small-business workloads.</p>
+            </div>
+            <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: 'var(--blue-dark)', marginBottom: '0.6rem' }}>When You Might Need More</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--blue-dark)', lineHeight: 1.7 }}>If your team produces long-form articles at volume with brand-voice training, document collaboration, and plagiarism checks, a paid platform like Jasper earns its subscription. For conversion copy in short formats, this free tool covers the job.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CHECKLIST ── gray */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <div className="eyebrow">Editing Checklist</div>
+            <h2 className="s-title">AI copy checklist <span className="blue">(before it ships)</span></h2>
+            <p className="s-sub">AI drafts, you decide. Run every generated variation through these checks.</p>
+          </div>
+          <div className="checklist-grid reveal">
+            {[
+              { title: '📊 Accuracy', items: ['Every claim is true for your product', 'Numbers, prices, and specs verified', 'No invented testimonials or statistics', 'Brand name and terminology correct'] },
+              { title: '🎯 Conversion', items: ['Headline leads with a benefit, not a feature', 'One clear call to action, not three', 'Pain point named in the first two lines', 'Urgency is honest, not manufactured'] },
+              { title: '🔧 SEO Fit', items: ['Target keyword appears naturally, not stuffed', 'Copy matches the search intent of the page', 'Meta title and description written to match', 'Internal links added where relevant'] },
+              { title: '🏗️ Voice', items: ['Reads aloud like something you would say', 'Jargon removed or explained', 'Tone matches the platform (ad vs email vs page)', 'AI filler phrases cut ("in today\'s fast-paced world...")'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ── white (faq-section default) */}
       <section className="section faq-section">
         <div className="section-container">
@@ -761,6 +901,14 @@ export default function AICopywriterClient() {
               {
                 q: 'Can I use the generated copy commercially?',
                 a: 'Absolutely. All generated copy is yours to use for any commercial purpose including ads, websites, emails, and marketing materials.',
+              },
+              {
+                q: 'Is this good for SEO copywriting?',
+                a: 'Yes. Unlike generic text generators, this tool accepts target keywords and weaves them into the copy naturally, so landing pages and product descriptions support rankings while they convert. Pair it with the AI meta writer for titles and descriptions to complete the page.',
+              },
+              {
+                q: 'Will Google penalize AI-generated copy?',
+                a: 'No. Google\'s guidance rewards helpful content regardless of how it is produced. AI copy that is accurate, specific to your product, and edited for your audience performs the same as human-written copy. What gets penalized is unhelpful content, whoever wrote it.',
               },
             ].map((item) => (
               <details key={item.q} className="faq-item reveal">

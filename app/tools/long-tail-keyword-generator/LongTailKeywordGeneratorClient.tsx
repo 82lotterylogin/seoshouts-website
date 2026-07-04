@@ -186,30 +186,15 @@ export default function LongTailKeywordGeneratorClient() {
             <span className="breadcrumb-sep">/</span>
             <span style={{ color: 'rgba(255,255,255,0.5)' }}>Long Tail Keyword Generator</span>
           </nav>
-          <div className="tool-hero-badge">Free SEO Tool</div>
+          <div className="tool-hero-badge">🔑 Keyword Research Tool — Free Forever</div>
           <h1 className="tool-hero-h1">
-            Free Long Tail Keyword Generator Tool
+            Free Long Tail Keyword Generator: <span>Hundreds of Ideas</span> From One Seed Keyword
           </h1>
-          <p style={{ color: '#3b82f6', fontWeight: 700, fontSize: '1.25rem', marginTop: '0.5rem', marginBottom: '0.5rem' }}>
-            Find Hidden Keywords That Actually Convert
+          <p className="tool-hero-sub">
+            A long tail keyword generator expands any seed keyword into hundreds of longer, more specific search phrases with lower competition and higher buying intent. SEOShouts&apos; free long tail keyword tool includes{' '}
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>search volume estimates, competition levels, and intent labels</strong>{' '}
+            for every suggestion, with CSV export and no signup required.
           </p>
-          <h2 style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 600, fontSize: '1.1rem', marginTop: '0.75rem', marginBottom: '0.75rem', fontFamily: 'Space Grotesk, sans-serif', maxWidth: '900px' }}>
-            Discover Profitable Keywords Your Competitors Are Missing
-          </h2>
-          <p className="tool-hero-sub" style={{ maxWidth: '900px' }}>
-            A long tail keyword generator expands any seed keyword into hundreds of longer, more specific search phrases with lower competition and higher buying intent. Pick your country and language, generate suggestions in seconds, and export the full list for free, no signup needed.
-          </p>
-          <p className="tool-hero-sub" style={{ marginTop: '0.75rem', maxWidth: '900px' }}>
-            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Our Long Tail Keyword Generator</strong> helps you uncover hundreds of these hidden gems in seconds. No more guessing what people might search for. No more competing for impossible keywords. Just real, profitable keyword opportunities waiting to be discovered.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
-            {['AI-Powered Suggestions', 'Search Volume Data', 'Export Functionality', '100% Free'].map(label => (
-              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>✓</span>
-                <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -451,300 +436,326 @@ export default function LongTailKeywordGeneratorClient() {
         </div>
       </div>
 
-      {/* ─── WHAT ARE LONG TAIL KEYWORDS ─── */}
+      {/* ─── FOUNDER QUOTE ─── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;Every site I have ever grown from zero got its first real traffic from long tail keywords. Not the big head terms, the specific five-word phrases nobody else bothered to target. This generator exists so you can find those phrases in seconds instead of scraping autocomplete by hand for hours.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHAT IS SECTION ─── */}
       <section className="section prose-section">
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">Overview</div>
-            <h2 className="s-title">What Are Long Tail Keywords <span className="blue">(And Why They&apos;re Marketing Gold)</span></h2>
+            <h2 className="s-title">What are long tail keywords <span className="blue">and why are they marketing gold?</span></h2>
           </div>
           <div className="prose-content">
-            <p>
-              Long tail keywords are basically the opposite of what most people target. Instead of going after &ldquo;shoes&rdquo; (good luck ranking for that), smart marketers target phrases like &ldquo;waterproof running shoes for women&rdquo; or &ldquo;best hiking boots under 5000 rupees.&rdquo;
-            </p>
-
-            <h3>Here&apos;s why they work so well:</h3>
-
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {[
-                { bold: 'Less competition', text: '- Fewer websites fighting for the same terms' },
-                { bold: 'Higher conversion rates', text: '- People searching for specific things are closer to buying' },
-                { bold: 'Clearer intent', text: '- You know exactly what the searcher wants' },
-                { bold: 'Easier to rank', text: '- Your chances of page one are much better' },
-                { bold: 'Better ROI', text: '- Less money spent competing, more traffic that converts' },
-              ].map(item => (
-                <li key={item.bold} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
-                  <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.85rem', flexShrink: 0, marginTop: 2 }}>✓</span>
-                  <span style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.5 }}>
-                    <strong>{item.bold}</strong> {item.text}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <div style={{ background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
-              <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
-                Think about it - would you rather rank #47 for &ldquo;digital marketing&rdquo; or #3 for &ldquo;digital marketing services for small restaurants in Mumbai&rdquo;?
-              </p>
-            </div>
+            <p>Long tail keywords are longer, more specific search phrases, usually three to six words, that individually attract fewer searches but collectively make up the majority of all Google queries. Instead of targeting &ldquo;shoes&rdquo; (good luck ranking for that), smart marketers target phrases like &ldquo;waterproof running shoes for women&rdquo; or &ldquo;best hiking boots under 5000 rupees.&rdquo;</p>
+            <p>They work because specificity changes everything. Fewer websites compete for the same phrase, so ranking is dramatically easier. The searcher&apos;s intent is crystal clear, so you know exactly what page to build. And people typing specific queries are much closer to taking action, which is why long tail traffic converts at a far higher rate than head-term traffic.</p>
+            <p>Think about it: would you rather rank #47 for &ldquo;digital marketing&rdquo; or #3 for &ldquo;digital marketing services for small restaurants in Mumbai&rdquo;? The second keyword sends fewer visitors, but every one of them is your exact customer, and you can actually win the position.</p>
+            <p>A long tail keywords generator automates the discovery: it expands one seed term into hundreds of real search phrases with volume, competition, and intent data attached. Before committing to any keyword, verify how winnable it is with our <a href="/tools/keyword-difficulty-checker/" style={{ color: 'var(--blue)' }}>free keyword difficulty checker</a>, then organize the winners using our guide to <a href="/blog/how-to-build-pillar-pages-seo/" style={{ color: 'var(--blue)' }}>pillar pages and topic clusters</a>.</p>
           </div>
         </div>
       </section>
 
-      {/* ─── HOW OUR TOOL WORKS ─── */}
+      {/* ─── FEATURES SECTION ─── */}
       <section className="section features-section">
         <div className="section-container">
           <div className="s-header">
-            <div className="eyebrow">How It Works</div>
-            <h2 className="s-title">How Our Long Tail Keyword <span className="blue">Generator Works</span></h2>
+            <div className="eyebrow">Key Features</div>
+            <h2 className="s-title">What this free long tail keyword tool <span className="blue">gives you</span></h2>
           </div>
-          <div className="features-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
-
-            {/* Card 1: AI-Powered Discovery */}
-            <div className="feature-card">
-              <div className="feature-icon">
-                <svg viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" />
-                </svg>
+          <div className="features-grid">
+            {[
+              { icon: 'M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z M9 21h6', title: 'AI-Powered Keyword Discovery', desc: 'Smart algorithms analyze real search behavior, not dictionary combinations, and expand your seed keyword into hundreds of long tail variations people actually type into Google.' },
+              { icon: 'M3 3v18h18 M19 9l-5 5-4-4-3 3', title: 'Search Volume Estimates', desc: 'Every suggestion includes an estimated monthly search volume so you can separate phrases worth targeting from phrases nobody searches for.' },
+              { icon: 'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0 M12 12m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0 M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0', title: 'Intent Classification', desc: 'Keywords are labeled by search intent: buyer keywords for product pages, question keywords for blog content, and local queries for location pages. You always know what to build.' },
+              { icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z', title: 'Location and Language Targeting', desc: 'Generate keywords for a specific country, city, or language. Local and international campaigns get suggestions that match how your actual market searches.' },
+              { icon: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3', title: 'CSV Export and Copy', desc: 'Download the full keyword list as a CSV file or copy everything to your clipboard, ready for your content calendar, PPC campaign, or client deliverable.' },
+              { icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', title: 'Zero Barriers', desc: 'No registration, no email verification, no credit card. Enter a seed keyword and start generating. Free for every session, on any device.' },
+            ].map((f) => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon">
+                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {f.icon.split(' M').map((d, j) => <path key={j} d={j === 0 ? d : 'M' + d} />)}
+                  </svg>
+                </div>
+                <div className="feature-title">{f.title}</div>
+                <div className="feature-desc">{f.desc}</div>
               </div>
-              <div className="feature-title">AI-Powered Keyword Discovery</div>
-              <p style={{ fontSize: '0.88rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.5rem 0 1rem' }}>
-                Our tool uses smart algorithms to analyze search patterns and generate hundreds of relevant long tail variations from your main keyword.
-              </p>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--ink)', marginBottom: '0.5rem', fontFamily: 'Space Grotesk, sans-serif' }}>What makes it different:</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                {[
-                  'Pulls from multiple data sources for comprehensive coverage',
-                  'Analyzes real search behavior, not just dictionary combinations',
-                  'Updates constantly with fresh search trends',
-                  'Filters out irrelevant or low-value suggestions',
-                ].map(item => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
-                    <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.78rem', flexShrink: 0, marginTop: 2 }}>✓</span>
-                    <span dangerouslySetInnerHTML={{ __html: item }} style={{ fontSize: '0.82rem', color: 'var(--gray-4)', lineHeight: 1.5 }} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Card 2: Smart Categorization */}
-            <div className="feature-card">
-              <div className="feature-icon">
-                <svg viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-                </svg>
-              </div>
-              <div className="feature-title">Smart Categorization and Filtering</div>
-              <p style={{ fontSize: '0.88rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.5rem 0 1rem' }}>
-                Not all keywords are created equal. Our tool organizes suggestions by intent and value.
-              </p>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--ink)', marginBottom: '0.5rem', fontFamily: 'Space Grotesk, sans-serif' }}>Built-in organization:</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                {[
-                  '<strong>Buyer intent keywords</strong> - People ready to purchase',
-                  '<strong>Information seekers</strong> - Researching and comparing options',
-                  '<strong>Local searches</strong> - Location-specific opportunities',
-                  '<strong>Question-based queries</strong> - Perfect for content marketing',
-                ].map(item => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
-                    <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.78rem', flexShrink: 0, marginTop: 2 }}>✓</span>
-                    <span dangerouslySetInnerHTML={{ __html: item }} style={{ fontSize: '0.82rem', color: 'var(--gray-4)', lineHeight: 1.5 }} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Card 3: Real Search Data */}
-            <div className="feature-card" style={{ borderRight: 'none' }}>
-              <div className="feature-icon">
-                <svg viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" />
-                </svg>
-              </div>
-              <div className="feature-title">Real Search Data Integration</div>
-              <p style={{ fontSize: '0.88rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: '0.5rem 0 1rem' }}>
-                Every suggestion comes with the data you need to make smart decisions.
-              </p>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--ink)', marginBottom: '0.5rem', fontFamily: 'Space Grotesk, sans-serif' }}>Key metrics included:</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                {[
-                  'Monthly search volume estimates',
-                  'Competition level analysis',
-                  'Seasonal trend information',
-                  'Related keyword suggestions',
-                  'Search intent classification',
-                ].map(item => (
-                  <li key={item} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.4rem' }}>
-                    <span style={{ color: 'var(--blue)', fontWeight: 700, fontSize: '0.78rem', flexShrink: 0, marginTop: 2 }}>✓</span>
-                    <span dangerouslySetInnerHTML={{ __html: item }} style={{ fontSize: '0.82rem', color: 'var(--gray-4)', lineHeight: 1.5 }} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── HOW TO USE ─── */}
+      {/* ─── HOW TO SECTION ─── */}
       <section className="section howto-section">
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">How To Use</div>
-            <h2 className="s-title">How to Use the Long Tail Keyword Generator <span className="blue">(Step by Step)</span></h2>
+            <h2 className="s-title">How to generate long tail keywords <span className="blue">(step by step)</span></h2>
+            <p className="s-sub">One seed keyword in, hundreds of scored suggestions out. The whole loop takes under a minute.</p>
           </div>
-          <div className="steps-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          <div className="steps-grid">
             {[
-              { num: '01', title: 'Enter Your Main Keyword', desc: 'Start with a broad term related to your business. For example: "coffee maker" or "digital marketing" or "yoga classes."' },
-              { num: '02', title: 'Choose Your Target Location', desc: 'Select the country or region where your customers are located. This affects which keywords and search volumes you\'ll see.' },
-              { num: '03', title: 'Pick Your Language', desc: 'Choose the language your customers search in. The tool supports dozens of languages for global and local campaigns.' },
-              { num: '04', title: 'Complete Human Verification', desc: 'Verify that you\'re not a robot to ensure quality results and prevent automated abuse.' },
-              { num: '05', title: 'Generate Keywords', desc: 'Click the generate button and watch hundreds of long tail keyword suggestions appear.' },
-              { num: '06', title: 'Analyze and Export', desc: 'Review the suggestions, check search volumes, and export your chosen keywords for use in your campaigns.' },
-            ].map((step, i) => (
-              <div key={step.num} className="step-card" style={{ borderRight: i % 3 === 2 ? 'none' : undefined, borderBottom: i < 3 ? undefined : 'none' }}>
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                  width: 36, height: 36, borderRadius: '50%', background: 'var(--blue)',
-                  color: '#fff', fontSize: '0.78rem', fontWeight: 700,
-                  fontFamily: 'Space Grotesk, sans-serif', marginBottom: '1rem'
-                }}>
-                  {step.num}
-                </div>
-                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink)', marginBottom: '0.5rem' }}>
-                  {step.title}
-                </div>
-                <p style={{ fontSize: '0.85rem', color: 'var(--gray-4)', lineHeight: 1.6, margin: 0 }}>{step.desc}</p>
+              { n: '01', title: 'Enter Your Main Keyword', desc: 'Start with a broad term related to your business, like "coffee maker," "digital marketing," or "yoga classes." The broader the seed, the wider the net of long tail variations the generator casts.', tip: 'Run 3-4 different seed keywords per topic to build a comprehensive opportunity list.' },
+              { n: '02', title: 'Choose Your Target Location', desc: 'Add the country or city where your customers are located. Location shapes both which phrases appear and their search volumes, and it unlocks "near me" style local variations.', tip: 'Local businesses: seed with service + city ("yoga classes Mumbai") for hyper-local suggestions.' },
+              { n: '03', title: 'Pick Your Language', desc: 'Choose the language your customers search in. The tool supports English, Hindi, Spanish, French, German, and Portuguese for global and regional campaigns.', tip: 'Non-English markets usually have far lower keyword competition. Same product, easier rankings.' },
+              { n: '04', title: 'Generate Keywords', desc: 'Complete the quick human verification and click Generate. Hundreds of long tail suggestions appear in seconds, each with volume, competition level, and search intent attached.', tip: 'Sort mentally by intent first: transactional phrases are worth more than their volume suggests.' },
+              { n: '05', title: 'Analyze and Export', desc: 'Review the list, shortlist phrases that match pages you can build, and export to CSV. Feed the shortlist into your content calendar or PPC campaign structure.', tip: 'Score your shortlist with the keyword difficulty checker before writing anything.' },
+            ].map((s, i, arr) => (
+              <div key={s.n} className="step-card">
+                {i < arr.length - 1 && (
+                  <div className="step-connector">
+                    <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14 M12 5l7 7-7 7" /></svg>
+                  </div>
+                )}
+                <div className="step-num-big">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
+                {s.tip && <div className="step-tip">💡 Tip: {s.tip}</div>}
               </div>
             ))}
-          </div>
-          <div style={{ marginTop: '2rem', background: 'rgba(37,99,235,0.05)', border: '1px solid rgba(37,99,235,0.15)', padding: '1.25rem 1.5rem', textAlign: 'center' }}>
-            <p style={{ margin: 0, color: 'var(--gray-5)', fontSize: '0.95rem', lineHeight: 1.6 }}>
-              <strong>Pro tip:</strong> Start with 3-4 different seed keywords to get a comprehensive list of opportunities.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* ─── KEY FEATURES ─── */}
+      {/* ─── WHY SECTION ─── */}
       <section className="section why-section">
         <div className="section-container">
           <div className="s-header">
-            <div className="eyebrow">Key Features</div>
-            <h2 className="s-title">Key Features That Make This <span className="blue">Tool Essential</span></h2>
+            <div className="eyebrow">Why It Matters</div>
+            <h2 className="s-title">Why long tail keywords out-earn <span className="blue">head terms</span></h2>
+            <p className="s-sub">The math of long tail SEO favors small and mid-size sites in every dimension that matters: competition, conversion, and compounding.</p>
           </div>
-          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
+          <div className="why-grid">
             {[
-              { title: 'Instant Keyword Generation', desc: 'Enter one seed keyword and get hundreds of long tail variations within seconds. No waiting, no complicated setup.', paths: ['M13 2L3 14h9l-1 8 10-12h-9l1-8z'] },
-              { title: 'Multiple Language Support', desc: 'Generate keywords in Hindi, English, or dozens of other languages for local and international campaigns.', paths: ['M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z', 'M2 12h20', 'M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z'] },
-              { title: 'Location-Specific Results', desc: 'Filter by country, state, or city to find keywords relevant to your target market.', paths: ['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z', 'M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'] },
-              { title: 'Export Functionality', desc: 'Download your keyword lists in CSV format for easy integration with your SEO tools and campaign planning.', paths: ['M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M7 10l5 5 5-5', 'M12 15V3'] },
-              { title: 'No Registration Required', desc: 'Start using the tool immediately. No account creation, no email verification, no hassle.', paths: ['M9 11l3 3L22 4', 'M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11'] },
-              { title: 'Mobile-Friendly Interface', desc: 'Research keywords on any device - desktop, tablet, or smartphone.', paths: ['M12 18h.01', 'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z'] },
-            ].map(card => (
-              <div key={card.title} className="why-card">
+              { title: 'They Convert at a Higher Rate', icon: '💰', body: 'Someone searching "shoes" is browsing. Someone searching "waterproof trail running shoes size 9 women" has a credit card out. Specific queries signal buying-stage intent, which is why long tail visitors convert several times better than head-term visitors.' },
+              { title: 'They Are Winnable Without Authority', icon: '🎯', body: 'Head terms are locked up by high-authority brands that have compounded links for a decade. Long tail phrases often have weak, outdated, or zero dedicated pages ranking, so a genuinely good page from a newer site can take page one in weeks.' },
+              { title: 'They Compound Into Head Rankings', icon: '🏗️', body: 'Ranking for 50 long tail variations around one topic builds exactly the topical authority Google wants before trusting you with the head term. The long tail is not instead of the big keyword, it is the route to it.' },
+              { title: 'They Match How AI Search Works', icon: '🤖', body: 'Queries typed into ChatGPT, Perplexity, and Google AI Overviews are conversational and specific, which is long tail by definition. Content built around natural, specific phrases is far more likely to be cited in AI answers than content optimized for two-word head terms.' },
+            ].map((c) => (
+              <div key={c.title} className="why-card">
                 <div className="why-card-title">
-                  <div className="why-card-icon">
-                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      {card.paths.map((d, j) => <path key={j} d={d} />)}
-                    </svg>
-                  </div>
-                  {card.title}
+                  <div className="why-card-icon">{c.icon}</div>
+                  {c.title}
                 </div>
-                <div className="why-card-body">{card.desc}</div>
+                <div className="why-card-body">{c.body}</div>
               </div>
             ))}
+          </div>
+          <div className="alert-box">
+            <div className="alert-box-title">⚠️ The Zero-Volume Trap</div>
+            <div className="alert-box-body">The classic long tail failure is targeting phrases so specific that nobody searches them at all. A keyword with 10 searches per month and buyer intent is gold; a keyword with zero searches is a diary entry. Always check the volume estimate before committing a page to a phrase, and prefer clusters of related low-volume phrases over one isolated micro-keyword.</div>
           </div>
         </div>
       </section>
 
-      {/* ─── WHO SHOULD USE ─── */}
-      <section className="section prose-section">
+      {/* ─── KEYWORD TYPES SECTION ─── */}
+      <section className="section ratio-section">
         <div className="section-container">
           <div className="s-header">
-            <div className="eyebrow">Who It&apos;s For</div>
-            <h2 className="s-title">Who Should Use <span className="blue">This Tool?</span></h2>
+            <div className="eyebrow">Keyword Types</div>
+            <h2 className="s-title">Short tail vs mid tail vs <span className="blue">long tail keywords</span></h2>
+            <p className="s-sub">Where each keyword type fits in your strategy, and what you can realistically expect from it.</p>
           </div>
-          <div className="why-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '3rem' }}>
-            {[
-              { title: 'Content Creators and Bloggers', desc: 'Find specific topics your audience is searching for and create content that actually gets found.', paths: ['M12 20h9', 'M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'] },
-              { title: 'Small Business Owners', desc: 'Discover local keywords and niche opportunities that big competitors ignore.', paths: ['M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', 'M9 22V12h6v10'] },
-              { title: 'Digital Marketers', desc: 'Build comprehensive keyword lists for SEO campaigns and PPC advertising.', paths: ['M3 3v18h18', 'm19 9-5 5-4-4-3 3'] },
-              { title: 'eCommerce Store Owners', desc: 'Find product-specific keywords that buyers use when they\'re ready to purchase.', paths: ['M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z', 'M3 6h18', 'M16 10a4 4 0 0 1-8 0'] },
-              { title: 'Freelancers and Agencies', desc: 'Research keywords for client campaigns across different industries and locations.', paths: ['M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z', 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'] },
-            ].map(card => (
-              <div key={card.title} className="why-card">
-                <div className="why-card-title">
-                  <div className="why-card-icon">
-                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      {card.paths.map((d, i) => <path key={i} d={d} />)}
-                    </svg>
-                  </div>
-                  {card.title}
-                </div>
-                <div className="why-card-body">{card.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── STRATEGIES ─── */}
-      <section className="section why-section">
-        <div className="section-container">
-          <div className="s-header">
-            <div className="eyebrow">Strategies</div>
-            <h2 className="s-title">Long Tail Keyword Strategies <span className="blue">That Actually Work</span></h2>
-          </div>
-          <div className="why-grid" style={{ marginTop: '3rem' }}>
-            {[
-              { title: 'For Content Marketing', desc: 'Use question-based long tail keywords to create helpful blog posts, guides, and tutorials that answer specific user questions.', paths: ['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z', 'M14 2v6h6', 'M16 13H8', 'M16 17H8', 'M10 9H8'] },
-              { title: 'For Local SEO', desc: 'Target location + service combinations like "plumber in Sector 18 Noida" or "best restaurant near Connaught Place."', paths: ['M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z', 'M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'] },
-              { title: 'For eCommerce', desc: 'Focus on product + modifier combinations like "wireless earbuds under 3000" or "organic skincare for sensitive skin."', paths: ['M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z', 'M3 6h18', 'M16 10a4 4 0 0 1-8 0'] },
-              { title: 'For Service Businesses', desc: 'Target problem + solution keywords like "laptop screen repair near me" or "small business accounting software."', paths: ['M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z', 'M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'] },
-            ].map(card => (
-              <div key={card.title} className="why-card">
-                <div className="why-card-title">
-                  <div className="why-card-icon">
-                    <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      {card.paths.map((d, i) => <path key={i} d={d} />)}
-                    </svg>
-                  </div>
-                  {card.title}
-                </div>
-                <div className="why-card-body">{card.desc}</div>
-              </div>
-            ))}
+          <table className="ratio-table">
+            <thead>
+              <tr>
+                {['Type', 'Example', 'Competition', 'Best Use'].map(h => <th key={h}>{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { type: 'Short Tail (1–2 words)', example: '"running shoes"', comp: 'Brutal', cls: 'risk-bad', use: 'Long-term pillar goal only' },
+                { type: 'Mid Tail (2–3 words)', example: '"trail running shoes"', comp: 'High', cls: 'risk-warn', use: 'Category pages on established sites' },
+                { type: 'Long Tail (3–5 words)', example: '"waterproof trail running shoes women"', comp: 'Low to Medium', cls: 'risk-safe', use: 'Product pages, comparison posts' },
+                { type: 'Question / Conversational (5+ words)', example: '"what are the best trail shoes for wide feet"', comp: 'Very Low', cls: 'risk-safe', use: 'Blog content, FAQ pages, AI search visibility' },
+              ].map(r => (
+                <tr key={r.type}>
+                  <td className="ratio-anchor-type">{r.type}</td>
+                  <td style={{ fontStyle: 'italic' }}>{r.example}</td>
+                  <td><span className={`ratio-risk ${r.cls}`}>{r.comp}</span></td>
+                  <td>{r.use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="ratio-note">
+            <strong>The 70% rule:</strong> studies of search demand consistently show that long tail phrases make up roughly 70% of all searches performed. Head terms get the attention; the long tail gets the traffic. A healthy content plan spends most of its effort where most of the searches actually happen.
           </div>
         </div>
       </section>
 
-      {/* ─── COMMON MISTAKES ─── */}
-      <section className="section prose-section">
+      {/* ─── MISTAKES SECTION ─── */}
+      <section className="section mistakes-section">
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">Common Mistakes</div>
-            <h2 className="s-title">Common Long Tail Keyword <span className="blue">Mistakes to Avoid</span></h2>
+            <h2 className="s-title">5 long tail keyword mistakes <span className="blue">(and how to fix them)</span></h2>
+            <p className="s-sub">The generator finds the keywords. Avoiding these mistakes is what turns them into traffic.</p>
           </div>
-          <div className="mistakes-grid" style={{ gridTemplateColumns: '1fr', maxWidth: 720, margin: '2.5rem auto 0' }}>
-            <div className="mistake-card" style={{ padding: '2rem' }}>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {[
-                  { bold: 'Targeting keywords with zero search volume', text: '- Our tool shows real search data to prevent this' },
-                  { bold: 'Ignoring user intent', text: '- We categorize keywords so you understand what searchers want' },
-                  { bold: 'Choosing keywords that are too broad', text: '- Focus on specific, actionable phrases' },
-                  { bold: 'Not considering local variations', text: '- Use location filters for better targeting' },
-                  { bold: 'Forgetting about seasonality', text: '- Check trend data before committing to keywords' },
-                ].map(item => (
-                  <li key={item.bold} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
-                    <span style={{ color: 'var(--red)', fontWeight: 700, fontSize: '1rem', flexShrink: 0, marginTop: 1 }}>✗</span>
-                    <span style={{ fontSize: '0.9rem', color: 'var(--gray-5)', lineHeight: 1.6 }}>
-                      <strong>{item.bold}</strong>{item.text}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+          <div className="mistakes-grid">
+            {[
+              { n: '01', title: 'Targeting Zero-Volume Phrases', body: 'Ultra-specific phrases feel safe because competition is zero, but so is the traffic. Volume estimates exist precisely to filter these out before you spend a day writing.', bad: 'Building a page for "blue ceramic pour over coffee maker with wooden handle india"', good: 'Targeting "ceramic pour over coffee maker" (390/mo) and covering variations within the page' },
+              { n: '02', title: 'One Thin Page Per Keyword', body: 'Creating a separate shallow page for every tiny variation splits your authority and triggers cannibalization. Google treats near-identical long tail phrases as the same intent.', bad: '10 pages: "best yoga mat", "top yoga mat", "great yoga mats"...', good: 'One comprehensive page targeting the cluster, with variations as H2 subtopics' },
+              { n: '03', title: 'Ignoring the Intent Label', body: 'A question keyword needs a guide, a buyer keyword needs a product or comparison page. Publishing the wrong format for the intent means ranking nowhere regardless of competition.', bad: 'Product page for "how to choose a coffee maker"', good: 'Buying guide for the question, product page for "buy drip coffee maker online"' },
+              { n: '04', title: 'Skipping the Difficulty Check', body: 'Long tail usually means easier, not always. Some specific phrases are dominated by big publishers. Thirty seconds of scoring saves weeks of wasted content.', bad: 'Assuming every 5-word phrase is low competition', good: 'Running the shortlist through the keyword difficulty checker before writing' },
+              { n: '05', title: 'Forgetting Seasonality and Trends', body: 'Some long tail phrases spike for two months and die. Committing evergreen resources to seasonal phrases, or vice versa, wastes both.', bad: 'Publishing "diwali gift ideas for employees" in December', good: 'Scheduling seasonal content 8-10 weeks before the peak, checking trends first' },
+            ].map(m => (
+              <div key={m.n} className="mistake-card">
+                <div className="mistake-card-top">
+                  <div className="mistake-num">Mistake {m.n}</div>
+                  <div className="mistake-title">{m.title}</div>
+                  <div className="mistake-body-text">{m.body}</div>
+                </div>
+                <div className="code-example">
+                  <div className="code-bad"><span className="code-label">✗</span><span className="code-text">{m.bad}</span></div>
+                  <div className="code-good"><span className="code-label">✓</span><span className="code-text">{m.good}</span></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW TO FIND FREE — PROSE ─── */}
+      <section className="section prose-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Free Methods</div>
+            <h2 className="s-title">How to find long tail keywords <span className="blue">for free</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>This generator is the fastest route, but it works even better combined with the other free discovery methods. Here is the complete free toolkit:</p>
+            <ul>
+              <li><strong>This long tail keyword generator.</strong> One seed keyword produces hundreds of scored suggestions with volume, competition, and intent. Start here and export the list.</li>
+              <li><strong>Google Autocomplete.</strong> Type your seed keyword and note what Google suggests. Add a letter (a, b, c...) after the seed to force new variations.</li>
+              <li><strong>People Also Ask boxes.</strong> Every PAA question is a long tail keyword with proven search demand. Click a few open and the list keeps growing.</li>
+              <li><strong>Google Search Console.</strong> The Performance report shows real queries where you already get impressions. Filter for queries with 4+ words and position 11-30: those are long tail terms one optimization push away from page one.</li>
+              <li><strong>Related searches.</strong> The suggestions at the bottom of every results page are Google telling you which variations share intent.</li>
+            </ul>
+            <div className="prose-callout">
+              <div className="prose-callout-title">Workflow that compounds</div>
+              <p>Generate with the tool, validate demand against autocomplete and PAA, then score everything with the <a href="/tools/keyword-difficulty-checker/" style={{ color: 'var(--blue)' }}>keyword difficulty checker</a>. Fifteen minutes of research replaces the guesswork that sinks most content plans.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── STRATEGIES — PROSE ALT ─── */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Strategies</div>
+            <h2 className="s-title">Long tail strategies by <span className="blue">business type</span></h2>
+          </div>
+          <div className="prose-content">
+            <p>The same generator output feeds very different playbooks depending on what you sell:</p>
+            <ul>
+              <li><strong>Content marketing and blogs:</strong> build around question-based keywords. Each question becomes a post, each cluster of questions becomes a pillar guide, and question phrasing doubles as AI-search-ready headings.</li>
+              <li><strong>Local businesses:</strong> target service + location combinations like &ldquo;plumber in Sector 18 Noida&rdquo; or &ldquo;best restaurant near Connaught Place.&rdquo; Competition for hyper-local phrases is usually a handful of unoptimized listings.</li>
+              <li><strong>eCommerce stores:</strong> focus on product + modifier combinations: &ldquo;wireless earbuds under 3000,&rdquo; &ldquo;organic skincare for sensitive skin.&rdquo; These map directly to category and filter pages buyers actually want.</li>
+              <li><strong>Service businesses:</strong> target problem + solution phrasing like &ldquo;laptop screen repair near me&rdquo; or &ldquo;small business accounting software.&rdquo; The problem phrasing captures customers before they know which provider to search for.</li>
+              <li><strong>PPC campaigns:</strong> long tail phrases carry lower cost-per-click and higher conversion rates. Export the buyer-intent keywords to CSV and use them as exact-match ad groups.</li>
+            </ul>
+            <p>Whatever the business type, the sequencing is identical: win the long tail cluster first, interlink it, and let the accumulated authority carry your pillar page up for the head term.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── COMPARISON SECTION ─── */}
+      <section className="section comparison-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Tool Comparison</div>
+            <h2 className="s-title">SEOShouts vs other <span className="blue">long tail keyword tools</span></h2>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="comparison-table">
+              <thead>
+                <tr>
+                  {['Feature', 'SEOShouts', 'LongTail Pro', 'KeywordTool.io', 'AnswerThePublic', 'Ubersuggest'].map((c, i) => (
+                    <th key={c} className={i === 1 ? 'highlight' : ''}>{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Free to Use', '✅ Forever', '❌ ($59+/mo)', 'Limited (no volume)', 'Limited (3/day)', 'Limited (3/day)'],
+                  ['Search Volume Data (Free)', '✅', '❌', '❌ (Paid only)', '❌', '✅ (Limited)'],
+                  ['Intent Classification', '✅', '✅', '❌', '❌', '❌'],
+                  ['Location Targeting', '✅', '✅', '✅', '✅', '✅'],
+                  ['Multi-Language', '✅ 6 languages', '✅', '✅', '✅', '✅'],
+                  ['CSV Export (Free)', '✅', '❌', '❌ (Paid only)', '❌ (Paid only)', '✅ (Limited)'],
+                  ['No Login Required', '✅', '❌', '✅', '❌ (Account needed)', '❌ (Google login)'],
+                ].map((row, ri) => (
+                  <tr key={ri}>
+                    {row.map((cell, ci) => (
+                      <td key={ci} className={ci === 1 ? 'highlight-col' : ''}>
+                        {cell.startsWith('✅') ? <span className="check-yes">{cell}</span> :
+                         cell.startsWith('❌') ? <span className="check-no">{cell.replace('❌', '✗')}</span> :
+                         cell}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="comparison-cards">
+            <div style={{ background: 'var(--green-bg)', border: '1px solid #86efac', borderLeft: '4px solid var(--green)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: '#14532d', marginBottom: '0.6rem' }}>When to Choose SEOShouts</h3>
+              <p style={{ fontSize: '0.9rem', color: '#166534', lineHeight: 1.7 }}>Use this tool for <strong>unlimited free long tail research with volume and intent data included</strong>. The paid tools gate exactly these two data points behind subscriptions; here they ship with every suggestion, with no daily paywall interrupting a research session.</p>
+            </div>
+            <div style={{ background: 'var(--blue-pale)', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', padding: '1.5rem' }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.05rem', color: 'var(--blue-dark)', marginBottom: '0.6rem' }}>When You Might Need More</h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--blue-dark)', lineHeight: 1.7 }}>If you need clickstream-verified volumes, SERP history, or rank tracking on thousands of keywords, a paid suite earns its cost. For discovering what to write and which phrases to bid on, this free generator covers the complete workflow.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CHECKLIST SECTION ─── */}
+      <section className="section checklist-section">
+        <div className="section-container">
+          <div className="s-header">
+            <div className="eyebrow">Research Checklist</div>
+            <h2 className="s-title">Long tail keyword checklist <span className="blue">(before you publish)</span></h2>
+            <p className="s-sub">Run every shortlisted keyword through these checks and your content plan stops leaking effort.</p>
+          </div>
+          <div className="checklist-grid">
+            {[
+              { title: '📊 Validate Demand', items: ['Search volume estimate is above zero', 'Phrase appears in Google Autocomplete or PAA', 'Trend is stable or growing, not a dead spike', 'Cluster has 5+ related variations worth covering'] },
+              { title: '🎯 Match the Intent', items: ['Intent label matches the page type you plan', 'Top 10 checked for content format', 'Buyer keywords mapped to product/service pages', 'Question keywords mapped to guides and FAQs'] },
+              { title: '🔧 Confirm Winnability', items: ['Difficulty score checked for your target country', 'No 5+ big brands locking the SERP', 'Your site\'s authority fits the score band', 'One primary keyword per page, no cannibalization'] },
+              { title: '🏗️ Plan the Cluster', items: ['Keyword assigned to a pillar topic', 'Internal links planned from related content', 'Variations used as H2/H3 subtopics', 'CSV exported and added to the content calendar'] },
+            ].map(cat => (
+              <div key={cat.title} className="checklist-card">
+                <div className="checklist-head">{cat.title}</div>
+                <div className="checklist-items">
+                  {cat.items.map((item, i) => (
+                    <div key={i} className="checklist-item">
+                      <input type="checkbox" id={`${cat.title}-${i}`} />
+                      <label htmlFor={`${cat.title}-${i}`} className="checklist-text">{item}</label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -754,16 +765,19 @@ export default function LongTailKeywordGeneratorClient() {
         <div className="section-container">
           <div className="s-header">
             <div className="eyebrow">FAQ</div>
-            <h2 className="s-title">Frequently Asked <span className="blue">Questions</span></h2>
+            <h2 className="s-title">Frequently asked questions</h2>
+            <p className="s-sub">Everything you need to know about generating and using long tail keywords.</p>
           </div>
           <div className="faq-list">
             {[
-              { q: 'How many keywords can I generate?', a: 'There\'s no limit. Generate as many keyword lists as you need for your campaigns.' },
-              { q: 'Do you provide search volume data?', a: 'Yes, we include estimated monthly search volumes to help you prioritize keywords.' },
-              { q: 'Can I use this for PPC campaigns?', a: 'Absolutely. Long tail keywords often have lower costs per click and higher conversion rates for paid ads.' },
-              { q: 'How often is the keyword data updated?', a: 'Our database is updated regularly to reflect current search trends and patterns.' },
-              { q: 'Is the tool free to use?', a: 'Yes, completely free with no hidden fees or usage limits.' },
-              { q: 'Can I save my keyword lists?', a: 'You can export keywords to CSV files or copy them for use in your preferred tools.' },
+              { q: 'What is a long tail keyword generator?', a: 'A long tail keyword generator is a tool that expands one broad seed keyword into hundreds of longer, more specific search phrases that real people type into Google. SEOShouts\' version adds search volume estimates, competition levels, and intent labels to every suggestion so you can prioritize instantly.' },
+              { q: 'Is this long tail keyword tool really free?', a: 'Yes, completely free. No account, no credit card, no daily paywall on core features. Volume data, intent classification, and CSV export, the features most tools reserve for paid plans, are included for every user.' },
+              { q: 'How do I find long tail keywords for free?', a: 'Enter a seed keyword in the generator above, pick your location and language, and generate. Combine the results with Google Autocomplete, People Also Ask boxes, and your own Search Console query data for complete coverage. All four methods are free.' },
+              { q: 'What is the difference between short tail and long tail keywords?', a: 'Short tail keywords are 1-2 word phrases with huge volume and brutal competition, like "running shoes." Long tail keywords are 3+ word phrases with lower individual volume but clearer intent and far easier rankings, like "waterproof trail running shoes for women." Long tail phrases collectively account for roughly 70% of all searches.' },
+              { q: 'Do you provide search volume data?', a: 'Yes. Every generated keyword includes an estimated monthly search volume plus a competition level, so you can filter out zero-volume phrases before committing content to them.' },
+              { q: 'Can I use this for PPC campaigns?', a: 'Absolutely. Long tail keywords typically cost less per click and convert better in paid search. Export the buyer-intent suggestions to CSV and use them as tightly themed exact-match ad groups.' },
+              { q: 'How many keywords can I generate?', a: 'Each generation produces a full list of suggestions from your seed keyword, and you can run multiple generations per session. Use different seed keywords to build out complete topic maps.' },
+              { q: 'Can I save or export my keyword lists?', a: 'Yes. Export any generated list to a CSV file or copy all keywords to your clipboard with one click, ready for spreadsheets, content calendars, or campaign builders.' },
             ].map(item => (
               <details key={item.q} className="faq-item">
                 <summary>{item.q}</summary>

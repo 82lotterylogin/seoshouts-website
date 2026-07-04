@@ -480,6 +480,25 @@ function BlogIdeasGeneratorClient() {
         </div>
       </div>
 
+      {/* ── FOUNDER QUOTE ── */}
+      <section className="section founder-section" style={{ padding: '3rem 2rem' }}>
+        <div className="section-container">
+          <div className="founder-inner">
+            <div className="founder-avatar">RS</div>
+            <div>
+              <div className="founder-name">Built by Rohit Sharma — 13+ Years in SEO</div>
+              <p className="founder-quote-text">
+                &ldquo;The blogs that win are not the ones with the best writers, they are the ones that never miss a publishing week. Idea generation is where consistency dies. This blog topic generator removes that failure point: seed it with your niche, get a month of angles in seconds, and spend your energy writing instead of staring.&rdquo;
+              </p>
+              <div className="founder-role">
+                — Rohit Sharma, Founder of SEOShouts ·{' '}
+                <a href="/meet-the-experts/" style={{ color: 'var(--blue-light)' }}>Meet Our Experts</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── ABOUT / INTRO / WHY / HOW ── white (prose-section) */}
       <section className="section prose-section">
         <div className="section-container">
