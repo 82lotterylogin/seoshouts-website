@@ -263,9 +263,9 @@ export default function OnPageSEOAnalyzerClient() {
         throw new Error('SEO analysis failed. Please try again.')
       }
 
-      // Handle PageSpeed response
+      // Handle PageSpeed response (non-ok = data unavailable; never render fake vitals)
       let pageSpeedData = null
-      if (pageSpeedResponse.status === 'fulfilled') {
+      if (pageSpeedResponse.status === 'fulfilled' && pageSpeedResponse.value.ok) {
         try {
           pageSpeedData = await pageSpeedResponse.value.json()
         } catch (error) {

@@ -106,10 +106,22 @@ export default function KeywordDifficultyCheckerClient() {
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordResult | null>(null)
   const [sortBy, setSortBy] = useState<'keyword' | 'difficulty' | 'volume'>('difficulty')
 
-  // Calculate keyword difficulty with enhanced metrics
+  // Deterministic hash of the keyword so the same input always produces the
+  // same modeled score — no random variation between runs.
+  const seedFromKeyword = (keyword: string): number => {
+    let h = 0
+    const s = keyword.toLowerCase().trim()
+    for (let i = 0; i < s.length; i++) {
+      h = (h * 31 + s.charCodeAt(i)) >>> 0
+    }
+    return h
+  }
+
+  // Calculate keyword difficulty with enhanced metrics (heuristic model —
+  // scores are modeled from keyword attributes, deterministic per keyword)
   const calculateDifficulty = (keyword: string): KeywordResult => {
-    // Simulate realistic difficulty calculation
-    const baseScore = Math.floor(Math.random() * 100) + 1
+    const seed = seedFromKeyword(keyword)
+    const baseScore = (seed % 100) + 1
 
     // Add complexity based on keyword characteristics
     let difficulty = baseScore
@@ -159,14 +171,15 @@ export default function KeywordDifficultyCheckerClient() {
       return 'Very High'
     }
 
-    // Generate search volume (simulate realistic data)
-    let searchVolume = Math.floor(Math.random() * 50000) + 100
+    // Modeled search volume estimate (deterministic per keyword, not live data;
+    // used only for the volume sort option — never displayed as a real number)
+    let searchVolume = (seed % 50000) + 100
     if (wordCount === 1) searchVolume *= 2 // Single words often have higher volume
     if (brandTerms.some(brand => keywordLower.includes(brand))) searchVolume *= 3
     if (wordCount >= 4) searchVolume = Math.max(100, searchVolume * 0.3) // Long tail lower volume
 
-    // Generate CPC
-    const baseCPC = Math.random() * 5 + 0.5
+    // Modeled CPC estimate (deterministic per keyword, not live data)
+    const baseCPC = ((seed >> 8) % 500) / 100 + 0.5
     let cpc = baseCPC
     if (commercialTerms.some(term => keywordLower.includes(term))) cpc *= 2
     cpc = Math.round(cpc * 100) / 100
@@ -609,6 +622,9 @@ export default function KeywordDifficultyCheckerClient() {
 
                 <div style={{ marginTop: '1rem', fontSize: '0.78rem', color: 'var(--gray-4)' }}>
                   Analyzed {results.length} keyword{results.length !== 1 ? 's' : ''} &bull; Difficulty scores range from 1-100
+                </div>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.72rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>
+                  Scores are modeled estimates based on keyword attributes (length, intent, brand signals), not live SERP data. Always verify the top 10 results manually before committing to a keyword.
                 </div>
               </div>
             )}

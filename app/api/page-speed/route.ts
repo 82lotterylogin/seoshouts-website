@@ -65,18 +65,9 @@ async function fetchPageSpeedData(url: string, strategy: 'desktop' | 'mobile') {
     }
   } catch (error) {
     console.error(`Error fetching ${strategy} data:`, error)
-    
-    // Return realistic mock data if API fails
-    const mockScore = strategy === 'desktop' ? Math.floor(Math.random() * 20) + 75 : Math.floor(Math.random() * 15) + 65
-    return {
-      score: mockScore,
-      coreWebVitals: {
-        LCP: strategy === 'desktop' ? Math.random() * 1.5 + 1.0 : Math.random() * 2.0 + 2.0,
-        INP: strategy === 'desktop' ? Math.random() * 100 + 80 : Math.random() * 150 + 150,
-        CLS: strategy === 'desktop' ? Math.random() * 0.08 + 0.02 : Math.random() * 0.12 + 0.06
-      },
-      loadingExperience: null
-    }
+    // No mock data: fail honestly so the client hides the Core Web Vitals
+    // section instead of rendering made-up scores.
+    throw error
   }
 }
 
@@ -116,7 +107,10 @@ export async function POST(request: NextRequest) {
       }
       
       if (!GOOGLE_PAGESPEED_API_KEY) {
-        console.warn('Google PageSpeed API key not configured, returning mock data')
+        return NextResponse.json(
+          { error: 'PageSpeed data unavailable: API key not configured' },
+          { status: 503 }
+        )
       }
       
       // Fetch both desktop and mobile data in parallel with timeout
@@ -160,45 +154,11 @@ export async function POST(request: NextRequest) {
     return await Promise.race([mainPromise(), timeoutPromise])
   } catch (error) {
     console.error('PageSpeed API Error:', error)
-    
-    // Return mock data on timeout or error
-    const mockData = {
-      desktop: {
-        score: Math.floor(Math.random() * 20) + 75,
-        coreWebVitals: {
-          LCP: {
-            value: Math.random() * 1500 + 1000,
-            status: 'good' as const
-          },
-          INP: {
-            value: Math.random() * 100 + 80,
-            status: 'good' as const
-          },
-          CLS: {
-            value: Math.random() * 0.08 + 0.02,
-            status: 'good' as const
-          }
-        }
-      },
-      mobile: {
-        score: Math.floor(Math.random() * 15) + 65,
-        coreWebVitals: {
-          LCP: {
-            value: Math.random() * 2000 + 2000,
-            status: 'needs-improvement' as const
-          },
-          INP: {
-            value: Math.random() * 150 + 150,
-            status: 'needs-improvement' as const
-          },
-          CLS: {
-            value: Math.random() * 0.12 + 0.06,
-            status: 'needs-improvement' as const
-          }
-        }
-      }
-    }
-    
-    return NextResponse.json(mockData)
+    // No mock data on failure — the analyzer client already handles a missing
+    // pageSpeed section gracefully ("continuing without Core Web Vitals data").
+    return NextResponse.json(
+      { error: 'PageSpeed data unavailable. The analysis will continue without Core Web Vitals.' },
+      { status: 503 }
+    )
   }
 }

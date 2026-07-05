@@ -67,6 +67,7 @@ export default function LongTailKeywordGeneratorClient() {
     setTimeout(() => {
       const baseKeyword = form.keyword
       const location = form.location || 'your city'
+      const currentYear = new Date().getFullYear()
 
       const demoKeywords = [
         // Informational Intent Keywords (8 keywords)
@@ -81,7 +82,7 @@ export default function LongTailKeywordGeneratorClient() {
 
         // Commercial Intent Keywords (10 keywords)
         { keyword: `buy ${baseKeyword} online`, volume: '2,100', competition: 'High', intent: 'Commercial', cpc: '$2.85', difficulty: 78 },
-        { keyword: `best ${baseKeyword} 2024`, volume: '1,450', competition: 'Medium', intent: 'Commercial', cpc: '$1.95', difficulty: 55 },
+        { keyword: `best ${baseKeyword} ${currentYear}`, volume: '1,450', competition: 'Medium', intent: 'Commercial', cpc: '$1.95', difficulty: 55 },
         { keyword: `affordable ${baseKeyword} services`, volume: '450', competition: 'Low', intent: 'Commercial', cpc: '$1.45', difficulty: 32 },
         { keyword: `top rated ${baseKeyword} providers`, volume: '320', competition: 'Low', intent: 'Commercial', cpc: '$1.75', difficulty: 29 },
         { keyword: `${baseKeyword} reviews and ratings`, volume: '890', competition: 'Medium', intent: 'Commercial', cpc: '$1.25', difficulty: 45 },

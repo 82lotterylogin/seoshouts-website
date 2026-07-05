@@ -25,14 +25,22 @@ const twitterCategories = {
   fashion: ['fashion', 'style', 'ootd', 'fashiontwitter', 'trendy', 'vintage', 'streetstyle', 'designer', 'fashionista', 'styleinspo']
 };
 
+// Real per-tag stats aggregated from the tweets we actually fetched
+interface TagStats {
+  tweetCount: number;        // tweets containing the tag in our sample
+  totalEngagement: number;   // sum of likes + retweets + replies + quotes
+  timestamps: number[];      // tweet created_at values, for trend detection
+}
+
 // Fetch real hashtag data from Twitter API
-async function fetchRealTwitterHashtags(category: string, timePeriod: string): Promise<string[]> {
+async function fetchRealTwitterHashtags(category: string, timePeriod: string): Promise<Map<string, TagStats>> {
+  const empty = new Map<string, TagStats>();
   try {
     const bearerToken = process.env.TWITTER_BEARER_TOKEN;
 
     if (!bearerToken) {
       console.error('Twitter Bearer Token not found');
-      return [];
+      return empty;
     }
 
     // Get category-specific search terms with better targeting
@@ -48,7 +56,7 @@ async function fetchRealTwitterHashtags(category: string, timePeriod: string): P
       `${categoryTerms[0]} (#trending OR #viral OR #popular)`
     ];
 
-    const allHashtags = new Set<string>();
+    const tagStats = new Map<string, TagStats>();
 
     // Perform multiple searches for better variety
     for (const searchQuery of searches) {
@@ -70,26 +78,35 @@ async function fetchRealTwitterHashtags(category: string, timePeriod: string): P
         const data = await response.json();
 
         if (data.data && data.data.length > 0) {
-          // Extract hashtags from tweets
+          // Extract hashtags from tweets, keeping the tweet's REAL metrics
           data.data.forEach((tweet: any) => {
             const text = tweet.text.toLowerCase();
             const hashtagMatches = text.match(/#[a-zA-Z0-9_]+/g);
+            if (!hashtagMatches) return;
 
-            if (hashtagMatches) {
-              hashtagMatches.forEach((hashtag: string) => {
-                const cleanTag = hashtag.replace('#', '');
+            const m = tweet.public_metrics || {};
+            const engagement =
+              (m.like_count || 0) + (m.retweet_count || 0) +
+              (m.reply_count || 0) + (m.quote_count || 0);
+            const ts = tweet.created_at ? Date.parse(tweet.created_at) : Date.now();
 
-                // Filter for category relevance
-                const isRelevant = categoryTerms.some(term =>
-                  cleanTag.includes(term.toLowerCase()) ||
-                  term.toLowerCase().includes(cleanTag)
-                ) || cleanTag.length > 6; // Longer hashtags tend to be more specific
+            hashtagMatches.forEach((hashtag: string) => {
+              const cleanTag = hashtag.replace('#', '');
 
-                if (cleanTag.length > 2 && cleanTag.length < 25 && isRelevant) {
-                  allHashtags.add(cleanTag);
-                }
-              });
-            }
+              // Filter for category relevance
+              const isRelevant = categoryTerms.some(term =>
+                cleanTag.includes(term.toLowerCase()) ||
+                term.toLowerCase().includes(cleanTag)
+              ) || cleanTag.length > 6; // Longer hashtags tend to be more specific
+
+              if (cleanTag.length > 2 && cleanTag.length < 25 && isRelevant) {
+                const existing = tagStats.get(cleanTag) || { tweetCount: 0, totalEngagement: 0, timestamps: [] };
+                existing.tweetCount += 1;
+                existing.totalEngagement += engagement;
+                existing.timestamps.push(ts);
+                tagStats.set(cleanTag, existing);
+              }
+            });
           });
         }
 
@@ -102,38 +119,60 @@ async function fetchRealTwitterHashtags(category: string, timePeriod: string): P
       }
     }
 
-    const relevantHashtags = Array.from(allHashtags);
-
     // If we have good results, return them
-    if (relevantHashtags.length >= 5) {
-      return relevantHashtags.slice(0, 15);
+    if (tagStats.size >= 5) {
+      return tagStats;
     }
 
     // If not enough relevant hashtags, return empty to use fallback
-    return [];
+    return empty;
 
   } catch (error) {
     console.error('Error fetching real Twitter hashtags:', error);
-    return [];
+    return empty;
   }
 }
 
-// Generate Twitter-specific hashtag analytics
-function generateTwitterHashtagData(tag: string, category: string): TwitterHashtagResult {
-  // Twitter has high volume but varies by hashtag popularity
-  const basePosts = Math.floor(Math.random() * 500000) + 10000; // 10K-510K posts
+// Deterministic hash so a tag always gets the same estimate across refreshes
+// (used only for the curated fallback path, where no real data exists)
+function seededFromTag(tag: string): number {
+  let h = 0;
+  for (let i = 0; i < tag.length; i++) {
+    h = (h * 31 + tag.charCodeAt(i)) >>> 0;
+  }
+  return h;
+}
 
-  // Twitter engagement rates are generally lower than other platforms
-  const engagementRates = ['1.2%', '1.8%', '2.3%', '2.9%', '3.4%', '4.1%', '4.7%'];
-  const engagement = engagementRates[Math.floor(Math.random() * engagementRates.length)];
+// Build result from REAL sampled Twitter data
+function buildRealTwitterHashtagData(tag: string, stats: TagStats, category: string): TwitterHashtagResult {
+  const avgEngagement = stats.tweetCount > 0 ? Math.round(stats.totalEngagement / stats.tweetCount) : 0;
 
-  // Twitter trends change rapidly
-  const trends: ('rising' | 'stable' | 'falling')[] = ['rising', 'stable', 'falling'];
-  const rand = Math.random();
+  // Trend from recency of real tweets: are mentions clustering in the newest half of the window?
+  const now = Date.now();
+  const windowMs = 24 * 60 * 60 * 1000;
+  const recent = stats.timestamps.filter(t => now - t < windowMs / 2).length;
+  const older = stats.timestamps.length - recent;
   let trend: 'rising' | 'stable' | 'falling' = 'stable';
-  if (rand < 0.4) trend = 'rising';
-  else if (rand < 0.8) trend = 'stable';
-  else trend = 'falling';
+  if (recent > older) trend = 'rising';
+  else if (older > recent * 2) trend = 'falling';
+
+  return {
+    tag,
+    posts: stats.tweetCount, // real count of sampled recent tweets using this tag
+    engagement: `~${avgEngagement} interactions/post`,
+    trend,
+    category
+  };
+}
+
+// Curated-fallback analytics: deterministic estimates, never random per refresh
+function generateTwitterHashtagData(tag: string, category: string): TwitterHashtagResult {
+  const seed = seededFromTag(tag);
+  const basePosts = (seed % 500000) + 10000; // stable 10K-510K estimate
+  const engagementRates = ['1.2%', '1.8%', '2.3%', '2.9%', '3.4%', '4.1%', '4.7%'];
+  const engagement = engagementRates[seed % engagementRates.length];
+  const trendPick = seed % 10;
+  const trend: 'rising' | 'stable' | 'falling' = trendPick < 4 ? 'rising' : trendPick < 8 ? 'stable' : 'falling';
 
   return {
     tag,
@@ -244,26 +283,30 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // First try to get real hashtags from Twitter API
-    let hashtags: string[] = [];
+    // First try to get real hashtags (with real metrics) from Twitter API
+    let tagStats = new Map<string, TagStats>();
     try {
-      hashtags = await fetchRealTwitterHashtags(category, timePeriod || '24h');
+      tagStats = await fetchRealTwitterHashtags(category, timePeriod || '24h');
     } catch (error) {
       console.error('Failed to fetch real Twitter hashtags, using fallback:', error);
     }
 
-    // If no real hashtags found, use curated time-sensitive hashtags
-    if (hashtags.length === 0) {
-      hashtags = getTwitterTrendingHashtags(category, timePeriod || '24h');
+    const usedRealData = tagStats.size > 0;
+    let results: TwitterHashtagResult[];
+
+    if (usedRealData) {
+      // Real tags with real sampled metrics (engagement + trend from public_metrics)
+      results = Array.from(tagStats.entries())
+        .map(([tag, stats]) => buildRealTwitterHashtagData(tag, stats, category))
+        .sort((a, b) => b.posts - a.posts)
+        .slice(0, 15);
+    } else {
+      // Curated time-sensitive hashtags with clearly-labeled deterministic estimates
+      const hashtags = getTwitterTrendingHashtags(category, timePeriod || '24h');
+      results = hashtags
+        .map(tag => generateTwitterHashtagData(tag, category))
+        .sort((a, b) => b.posts - a.posts);
     }
-
-    // Generate analytics data for each hashtag
-    const results: TwitterHashtagResult[] = hashtags.map(tag =>
-      generateTwitterHashtagData(tag, category)
-    );
-
-    // Sort by posts count (highest to lowest) for Twitter's high-volume nature
-    results.sort((a, b) => b.posts - a.posts);
 
     return NextResponse.json({
       success: true,
@@ -274,8 +317,10 @@ export async function POST(request: NextRequest) {
       timePeriod,
       total: results.length,
       message: `Found ${results.length} trending hashtags for Twitter ${category} category`,
-      note: 'Twitter hashtag data - Real-time trending from Twitter API',
-      source: hashtags.length > 0 ? 'twitter-api' : 'curated-fallback'
+      note: usedRealData
+        ? 'Live Twitter data: post counts and engagement measured from recent tweets'
+        : 'Curated hashtag list: metrics are modeled estimates, not live data',
+      source: usedRealData ? 'twitter-api' : 'curated-fallback'
     });
 
   } catch (error) {
