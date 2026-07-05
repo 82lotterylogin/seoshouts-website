@@ -44,6 +44,119 @@ const platformTemplates = {
   }
 }
 
+// ── Robots.txt live tester ─────────────────────────────────────────────────
+// Client-side parser implementing Google's Robots Exclusion Protocol rules:
+// group selection by most-specific user-agent, longest-path-match precedence,
+// allow wins ties, * and $ wildcard support.
+
+interface RobotsGroup {
+  agents: string[]
+  rules: { type: 'allow' | 'disallow'; path: string }[]
+}
+
+function parseRobotsTxt(content: string): RobotsGroup[] {
+  const groups: RobotsGroup[] = []
+  let current: RobotsGroup | null = null
+  let lastWasAgent = false
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.replace(/#.*$/, '').trim()
+    if (!line) continue
+    const idx = line.indexOf(':')
+    if (idx === -1) continue
+    const field = line.slice(0, idx).trim().toLowerCase()
+    const value = line.slice(idx + 1).trim()
+    if (field === 'user-agent') {
+      if (!lastWasAgent || !current) {
+        current = { agents: [], rules: [] }
+        groups.push(current)
+      }
+      current.agents.push(value.toLowerCase())
+      lastWasAgent = true
+    } else if (field === 'allow' || field === 'disallow') {
+      if (current) {
+        current.rules.push({ type: field, path: value })
+        lastWasAgent = false
+      }
+    } else {
+      lastWasAgent = false
+    }
+  }
+  return groups
+}
+
+function robotsPatternMatches(pattern: string, path: string): boolean {
+  const anchored = pattern.endsWith('$')
+  const pat = anchored ? pattern.slice(0, -1) : pattern
+  const escaped = pat
+    .split('*')
+    .map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('.*')
+  try {
+    return new RegExp('^' + escaped + (anchored ? '$' : '')).test(path)
+  } catch {
+    return false
+  }
+}
+
+function checkBotAccess(groups: RobotsGroup[], bot: string, path: string): { allowed: boolean; matchedRule: string } {
+  const botLower = bot.toLowerCase()
+
+  // Group selection: most specific matching user-agent token; '*' as fallback
+  let bestAgent = ''
+  let bestLen = -1
+  for (const g of groups) {
+    for (const a of g.agents) {
+      if (a === '*') {
+        if (bestLen < 0) { bestAgent = '*'; bestLen = 0 }
+      } else if (botLower.includes(a) || a.includes(botLower)) {
+        if (a.length > bestLen) { bestAgent = a; bestLen = a.length }
+      }
+    }
+  }
+  if (bestLen < 0) return { allowed: true, matchedRule: 'No matching group — allowed by default' }
+
+  // Merge rules from every group carrying the winning agent token
+  const rules = groups
+    .filter(g => g.agents.includes(bestAgent))
+    .flatMap(g => g.rules)
+
+  // Longest match wins; allow wins ties
+  let best: { type: 'allow' | 'disallow'; path: string } | null = null
+  for (const r of rules) {
+    if (r.path === '') continue // empty disallow = no restriction
+    if (robotsPatternMatches(r.path, path)) {
+      if (!best || r.path.length > best.path.length ||
+          (r.path.length === best.path.length && r.type === 'allow' && best.type === 'disallow')) {
+        best = r
+      }
+    }
+  }
+  if (!best) return { allowed: true, matchedRule: `Group "${bestAgent}" — no rule matches, allowed by default` }
+  return {
+    allowed: best.type === 'allow',
+    matchedRule: `${best.type === 'allow' ? 'Allow' : 'Disallow'}: ${best.path} (group "${bestAgent}")`,
+  }
+}
+
+// Bots for the access matrix: classic search + the AI crawlers that matter now
+const TESTER_BOTS: { name: string; kind: 'Search' | 'AI' }[] = [
+  { name: 'Googlebot', kind: 'Search' },
+  { name: 'Bingbot', kind: 'Search' },
+  { name: 'DuckDuckBot', kind: 'Search' },
+  { name: 'GPTBot', kind: 'AI' },
+  { name: 'OAI-SearchBot', kind: 'AI' },
+  { name: 'ChatGPT-User', kind: 'AI' },
+  { name: 'ClaudeBot', kind: 'AI' },
+  { name: 'anthropic-ai', kind: 'AI' },
+  { name: 'PerplexityBot', kind: 'AI' },
+  { name: 'Google-Extended', kind: 'AI' },
+  { name: 'CCBot', kind: 'AI' },
+  { name: 'Bytespider', kind: 'AI' },
+  { name: 'Amazonbot', kind: 'AI' },
+  { name: 'meta-externalagent', kind: 'AI' },
+  { name: 'Applebot-Extended', kind: 'AI' },
+]
+
 export default function RobotsTxtGeneratorClient() {
 
   const [selectedPlatform, setSelectedPlatform] = useState<'wordpress' | 'shopify' | 'general'>('wordpress')
@@ -54,6 +167,65 @@ export default function RobotsTxtGeneratorClient() {
   const [userAgents, setUserAgents] = useState<string[]>(['*'])
   const [robotsContent, setRobotsContent] = useState('')
   const [copied, setCopied] = useState(false)
+
+  // Live tester state
+  const [testerSite, setTesterSite] = useState('')
+  const [testerPath, setTesterPath] = useState('/')
+  const [testerLoading, setTesterLoading] = useState(false)
+  const [testerError, setTesterError] = useState('')
+  const [testerFile, setTesterFile] = useState('')
+  const [testerResults, setTesterResults] = useState<Array<{ name: string; kind: string; allowed: boolean; matchedRule: string }>>([])
+
+  const runLiveTest = async () => {
+    setTesterError('')
+    setTesterResults([])
+    setTesterFile('')
+
+    let site = testerSite.trim()
+    if (!site) {
+      setTesterError('Enter a website domain to test, e.g. example.com')
+      return
+    }
+    if (!/^https?:\/\//i.test(site)) site = 'https://' + site
+
+    let robotsUrl: string
+    try {
+      robotsUrl = new URL('/robots.txt', site).href
+    } catch {
+      setTesterError('That does not look like a valid domain')
+      return
+    }
+
+    const path = testerPath.trim().startsWith('/') ? testerPath.trim() : '/' + testerPath.trim()
+
+    setTesterLoading(true)
+    try {
+      const res = await fetch('/api/fetch-page', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: robotsUrl }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Could not fetch robots.txt')
+
+      if (data.status === 404) {
+        setTesterFile('')
+        setTesterResults(TESTER_BOTS.map(b => ({ ...b, allowed: true, matchedRule: 'No robots.txt found — everything is allowed by default' })))
+        setTesterLoading(false)
+        return
+      }
+      if (data.status >= 400) throw new Error(`robots.txt returned HTTP ${data.status}`)
+
+      const content: string = data.html || ''
+      setTesterFile(content)
+      const groups = parseRobotsTxt(content)
+      setTesterResults(TESTER_BOTS.map(b => ({ ...b, ...checkBotAccess(groups, b.name, path) })))
+    } catch (err: any) {
+      setTesterError(err.message || 'Failed to fetch robots.txt. Check the domain and try again.')
+    } finally {
+      setTesterLoading(false)
+    }
+  }
 
   // CAPTCHA states
   const [isVerified, setIsVerified] = useState(false)
@@ -490,6 +662,118 @@ export default function RobotsTxtGeneratorClient() {
           </div>
 
         </div>
+
+        {/* ── LIVE ROBOTS.TXT TESTER ── */}
+        <div style={{ maxWidth: 1360, margin: '1.5rem auto 0' }}>
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Robots.txt Tester — Check Any Live Site</h2>
+            <p className="tool-box-sub">
+              Fetch a site&apos;s live robots.txt and see exactly which <span>search and AI crawlers</span> can access a URL. Follows Google&apos;s matching rules: longest path wins, Allow beats Disallow on ties, * and $ wildcards supported.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr auto', gap: '0.75rem', alignItems: 'end', marginBottom: '1rem' }}>
+              <div>
+                <label className="tool-box-label" htmlFor="tester-site">Website</label>
+                <input
+                  type="text"
+                  id="tester-site"
+                  className="tool-url-input"
+                  value={testerSite}
+                  onChange={(e) => setTesterSite(e.target.value)}
+                  placeholder="example.com"
+                />
+              </div>
+              <div>
+                <label className="tool-box-label" htmlFor="tester-path">URL path to test</label>
+                <input
+                  type="text"
+                  id="tester-path"
+                  className="tool-url-input"
+                  value={testerPath}
+                  onChange={(e) => setTesterPath(e.target.value)}
+                  placeholder="/blog/my-post/"
+                />
+              </div>
+              <button
+                onClick={runLiveTest}
+                disabled={testerLoading}
+                className="tool-analyze-btn"
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                <div className="tool-analyze-btn-dot" />
+                {testerLoading ? 'Fetching…' : 'Test Access'}
+              </button>
+            </div>
+
+            {testerError && (
+              <div style={{ marginBottom: '1rem', padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', fontSize: '0.85rem', color: 'var(--red)' }}>
+                {testerError}
+              </div>
+            )}
+
+            {testerResults.length > 0 && (
+              <div>
+                {/* Summary strip */}
+                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1rem', padding: '10px 14px', background: 'var(--gray-1)', border: '1px solid var(--line)' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    <strong style={{ color: 'var(--green)' }}>{testerResults.filter(r => r.allowed).length}</strong> allowed
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    <strong style={{ color: 'var(--red)' }}>{testerResults.filter(r => !r.allowed).length}</strong> blocked
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    AI crawlers blocked: <strong style={{ color: testerResults.filter(r => r.kind === 'AI' && !r.allowed).length > 0 ? 'var(--amber)' : 'var(--green)' }}>
+                      {testerResults.filter(r => r.kind === 'AI' && !r.allowed).length} / {testerResults.filter(r => r.kind === 'AI').length}
+                    </strong>
+                  </span>
+                </div>
+
+                {/* Bot access matrix */}
+                <div style={{ border: '1px solid var(--line)', overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 560 }}>
+                    <thead>
+                      <tr style={{ background: 'var(--ink)' }}>
+                        {['Crawler', 'Type', 'Access', 'Matched Rule'].map((h, j) => (
+                          <th key={h} style={{ textAlign: 'left', padding: '9px 14px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#fff', borderRight: j < 3 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {testerResults.map((r, i) => (
+                        <tr key={r.name} style={{ borderBottom: i < testerResults.length - 1 ? '1px solid var(--line)' : 'none' }}>
+                          <td style={{ padding: '8px 14px', fontSize: '0.82rem', fontWeight: 700, color: 'var(--ink)', fontFamily: 'JetBrains Mono, monospace' }}>{r.name}</td>
+                          <td style={{ padding: '8px 14px', fontSize: '0.78rem', color: 'var(--gray-5)' }}>{r.kind}</td>
+                          <td style={{ padding: '8px 14px' }}>
+                            <span style={{
+                              padding: '2px 8px', fontSize: '0.72rem', fontWeight: 700,
+                              background: r.allowed ? 'rgba(22,163,74,0.12)' : 'rgba(220,38,38,0.12)',
+                              color: r.allowed ? 'var(--green)' : 'var(--red)'
+                            }}>
+                              {r.allowed ? '✓ Allowed' : '✗ Blocked'}
+                            </span>
+                          </td>
+                          <td style={{ padding: '8px 14px', fontSize: '0.75rem', color: 'var(--gray-4)', fontFamily: 'JetBrains Mono, monospace' }}>{r.matchedRule}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Fetched file preview */}
+                {testerFile && (
+                  <details style={{ marginTop: '1rem' }}>
+                    <summary style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--gray-5)', cursor: 'pointer' }}>
+                      View fetched robots.txt ({testerFile.split('\n').length} lines)
+                    </summary>
+                    <div style={{ background: '#111318', padding: '1rem 1.25rem', marginTop: '0.5rem', maxHeight: 260, overflowY: 'auto' }}>
+                      <pre style={{ color: '#86efac', margin: 0, fontSize: '0.75rem', fontFamily: 'JetBrains Mono, monospace', whiteSpace: 'pre-wrap' }}>{testerFile}</pre>
+                    </div>
+                  </details>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* --- FOUNDER QUOTE --- */}
@@ -762,6 +1046,7 @@ export default function RobotsTxtGeneratorClient() {
           <div className="prose-content">
             <p>A robots.txt file fails silently, nothing errors, pages just quietly drop out of crawling. Always verify after uploading:</p>
             <ul>
+              <li><strong>Use the live tester above:</strong> enter your domain and any URL path, and the built-in robots.txt tester fetches your live file and shows exactly which search and AI crawlers can access it, with the matching rule for each. Google retired its standalone tester; this one follows the same matching logic.</li>
               <li><strong>Check it loads:</strong> visit <code style={{ background: 'var(--gray-2)', padding: '2px 6px', fontSize: '0.85em' }}>yoursite.com/robots.txt</code> in a browser. You should see exactly the file you generated, not a plugin default or a 404.</li>
               <li><strong>Test in Search Console:</strong> Google Search Console&apos;s robots.txt report (Settings → robots.txt) shows the fetched file, when it was last crawled, and any parse errors, line by line.</li>
               <li><strong>Spot-check critical URLs:</strong> use the URL Inspection tool on your homepage, a key product page, and a CSS file. All three should show &ldquo;Crawl allowed: Yes.&rdquo;</li>
