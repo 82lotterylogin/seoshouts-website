@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import ShapeGrid from '../../components/ShapeGrid'
+import { parseRobotsTxt, checkBotAccess, AI_CRAWLER_BOTS } from '../../lib/robots-parser'
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -58,7 +59,7 @@ const FAQ_ITEMS = [
 // The 7 weighted audit categories (points sum to 100). Used by the score-composition explorer.
 const AUDIT_CATEGORIES = [
   { id: 'schema',      title: '1. Schema Markup',                    pts: 20, text: "Schema markup is the single highest-impact signal for AI search readiness. AI models are trained to recognize Schema.org vocabulary as authoritative metadata about your page. This category checks for FAQPage schema (the most impactful for AI answer extraction), Organization schema with entity signals, BreadcrumbList for hierarchy understanding, Article schema with author attribution, and HowTo or SoftwareApplication for tool and tutorial pages. Pages with comprehensive schema markup are cited in Google AI Overviews at rates 3–4x higher than pages with no schema (Conductor, 2025)." },
-  { id: 'ai-crawl',   title: '2. AI Crawler Access',                pts: 18, text: "Your content cannot be cited by AI if AI crawlers cannot access it. This category checks whether major AI bots are blocked at the page level via meta robots tags or X-Robots-Tag headers, whether a canonical tag is present to prevent duplicate content confusion, whether the page is HTTPS (a baseline trust signal), and whether an llms.txt file is referenced — the emerging standard for telling AI models what a site is about." },
+  { id: 'ai-crawl',   title: '2. AI Crawler Access',                pts: 18, text: "Your content cannot be cited by AI if AI crawlers cannot access it. This category fetches your site's live robots.txt and tests all 12 major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot and more) against it for this page, checks page-level blocks via meta robots tags or X-Robots-Tag headers, verifies a canonical tag is present, confirms HTTPS, and checks whether a real /llms.txt file is served at the domain root — the emerging standard for telling AI models what a site is about." },
   { id: 'content',    title: '3. Content Structure for AI Extraction', pts: 18, text: "AI models extract answers from content that is structured for extraction. This category checks for a direct answer capsule in the first 300 characters, question-format H2/H3 headings, presence of data and statistics, appropriate paragraph length (under 120 words), comparison tables, and minimum content depth (500+ words). The key insight: AI models do not read content the way humans do. They parse structure." },
   { id: 'eeat',       title: '4. E-E-A-T Signals',                  pts: 15, text: "Google's E-E-A-T framework (Experience, Expertise, Authoritativeness, Trustworthiness) governs both traditional ranking and AI citation eligibility. This category checks for visible author attribution, author schema with Person type, explicit expertise or credential mentions, links to About/Team pages, external citations and references, publication dates, contact information, and legal page links." },
   { id: 'faq',        title: '5. FAQ & Q&A Readiness',              pts: 12, text: "FAQs are the highest-ROI content format for AI citation. AI models are specifically designed to match user questions to pages that answer them. This category checks for FAQPage schema with 3+ Q&A pairs, a visual FAQ section in the HTML, question-format headings throughout the content, and substantive answers (50+ words each) in the FAQ schema." },
@@ -114,25 +115,39 @@ function analyzeSchema(html: string): Category {
   return { id: 'schema', name: 'Schema Markup', score: calculateCategoryScore(checks, 20), weight: 20, checks }
 }
 
-function analyzeAiCrawlerAccess(html: string, headers: Record<string, string>): Category {
+function analyzeAiCrawlerAccess(
+  html: string,
+  headers: Record<string, string>,
+  robotsTxt: string | null,
+  llmsTxtExists: boolean,
+  pagePath: string
+): Category {
   const metaRobotsMatch = html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)
   const metaRobots = metaRobotsMatch ? metaRobotsMatch[1].toLowerCase() : ''
   const xRobotsTag = (headers['x-robots-tag'] || '').toLowerCase()
   const isNoindex = metaRobots.includes('noindex') || xRobotsTag.includes('noindex')
   const isNofollow = metaRobots.includes('nofollow') || xRobotsTag.includes('nofollow')
-  const hasLlmsTxtRef = html.includes('llms.txt')
-  const hasGptBot = html.includes('gptbot') && html.includes('noindex')
-  const hasClaudeBot = html.includes('claudebot') && html.includes('noindex')
   const canonicalMatch = html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)
   const hasCanonical = !!canonicalMatch
   const canonicalUrl = canonicalMatch ? canonicalMatch[1] : null
+
+  // Real robots.txt audit: test every major AI crawler against the live file
+  let blockedAiBots: string[] = []
+  let robotsDetail = 'No robots.txt found — all AI crawlers allowed by default'
+  if (robotsTxt !== null) {
+    const groups = parseRobotsTxt(robotsTxt)
+    blockedAiBots = AI_CRAWLER_BOTS.filter(bot => !checkBotAccess(groups, bot, pagePath).allowed)
+    robotsDetail = blockedAiBots.length === 0
+      ? `robots.txt allows all ${AI_CRAWLER_BOTS.length} major AI crawlers for this page`
+      : `Blocked in robots.txt: ${blockedAiBots.join(', ')}`
+  }
 
   const checks: Check[] = [
     { label: 'Page is indexable (no noindex)', passed: !isNoindex, impact: 'high', detail: isNoindex ? `Page is blocked: ${metaRobots || xRobotsTag}` : 'Page is indexable', fix: 'Remove noindex directive if you want AI crawlers to access this page.' },
     { label: 'Page allows link following (no nofollow)', passed: !isNofollow, impact: 'medium', detail: isNofollow ? 'Nofollow detected — limits AI content graph traversal' : 'Follow enabled', fix: 'Consider whether nofollow on this page is intentional.' },
     { label: 'Canonical tag present', passed: hasCanonical, impact: 'high', detail: hasCanonical ? `Canonical: ${canonicalUrl}` : 'No canonical tag found', fix: 'Add a canonical tag to prevent duplicate content confusion for AI models.' },
-    { label: 'llms.txt file referenced or known', passed: hasLlmsTxtRef, impact: 'medium', detail: hasLlmsTxtRef ? 'llms.txt reference detected' : 'No llms.txt reference found on page', fix: 'Create a /llms.txt file at your domain root to guide AI models about your site.' },
-    { label: 'No AI-specific bot blocks on page level', passed: !hasGptBot && !hasClaudeBot, impact: 'high', detail: hasGptBot || hasClaudeBot ? 'AI bot noindex directive found — check if intentional' : 'No AI-specific blocks detected at page level', fix: 'If you want AI citations, ensure major AI crawlers (GPTBot, ClaudeBot, PerplexityBot) are allowed.' },
+    { label: 'llms.txt file exists at domain root', passed: llmsTxtExists, impact: 'medium', detail: llmsTxtExists ? '/llms.txt found and served' : 'No /llms.txt file at the domain root', fix: 'Create a /llms.txt file at your domain root to guide AI models about your site.' },
+    { label: 'AI crawlers allowed in robots.txt', passed: blockedAiBots.length === 0, impact: 'high', detail: robotsDetail, fix: 'Unblock GPTBot, ClaudeBot, PerplexityBot and other AI crawlers in robots.txt if you want AI citations. Test with our Robots.txt Tester.' },
     { label: 'HTTPS protocol in use', passed: !!(hasCanonical && canonicalUrl && canonicalUrl.startsWith('https://')), impact: 'medium', detail: 'AI models and search engines prioritize secure pages', fix: 'Ensure the site is served over HTTPS and canonical points to HTTPS URL.' },
   ]
   return { id: 'ai-crawl', name: 'AI Crawler Access', score: calculateCategoryScore(checks, 18), weight: 18, checks }
@@ -331,11 +346,32 @@ export default function GeoAeoCheckerClient() {
     setLoading(true); setError(''); setResults(null); setActiveCategory(null)
     try {
       const normalizedUrl = url.trim().startsWith('http') ? url.trim() : `https://${url.trim()}`
-      const res = await fetch('/api/fetch-page', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: normalizedUrl }) })
-      const data = await res.json()
-      if (data.error) throw new Error(data.error)
+
+      // Fetch the page plus the site's robots.txt and llms.txt in parallel
+      const fetchViaProxy = (u: string) =>
+        fetch('/api/fetch-page', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: u }) })
+          .then(r => r.json())
+          .catch(() => null)
+
+      const robotsUrl = new URL('/robots.txt', normalizedUrl).href
+      const llmsUrl = new URL('/llms.txt', normalizedUrl).href
+      const [data, robotsData, llmsData] = await Promise.all([
+        fetchViaProxy(normalizedUrl),
+        fetchViaProxy(robotsUrl),
+        fetchViaProxy(llmsUrl),
+      ])
+
+      if (!data || data.error) throw new Error(data?.error || 'Failed to fetch the page')
       const { html, headers, finalUrl } = data
-      const categories = [analyzeSchema(html), analyzeAiCrawlerAccess(html, headers), analyzeContentStructure(html), analyzeEeat(html), analyzeFaq(html), analyzeTechnical(html, headers), analyzePerformance(html, headers)]
+
+      const robotsTxt: string | null =
+        robotsData && !robotsData.error && robotsData.status === 200 && typeof robotsData.html === 'string'
+          ? robotsData.html
+          : null
+      const llmsTxtExists = !!(llmsData && !llmsData.error && llmsData.status === 200 && typeof llmsData.html === 'string' && llmsData.html.trim().length > 0 && !/^\s*</.test(llmsData.html))
+      const pagePath = new URL(finalUrl || normalizedUrl).pathname || '/'
+
+      const categories = [analyzeSchema(html), analyzeAiCrawlerAccess(html, headers, robotsTxt, llmsTxtExists, pagePath), analyzeContentStructure(html), analyzeEeat(html), analyzeFaq(html), analyzeTechnical(html, headers), analyzePerformance(html, headers)]
       const overallScore = calculateOverallScore(categories)
       const { grade, label, color } = getGrade(overallScore)
       const allChecks = categories.flatMap((c) => c.checks)
