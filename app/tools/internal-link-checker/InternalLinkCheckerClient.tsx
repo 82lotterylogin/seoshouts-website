@@ -47,6 +47,110 @@ interface AnalysisResult {
   }>;
 }
 
+// ── Internal link equity (PageRank) ─────────────────────────────────────────
+// Classic PageRank iteration over the crawled content-link graph. Nav/footer
+// links are already stripped by the crawler, so this measures editorial link
+// equity — the signal that actually differentiates pages.
+
+interface EquityRow {
+  url: string
+  title: string
+  equity: number       // 0-100, top page = 100
+  inbound: number      // distinct pages linking here
+  depth: number | null // clicks from the start URL; null = unreachable via content links
+  orphan: boolean      // crawled but zero inbound content links
+}
+
+function normalizeUrlKey(u: string): string {
+  try {
+    const parsed = new URL(u)
+    return (parsed.origin + parsed.pathname).replace(/\/+$/, '').toLowerCase() || parsed.origin.toLowerCase()
+  } catch {
+    return u.replace(/\/+$/, '').toLowerCase()
+  }
+}
+
+function computeLinkEquity(results: AnalysisResult): EquityRow[] {
+  const nodeInfo = new Map<string, { url: string; title: string }>()
+  results.crawledPages.forEach(p => {
+    if (!p.error) nodeInfo.set(normalizeUrlKey(p.url), { url: p.url, title: p.title })
+  })
+  const nodes = Array.from(nodeInfo.keys())
+  if (nodes.length === 0) return []
+
+  // Edges from anchors: every source page -> every destination of that anchor
+  const outLinks = new Map<string, Set<string>>()
+  const inLinks = new Map<string, Set<string>>()
+  results.anchors.forEach(anchor => {
+    const dests = (anchor.destinations?.map(d => d.href) || anchor.href.split(', '))
+      .map(normalizeUrlKey)
+      .filter(d => nodeInfo.has(d))
+    anchor.pages.forEach(srcRaw => {
+      const src = normalizeUrlKey(srcRaw)
+      if (!nodeInfo.has(src)) return
+      dests.forEach(dst => {
+        if (src === dst) return
+        if (!outLinks.has(src)) outLinks.set(src, new Set())
+        outLinks.get(src)!.add(dst)
+        if (!inLinks.has(dst)) inLinks.set(dst, new Set())
+        inLinks.get(dst)!.add(src)
+      })
+    })
+  })
+
+  // PageRank: d=0.85, 30 iterations, dangling mass redistributed evenly
+  const N = nodes.length
+  const d = 0.85
+  let rank = new Map<string, number>(nodes.map(n => [n, 1 / N]))
+  for (let iter = 0; iter < 30; iter++) {
+    const next = new Map<string, number>(nodes.map(n => [n, (1 - d) / N]))
+    let danglingMass = 0
+    nodes.forEach(n => {
+      const outs = outLinks.get(n)
+      const r = rank.get(n)!
+      if (!outs || outs.size === 0) {
+        danglingMass += r
+      } else {
+        const share = (d * r) / outs.size
+        outs.forEach(dst => next.set(dst, next.get(dst)! + share))
+      }
+    })
+    const danglingShare = (d * danglingMass) / N
+    nodes.forEach(n => next.set(n, next.get(n)! + danglingShare))
+    rank = next
+  }
+
+  // Click depth: BFS from the start URL over content links
+  const startKey = normalizeUrlKey(results.baseUrl)
+  const depth = new Map<string, number>()
+  if (nodeInfo.has(startKey)) {
+    depth.set(startKey, 0)
+    const queue = [startKey]
+    while (queue.length > 0) {
+      const cur = queue.shift()!
+      const curDepth = depth.get(cur)!
+      outLinks.get(cur)?.forEach(dst => {
+        if (!depth.has(dst)) {
+          depth.set(dst, curDepth + 1)
+          queue.push(dst)
+        }
+      })
+    }
+  }
+
+  const maxRank = Math.max(...Array.from(rank.values()))
+  return nodes
+    .map(n => ({
+      url: nodeInfo.get(n)!.url,
+      title: nodeInfo.get(n)!.title,
+      equity: maxRank > 0 ? Math.round((rank.get(n)! / maxRank) * 100) : 0,
+      inbound: inLinks.get(n)?.size || 0,
+      depth: depth.has(n) ? depth.get(n)! : null,
+      orphan: (inLinks.get(n)?.size || 0) === 0 && n !== startKey,
+    }))
+    .sort((a, b) => b.equity - a.equity)
+}
+
 interface ProgressStep {
   step: string;
   status: 'in_progress' | 'completed' | 'failed';
@@ -72,7 +176,7 @@ export default function InternalLinkCheckerClient() {
   const [results, setResults] = useState<AnalysisResult | null>(null)
   const [error, setError] = useState('')
   const [progress, setProgress] = useState('')
-  const [activeTab, setActiveTab] = useState<'cloud' | 'table' | 'pages' | 'no-links'>('cloud')
+  const [activeTab, setActiveTab] = useState<'cloud' | 'table' | 'pages' | 'no-links' | 'equity'>('cloud')
   const resultsPanelRef = useRef<HTMLDivElement>(null)
 
   // State for multi-step workflow
@@ -566,6 +670,7 @@ export default function InternalLinkCheckerClient() {
                 {[
                   { key: 'cloud', label: 'Word Cloud' },
                   { key: 'table', label: 'Data Table' },
+                  { key: 'equity', label: 'Link Equity' },
                   { key: 'pages', label: `All Pages (${results.insights.pagesCrawled})` },
                   { key: 'no-links', label: `No Links (${results.pagesWithNoLinks?.length || 0})` },
                 ].map(tab => (
@@ -582,6 +687,60 @@ export default function InternalLinkCheckerClient() {
                 {activeTab === 'table' && (
                   <InternalLinkDataTable anchors={groupAnchors(results.anchors)} insights={results.insights} />
                 )}
+                {activeTab === 'equity' && (() => {
+                  const equityRows = computeLinkEquity(results)
+                  const orphans = equityRows.filter(r => r.orphan)
+                  const deep = equityRows.filter(r => r.depth !== null && r.depth > 3)
+                  return (
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: 8 }}>
+                        <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, color: 'var(--ink)', fontSize: '1.05rem' }}>Internal Link Equity (PageRank)</h3>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--gray-4)' }}>
+                          {equityRows.length} pages · <span style={{ color: orphans.length > 0 ? 'var(--red)' : 'var(--green)', fontWeight: 600 }}>{orphans.length} orphans</span> · {deep.length} deeper than 3 clicks
+                        </div>
+                      </div>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1rem', lineHeight: 1.5 }}>
+                        Computed by running the PageRank algorithm on your crawled content-link graph (navigation links excluded). Equity 100 = your strongest page. Orphans receive no editorial links at all; pages deeper than 3 clicks rarely rank well.
+                      </p>
+                      <div style={{ border: '1px solid var(--line)', overflowX: 'auto', maxHeight: 420, overflowY: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 560 }}>
+                          <thead>
+                            <tr style={{ background: 'var(--ink)', position: 'sticky', top: 0, zIndex: 1 }}>
+                              {['Equity', 'Page', 'Inbound', 'Depth'].map((h, j) => (
+                                <th key={h} style={{ textAlign: 'left', padding: '9px 14px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#fff', borderRight: j < 3 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>{h}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {equityRows.map((row, i) => (
+                              <tr key={i} style={{ borderBottom: i < equityRows.length - 1 ? '1px solid var(--line)' : 'none', background: row.orphan ? 'rgba(220,38,38,0.04)' : 'transparent' }}>
+                                <td style={{ padding: '8px 14px', minWidth: 110 }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <div style={{ width: 44, height: 5, background: 'var(--gray-2)', flexShrink: 0 }}>
+                                      <div style={{ width: `${row.equity}%`, height: '100%', background: row.equity >= 50 ? 'var(--green)' : row.equity >= 15 ? 'var(--amber)' : 'var(--red)' }} />
+                                    </div>
+                                    <span style={{ fontSize: '0.78rem', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: 'var(--ink)' }}>{row.equity}</span>
+                                  </div>
+                                </td>
+                                <td style={{ padding: '8px 14px', maxWidth: 380 }}>
+                                  <div style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--ink)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {row.title || 'Untitled'}
+                                    {row.orphan && <span style={{ marginLeft: 8, padding: '1px 6px', fontSize: '0.65rem', fontWeight: 700, background: 'rgba(220,38,38,0.12)', color: 'var(--red)' }}>ORPHAN</span>}
+                                  </div>
+                                  <div style={{ fontSize: '0.7rem', color: 'var(--gray-4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.url}</div>
+                                </td>
+                                <td style={{ padding: '8px 14px', fontSize: '0.8rem', fontFamily: 'JetBrains Mono, monospace', color: row.inbound === 0 ? 'var(--red)' : 'var(--gray-5)' }}>{row.inbound}</td>
+                                <td style={{ padding: '8px 14px', fontSize: '0.8rem', fontFamily: 'JetBrains Mono, monospace', color: row.depth === null ? 'var(--red)' : row.depth > 3 ? 'var(--amber)' : 'var(--gray-5)' }}>
+                                  {row.depth === null ? '—' : row.depth}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )
+                })()}
                 {activeTab === 'pages' && (
                   <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: 8 }}>

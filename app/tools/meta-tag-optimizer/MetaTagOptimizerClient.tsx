@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import ShapeGrid from '../../components/ShapeGrid'
 
@@ -96,6 +96,32 @@ export default function MetaTagOptimizerClient() {
   const titleStatus = getTitleStatus()
   const descriptionStatus = getDescriptionStatus()
 
+  // Pixel-width measurement — Google truncates titles at ~600px (desktop) and
+  // descriptions at ~920px, rendered in Arial. Canvas measureText gives the
+  // real cut point; character counts are only an approximation.
+  const TITLE_PX_LIMIT = 600
+  const DESC_PX_LIMIT = 920
+  const [titlePx, setTitlePx] = useState(0)
+  const [descPx, setDescPx] = useState(0)
+
+  useEffect(() => {
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    ctx.font = '20px Arial'
+    setTitlePx(Math.round(ctx.measureText(form.title).width))
+    ctx.font = '14px Arial'
+    setDescPx(Math.round(ctx.measureText(form.description).width))
+  }, [form.title, form.description])
+
+  const pxMeter = (px: number, limit: number) => ({
+    pct: Math.min(100, (px / limit) * 100),
+    over: px > limit,
+    color: px > limit ? 'var(--red)' : px > limit * 0.9 ? 'var(--amber)' : 'var(--green)',
+  })
+  const titleMeter = pxMeter(titlePx, TITLE_PX_LIMIT)
+  const descMeter = pxMeter(descPx, DESC_PX_LIMIT)
+
   const statusColor = (tailwindColor: string) => {
     if (tailwindColor === 'text-green-600') return 'var(--green)'
     if (tailwindColor === 'text-yellow-600') return 'var(--amber)'
@@ -157,9 +183,21 @@ export default function MetaTagOptimizerClient() {
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="Enter your page title..."
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', marginTop: '0.35rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.35rem' }}>
               <span style={{ fontSize: '0.78rem', color: statusColor(titleStatus.color) }}>{titleStatus.message}</span>
               <span style={{ fontSize: '0.78rem', color: 'var(--gray-4)', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600 }}>{form.title.length}/60</span>
+            </div>
+            {/* Pixel-width meter — how Google actually truncates */}
+            <div style={{ marginBottom: '1.25rem', marginTop: '0.3rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--gray-4)' }}>Pixel width (Google truncates at ~{TITLE_PX_LIMIT}px)</span>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: titleMeter.color }}>
+                  {titlePx}px{titleMeter.over ? ' — will be cut' : ''}
+                </span>
+              </div>
+              <div style={{ height: 4, background: 'var(--gray-2)', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${titleMeter.pct}%`, background: titleMeter.color, transition: 'width 0.15s' }} />
+              </div>
             </div>
 
             {/* Meta Description */}
@@ -176,9 +214,21 @@ export default function MetaTagOptimizerClient() {
                 color: 'var(--ink)', outline: 'none', lineHeight: 1.6, marginBottom: '0.35rem'
               }}
             />
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.78rem', color: statusColor(descriptionStatus.color) }}>{descriptionStatus.message}</span>
               <span style={{ fontSize: '0.78rem', color: 'var(--gray-4)', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600 }}>{form.description.length}/160</span>
+            </div>
+            {/* Pixel-width meter */}
+            <div style={{ marginBottom: '1.25rem', marginTop: '0.3rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--gray-4)' }}>Pixel width (Google truncates at ~{DESC_PX_LIMIT}px)</span>
+                <span style={{ fontSize: '0.7rem', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace', color: descMeter.color }}>
+                  {descPx}px{descMeter.over ? ' — will be cut' : ''}
+                </span>
+              </div>
+              <div style={{ height: 4, background: 'var(--gray-2)', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${descMeter.pct}%`, background: descMeter.color, transition: 'width 0.15s' }} />
+              </div>
             </div>
 
             {/* Keywords */}
