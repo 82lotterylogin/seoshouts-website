@@ -286,10 +286,82 @@ export default function HtaccessGeneratorClient() {
   const [generatedCode, setGeneratedCode] = useState('')
   const [copySuccess, setCopySuccess] = useState(false)
 
+  // Redirect tester state
+  const [rtTestPath, setRtTestPath] = useState('')
+  const [rtResult, setRtResult] = useState<{
+    hops: Array<{ from: string; to: string; type: string; rule: string }>
+    loop: boolean
+    final: string
+  } | null>(null)
+  const [rtError, setRtError] = useState('')
+
   const validRedirectCount = useMemo(
     () => redirects.filter((r) => r.from.trim() && r.to.trim()).length,
     [redirects]
   )
+
+  // Simulate the configured Redirect rules against a test path.
+  // Mirrors Apache mod_alias: first matching rule in file order wins, the
+  // from-path matches complete URL segments as a prefix, and the remaining
+  // suffix (plus query string) is appended to the target.
+  const simulateRedirects = () => {
+    setRtError('')
+    setRtResult(null)
+
+    const validRules = redirects.filter((r) => r.from.trim() && r.to.trim())
+    if (validRules.length === 0) {
+      setRtError('Add at least one redirect rule above (From + To), then test it here.')
+      return
+    }
+
+    let path = rtTestPath.trim()
+    if (!path) {
+      setRtError('Enter a URL path to test, e.g. /old-page/')
+      return
+    }
+    // Accept full URLs too — simulate against the path portion
+    if (/^https?:\/\//i.test(path)) {
+      try { const u = new URL(path); path = u.pathname + u.search } catch { /* keep as typed */ }
+    }
+    if (!path.startsWith('/')) path = '/' + path
+
+    const normalizeFrom = (from: string): string => {
+      let f = from.trim()
+      if (/^https?:\/\//i.test(f)) {
+        try { f = new URL(f).pathname } catch { /* keep */ }
+      }
+      return f.length > 1 ? f.replace(/\/+$/, '') : f
+    }
+
+    const hops: Array<{ from: string; to: string; type: string; rule: string }> = []
+    const seen = new Set([path])
+    let loop = false
+
+    for (let i = 0; i < 10; i++) {
+      const [pathOnly, query] = path.includes('?') ? [path.split('?')[0], '?' + path.split('?').slice(1).join('?')] : [path, '']
+
+      const rule = validRules.find((r) => {
+        const from = normalizeFrom(r.from)
+        return pathOnly === from || pathOnly === from + '/' || pathOnly.startsWith(from === '/' ? '/' : from + '/')
+      })
+      if (!rule) break
+
+      const from = normalizeFrom(rule.from)
+      const suffix = from === '/' ? pathOnly : pathOnly.slice(from.length)
+      const target = rule.to.trim()
+      const isExternal = /^https?:\/\//i.test(target)
+      const next = (suffix && suffix !== '/' ? target.replace(/\/+$/, '') + suffix : target) + query
+
+      hops.push({ from: path, to: next, type: rule.type, rule: `Redirect ${rule.type} ${rule.from.trim()} ${target}` })
+
+      if (seen.has(next)) { loop = true; path = next; break }
+      seen.add(next)
+      path = next
+      if (isExternal) break // browser leaves this .htaccess after an absolute redirect
+    }
+
+    setRtResult({ hops, loop, final: path })
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -840,6 +912,85 @@ export default function HtaccessGeneratorClient() {
             <div style={{ marginTop: '0.75rem', padding: '0.75rem 1rem', border: '1px solid var(--amber)', background: 'rgba(245,158,11,0.07)', fontSize: '0.8rem', color: 'var(--ink)', lineHeight: 1.5 }}>
               <strong>Warning:</strong> Test your site immediately after upload. A syntax error can trigger a site-wide 500 error.
             </div>
+          </div>
+        </div>
+
+        {/* ── REDIRECT TESTER ── */}
+        <div style={{ maxWidth: 1360, margin: '1.5rem auto 0' }}>
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Redirect Tester — Simulate Before You Deploy</h2>
+            <p className="tool-box-sub">
+              Enter any URL path and see exactly how the <span>redirect rules you configured above</span> will handle it: final destination, status codes, redirect chains, and loops — before the file ever touches your server.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.75rem', alignItems: 'end', marginBottom: '1rem' }}>
+              <div>
+                <label className="tool-box-label" htmlFor="rt-test-path">URL path to test</label>
+                <input
+                  type="text"
+                  id="rt-test-path"
+                  className="tool-url-input"
+                  value={rtTestPath}
+                  onChange={(e) => setRtTestPath(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') simulateRedirects() }}
+                  placeholder="/old-page/some-article?utm_source=x"
+                />
+              </div>
+              <button onClick={simulateRedirects} className="tool-analyze-btn" style={{ whiteSpace: 'nowrap' }}>
+                <div className="tool-analyze-btn-dot" />
+                Simulate
+              </button>
+            </div>
+
+            {rtError && (
+              <div style={{ marginBottom: '1rem', padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', fontSize: '0.85rem', color: 'var(--red)' }}>
+                {rtError}
+              </div>
+            )}
+
+            {rtResult && (
+              <div>
+                {rtResult.hops.length === 0 ? (
+                  <div style={{ padding: '12px 16px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', fontSize: '0.85rem', color: 'var(--green)', fontWeight: 600 }}>
+                    ✓ No redirect rule matches this path — the URL serves as-is (200).
+                  </div>
+                ) : (
+                  <div>
+                    {/* Chain visualization */}
+                    <div style={{ border: '1px solid var(--line)', background: 'var(--gray-1)', padding: '1rem 1.25rem', fontFamily: 'JetBrains Mono, monospace', fontSize: '0.82rem', lineHeight: 2 }}>
+                      {rtResult.hops.map((hop, i) => (
+                        <div key={i}>
+                          <span style={{ color: 'var(--ink)' }}>{hop.from}</span>
+                          <span style={{ color: 'var(--amber)', fontWeight: 700 }}> → {hop.type} → </span>
+                          <span style={{ color: i === rtResult.hops.length - 1 && !rtResult.loop ? 'var(--green)' : 'var(--ink)' }}>{hop.to}</span>
+                          <span style={{ color: 'var(--gray-4)', fontSize: '0.72rem' }}>  ({hop.rule})</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Verdicts */}
+                    {rtResult.loop && (
+                      <div style={{ marginTop: '0.75rem', padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.25)', fontSize: '0.85rem', color: 'var(--red)' }}>
+                        <strong>✗ Redirect loop detected.</strong> This URL never resolves — browsers will show ERR_TOO_MANY_REDIRECTS. Fix the rule that points back into the chain.
+                      </div>
+                    )}
+                    {!rtResult.loop && rtResult.hops.length > 1 && (
+                      <div style={{ marginTop: '0.75rem', padding: '10px 14px', background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.25)', fontSize: '0.85rem', color: 'var(--ink)' }}>
+                        <strong>⚠ Redirect chain ({rtResult.hops.length} hops).</strong> Each hop leaks link equity and adds latency. Point the first rule directly at <code style={{ fontFamily: 'JetBrains Mono, monospace' }}>{rtResult.final}</code>.
+                      </div>
+                    )}
+                    {!rtResult.loop && rtResult.hops.length === 1 && (
+                      <div style={{ marginTop: '0.75rem', padding: '10px 14px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', fontSize: '0.85rem', color: 'var(--green)', fontWeight: 600 }}>
+                        ✓ Clean single-hop {rtResult.hops[0].type} redirect to {rtResult.final}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <p style={{ marginTop: '0.75rem', fontSize: '0.72rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>
+                  Simulates the Redirect rules configured in this generator (Apache mod_alias prefix matching, first match wins, suffix and query string preserved). RewriteRule directives from CMS presets are not simulated.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

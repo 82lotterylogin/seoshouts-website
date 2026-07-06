@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     const response = await fetch(url, {
       headers: {
         'User-Agent': 'SEOShoutsSEOBot/1.0 (+https://seoshouts.com/tools/geo-aeo-checker/)',
-        Accept: 'text/html,application/xhtml+xml',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,text/xml;q=0.9,text/plain;q=0.8,*/*;q=0.7',
         'Accept-Language': 'en-US,en;q=0.9',
       },
       redirect: 'follow',

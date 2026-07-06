@@ -33,6 +33,82 @@ export default function XmlSitemapGeneratorClient() {
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
 
+  // Sitemap validator state
+  const [valUrl, setValUrl] = useState('')
+  const [valLoading, setValLoading] = useState(false)
+  const [valError, setValError] = useState('')
+  const [valProgress, setValProgress] = useState('')
+  const [valResults, setValResults] = useState<Array<{ url: string; status: number; ok: boolean; redirected: boolean; finalUrl: string; error?: string }>>([])
+  const [valMeta, setValMeta] = useState<{ totalInSitemap: number; checked: number; isIndex: boolean } | null>(null)
+
+  // Validate an existing sitemap: fetch it, extract <loc> URLs, status-check them
+  const validateSitemap = async () => {
+    setValError(''); setValResults([]); setValMeta(null)
+
+    let sitemapUrl = valUrl.trim()
+    if (!sitemapUrl) { setValError('Enter a sitemap URL, e.g. example.com/sitemap.xml'); return }
+    if (!/^https?:\/\//i.test(sitemapUrl)) sitemapUrl = 'https://' + sitemapUrl
+
+    setValLoading(true)
+    try {
+      setValProgress('Fetching sitemap…')
+      const fetchXml = async (u: string): Promise<string> => {
+        const res = await fetch('/api/fetch-page', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: u }),
+        })
+        const data = await res.json()
+        if (!res.ok || data.error) throw new Error(data.error || 'Could not fetch the sitemap')
+        if (data.status >= 400) throw new Error(`Sitemap returned HTTP ${data.status}`)
+        return data.html as string
+      }
+
+      let xml = await fetchXml(sitemapUrl)
+      let isIndex = /<sitemapindex/i.test(xml)
+
+      if (isIndex) {
+        // Sitemap index: follow the first child sitemap
+        const childLocs = Array.from(xml.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi)).map(m => m[1].trim())
+        if (childLocs.length === 0) throw new Error('Sitemap index contains no child sitemaps')
+        setValProgress(`Sitemap index with ${childLocs.length} child sitemaps — validating the first one…`)
+        xml = await fetchXml(childLocs[0])
+      }
+
+      const locs = Array.from(xml.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi))
+        .map(m => m[1].trim())
+        .filter(u => /^https?:\/\//i.test(u))
+
+      if (locs.length === 0) {
+        throw new Error('No <loc> URLs found — is this a valid XML sitemap?')
+      }
+
+      const toCheck = locs.slice(0, 50)
+      setValProgress(`Checking ${toCheck.length} of ${locs.length} URLs…`)
+
+      const checkRes = await fetch('/api/check-urls', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: toCheck }),
+      })
+      const checkData = await checkRes.json()
+      if (!checkRes.ok || checkData.error) throw new Error(checkData.error || 'URL checking failed')
+
+      // Problems first: errors, then 4xx/5xx, then redirects, then OK
+      const rank = (r: any) => (r.error || r.status === 0 ? 0 : r.status >= 400 ? 1 : r.redirected ? 2 : 3)
+      const sorted = [...checkData.results].sort((a: any, b: any) => rank(a) - rank(b))
+
+      setValResults(sorted)
+      setValMeta({ totalInSitemap: locs.length, checked: sorted.length, isIndex })
+      setValProgress('')
+    } catch (err: any) {
+      setValError(err.message || 'Validation failed. Check the sitemap URL and try again.')
+      setValProgress('')
+    } finally {
+      setValLoading(false)
+    }
+  }
+
   // CAPTCHA states
   const [isVerified, setIsVerified] = useState(false)
   const [captchaValue, setCaptchaValue] = useState<string | null>(null)
@@ -573,6 +649,107 @@ export default function XmlSitemapGeneratorClient() {
             )}
           </div>
 
+        </div>
+
+        {/* ── SITEMAP VALIDATOR ── */}
+        <div style={{ maxWidth: 1360, margin: '1.5rem auto 0' }}>
+          <div className="tool-box" style={{ maxWidth: 'none' }}>
+            <h2 className="tool-box-heading">Sitemap Validator — Check an Existing Sitemap</h2>
+            <p className="tool-box-sub">
+              Already have a sitemap? Paste its URL and this validator fetches it, extracts every entry, and <span>live-checks each URL&apos;s HTTP status</span>: broken 404 entries, redirected URLs wasting crawl budget, and server errors, sorted problems-first.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.75rem', alignItems: 'end', marginBottom: '1rem' }}>
+              <div>
+                <label className="tool-box-label" htmlFor="val-sitemap-url">Sitemap URL</label>
+                <input
+                  type="text"
+                  id="val-sitemap-url"
+                  className="tool-url-input"
+                  value={valUrl}
+                  onChange={(e) => setValUrl(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') validateSitemap() }}
+                  placeholder="example.com/sitemap.xml"
+                />
+              </div>
+              <button onClick={validateSitemap} disabled={valLoading} className="tool-analyze-btn" style={{ whiteSpace: 'nowrap' }}>
+                <div className="tool-analyze-btn-dot" />
+                {valLoading ? 'Validating…' : 'Validate Sitemap'}
+              </button>
+            </div>
+
+            {valProgress && (
+              <div style={{ marginBottom: '1rem', padding: '10px 14px', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)', fontSize: '0.85rem', color: 'var(--blue)' }}>
+                {valProgress}
+              </div>
+            )}
+            {valError && (
+              <div style={{ marginBottom: '1rem', padding: '10px 14px', background: 'rgba(220,38,38,0.06)', border: '1px solid rgba(220,38,38,0.2)', fontSize: '0.85rem', color: 'var(--red)' }}>
+                {valError}
+              </div>
+            )}
+
+            {valResults.length > 0 && valMeta && (
+              <div>
+                {/* Summary strip */}
+                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1rem', padding: '10px 14px', background: 'var(--gray-1)', border: '1px solid var(--line)' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    <strong style={{ color: 'var(--ink)' }}>{valMeta.totalInSitemap}</strong> URLs in sitemap{valMeta.isIndex ? ' (first child of index)' : ''}
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    <strong style={{ color: 'var(--green)' }}>{valResults.filter(r => r.ok && !r.redirected).length}</strong> healthy
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    <strong style={{ color: 'var(--amber)' }}>{valResults.filter(r => r.ok && r.redirected).length}</strong> redirected
+                  </span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>
+                    <strong style={{ color: 'var(--red)' }}>{valResults.filter(r => !r.ok).length}</strong> broken / errors
+                  </span>
+                  {valMeta.totalInSitemap > valMeta.checked && (
+                    <span style={{ fontSize: '0.8rem', color: 'var(--gray-4)' }}>checked first {valMeta.checked}</span>
+                  )}
+                </div>
+
+                {/* Results table */}
+                <div style={{ border: '1px solid var(--line)', overflowX: 'auto', maxHeight: 420, overflowY: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 560 }}>
+                    <thead>
+                      <tr style={{ background: 'var(--ink)', position: 'sticky', top: 0 }}>
+                        {['Status', 'URL', 'Note'].map((h, j) => (
+                          <th key={h} style={{ textAlign: 'left', padding: '9px 14px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#fff', borderRight: j < 2 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {valResults.map((r, i) => {
+                        const isBroken = !r.ok
+                        const note = r.error ? r.error : isBroken ? 'Remove or fix this entry' : r.redirected ? `Redirects to ${r.finalUrl} — update the sitemap entry` : 'OK'
+                        return (
+                          <tr key={i} style={{ borderBottom: i < valResults.length - 1 ? '1px solid var(--line)' : 'none' }}>
+                            <td style={{ padding: '8px 14px' }}>
+                              <span style={{
+                                padding: '2px 8px', fontSize: '0.72rem', fontWeight: 700, fontFamily: 'JetBrains Mono, monospace',
+                                background: isBroken ? 'rgba(220,38,38,0.12)' : r.redirected ? 'rgba(245,158,11,0.12)' : 'rgba(22,163,74,0.12)',
+                                color: isBroken ? 'var(--red)' : r.redirected ? 'var(--amber)' : 'var(--green)'
+                              }}>
+                                {r.status || 'ERR'}
+                              </span>
+                            </td>
+                            <td style={{ padding: '8px 14px', fontSize: '0.78rem', color: 'var(--ink)', fontFamily: 'JetBrains Mono, monospace', wordBreak: 'break-all' }}>{r.url}</td>
+                            <td style={{ padding: '8px 14px', fontSize: '0.75rem', color: 'var(--gray-4)', wordBreak: 'break-all' }}>{note}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                <p style={{ marginTop: '0.75rem', fontSize: '0.72rem', color: 'var(--gray-4)', lineHeight: 1.5 }}>
+                  Every status above is a live HTTP check. Redirected entries still work but waste crawl budget and dilute signals — sitemaps should list final URLs only.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
