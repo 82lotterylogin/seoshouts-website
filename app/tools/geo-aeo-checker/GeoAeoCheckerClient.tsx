@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import ShapeGrid from '../../components/ShapeGrid'
 import { parseRobotsTxt, checkBotAccess, AI_CRAWLER_BOTS } from '../../lib/robots-parser'
+import { recordScore, type ScoreRun } from '../../lib/workspace'
+import { openBrandedReport } from '../../lib/printReport'
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -41,7 +43,7 @@ const FEATURE_ITEMS = [
   { label: '7-Category Audit', desc: 'Schema, crawler access, content, E-E-A-T, FAQ, technical & performance' },
   { label: '0–100 Composite Score', desc: 'Weighted scoring shows exactly where you rank on AI readiness' },
   { label: 'Fix Recommendations', desc: 'Every failed check includes a specific actionable fix' },
-  { label: 'Free, No Login', desc: 'Analyze any public URL, unlimited times, no account needed' },
+  { label: 'Score History & PDF Report', desc: 'Re-check a URL to see your score trend, and download a branded report' },
 ]
 
 const FAQ_ITEMS = [
@@ -50,7 +52,7 @@ const FAQ_ITEMS = [
   { q: 'How accurate is the GEO/AEO score?', a: "The score is based on signals that are directly detectable in your page's HTML and HTTP headers. It does not access Google's internal scoring, Perplexity's index, or any AI model's training data. Think of it as a structural audit — it tells you whether your page has the signals that research shows correlate with AI citations. Actual citation frequency depends on many factors including domain authority, content quality, and competition." },
   { q: 'Why is my schema score low when I have schema markup?', a: "The checker looks for specific, high-impact schema types: FAQPage, Organization, Author (Person), and BreadcrumbList. Having WebSite or Product schema alone will not score highly. FAQPage schema is the single most impactful schema type for AI citation and receives the most weight in the schema category." },
   { q: 'Can a page score 100?', a: "In theory yes, but in practice a score of 85–90 is excellent. Some checks — like hreflang (relevant only for multilingual sites) — may not apply to your page. Focus on A grade (85+) rather than perfect 100." },
-  { q: 'How often should I run the GEO/AEO checker?', a: "Run it after any significant content update, after adding schema markup, after changing your robots.txt, and monthly as part of your regular SEO audit. Track your score over time to measure the impact of individual improvements." },
+  { q: 'How often should I run the GEO/AEO checker?', a: "Run it after any significant content update, after adding schema markup, after changing your robots.txt, and monthly as part of your regular SEO audit. The tool tracks your score history per URL automatically (stored privately in your browser): re-check the same page and it shows your previous score next to the new one, so you can measure the impact of each improvement. You can also download a branded report of any run to share with your team or clients." },
   { q: 'Does improving my GEO/AEO score hurt traditional SEO?', a: "No — the signals this tool checks (schema markup, E-E-A-T, content structure, FAQ sections) are all positive signals for traditional Google search rankings too. GEO/AEO optimization and traditional SEO are complementary, not competing." },
   { q: 'What should I fix first after getting my score?', a: "Fix High-impact failed checks first. The tool sorts your issues by impact level. Typically, the fastest wins are: adding FAQPage schema (if missing), writing an answer capsule, converting H2s to question format, and ensuring AI crawlers are not blocked." },
   { q: 'What makes this the best AEO checking tool to start with?', a: "Most AEO checking tools either audit a single signal (like schema) or sit behind a paid subscription. This checker runs 30+ checks across all seven categories that influence AI citations: schema markup, AI crawler access, content structure, E-E-A-T, FAQ readiness, technical signals, and performance, and it is completely free with no login. It also explains how to fix every failed check, so it works as both an AEO checker and a prioritized to-do list." },
@@ -329,6 +331,14 @@ export default function GeoAeoCheckerClient() {
   const [results, setResults] = useState<AnalysisResults | null>(null)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [showIssuesModal, setShowIssuesModal] = useState(false)
+  // Previous run for this URL (localStorage workspace) — shows score trend
+  const [prevRun, setPrevRun] = useState<ScoreRun | null>(null)
+
+  // Tool chaining: other tools link here with ?url=
+  useEffect(() => {
+    const chained = new URLSearchParams(window.location.search).get('url')
+    if (chained) setUrl(chained)
+  }, [])
 
   useEffect(() => {
     const els = document.querySelectorAll('.reveal')
@@ -379,6 +389,8 @@ export default function GeoAeoCheckerClient() {
       const topIssues = allChecks.filter((c) => !c.passed).sort((a, b) => impactOrder[b.impact] - impactOrder[a.impact]).slice(0, 8)
       const passedChecks = allChecks.filter((c) => c.passed).length
       setResults({ url: normalizedUrl, finalUrl, overallScore, grade, gradeLabel: label, gradeColor: color, categories, topIssues, passedChecks, totalChecks: allChecks.length })
+      // Workspace: log this run, surface the previous one for a trend line
+      setPrevRun(recordScore('geo-aeo', normalizedUrl, overallScore))
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       setError(`Could not analyze page: ${message}. Check the URL and try again.`)
@@ -388,6 +400,29 @@ export default function GeoAeoCheckerClient() {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => { if (e.key === 'Enter') analyzeUrl() }
+
+  const downloadReport = () => {
+    if (!results) return
+    const rows = results.categories.map(c => {
+      const pct = Math.round((c.score / c.weight) * 100)
+      const cls = pct >= 85 ? 'good' : pct >= 55 ? 'warn' : 'bad'
+      return `<tr><td>${c.name}</td><td class="${cls}">${c.score}/${c.weight}</td><td>${c.checks.filter(ch => ch.passed).length}/${c.checks.length} checks passed</td></tr>`
+    }).join('')
+    const issues = results.topIssues.map(i =>
+      `<tr><td class="${i.impact === 'high' ? 'bad' : i.impact === 'medium' ? 'warn' : ''}">${i.impact.toUpperCase()}</td><td>${i.label}</td><td>${i.fix || ''}</td></tr>`
+    ).join('')
+    openBrandedReport({
+      toolName: 'GEO/AEO Score',
+      subjectUrl: results.finalUrl,
+      bodyHtml: `
+        <p><span class="score-big">${results.overallScore}</span>/100 &nbsp; Grade ${results.grade} — ${results.gradeLabel}</p>
+        <p>${results.passedChecks} of ${results.totalChecks} checks passed.${prevRun ? ` Previous run: ${prevRun.score}/100 (${new Date(prevRun.date).toLocaleDateString()}).` : ''}</p>
+        <h2>Category Scores</h2>
+        <table><tr><th>Category</th><th>Score</th><th>Checks</th></tr>${rows}</table>
+        <h2>Top Issues to Fix</h2>
+        <table><tr><th>Impact</th><th>Issue</th><th>How to Fix</th></tr>${issues || '<tr><td colspan="3">No failed checks — great work.</td></tr>'}</table>`,
+    })
+  }
 
   const gradeColors = results ? getGradeColors(results.gradeColor) : null
   const radius = 42
@@ -545,6 +580,23 @@ export default function GeoAeoCheckerClient() {
                     <p style={{ fontSize: '0.72rem', fontFamily: 'var(--mono, monospace)', color: 'var(--gray-4)', margin: 0 }}>
                       <strong style={{ color: 'var(--ink)', fontSize: '0.875rem' }}>{results.passedChecks}/{results.totalChecks}</strong> checks passed
                     </p>
+                    {prevRun && (
+                      <p style={{ fontSize: '0.72rem', fontFamily: 'var(--mono, monospace)', margin: 0, color: results.overallScore > prevRun.score ? 'var(--green)' : results.overallScore < prevRun.score ? 'var(--red)' : 'var(--gray-4)' }}>
+                        {results.overallScore > prevRun.score ? '▲' : results.overallScore < prevRun.score ? '▼' : '—'} vs last run: {prevRun.score} → {results.overallScore}
+                      </p>
+                    )}
+                    <button
+                      onClick={downloadReport}
+                      style={{ marginTop: '0.25rem', padding: '7px 16px', background: 'var(--blue)', color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.78rem', fontFamily: 'Space Grotesk, sans-serif', cursor: 'pointer' }}
+                    >
+                      Download Report
+                    </button>
+                    <a
+                      href={`/tools/on-page-seo-analyzer/?url=${encodeURIComponent(results.finalUrl)}`}
+                      style={{ fontSize: '0.72rem', color: 'var(--blue)', fontFamily: 'var(--mono, monospace)' }}
+                    >
+                      Run full on-page audit →
+                    </a>
                     <div style={{ width: '100%', overflow: 'hidden' }}>
                       <a href={results.finalUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.72rem', color: 'var(--blue)', fontFamily: 'var(--mono, monospace)', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {results.finalUrl.replace(/^https?:\/\//, '').slice(0, 36)}{results.finalUrl.replace(/^https?:\/\//, '').length > 36 ? '…' : ''}

@@ -5,6 +5,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import ShapeGrid from '@/app/components/ShapeGrid'
 import CoreWebVitalsCard from '@/app/components/seo-report/CoreWebVitalsCard'
 import SEOMetricCard from '@/app/components/seo-report/SEOMetricCard'
+import { recordScore, type ScoreRun } from '@/app/lib/workspace'
 
 interface AnalysisResult {
   url: string
@@ -93,6 +94,8 @@ interface AnalysisCheck {
 export default function OnPageSEOAnalyzerClient() {
   const [url, setUrl] = useState('')
   const [targetKeyword, setTargetKeyword] = useState('')
+  const [competitorUrl, setCompetitorUrl] = useState('')
+  const [competitorResult, setCompetitorResult] = useState<AnalysisResult | null>(null)
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -109,7 +112,14 @@ export default function OnPageSEOAnalyzerClient() {
   const [emailingReport, setEmailingReport] = useState(false)
   const [isReportVisible, setIsReportVisible] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [prevRun, setPrevRun] = useState<ScoreRun | null>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  // Tool chaining: other tools link here with ?url=
+  useEffect(() => {
+    const chained = new URLSearchParams(window.location.search).get('url')
+    if (chained) setUrl(chained)
+  }, [])
 
   // Track report visibility for PDF button — modal is always visible when open
   useEffect(() => {
@@ -162,6 +172,7 @@ export default function OnPageSEOAnalyzerClient() {
 
   const resetAnalysis = () => {
     setAnalysisResult(null)
+    setCompetitorResult(null)
     setError('')
     setAnalysisProgress(0)
     setCurrentStep('')
@@ -235,7 +246,7 @@ export default function OnPageSEOAnalyzerClient() {
         })
       ])
 
-      const [seoResponse, pageSpeedResponse] = await Promise.allSettled([
+      const [seoResponse, pageSpeedResponse, competitorResponse] = await Promise.allSettled([
         fetch('/api/analyze-seo', {
           method: 'POST',
           headers: {
@@ -248,7 +259,20 @@ export default function OnPageSEOAnalyzerClient() {
           }),
           signal: AbortSignal.timeout(45000) // 45 second timeout for main SEO analysis
         }),
-        pageSpeedPromise
+        pageSpeedPromise,
+        // Optional competitor analysis, same engine, non-fatal on failure
+        competitorUrl.trim()
+          ? fetch('/api/analyze-seo', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                url: competitorUrl.trim(),
+                targetKeyword: targetKeyword || undefined,
+                recaptchaToken: recaptchaToken
+              }),
+              signal: AbortSignal.timeout(45000)
+            })
+          : Promise.reject(new Error('no competitor URL'))
       ])
       
       setCurrentStep('Processing analysis results...')
@@ -277,6 +301,17 @@ export default function OnPageSEOAnalyzerClient() {
       
       setPageSpeedLoading(false)
 
+      // Handle competitor response (optional — failure just means no comparison)
+      setCompetitorResult(null)
+      if (competitorResponse.status === 'fulfilled' && competitorResponse.value.ok) {
+        try {
+          const compData = await competitorResponse.value.json()
+          if (compData.success) setCompetitorResult(compData.analysis)
+        } catch (error) {
+          console.warn('Competitor analysis failed, continuing without comparison:', error)
+        }
+      }
+
       const data = seoData
 
       if (!data.success) {
@@ -294,6 +329,8 @@ export default function OnPageSEOAnalyzerClient() {
         pageSpeed: pageSpeedData
       }
       setAnalysisResult(analysisWithPageSpeed)
+      // Workspace: log this run, surface the previous one for a trend line
+      setPrevRun(recordScore('on-page', url, analysisWithPageSpeed.overallScore))
       setShowModal(true)
 
       // Show usage warning if remaining uses are low
@@ -318,7 +355,7 @@ export default function OnPageSEOAnalyzerClient() {
     } finally {
       setLoading(false)
     }
-  }, [url, targetKeyword, isVerified, usageLimit])
+  }, [url, targetKeyword, competitorUrl, isVerified, usageLimit])
 
 
   const getScoreColor = (score: number) => {
@@ -1827,7 +1864,7 @@ DETAILED ANALYSIS:
             <span>Analyze 150+ Ranking Factors on Any Page</span>
           </h1>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.75rem' }}>
-            {['150+ SEO Factors', 'Core Web Vitals', 'Real PageSpeed Data', '100% Free'].map(pill => (
+            {['150+ SEO Factors', 'Core Web Vitals', 'Competitor Compare', 'Score History', '100% Free'].map(pill => (
               <div key={pill} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(37,99,235,0.35)', padding: '5px 14px', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.05em', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' as const }}>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--blue)', flexShrink: 0, display: 'inline-block' }} />
                 {pill}
@@ -1866,6 +1903,18 @@ DETAILED ANALYSIS:
                   className="tool-url-input"
                 />
               </div>
+            </div>
+
+            {/* Competitor URL — runs the same 150+ factor analysis side by side */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label className="tool-box-label">Competitor URL (Optional)</label>
+              <input
+                type="url"
+                value={competitorUrl}
+                onChange={(e) => setCompetitorUrl(e.target.value)}
+                placeholder="competitor.com/their-page — compare scores side by side"
+                className="tool-url-input"
+              />
             </div>
 
             {/* reCAPTCHA */}
@@ -2073,6 +2122,11 @@ DETAILED ANALYSIS:
                       {analysisResult.overallScore >= 80 ? 'Excellent' : analysisResult.overallScore >= 60 ? 'Good' : 'Needs Work'}
                     </div>
                     <div style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', marginTop: 4 }}>{new Date().toLocaleDateString()}</div>
+                    {prevRun && (
+                      <div style={{ fontSize: '0.62rem', fontWeight: 700, marginTop: 3, color: analysisResult.overallScore > prevRun.score ? '#86efac' : analysisResult.overallScore < prevRun.score ? '#fca5a5' : 'rgba(255,255,255,0.45)' }}>
+                        {analysisResult.overallScore > prevRun.score ? '▲' : analysisResult.overallScore < prevRun.score ? '▼' : '—'} last run: {prevRun.score} → {analysisResult.overallScore}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.375rem' }}>
@@ -2213,6 +2267,20 @@ DETAILED ANALYSIS:
                 {/* Tab Content */}
                   {activeTab === 'overview' && (
                     <div className="space-y-8">
+                      {/* Next steps — chain into the other tools with this URL prefilled */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--gray-5)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next steps:</span>
+                        <a href={`/tools/meta-tag-optimizer/?import=${encodeURIComponent(analysisResult.url)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--blue)', border: '1px solid var(--line)', background: 'var(--white)', padding: '5px 12px', textDecoration: 'none' }}>
+                          Fix meta tags with Meta Tag Optimizer →
+                        </a>
+                        <a href={`/tools/geo-aeo-checker/?url=${encodeURIComponent(analysisResult.url)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--blue)', border: '1px solid var(--line)', background: 'var(--white)', padding: '5px 12px', textDecoration: 'none' }}>
+                          Check AI search readiness →
+                        </a>
+                        <a href={`/tools/internal-link-checker/?url=${encodeURIComponent(analysisResult.url)}`} style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--blue)', border: '1px solid var(--line)', background: 'var(--white)', padding: '5px 12px', textDecoration: 'none' }}>
+                          Audit internal links →
+                        </a>
+                      </div>
+
                       {/* Core Web Vitals Section */}
                       {analysisResult.pageSpeed && (
                         <div>
@@ -2239,6 +2307,69 @@ DETAILED ANALYSIS:
                         </div>
                       )}
                       
+                      {/* Competitor Comparison — both pages scored by the same engine */}
+                      {competitorResult && (() => {
+                        const compTitles: { [key: string]: string } = {
+                          contentQuality: 'Content Quality', technicalSEO: 'Technical SEO', onPageElements: 'On-Page Elements',
+                          userExperience: 'User Experience', contentStructure: 'Content Structure', socialOptimization: 'Social Optimization',
+                          localSEO: 'Local SEO', advancedAnalytics: 'Advanced Analytics', securityAndTrust: 'Security & Trust',
+                          advancedPerformance: 'Performance', advancedTechnical: 'Adv. Technical', modernSEO: 'Modern SEO & AI',
+                        }
+                        const rows = [
+                          { label: 'Overall Score', you: analysisResult.overallScore, them: competitorResult.overallScore },
+                          ...Object.keys(analysisResult.factors).map(key => ({
+                            label: compTitles[key] || key,
+                            you: Math.round((analysisResult.factors[key as keyof typeof analysisResult.factors].score / analysisResult.factors[key as keyof typeof analysisResult.factors].maxScore) * 100),
+                            them: competitorResult.factors[key as keyof typeof competitorResult.factors]
+                              ? Math.round((competitorResult.factors[key as keyof typeof competitorResult.factors].score / competitorResult.factors[key as keyof typeof competitorResult.factors].maxScore) * 100)
+                              : 0,
+                          })),
+                        ]
+                        const wins = rows.filter(r => r.you > r.them).length
+                        return (
+                          <div>
+                            <h3 style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <div style={{ width: 22, height: 22, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <svg style={{ width: 12, height: 12 }} fill="none" stroke="white" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10" /></svg>
+                              </div>
+                              Competitor Comparison
+                            </h3>
+                            <div style={{ border: '1px solid var(--line)', background: 'var(--white)' }}>
+                              <div style={{ padding: '0.625rem 1rem', background: 'var(--gray-1)', borderBottom: '1px solid var(--line)', fontSize: '0.78rem', color: 'var(--gray-5)' }}>
+                                You lead in <strong style={{ color: 'var(--ink)' }}>{wins}</strong> of {rows.length} categories vs <strong style={{ color: 'var(--ink)' }}>{competitorResult.url}</strong>
+                              </div>
+                              <div style={{ overflowX: 'auto' }}>
+                                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                                  <thead>
+                                    <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                                      <th style={{ textAlign: 'left', padding: '0.5rem 1rem', fontWeight: 700, color: 'var(--ink)' }}>Category</th>
+                                      <th style={{ textAlign: 'center', padding: '0.5rem 1rem', fontWeight: 700, color: 'var(--blue)' }}>Your Page</th>
+                                      <th style={{ textAlign: 'center', padding: '0.5rem 1rem', fontWeight: 700, color: 'var(--gray-5)' }}>Competitor</th>
+                                      <th style={{ textAlign: 'center', padding: '0.5rem 1rem', fontWeight: 700, color: 'var(--ink)' }}>Verdict</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {rows.map((r, i) => {
+                                      const lead = r.you > r.them ? 'you' : r.you < r.them ? 'them' : 'tie'
+                                      return (
+                                        <tr key={r.label} style={{ borderBottom: i < rows.length - 1 ? '1px solid var(--line)' : 'none', background: i === 0 ? 'rgba(37,99,235,0.04)' : 'transparent' }}>
+                                          <td style={{ padding: '0.5rem 1rem', fontWeight: i === 0 ? 700 : 500, color: 'var(--ink)' }}>{r.label}</td>
+                                          <td style={{ padding: '0.5rem 1rem', textAlign: 'center', fontWeight: 700, color: lead === 'you' ? '#059669' : 'var(--ink)' }}>{r.you}%</td>
+                                          <td style={{ padding: '0.5rem 1rem', textAlign: 'center', fontWeight: 700, color: lead === 'them' ? '#059669' : 'var(--gray-5)' }}>{r.them}%</td>
+                                          <td style={{ padding: '0.5rem 1rem', textAlign: 'center', fontSize: '0.75rem', fontWeight: 700, color: lead === 'you' ? '#059669' : lead === 'them' ? '#dc2626' : 'var(--gray-4)' }}>
+                                            {lead === 'you' ? `+${r.you - r.them} You lead` : lead === 'them' ? `-${r.them - r.you} Behind` : 'Tied'}
+                                          </td>
+                                        </tr>
+                                      )
+                                    })}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })()}
+
                       {/* SEO Metrics Overview */}
                       <div>
                         <h3 style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -2999,7 +3130,11 @@ DETAILED ANALYSIS:
               },
               {
                 q: 'Can I analyze competitor websites with this tool?',
-                a: "Absolutely! You can analyze any publicly accessible website URL, including your competitors' sites. This is an excellent way to conduct competitive SEO analysis, understand what they're doing right, identify their weaknesses, and discover optimization opportunities for your own site. Many SEO professionals use our tool to benchmark their sites against top-ranking competitors, reverse-engineer successful SEO strategies, and identify content gaps or technical advantages that contribute to higher rankings."
+                a: "Absolutely — and you can compare directly. Add a Competitor URL alongside your own and both pages are scored by the same 150+ factor engine in one run. The report then shows a side-by-side comparison table: overall score plus all 12 category scores, with a verdict per category showing where you lead, where you trail, and by how much. It's the fastest way to see exactly which optimization gaps separate you from a page that outranks you."
+              },
+              {
+                q: 'Can I track my score over time?',
+                a: 'Yes. The tool remembers your previous score for each URL you analyze (stored privately in your own browser, never on our servers). When you re-analyze the same page, the report shows your last score next to the new one with an up or down indicator, so you can measure whether your fixes actually moved the needle.'
               },
               {
                 q: 'How often should I run on-page SEO analysis?',

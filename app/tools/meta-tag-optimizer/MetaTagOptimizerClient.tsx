@@ -19,6 +19,55 @@ export default function MetaTagOptimizerClient() {
   const [captchaValue, setCaptchaValue] = useState<string | null>(null)
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
+  // Import existing meta tags from a live URL to audit/improve them
+  const [importUrl, setImportUrl] = useState('')
+  const [importing, setImporting] = useState(false)
+  const [importMsg, setImportMsg] = useState<{ ok: boolean; text: string } | null>(null)
+
+  // Tool chaining: on-page analyzer links here with ?import=<url> — auto-load its tags
+  useEffect(() => {
+    const chained = new URLSearchParams(window.location.search).get('import')
+    if (chained) {
+      setImportUrl(chained)
+      importFromUrl(chained)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const importFromUrl = async (overrideUrl?: string) => {
+    const target = (overrideUrl ?? importUrl).trim()
+    if (!target) return
+    setImporting(true)
+    setImportMsg(null)
+    try {
+      const res = await fetch('/api/fetch-page', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: target.includes('://') ? target : `https://${target}` }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.html) throw new Error(data.error || 'Could not fetch that page')
+      const doc = new DOMParser().parseFromString(data.html, 'text/html')
+      const meta = (name: string) =>
+        doc.querySelector(`meta[name="${name}"]`)?.getAttribute('content') ||
+        doc.querySelector(`meta[property="${name}"]`)?.getAttribute('content') || ''
+      const canonical = doc.querySelector('link[rel="canonical"]')?.getAttribute('href') || data.finalUrl || target
+      setForm({
+        title: doc.querySelector('title')?.textContent?.trim() || meta('og:title'),
+        description: meta('description') || meta('og:description'),
+        keywords: meta('keywords'),
+        author: meta('author'),
+        url: canonical,
+        viewport: meta('viewport') || 'width=device-width, initial-scale=1',
+      })
+      setImportMsg({ ok: true, text: 'Imported. Existing tags are loaded below — edit and re-generate.' })
+    } catch (err) {
+      setImportMsg({ ok: false, text: err instanceof Error ? err.message : 'Import failed. Check the URL and try again.' })
+    } finally {
+      setImporting(false)
+    }
+  }
+
   // Handle reCAPTCHA verification
   const handleCaptchaChange = (value: string | null) => {
     console.log('reCAPTCHA value:', value)
@@ -155,7 +204,7 @@ export default function MetaTagOptimizerClient() {
             delivers real-time SERP preview, smart character count guidance, and ready-to-paste meta tag code &mdash; so every page you publish is search-engine ready from day one.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
-            {['Live SERP Preview', 'Character Count Validation', 'Complete Meta Tag Code', '100% Free'].map(label => (
+            {['Live SERP Preview', 'Import From Any URL', 'Pixel-Width Validation', '100% Free'].map(label => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
                 <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
@@ -172,6 +221,42 @@ export default function MetaTagOptimizerClient() {
           {/* LEFT BOX: Page Information */}
           <div className="tool-box" style={{ maxWidth: 'none' }}>
             <h2 className="tool-box-heading">Page Information</h2>
+
+            {/* Import from URL */}
+            <label className="tool-box-label" htmlFor="import-url">Import From Existing Page (Optional)</label>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.35rem' }}>
+              <input
+                type="url"
+                id="import-url"
+                className="tool-url-input"
+                style={{ flex: 1 }}
+                value={importUrl}
+                onChange={(e) => setImportUrl(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') importFromUrl() }}
+                placeholder="yoursite.com/page — load its current meta tags"
+              />
+              <button
+                onClick={() => importFromUrl()}
+                disabled={importing || !importUrl.trim()}
+                style={{
+                  padding: '0 18px', background: importing || !importUrl.trim() ? 'var(--gray-3)' : 'var(--ink)',
+                  color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.82rem',
+                  fontFamily: 'Space Grotesk, sans-serif', cursor: importing || !importUrl.trim() ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {importing ? 'Importing…' : 'Import'}
+              </button>
+            </div>
+            {importMsg && (
+              <p style={{ fontSize: '0.78rem', color: importMsg.ok ? 'var(--green)' : 'var(--red)', marginBottom: '1rem' }}>
+                {importMsg.text}
+              </p>
+            )}
+            {!importMsg && (
+              <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1rem' }}>
+                Audit an existing page: import its live tags, see what fails the meters, and fix it here
+              </p>
+            )}
 
             {/* Page Title */}
             <label className="tool-box-label" htmlFor="meta-title">Page Title *</label>
@@ -782,6 +867,7 @@ export default function MetaTagOptimizerClient() {
           <div className="faq-list">
             {[
               { q: 'What is a meta tag optimization tool?', a: 'A meta tag optimization tool helps you write, validate, and preview the HTML meta tags that control how your page appears in search results and social shares. This one combines a live Google SERP preview, color-coded character validation for titles and descriptions, and a complete generated tag set including canonical, Open Graph, and Twitter Card markup.' },
+              { q: 'Can I audit the meta tags on an existing page?', a: 'Yes. Use the "Import From Existing Page" field: enter any live URL and the tool loads its current title, description, keywords, author, and canonical into the form. The pixel-width meters and SERP preview immediately show what is too long, too short, or missing — edit right there and copy the fixed code. It also works on competitor pages when you want to study what they wrote.' },
               { q: 'Are meta tags really important for SEO?', a: 'Yes. The title tag is a direct ranking signal, and both title and description control your click-through rate from search results. Two pages at the same position can differ in traffic by 30-40% purely on the strength of their meta tags, because searchers choose the listing that best promises what they want.' },
               { q: 'What is the ideal title tag length?', a: 'Keep titles between 30 and 60 characters. Google truncates by pixel width (about 600 pixels), so 60 characters is the safe ceiling. Put your primary keyword in the first 30 characters, that portion survives truncation on every device.' },
               { q: 'What is the ideal meta description length?', a: 'Aim for 120 to 160 characters. Below 120 wastes the space Google gives you; above 160 gets cut mid-sentence, usually right where your call to action was. The color-coded counter in the tool marks the optimal band as you type.' },

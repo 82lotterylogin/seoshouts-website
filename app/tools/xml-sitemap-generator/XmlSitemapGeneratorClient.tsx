@@ -599,6 +599,16 @@ export default function XmlSitemapGeneratorClient() {
                   </button>
                 </div>
 
+                {/* Chain into the internal link checker with the same site */}
+                {sitemapUrls.length > 0 && (
+                  <a
+                    href={`/tools/internal-link-checker/?url=${encodeURIComponent(sitemapUrls[0].url)}`}
+                    style={{ display: 'block', textAlign: 'center', fontSize: '0.78rem', fontWeight: 600, color: 'var(--blue)', marginBottom: '1rem', textDecoration: 'none' }}
+                  >
+                    Next step: audit this site&apos;s internal links →
+                  </a>
+                )}
+
                 {/* XML Preview */}
                 <div style={{ background: '#111318', padding: '1.25rem', overflowX: 'auto', fontSize: '0.77rem', fontFamily: 'JetBrains Mono, monospace', height: 200, overflowY: 'auto', marginBottom: '1rem' }}>
                   <pre style={{ color: '#86efac', margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>

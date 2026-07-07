@@ -31,9 +31,20 @@ export default function KeywordDensityAnalyzerClient() {
     keywordCount: number
     keywordDensity: number
     topKeywords: Array<{ word: string; count: number; density: number }>
+    topBigrams: Array<{ word: string; count: number; density: number }>
+    topTrigrams: Array<{ word: string; count: number; density: number }>
+    topFourGrams: Array<{ word: string; count: number; density: number }>
     recommendations: string[]
     readabilityScore: number
+    // URL mode only: where key phrases appear in the page's SEO-critical tags
+    placement: { title: string; metaDescription: string; h1: string[]; h2: string[] } | null
   } | null>(null)
+
+  // Which phrase length the results table is showing
+  const [phraseView, setPhraseView] = useState<'1' | '2' | '3' | '4'>('1')
+
+  // Filter common words (the, and, is…) out of the single-word view
+  const [filterStopWords, setFilterStopWords] = useState(true)
 
   // Load usage count from session storage
   useEffect(() => {
@@ -59,23 +70,29 @@ export default function KeywordDensityAnalyzerClient() {
       .trim()
   }
 
-  // Fetch content from URL
-  const fetchUrlContent = async (url: string): Promise<string> => {
-    try {
-      const response = await fetch('/api/fetch-url-content', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url })
-      })
-      const data = await response.json()
-      if (data.success) {
-        return data.content
-      } else {
-        throw new Error(data.error || 'Failed to fetch content')
-      }
-    } catch (error) {
-      throw error
+  // Fetch a URL's raw HTML and extract both the visible text and the
+  // SEO-critical tags (title, meta description, H1s, H2s) for placement checks
+  const fetchUrlContent = async (url: string): Promise<{ text: string; placement: { title: string; metaDescription: string; h1: string[]; h2: string[] } }> => {
+    const target = url.includes('://') ? url : `https://${url}`
+    const response = await fetch('/api/fetch-page', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: target })
+    })
+    const data = await response.json()
+    if (!response.ok || !data.html) {
+      throw new Error(data.error || 'Failed to fetch content')
     }
+    const doc = new DOMParser().parseFromString(data.html, 'text/html')
+    doc.querySelectorAll('script, style, noscript, svg').forEach(el => el.remove())
+    const placement = {
+      title: doc.querySelector('title')?.textContent?.trim() || '',
+      metaDescription: doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || '',
+      h1: Array.from(doc.querySelectorAll('h1')).map(h => h.textContent?.trim() || '').filter(Boolean),
+      h2: Array.from(doc.querySelectorAll('h2')).map(h => h.textContent?.trim() || '').filter(Boolean),
+    }
+    const text = (doc.body?.textContent || '').replace(/\s+/g, ' ').trim()
+    return { text, placement }
   }
 
   // Calculate keyword density
@@ -92,6 +109,7 @@ export default function KeywordDensityAnalyzerClient() {
     }
 
     let contentToAnalyze = ''
+    let placement: { title: string; metaDescription: string; h1: string[]; h2: string[] } | null = null
 
     if (inputMode === 'text') {
       if (!form.content.trim()) {
@@ -106,7 +124,9 @@ export default function KeywordDensityAnalyzerClient() {
       }
       try {
         setForm(prev => ({ ...prev, isAnalyzing: true }))
-        contentToAnalyze = await fetchUrlContent(url.trim())
+        const fetched = await fetchUrlContent(url.trim())
+        contentToAnalyze = fetched.text
+        placement = fetched.placement
         if (!contentToAnalyze.trim()) {
           alert('No content found at the provided URL')
           setForm(prev => ({ ...prev, isAnalyzing: false }))
@@ -146,7 +166,7 @@ export default function KeywordDensityAnalyzerClient() {
 
       const wordCount: { [key: string]: number } = {}
       words.forEach(word => {
-        if (word.length > 2 && !stopWords.has(word)) {
+        if (word.length > (filterStopWords ? 2 : 0) && (!filterStopWords || !stopWords.has(word))) {
           wordCount[word] = (wordCount[word] || 0) + 1
         }
       })
@@ -158,7 +178,29 @@ export default function KeywordDensityAnalyzerClient() {
           density: (count / totalWords) * 100
         }))
         .sort((a, b) => b.count - a.count)
-        .slice(0, 10)
+        .slice(0, 25)
+
+      // 2-, 3- and 4-word phrase analysis.
+      // A phrase is skipped only if it is entirely stop words, so useful
+      // phrases like "content marketing" or "long tail keywords" surface.
+      const buildPhrases = (n: number) => {
+        const counts: { [key: string]: number } = {}
+        for (let i = 0; i <= words.length - n; i++) {
+          const gram = words.slice(i, i + n)
+          if (gram.every(w => stopWords.has(w) || w.length <= 2)) continue
+          const phrase = gram.join(' ')
+          counts[phrase] = (counts[phrase] || 0) + 1
+        }
+        const denom = Math.max(totalWords - n + 1, 1)
+        return Object.entries(counts)
+          .filter(([, count]) => count > 1) // only repeated phrases are meaningful
+          .map(([word, count]) => ({ word, count, density: (count / denom) * 100 }))
+          .sort((a, b) => b.count - a.count)
+          .slice(0, 25)
+      }
+      const topBigrams = buildPhrases(2)
+      const topTrigrams = buildPhrases(3)
+      const topFourGrams = buildPhrases(4)
 
       const recommendations: string[] = []
 
@@ -199,8 +241,12 @@ export default function KeywordDensityAnalyzerClient() {
         keywordCount,
         keywordDensity,
         topKeywords,
+        topBigrams,
+        topTrigrams,
+        topFourGrams,
         recommendations,
-        readabilityScore
+        readabilityScore,
+        placement
       })
 
       // Increment usage count and save to session storage
@@ -252,10 +298,10 @@ export default function KeywordDensityAnalyzerClient() {
           <p className="tool-hero-sub">
             Stop guessing about your keyword usage. Our{' '}
             <strong style={{ color: 'rgba(255,255,255,0.85)' }}>Free Keyword Density Analyzer</strong>{' '}
-            gives you instant insights into how often keywords appear in your content, helping you strike the perfect balance between optimization and natural readability. Whether you&apos;re writing blog posts, product descriptions, or web pages, this tool ensures your content is optimized without risking keyword stuffing penalties.
+            breaks your content into 1, 2, 3, and 4-word phrase frequencies, checks whether your top keywords appear in the title, meta description, and headings, and exports everything to CSV. Whether you&apos;re writing blog posts, product descriptions, or auditing a competitor&apos;s page by URL, this tool shows exactly what your content emphasises — without risking keyword stuffing penalties.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
-            {['Instant Analysis', 'Top Keywords Report', 'SEO Recommendations', '100% Free'].map(label => (
+            {['1-4 Word Phrase Analysis', 'Keyword Placement Checks', 'CSV Export', '100% Free'].map(label => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>✓</span>
                 <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
@@ -322,6 +368,20 @@ export default function KeywordDensityAnalyzerClient() {
               disabled={form.isAnalyzing}
             />
             <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.25rem', marginTop: '0.35rem' }}>Enter your main keyword to check its density</p>
+
+            {/* Stop-word filter toggle */}
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={filterStopWords}
+                onChange={(e) => setFilterStopWords(e.target.checked)}
+                disabled={form.isAnalyzing}
+                style={{ width: 16, height: 16, accentColor: 'var(--blue)', cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: '0.85rem', color: 'var(--gray-5)' }}>
+                Filter common words <span style={{ color: 'var(--gray-4)' }}>(the, and, is…) from the single-word list</span>
+              </span>
+            </label>
 
             {/* URL Input */}
             {inputMode === 'url' && (
@@ -494,26 +554,128 @@ export default function KeywordDensityAnalyzerClient() {
                   </div>
                 </div>
 
-                {/* Top Keywords */}
-                <div style={{ background: 'var(--white)', border: '1px solid var(--line)', padding: '1.25rem', marginBottom: '1.25rem' }}>
-                  <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink)', marginBottom: '0.75rem' }}>Top Keywords</div>
-                  <div style={{ maxHeight: 240, overflowY: 'auto' }}>
-                    {analysis.topKeywords.map((keyword, index) => (
-                      <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 0', borderBottom: '1px solid var(--line)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <div style={{ width: 22, height: 22, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#fff', fontFamily: 'Space Grotesk, sans-serif' }}>{index + 1}</span>
-                          </div>
-                          <span style={{ fontWeight: 500, fontSize: '0.85rem', color: 'var(--ink)' }}>{keyword.word}</span>
-                        </div>
-                        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--gray-4)' }}>{keyword.count}&times;</span>
-                          <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--blue)', fontFamily: 'Space Grotesk, sans-serif' }}>{keyword.density.toFixed(2)}%</span>
+                {/* Top Keywords / Phrases */}
+                {(() => {
+                  const lists = { '1': analysis.topKeywords, '2': analysis.topBigrams, '3': analysis.topTrigrams, '4': analysis.topFourGrams }
+                  const activeList = lists[phraseView]
+                  const tabLabel = { '1': '1 Word', '2': '2 Words', '3': '3 Words', '4': '4 Words' }
+                  const exportCsv = () => {
+                    const rows = [['Phrase', 'Words', 'Count', 'Density %']]
+                    ;(['1', '2', '3', '4'] as const).forEach(n => {
+                      lists[n].forEach(k => rows.push([k.word, n, String(k.count), k.density.toFixed(2)]))
+                    })
+                    const csv = rows.map(r => r.map(f => `"${f.replace(/"/g, '""')}"`).join(',')).join('\n')
+                    const a = document.createElement('a')
+                    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }))
+                    a.download = `keyword-density-${new Date().toISOString().split('T')[0]}.csv`
+                    a.click()
+                    URL.revokeObjectURL(a.href)
+                  }
+                  return (
+                    <div style={{ background: 'var(--white)', border: '1px solid var(--line)', padding: '1.25rem', marginBottom: '1.25rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                        <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink)' }}>Top Keywords &amp; Phrases</div>
+                        <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+                          {(['1', '2', '3', '4'] as const).map(v => (
+                            <button
+                              key={v}
+                              onClick={() => setPhraseView(v)}
+                              style={{
+                                padding: '4px 10px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer',
+                                fontFamily: 'Space Grotesk, sans-serif', border: '1px solid var(--line)',
+                                background: phraseView === v ? 'var(--ink)' : 'var(--white)',
+                                color: phraseView === v ? '#fff' : 'var(--gray-5)',
+                              }}
+                            >
+                              {tabLabel[v]}
+                            </button>
+                          ))}
+                          <button
+                            onClick={exportCsv}
+                            style={{
+                              padding: '4px 10px', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer',
+                              fontFamily: 'Space Grotesk, sans-serif', border: 'none',
+                              background: 'var(--blue)', color: '#fff',
+                            }}
+                          >
+                            Export CSV
+                          </button>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
+                      <div style={{ maxHeight: 300, overflowY: 'auto' }}>
+                        {activeList.length === 0 ? (
+                          <p style={{ fontSize: '0.82rem', color: 'var(--gray-4)', padding: '1rem 0', textAlign: 'center' }}>
+                            No repeated {phraseView === '2' ? 'two-word' : phraseView === '3' ? 'three-word' : 'four-word'} phrases found in this content.
+                          </p>
+                        ) : activeList.map((keyword, index) => (
+                          <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 0', borderBottom: '1px solid var(--line)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <div style={{ width: 22, height: 22, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#fff', fontFamily: 'Space Grotesk, sans-serif' }}>{index + 1}</span>
+                              </div>
+                              <span style={{ fontWeight: 500, fontSize: '0.85rem', color: 'var(--ink)' }}>{keyword.word}</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                              <span style={{ fontSize: '0.78rem', color: 'var(--gray-4)' }}>{keyword.count}&times;</span>
+                              <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--blue)', fontFamily: 'Space Grotesk, sans-serif' }}>{keyword.density.toFixed(2)}%</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })()}
+
+                {/* Keyword Placement (URL mode) — is each key phrase in the tags that matter? */}
+                {analysis.placement && (() => {
+                  const p = analysis.placement
+                  const inText = (haystack: string | string[], needle: string) => {
+                    const n = needle.toLowerCase()
+                    return Array.isArray(haystack) ? haystack.some(h => h.toLowerCase().includes(n)) : haystack.toLowerCase().includes(n)
+                  }
+                  const target = form.targetKeyword.trim()
+                  const checkList = [
+                    ...(target ? [target.toLowerCase()] : []),
+                    ...analysis.topKeywords.slice(0, 5).map(k => k.word).filter(w => w !== target.toLowerCase()),
+                  ].slice(0, 6)
+                  const mark = (ok: boolean) => (
+                    <span style={{ fontWeight: 700, color: ok ? 'var(--green)' : 'var(--red)' }}>{ok ? '✓' : '✗'}</span>
+                  )
+                  return (
+                    <div style={{ background: 'var(--white)', border: '1px solid var(--line)', padding: '1.25rem', marginBottom: '1.25rem' }}>
+                      <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.95rem', color: 'var(--ink)', marginBottom: '0.3rem' }}>Keyword Placement</div>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--gray-4)', marginBottom: '0.75rem' }}>
+                        Whether your top keywords appear in the page elements search engines weight most.
+                      </p>
+                      <div style={{ overflowX: 'auto' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                          <thead>
+                            <tr style={{ borderBottom: '1px solid var(--line)' }}>
+                              <th style={{ textAlign: 'left', padding: '5px 8px', color: 'var(--gray-5)', fontWeight: 700 }}>Keyword</th>
+                              <th style={{ textAlign: 'center', padding: '5px 8px', color: 'var(--gray-5)', fontWeight: 700 }}>Title</th>
+                              <th style={{ textAlign: 'center', padding: '5px 8px', color: 'var(--gray-5)', fontWeight: 700 }}>Meta Desc</th>
+                              <th style={{ textAlign: 'center', padding: '5px 8px', color: 'var(--gray-5)', fontWeight: 700 }}>H1</th>
+                              <th style={{ textAlign: 'center', padding: '5px 8px', color: 'var(--gray-5)', fontWeight: 700 }}>H2</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {checkList.map(kw => (
+                              <tr key={kw} style={{ borderBottom: '1px solid var(--line)' }}>
+                                <td style={{ padding: '5px 8px', fontWeight: kw === target.toLowerCase() && target ? 700 : 500, color: 'var(--ink)' }}>
+                                  {kw}{kw === target.toLowerCase() && target ? ' (target)' : ''}
+                                </td>
+                                <td style={{ textAlign: 'center', padding: '5px 8px' }}>{mark(inText(p.title, kw))}</td>
+                                <td style={{ textAlign: 'center', padding: '5px 8px' }}>{mark(inText(p.metaDescription, kw))}</td>
+                                <td style={{ textAlign: 'center', padding: '5px 8px' }}>{mark(inText(p.h1, kw))}</td>
+                                <td style={{ textAlign: 'center', padding: '5px 8px' }}>{mark(inText(p.h2, kw))}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {/* SEO Recommendations */}
                 <div style={{ background: 'var(--white)', border: '1px solid var(--line)', padding: '1.25rem' }}>
@@ -992,7 +1154,19 @@ export default function KeywordDensityAnalyzerClient() {
               },
               {
                 q: 'Can I analyze competitor content?',
-                a: 'Yes, you can analyze any publicly accessible webpage using the URL analysis feature, including competitor pages. This helps you benchmark your density against pages that are already ranking well for your target keyword.'
+                a: 'Yes, you can analyze any publicly accessible webpage using the URL analysis feature, including competitor pages. URL mode also runs a keyword placement check, showing whether the page\'s top keywords appear in its title tag, meta description, H1, and H2 headings — so you can see not just which phrases a ranking page repeats, but where it places them.'
+              },
+              {
+                q: 'Does the tool analyze multi-word phrases or just single keywords?',
+                a: 'Both. The results table has four views: 1, 2, 3, and 4-word phrases, each showing up to the top 25 by count and density. Phrase analysis is where the real SEO insight lives — knowing that "content marketing strategy" appears eight times tells you far more about your page\'s topical focus than the counts of "content" and "marketing" separately. Only phrases that repeat at least twice are shown, so every entry is a genuine pattern rather than noise, and the full data across all four views exports to CSV in one click.'
+              },
+              {
+                q: 'What is the keyword placement check?',
+                a: 'When you analyze a URL, the tool extracts the page\'s title tag, meta description, H1, and H2 headings and shows a checkmark table for your target keyword and the page\'s top keywords: which appear in each element and which are missing. A keyword that dominates your body text but never appears in your title or H1 is a placement problem, not a density problem — and this table catches it instantly.'
+              },
+              {
+                q: 'Can I include common words like "the" and "and" in the results?',
+                a: 'Yes. By default the single-word view filters out stop words (the, and, is, of…) so the list shows meaningful terms. Untick "Filter common words" before analyzing if you want the raw, unfiltered frequency list instead.'
               },
             ].map(faq => (
               <details key={faq.q} className="faq-item">

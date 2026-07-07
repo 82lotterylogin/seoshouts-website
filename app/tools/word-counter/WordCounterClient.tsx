@@ -11,7 +11,20 @@ export default function WordCounterClient() {
   const [readingTime, setReadingTime] = useState(0)
   const [paragraphCount, setParagraphCount] = useState(0)
   const [sentenceCount, setSentenceCount] = useState(0)
+  const [uniqueWords, setUniqueWords] = useState(0)
+  const [speakingTime, setSpeakingTime] = useState(0)
+  const [fleschEase, setFleschEase] = useState<number | null>(null)
+  const [fkGrade, setFkGrade] = useState<number | null>(null)
   const [copied, setCopied] = useState(false)
+
+  // Estimate syllables in a word (heuristic used by all JS readability tools)
+  const countSyllables = (word: string): number => {
+    word = word.toLowerCase().replace(/[^a-z]/g, '')
+    if (word.length <= 3) return word.length > 0 ? 1 : 0
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '').replace(/^y/, '')
+    const groups = word.match(/[aeiouy]{1,2}/g)
+    return groups ? groups.length : 1
+  }
 
   useEffect(() => {
     const trimmed = text.trim()
@@ -20,11 +33,35 @@ export default function WordCounterClient() {
     setCharCount(text.length)
     setCharCountNoSpaces(text.replace(/\s/g, '').length)
     setReadingTime(words.length > 0 ? Math.ceil(words.length / 200) : 0)
+    setSpeakingTime(words.length > 0 ? Math.ceil(words.length / 130) : 0) // ~130 wpm spoken
+    setUniqueWords(new Set(words.map(w => w.toLowerCase().replace(/[^a-z0-9]/g, ''))).size)
     const paragraphs = trimmed.split(/\n\s*\n/).filter(p => p.trim().length > 0)
     setParagraphCount(paragraphs.length > 0 ? paragraphs.length : (trimmed.length > 0 ? 1 : 0))
     const sentences = trimmed.split(/[.!?]+/).filter(s => s.trim().length > 0)
     setSentenceCount(sentences.length)
+
+    // Flesch Reading Ease + Flesch-Kincaid Grade (need enough text to be meaningful)
+    if (words.length >= 20 && sentences.length >= 1) {
+      const syllables = words.reduce((sum, w) => sum + countSyllables(w), 0)
+      const wps = words.length / sentences.length
+      const spw = syllables / words.length
+      const ease = 206.835 - 1.015 * wps - 84.6 * spw
+      const grade = 0.39 * wps + 11.8 * spw - 15.59
+      setFleschEase(Math.max(0, Math.min(100, Math.round(ease))))
+      setFkGrade(Math.max(0, Math.round(grade * 10) / 10))
+    } else {
+      setFleschEase(null)
+      setFkGrade(null)
+    }
   }, [text])
+
+  const easeLabel = (score: number): string => {
+    if (score >= 80) return 'Very easy'
+    if (score >= 60) return 'Plain English'
+    if (score >= 50) return 'Fairly hard'
+    if (score >= 30) return 'Difficult'
+    return 'Very difficult'
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -48,6 +85,8 @@ export default function WordCounterClient() {
   const clearText = () => setText('')
 
   const SOCIAL_LIMITS = [
+    { platform: 'Google Title Tag', limit: 60 },
+    { platform: 'Google Meta Description', limit: 160 },
     { platform: 'X (Twitter)', limit: 280 },
     { platform: 'Instagram Caption', limit: 2200 },
     { platform: 'LinkedIn Post', limit: 3000 },
@@ -80,7 +119,7 @@ export default function WordCounterClient() {
             with strict length requirements.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
-            {['Real-time Counting', 'Reading Time Estimate', 'Social Media Limits', '100% Free'].map((label) => (
+            {['Real-time Counting', 'Readability Scores', 'Social Media & SERP Limits', '100% Free'].map((label) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
                 <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
@@ -175,12 +214,15 @@ export default function WordCounterClient() {
                   { label: 'No Spaces', value: charCountNoSpaces },
                   { label: 'Paragraphs', value: paragraphCount },
                   { label: 'Sentences', value: sentenceCount },
+                  { label: 'Unique Words', value: uniqueWords },
                   { label: 'Read Time', value: readingTime, suffix: ' min' },
+                  { label: 'Speak Time', value: speakingTime, suffix: ' min' },
+                  { label: 'Words/Sentence', value: sentenceCount > 0 ? Math.round((wordCount / sentenceCount) * 10) / 10 : 0 },
                 ].map((s, i) => (
                   <div key={s.label} style={{
                     padding: '1.1rem 0.75rem',
                     borderRight: i % 3 !== 2 ? '1px solid var(--line)' : 'none',
-                    borderBottom: i < 3 ? '1px solid var(--line)' : 'none',
+                    borderBottom: i < 6 ? '1px solid var(--line)' : 'none',
                     textAlign: 'center',
                   }}>
                     <div style={{
@@ -209,6 +251,49 @@ export default function WordCounterClient() {
               </div>
             </div>
 
+            {/* Readability */}
+            <div className="tool-box" style={{ maxWidth: 'none', padding: 0 }}>
+              <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--ink)', margin: 0 }}>
+                  Readability
+                </h3>
+              </div>
+              {fleschEase === null ? (
+                <p style={{ padding: '1rem 1.25rem', fontSize: '0.82rem', color: 'var(--gray-4)', margin: 0, lineHeight: 1.6 }}>
+                  Type at least 20 words to see Flesch Reading Ease and grade-level scores.
+                </p>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+                  <div style={{ padding: '1.1rem 0.75rem', borderRight: '1px solid var(--line)', textAlign: 'center' }}>
+                    <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '1.75rem', fontWeight: 700, color: fleschEase >= 60 ? 'var(--green)' : fleschEase >= 30 ? 'var(--amber)' : 'var(--red)', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                      {fleschEase}
+                    </div>
+                    <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--gray-4)', marginTop: '0.3rem' }}>
+                      Reading Ease
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--gray-5)', marginTop: '0.2rem', fontFamily: 'Inter, sans-serif' }}>
+                      {easeLabel(fleschEase)}
+                    </div>
+                  </div>
+                  <div style={{ padding: '1.1rem 0.75rem', textAlign: 'center' }}>
+                    <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '1.75rem', fontWeight: 700, color: 'var(--blue)', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                      {fkGrade}
+                    </div>
+                    <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--gray-4)', marginTop: '0.3rem' }}>
+                      Grade Level
+                    </div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--gray-5)', marginTop: '0.2rem', fontFamily: 'Inter, sans-serif' }}>
+                      Flesch-Kincaid
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Social Media Limits */}
             <div className="tool-box" style={{ maxWidth: 'none', padding: 0 }}>
               <div style={{ padding: '0.875rem 1.25rem', borderBottom: '1px solid var(--line)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -216,7 +301,7 @@ export default function WordCounterClient() {
                   <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
                 </svg>
                 <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.9rem', color: 'var(--ink)', margin: 0 }}>
-                  Social Media Limits
+                  Character Limits
                 </h3>
               </div>
               <div style={{ padding: '0.875rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
@@ -283,14 +368,19 @@ export default function WordCounterClient() {
             <h3>Perfect for Writers, Bloggers &amp; Content Creators</h3>
             <p>
               Need to hit a specific word count? Checking character limits for social media? Our word counter tool gives
-              you real-time stats as you type. No delays, no page refreshes — every keystroke updates all six metrics
+              you real-time stats as you type. No delays, no page refreshes — every keystroke updates all nine metrics
               simultaneously.
             </p>
             <p>
-              Track words, characters (with and without spaces), paragraphs, sentences, and estimated reading time.
-              Great for essays, blog posts, social media, and any content with specific length requirements. The social
-              media limits panel shows live progress bars for Twitter, Instagram, LinkedIn, and Facebook so you know
-              exactly where you stand before you post.
+              Track words, characters (with and without spaces), paragraphs, sentences, unique words, average sentence
+              length, and estimated reading and speaking time. The readability panel scores your text with Flesch Reading
+              Ease and the Flesch-Kincaid grade level, so you know whether your writing matches your audience — plain
+              English for a general readership, or denser prose for a specialist one.
+            </p>
+            <p>
+              Great for essays, blog posts, social media, and any content with specific length requirements. The character
+              limits panel shows live progress bars for Google title tags, Google meta descriptions, X (Twitter), Instagram,
+              LinkedIn, and Facebook so you know exactly where you stand before you post or publish.
             </p>
           </div>
         </div>
@@ -360,7 +450,7 @@ export default function WordCounterClient() {
             {[
               { n: '01', title: 'Real-time Processing', desc: 'As you type or paste text, the algorithm instantly analyzes every character and word. Every keystroke triggers an update with zero perceptible delay.' },
               { n: '02', title: 'Smart Word Detection', desc: 'Uses whitespace splitting and filters empty strings to ensure accurate word counting, identical in methodology to Microsoft Word and Google Docs.' },
-              { n: '03', title: 'Multiple Metrics', desc: 'Simultaneously tracks words, characters (with and without spaces), paragraphs, sentences, and calculates reading time based on 200 words per minute.' },
+              { n: '03', title: 'Multiple Metrics', desc: 'Simultaneously tracks words, characters, paragraphs, sentences, unique words, reading and speaking time, plus Flesch Reading Ease and Flesch-Kincaid grade-level readability scores.' },
             ].map((s, i) => (
               <div key={s.n} className="step-card reveal">
                 {i < 2 && (
@@ -378,17 +468,21 @@ export default function WordCounterClient() {
           </div>
 
           {/* What We Track */}
-          <div style={{ marginTop: '2.5rem', display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', border: '1px solid var(--line)', background: 'var(--white)' }} className="reveal">
+          <div style={{ marginTop: '2.5rem', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', border: '1px solid var(--line)', background: 'var(--white)' }} className="reveal">
             {[
               { label: 'Word Count', note: 'Standard algorithm' },
               { label: 'Characters', note: 'With & without spaces' },
               { label: 'Paragraphs', note: 'Line break detection' },
               { label: 'Sentences', note: 'Punctuation-based' },
-              { label: 'Reading Time', note: '200 WPM average' },
+              { label: 'Reading & Speaking Time', note: '200 / 130 WPM average' },
+              { label: 'Unique Words', note: 'Vocabulary diversity' },
+              { label: 'Flesch Reading Ease', note: '0-100 readability score' },
+              { label: 'F-K Grade Level', note: 'US school-grade estimate' },
             ].map((item, i) => (
               <div key={item.label} style={{
                 padding: '1rem',
-                borderRight: i < 4 ? '1px solid var(--line)' : 'none',
+                borderRight: i % 4 !== 3 ? '1px solid var(--line)' : 'none',
+                borderBottom: i < 4 ? '1px solid var(--line)' : 'none',
                 textAlign: 'center',
               }}>
                 <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.88rem', color: 'var(--ink)', marginBottom: '0.25rem' }}>
@@ -463,8 +557,9 @@ export default function WordCounterClient() {
             {[
               { q: 'Is this word counter tool free?', a: 'Yes, our word counter tool is completely free to use. No registration required, no hidden fees — just paste your text and get instant results.' },
               { q: 'How accurate is the word count?', a: 'Our word counter uses standard algorithms similar to Microsoft Word, providing accurate counts by splitting text on whitespace and filtering empty strings.' },
-              { q: 'Can I check character limits for social media?', a: 'Yes. The Social Media Limits panel shows live progress bars for X (Twitter), Instagram, LinkedIn, and Facebook, updating as you type.' },
-              { q: 'How is reading time calculated?', a: 'Reading time is estimated based on an average reading speed of 200 words per minute for adults, rounded up to the nearest whole minute.' },
+              { q: 'Can I check character limits for social media?', a: 'Yes. The Character Limits panel shows live progress bars for Google title tags (60 chars), Google meta descriptions (160 chars), X (Twitter), Instagram, LinkedIn, and Facebook, updating as you type.' },
+              { q: 'How is reading time calculated?', a: 'Reading time is estimated based on an average reading speed of 200 words per minute for adults, rounded up to the nearest whole minute. Speaking time uses 130 words per minute, the average pace for presentations and voiceovers.' },
+              { q: 'What do the readability scores mean?', a: 'Flesch Reading Ease scores your text from 0 to 100 — higher is easier to read, with 60+ considered plain English. The Flesch-Kincaid Grade Level estimates the US school grade needed to understand the text. Both appear once you have typed at least 20 words. Most web content performs best at a reading ease of 60 or above.' },
               { q: 'Does it work offline?', a: 'Yes, once the page loads, the word counter works entirely in your browser without needing an internet connection. No data is sent to our servers.' },
               { q: 'Can I save my text?', a: 'Use the Copy Text button to save your text to the clipboard, or copy and paste into your preferred document editor. The text persists as long as the tab is open.' },
             ].map((item) => (

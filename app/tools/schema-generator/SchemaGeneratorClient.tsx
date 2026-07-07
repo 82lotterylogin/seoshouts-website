@@ -46,6 +46,48 @@ export default function SchemaGeneratorClient() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
 
+  // Inspect existing JSON-LD schema on any live URL (yours or a competitor's)
+  const [inspectUrl, setInspectUrl] = useState('')
+  const [inspecting, setInspecting] = useState(false)
+  const [inspectError, setInspectError] = useState('')
+  const [foundSchemas, setFoundSchemas] = useState<Array<{ types: string; json: string }> | null>(null)
+
+  const inspectExistingSchema = async () => {
+    const target = inspectUrl.trim()
+    if (!target) return
+    setInspecting(true)
+    setInspectError('')
+    setFoundSchemas(null)
+    try {
+      const res = await fetch('/api/fetch-page', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: target.includes('://') ? target : `https://${target}` }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.html) throw new Error(data.error || 'Could not fetch that page')
+      const doc = new DOMParser().parseFromString(data.html, 'text/html')
+      const blocks = Array.from(doc.querySelectorAll('script[type="application/ld+json"]'))
+      const schemas: Array<{ types: string; json: string }> = []
+      for (const block of blocks) {
+        try {
+          const parsed = JSON.parse(block.textContent || '')
+          // @graph and top-level arrays both hold multiple schema objects
+          const items = Array.isArray(parsed) ? parsed : parsed['@graph'] ? parsed['@graph'] : [parsed]
+          const types = items.map((it: any) => it?.['@type']).flat().filter(Boolean).join(', ')
+          schemas.push({ types: types || 'Unknown type', json: JSON.stringify(parsed, null, 2) })
+        } catch {
+          schemas.push({ types: 'Invalid JSON-LD (syntax error)', json: (block.textContent || '').trim() })
+        }
+      }
+      setFoundSchemas(schemas)
+    } catch (err) {
+      setInspectError(err instanceof Error ? err.message : 'Inspection failed. Check the URL and try again.')
+    } finally {
+      setInspecting(false)
+    }
+  }
+
   // Load usage count from session storage
   useEffect(() => {
     const savedUsageCount = sessionStorage.getItem('schemaGeneratorUsage')
@@ -1161,7 +1203,7 @@ ${generatedSchema}
             creates perfect JSON-LD structured data for articles, local businesses, FAQs, products, reviews, and more — paste it in, no coding required.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
-            {['10+ Schema Types', 'JSON-LD Format', 'Google-Validated', '100% Free'].map(label => (
+            {['39+ Schema Types', 'URL Schema Inspector', 'JSON-LD Format', '100% Free'].map(label => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 <span style={{ color: 'var(--green)', fontWeight: 700, fontSize: '0.85rem' }}>&#10003;</span>
                 <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</span>
@@ -1191,6 +1233,62 @@ ${generatedSchema}
                 </div>
               </div>
             </div>
+
+            {/* Inspect existing schema on a URL */}
+            <label className="tool-box-label" htmlFor="inspect-url">Check Existing Schema on a URL (Optional)</label>
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.35rem' }}>
+              <input
+                type="url"
+                id="inspect-url"
+                className="tool-url-input"
+                style={{ flex: 1 }}
+                value={inspectUrl}
+                onChange={(e) => setInspectUrl(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') inspectExistingSchema() }}
+                placeholder="anysite.com/page — see what schema it already has"
+              />
+              <button
+                onClick={inspectExistingSchema}
+                disabled={inspecting || !inspectUrl.trim()}
+                style={{
+                  padding: '0 18px', background: inspecting || !inspectUrl.trim() ? 'var(--gray-3)' : 'var(--ink)',
+                  color: '#fff', border: 'none', fontWeight: 600, fontSize: '0.82rem',
+                  fontFamily: 'Space Grotesk, sans-serif', cursor: inspecting || !inspectUrl.trim() ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {inspecting ? 'Checking…' : 'Inspect'}
+              </button>
+            </div>
+            {inspectError && (
+              <p style={{ fontSize: '0.78rem', color: 'var(--red)', marginBottom: '1rem' }}>{inspectError}</p>
+            )}
+            {foundSchemas !== null && !inspectError && (
+              <div style={{ marginBottom: '1.25rem' }}>
+                {foundSchemas.length === 0 ? (
+                  <div style={{ padding: '10px 14px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', fontSize: '0.8rem', color: 'var(--amber)' }}>
+                    No JSON-LD schema found on that page. Generate some below — you have an easy win over it.
+                  </div>
+                ) : (
+                  <>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--green)', margin: '0 0 0.5rem' }}>
+                      Found {foundSchemas.length} JSON-LD block{foundSchemas.length !== 1 ? 's' : ''}:
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', maxHeight: 260, overflowY: 'auto' }}>
+                      {foundSchemas.map((s, i) => (
+                        <details key={i} style={{ border: '1px solid var(--line)', background: 'var(--white)' }}>
+                          <summary style={{ padding: '8px 12px', fontSize: '0.8rem', fontWeight: 600, color: 'var(--ink)', cursor: 'pointer', fontFamily: 'Space Grotesk, sans-serif' }}>
+                            {s.types}
+                          </summary>
+                          <pre style={{ margin: 0, padding: '10px 12px', borderTop: '1px solid var(--line)', fontSize: '0.7rem', fontFamily: 'JetBrains Mono, monospace', overflowX: 'auto', maxHeight: 180, background: 'var(--gray-1)', color: 'var(--ink)' }}>
+                            {s.json}
+                          </pre>
+                        </details>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Schema Type Selection */}
             <label className="tool-box-label">
@@ -1846,6 +1944,7 @@ ${generatedSchema}
             {[
               { q: 'What is schema markup and why does it matter for SEO?', a: "Schema markup is structured data code (JSON-LD format) that explicitly tells search engines what your content means—defining entities, relationships, and attributes using schema.org vocabulary. It matters because pages with schema rank 4 positions higher on average (Searchmetrics data) due to enhanced CTR from rich snippets, which signals quality to Google's algorithm." },
               { q: 'How many schema types does this generator support?', a: 'Our schema generator currently supports 39+ of the most popular and useful schema.org types, organized across 11 categories (Business, Content, E-commerce, Events, People, Jobs, Creative, Places, Technology, Medical, Automotive). This is significantly more than the 10-15 types offered by most free generators.' },
+              { q: 'Can I check what schema a page already has?', a: 'Yes. Use the "Check Existing Schema on a URL" field: enter any live URL — yours or a competitor\'s — and the tool extracts every JSON-LD block on that page and lists it by type, with the full markup viewable in expandable panels. It handles @graph bundles, arrays, and even flags blocks with JSON syntax errors. Great for auditing your own implementation or seeing which schema types the pages outranking you are using.' },
               { q: 'Is the generated schema markup valid and Google-compliant?', a: "Yes, all generated schema markup follows schema.org standards and Google's structured data guidelines. We provide built-in validation, enforce required fields, and offer direct integration with Google's Rich Results Test so you can verify compliance before implementation." },
               { q: 'What makes your schema generator better than competitors?', a: "Four key differentiators: (1) 39+ schema types versus 10–15 for most tools, (2) Advanced property builders for addresses, geo-coordinates, FAQs, steps, and ratings, (3) Direct Google Rich Results Test integration with one-click access, (4) Category-based organization with searchable dropdown and visual icons. Plus it's completely free with no login required." },
               { q: 'Can I customize schema types or add custom properties?', a: 'Our generator provides all standard schema.org properties for each type through intelligent form builders. For highly specialized custom properties not in our forms, you can generate the base schema and manually add custom properties to the exported JSON-LD code before implementation.' },

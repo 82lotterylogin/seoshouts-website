@@ -106,6 +106,11 @@ export default function KeywordDifficultyCheckerClient() {
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordResult | null>(null)
   const [sortBy, setSortBy] = useState<'keyword' | 'difficulty' | 'volume'>('difficulty')
 
+  // Real domain authority via Open PageRank (optional context for the scores)
+  const [domainInput, setDomainInput] = useState('')
+  const [domainAuthority, setDomainAuthority] = useState<{ domain: string; pageRank: number | null; globalRank: number | null } | null>(null)
+  const [domainNote, setDomainNote] = useState('')
+
   // Deterministic hash of the keyword so the same input always produces the
   // same modeled score — no random variation between runs.
   const seedFromKeyword = (keyword: string): number => {
@@ -250,6 +255,23 @@ export default function KeywordDifficultyCheckerClient() {
     setResults([])
     setSelectedKeyword(null)
 
+    // Fetch real domain authority in parallel when a domain was provided
+    setDomainAuthority(null)
+    setDomainNote('')
+    if (domainInput.trim()) {
+      fetch('/api/domain-authority', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ domains: [domainInput.trim()] }),
+      })
+        .then(r => r.json())
+        .then(d => {
+          if (d.success && d.results?.[0]) setDomainAuthority(d.results[0])
+          else setDomainNote(d.error || 'Could not fetch domain authority.')
+        })
+        .catch(() => setDomainNote('Could not fetch domain authority.'))
+    }
+
     // Simulate API call
     setTimeout(() => {
       const keywordList = form.keywords
@@ -320,6 +342,9 @@ export default function KeywordDifficultyCheckerClient() {
     setLoading(false)
     setSelectedKeyword(null)
     setSortBy('difficulty')
+    setDomainInput('')
+    setDomainAuthority(null)
+    setDomainNote('')
     setIsVerified(false)
     setCaptchaValue(null)
     if (recaptchaRef.current) {
@@ -377,7 +402,7 @@ export default function KeywordDifficultyCheckerClient() {
           </h1>
           <p className="tool-hero-sub">
             A keyword difficulty checker scores any search term from 1 to 100 based on how hard it is to outrank the pages currently on page one of Google. SEOShouts&apos; free keyword difficulty tool checks{' '}
-            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>up to 20 keywords in bulk</strong>, adjusts scores for 48 target countries, and exports everything to CSV with no signup, no credit card, and no trial limits.
+            <strong style={{ color: 'rgba(255,255,255,0.85)' }}>up to 20 keywords in bulk</strong>, adjusts scores for 48 target countries, compares them against your domain&apos;s real Open PageRank authority, and exports everything to CSV with no signup, no credit card, and no trial limits.
           </p>
         </div>
       </div>
@@ -481,6 +506,25 @@ export default function KeywordDifficultyCheckerClient() {
               <option value="Arabic">Arabic</option>
             </select>
 
+            {/* Your Domain (optional) — real authority context via Open PageRank */}
+            <label className="tool-box-label" htmlFor="your-domain">Your Domain (Optional)</label>
+            <input
+              id="your-domain"
+              type="text"
+              value={domainInput}
+              onChange={(e) => setDomainInput(e.target.value)}
+              placeholder="e.g., yoursite.com"
+              style={{
+                width: '100%', border: '1px solid var(--gray-3)', padding: '13px 16px',
+                borderRadius: 6, fontFamily: 'Inter, sans-serif', fontSize: '0.9rem',
+                color: 'var(--ink)', outline: 'none', background: 'var(--white)',
+                marginBottom: '0.35rem'
+              }}
+            />
+            <p style={{ fontSize: '0.78rem', color: 'var(--gray-4)', marginBottom: '1.5rem' }}>
+              Add your domain to see its real authority score (Open PageRank data) next to your keyword difficulty results
+            </p>
+
             {/* Human Verification */}
             <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
               <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -577,6 +621,39 @@ export default function KeywordDifficultyCheckerClient() {
               </div>
             ) : (
               <div>
+                {/* Your Domain Authority (real Open PageRank data) */}
+                {domainAuthority && (() => {
+                  const pr = domainAuthority.pageRank
+                  // ponytail: PR*10+10 reach ceiling is a rough rule of thumb, labeled as such
+                  const ceiling = pr !== null ? Math.min(100, Math.round(pr * 10) + 10) : null
+                  const within = ceiling !== null ? results.filter(r => r.difficulty <= ceiling).length : 0
+                  return (
+                    <div style={{ marginBottom: '1rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', padding: '12px 14px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        <span style={{ fontWeight: 700, fontSize: '0.85rem', color: 'var(--blue-dark)' }}>{domainAuthority.domain}</span>
+                        {pr !== null ? (
+                          <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1rem', color: 'var(--blue-dark)' }}>
+                            Authority {pr.toFixed(1)}/10
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: '0.8rem', color: 'var(--gray-5)' }}>No authority data yet for this domain</span>
+                        )}
+                      </div>
+                      {pr !== null && (
+                        <p style={{ fontSize: '0.78rem', color: 'var(--blue-dark)', margin: '0.4rem 0 0', lineHeight: 1.5 }}>
+                          {domainAuthority.globalRank ? `Global rank #${domainAuthority.globalRank.toLocaleString()}. ` : ''}
+                          As a rule of thumb, a site at this authority can realistically compete for keywords up to ~{ceiling} difficulty: {within} of your {results.length} keyword{results.length !== 1 ? 's' : ''} fall{within === 1 ? 's' : ''} in that range. Source: Open PageRank (Common Crawl).
+                        </p>
+                      )}
+                    </div>
+                  )
+                })()}
+                {domainNote && (
+                  <div style={{ marginBottom: '1rem', padding: '8px 12px', background: 'var(--gray-1)', border: '1px solid var(--line)', fontSize: '0.78rem', color: 'var(--gray-5)' }}>
+                    {domainNote}
+                  </div>
+                )}
+
                 {/* Export Buttons */}
                 <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
                   <button
@@ -682,7 +759,7 @@ export default function KeywordDifficultyCheckerClient() {
               { icon: 'M3 3v18h18 M19 9l-5 5-4-4-3 3', title: '1-100 Difficulty Scale with Labels', desc: 'Every keyword gets a clear score and a plain-English label: Low (1-30), Medium (31-50), High (51-70), or Very High (71-100). No decoding required, green means go.' },
               { icon: 'M12 12m-10 0a10 10 0 1 0 20 0a10 10 0 1 0-20 0 M12 12m-6 0a6 6 0 1 0 12 0a6 6 0 1 0-12 0 M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0', title: 'Search Intent Detection', desc: 'Each keyword is classified as informational, commercial, transactional, or local. Intent decides what kind of page can rank, so you know whether to write a guide or a product page.' },
               { icon: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3', title: 'CSV Export and Copy', desc: 'Download every scored keyword as a CSV file or copy results to your clipboard. Sort by difficulty in a spreadsheet and hand a prioritized keyword list to your content team in minutes.' },
-              { icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', title: 'Zero Barriers', desc: 'No login, no credit card, no trial countdown. Enter keywords and get difficulty scores immediately. Free for every analysis, every time.' },
+              { icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', title: 'Real Domain Authority Context', desc: 'Add your domain and see its genuine Open PageRank authority score (0-10) alongside your keyword scores, plus how many of your keywords are realistically within reach for a site at your authority level.', unique: true },
             ].map((f) => (
               <div key={f.title} className="feature-card">
                 <div className="feature-icon">
@@ -995,6 +1072,10 @@ export default function KeywordDifficultyCheckerClient() {
               {
                 q: 'Should I ignore high difficulty keywords completely?',
                 a: 'No, but treat them as long-term goals rather than quick wins. High-difficulty keywords usually have the most volume and commercial value. The smart play is a pillar page strategy: rank for dozens of related low-difficulty long tail terms first, interlink them into a cluster, and let that combined authority push your pillar page up for the hard head term.'
+              },
+              {
+                q: 'What does the "Your Domain" field do?',
+                a: 'Add your domain (optional) and the tool fetches its real authority score from Open PageRank, an independent metric built from Common Crawl link data on a 0 to 10 scale. Your results then show that score, your global rank, and a rule-of-thumb estimate of how many of your analyzed keywords are realistically within reach for a site at your authority level. It turns abstract difficulty scores into a personal answer: which of these keywords can MY site actually win?'
               },
               {
                 q: 'Is this keyword difficulty checker really free?',

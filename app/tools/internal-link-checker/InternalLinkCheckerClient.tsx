@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import ToolBreadcrumb from '../../components/ToolBreadcrumb'
 import InternalLinkVisualization from './InternalLinkVisualization'
 import InternalLinkDataTable from './InternalLinkDataTable'
 import ExportOptions from './ExportOptions'
 import ShapeGrid from '../../components/ShapeGrid'
+import { openBrandedReport } from '../../lib/printReport'
 
 interface AnchorData {
   text: string;
@@ -190,6 +191,12 @@ export default function InternalLinkCheckerClient() {
   }>({})
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
+
+  // Tool chaining: other tools link here with ?url=
+  useEffect(() => {
+    const chained = new URLSearchParams(window.location.search).get('url')
+    if (chained) setUrl(chained)
+  }, [])
 
   // Group anchors by text to combine duplicates
   const groupAnchors = (anchors: AnchorData[]) => {
@@ -646,6 +653,25 @@ export default function InternalLinkCheckerClient() {
               </div>
               <div className="results-actions">
                 <ExportOptions results={results} />
+                <button className="btn-sm" onClick={() => {
+                  const equity = computeLinkEquity(results)
+                  const orphans = equity.filter(r => r.orphan)
+                  const topAnchors = groupAnchors(results.anchors).sort((a, b) => b.count - a.count).slice(0, 15)
+                  openBrandedReport({
+                    toolName: 'Internal Link Analysis',
+                    subjectUrl: results.baseUrl,
+                    bodyHtml: `
+                      <h2>Site Summary</h2>
+                      <table><tr><th>Pages Crawled</th><th>Total Internal Links</th><th>Unique Anchors</th><th>Avg Links/Page</th><th>Orphan Pages</th></tr>
+                      <tr><td>${results.insights.pagesCrawled}</td><td>${results.insights.totalInternalLinks}</td><td>${results.insights.totalUniqueAnchors}</td><td>${results.insights.averageLinksPerPage}</td><td class="${orphans.length > 0 ? 'bad' : 'good'}">${orphans.length}</td></tr></table>
+                      <h2>Top Anchor Texts</h2>
+                      <table><tr><th>Anchor</th><th>Count</th></tr>${topAnchors.map(a => `<tr><td>${a.text.replace(/</g, '&lt;')}</td><td>${a.count}</td></tr>`).join('')}</table>
+                      ${orphans.length > 0 ? `<h2>Orphan Pages (no internal links pointing to them)</h2><table><tr><th>URL</th></tr>${orphans.slice(0, 20).map(o => `<tr><td>${o.url.replace(/</g, '&lt;')}</td></tr>`).join('')}</table>` : ''}`,
+                  })
+                }}>Download Report</button>
+                <a className="btn-sm" href={`/tools/geo-aeo-checker/?url=${encodeURIComponent(results.baseUrl)}`} style={{ textDecoration: 'none' }}>
+                  Check AI Readiness →
+                </a>
                 <button className="btn-sm" onClick={resetAnalysis}>New Analysis</button>
               </div>
             </div>
@@ -1174,7 +1200,8 @@ export default function InternalLinkCheckerClient() {
               { q: 'How many internal links should a page have?', a: 'According to Zyppy\'s analysis of 23 million internal links, pages with 40–44 internal links receive the most Google clicks, with 45–50 being the peak traffic range. Beyond 50 internal links per page, traffic declines significantly. Aim for 3–5 contextual internal links per 1,000 words of content.' },
               { q: 'What is the ideal anchor text ratio for internal links?', a: 'A healthy distribution is approximately: 50–60% descriptive or partial match anchors, 20–30% branded anchors, 10–15% exact match anchors, and less than 5% generic anchors like "click here." Never use the same anchor text repeatedly for the same target URL.' },
               { q: 'Can over-optimized anchor text hurt SEO rankings?', a: 'Yes. Google\'s Penguin algorithm specifically targets unnatural anchor text patterns. Sites with anchor text diversity below 30% have experienced ranking drops of up to 15 positions in competitive niches. Our word cloud visualization makes it easy to spot over-optimization before it triggers penalties.' },
-              { q: 'Is the SEOShouts internal link checker free?', a: 'Yes, completely free. The tool crawls up to 500 URLs per analysis with no registration, no credit card, and no usage limits. You get full anchor text analysis, word cloud visualization, keyword stuffing detection, and generic link identification at zero cost.' },
+              { q: 'Is the SEOShouts internal link checker free?', a: 'Yes, completely free. The tool crawls up to 500 URLs per analysis with no registration, no credit card, and no usage limits. You get full anchor text analysis, word cloud visualization, link equity (PageRank) scoring, orphan page detection, keyword stuffing detection, CSV export, and a downloadable branded report at zero cost.' },
+              { q: 'Can I download a report of my analysis?', a: 'Yes. Click "Download Report" in the results header to open a branded, print-ready summary: pages crawled, total links, top anchor texts, and any orphan pages found. Use your browser\'s print dialog to save it as a PDF for clients or your team. You can also export the raw anchor data as CSV, and jump straight into an AI-readiness check of the same site with one click.' },
               { q: 'What makes SEOShouts different from other internal link checkers?', a: 'SEOShouts is the only free internal link checker that generates visual word clouds of your anchor text profile. While tools like Screaming Frog, Ahrefs, and SEOptimer show data in tables, our word cloud gives you an instant visual health check. We also offer anchor text grouping, destination URL analysis, and keyword stuffing detection — all without login or payment.' },
               { q: 'How does internal linking affect AI search rankings?', a: 'AI search engines like ChatGPT, Perplexity, and Google Gemini use internal links to understand topical relationships between your pages. Descriptive, natural language anchor text helps AI models map your site\'s semantic structure more effectively than short keyword anchors.' },
               { q: 'How often should I audit internal links?', a: 'Run a full internal link audit monthly. Check for sudden spikes in exact-match anchor text, identify orphan pages with zero incoming links, verify all links return 200 status codes, and ensure important pages receive adequate link equity.' },
