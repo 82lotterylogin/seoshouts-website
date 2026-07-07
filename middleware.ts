@@ -81,6 +81,28 @@ export async function middleware(request: NextRequest) {
         : new URL(redirectionResult.to!, request.url).toString();
       return NextResponse.redirect(redirectUrl, redirectionResult.statusCode || 301);
     }
+
+    // Legacy /blog/?category=<Name> filter URLs duplicate /blog/ (same title/H1/meta).
+    // Redirect at the HTTP layer so crawlers get a real 301 — the in-page redirect()
+    // only produces a streamed 200 + client redirect, which doesn't consolidate signals.
+    if (pathname === '/blog' || pathname === '/blog/') {
+      const categoryName = request.nextUrl.searchParams.get('category');
+      if (categoryName) {
+        const knownCategories: Record<string, string> = {
+          'seo basics': 'seo-basics',
+          'link building': 'link-building',
+          'on page': 'on-page',
+          'ai seo': 'ai-seo',
+          'seo news': 'seo-news',
+          'best seo tools': 'best-seo-tools',
+          'internal linking': 'internal-linking',
+        };
+        const slug = knownCategories[categoryName.trim().toLowerCase()];
+        if (slug) {
+          return NextResponse.redirect(new URL(`/categories/${slug}/`, request.url), 301);
+        }
+      }
+    }
   }
   
   // Check if this is an admin route (excluding login page and auth API)
