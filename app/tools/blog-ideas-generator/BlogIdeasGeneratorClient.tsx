@@ -305,27 +305,12 @@ function BlogIdeasGeneratorClient() {
                   </div>
                 </div>
 
-                {/* reCAPTCHA */}
-                <div style={{ borderTop: '1px solid var(--line)', borderRight: '1px solid var(--line)', borderBottom: '1px solid var(--line)', borderLeft: '3px solid var(--blue)', padding: '1rem', background: 'var(--gray-1)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                    <div style={{ width: 16, height: 16, border: '1px solid var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                      </svg>
-                    </div>
-                    <span style={{ fontSize: '0.72rem', fontWeight: 700, fontFamily: 'var(--mono, monospace)', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)' }}>
-                      Human Verification Required
-                    </span>
-                  </div>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--gray-5)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
-                    Please verify that you&apos;re not a robot to generate your blog ideas.
-                  </p>
-                  <div className="recaptcha-wrapper">
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                    />
-                  </div>
+                {/* reCAPTCHA — the widget's own "I'm not a robot" label is explanation enough */}
+                <div className="recaptcha-wrapper">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                  />
                 </div>
 
                 {/* Error */}

@@ -317,22 +317,23 @@ export default function KeywordDensityAnalyzerClient() {
 
           {/* ── LEFT BOX — Input ── */}
           <div className="tool-box" style={{ maxWidth: 'none' }}>
-            <h2 className="tool-box-heading">Content Analysis</h2>
-
-            {/* Usage Counter */}
-            {(usageCount > 0 || usageCount >= usageLimit) && (
-              <div style={{
-                marginBottom: '1rem', padding: '8px 14px', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center',
-                background: usageCount >= usageLimit ? 'rgba(220,38,38,0.08)' : 'rgba(22,163,74,0.08)',
-                border: `1px solid ${usageCount >= usageLimit ? 'rgba(220,38,38,0.25)' : 'rgba(22,163,74,0.2)'}`,
-                color: usageCount >= usageLimit ? 'var(--red)' : 'var(--green)',
-              }}>
-                {usageCount >= usageLimit
-                  ? 'Session limit reached. Refresh page to continue.'
-                  : `${usageLimit - usageCount} of ${usageLimit} session analyses remaining`
-                }
+            {/* Usage strip */}
+            <div className="tool-usage-strip">
+              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--gray-5)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Session Usage</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                {usageCount >= usageLimit && (
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--red)', fontWeight: 700 }}>Limit reached — refresh page</span>
+                )}
+                <div style={{ width: '72px', height: '3px', background: 'var(--line)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${Math.min((usageCount / usageLimit) * 100, 100)}%`, background: usageCount >= usageLimit ? 'var(--red)' : 'var(--green)', transition: 'width 0.3s' }} />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--mono, monospace)', color: usageCount >= usageLimit ? 'var(--red)' : 'var(--green)', fontWeight: 700 }}>
+                  {usageCount}/{usageLimit}
+                </span>
               </div>
-            )}
+            </div>
+
+            <h2 className="tool-box-heading">Content Analysis</h2>
 
             {/* Input Mode Tabs */}
             <label className="tool-box-label">Choose Analysis Method *</label>
@@ -427,28 +428,18 @@ export default function KeywordDensityAnalyzerClient() {
               </>
             )}
 
-            {/* Human Verification */}
-            <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
-              <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.35rem' }}>Human Verification Required</div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
-                Please verify that you&apos;re not a robot to analyze your content.
-              </p>
-              <div style={{ marginBottom: '0.5rem' }}>
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                  onChange={handleCaptchaChange}
-                  theme="light"
-                />
-              </div>
+            {/* Human Verification — widget label is self-explanatory */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                onChange={handleCaptchaChange}
+                theme="light"
+              />
               {isVerified && (
-                <div style={{
-                  marginTop: '0.5rem', padding: '8px 12px',
-                  background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)',
-                  fontSize: '0.82rem', fontWeight: 600, color: 'var(--green)'
-                }}>
-                  Verification successful! You can now analyze your content.
-                </div>
+                <p style={{ marginTop: '0.4rem', fontSize: '0.78rem', fontWeight: 600, color: 'var(--green)' }}>
+                  ✓ Verified — you can now analyze your content.
+                </p>
               )}
             </div>
 

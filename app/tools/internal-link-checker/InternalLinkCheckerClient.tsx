@@ -468,26 +468,33 @@ export default function InternalLinkCheckerClient() {
       <div className="tool-input-section">
         <div className="tool-input-inner">
           <div className="tool-box">
+            {/* Usage strip */}
+            {(usageInfo.remainingRequests !== undefined || usageInfo.isLimitReached) && (() => {
+              const used = usageInfo.isLimitReached ? 5 : 5 - (usageInfo.remainingRequests ?? 5)
+              const atLimit = usageInfo.isLimitReached || usageInfo.remainingRequests === 0
+              return (
+                <div className="tool-usage-strip">
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--gray-5)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Daily Usage</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    {atLimit && usageInfo.resetTime && (
+                      <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--red)', fontWeight: 700 }}>Resets: {usageInfo.resetTime}</span>
+                    )}
+                    <div style={{ width: '72px', height: '3px', background: 'var(--line)', position: 'relative' }}>
+                      <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${Math.min((used / 5) * 100, 100)}%`, background: atLimit ? 'var(--red)' : 'var(--green)', transition: 'width 0.3s' }} />
+                    </div>
+                    <span style={{ fontSize: '0.75rem', fontFamily: 'var(--mono, monospace)', color: atLimit ? 'var(--red)' : 'var(--green)', fontWeight: 700 }}>
+                      {used}/5
+                    </span>
+                  </div>
+                </div>
+              )
+            })()}
+
             <h2 className="tool-box-heading">Analyze Your Website&apos;s Internal Link Structure</h2>
             <p className="tool-box-sub">
               Enter your website URL below to start crawling and analyzing{' '}
               <span>internal anchor text patterns</span>.
             </p>
-
-            {/* Usage Counter */}
-            {(usageInfo.remainingRequests !== undefined || usageInfo.isLimitReached) && (
-              <div style={{
-                marginBottom: '1rem', padding: '8px 14px', fontSize: '0.8rem', fontWeight: 600, textAlign: 'center',
-                background: usageInfo.isLimitReached ? 'rgba(220,38,38,0.08)' : usageInfo.remainingRequests === 0 ? 'rgba(217,119,6,0.08)' : 'rgba(22,163,74,0.08)',
-                border: `1px solid ${usageInfo.isLimitReached ? 'rgba(220,38,38,0.25)' : usageInfo.remainingRequests === 0 ? 'rgba(217,119,6,0.25)' : 'rgba(22,163,74,0.2)'}`,
-                color: usageInfo.isLimitReached ? 'var(--red)' : usageInfo.remainingRequests === 0 ? 'var(--amber)' : 'var(--green)',
-              }}>
-                {usageInfo.isLimitReached
-                  ? `Daily limit reached. Resets: ${usageInfo.resetTime}`
-                  : `${usageInfo.remainingRequests} of 5 daily uses remaining${usageInfo.resetTime ? ` (Resets: ${usageInfo.resetTime})` : ''}`
-                }
-              </div>
-            )}
 
             <form onSubmit={handleAnalyze}>
               <label className="tool-box-label" htmlFor="url-input">Website URL</label>

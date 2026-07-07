@@ -1878,6 +1878,22 @@ DETAILED ANALYSIS:
       <section className="tool-input-section">
         <div className="tool-input-inner">
           <div className="tool-box" style={{ maxWidth: '860px' }}>
+            {/* Usage strip */}
+            <div className="tool-usage-strip">
+              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--gray-5)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Daily Usage</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                {!usageLimit.canUse && (
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--red)', fontWeight: 700 }}>Daily limit reached</span>
+                )}
+                <div style={{ width: '72px', height: '3px', background: 'var(--line)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${Math.min(((usageLimit.totalLimit - usageLimit.remaining) / usageLimit.totalLimit) * 100, 100)}%`, background: usageLimit.remaining === 0 ? 'var(--red)' : usageLimit.remaining <= 2 ? 'var(--amber)' : 'var(--green)', transition: 'width 0.3s' }} />
+                </div>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--mono, monospace)', color: usageLimit.remaining === 0 ? 'var(--red)' : 'var(--green)', fontWeight: 700 }}>
+                  {usageLimit.totalLimit - usageLimit.remaining}/{usageLimit.totalLimit}
+                </span>
+              </div>
+            </div>
+
             <h2 className="tool-box-heading">Free Website Page SEO Checker</h2>
             <p className="tool-box-sub">Enter an URL address and get a Free Website Analysis!</p>
 
@@ -1926,16 +1942,6 @@ DETAILED ANALYSIS:
                 theme="light"
               />
             </div>
-
-            {/* Usage Limit Info */}
-            {!loading && (
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', margin: '0.75rem 0', fontSize: '0.82rem' }}>
-                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: usageLimit.remaining > 2 ? 'var(--green)' : usageLimit.remaining > 0 ? 'var(--amber)' : 'var(--red)', flexShrink: 0 }} />
-                <span style={{ color: 'var(--gray-4)' }}>
-                  {usageLimit.remaining} of {usageLimit.totalLimit} free analyses remaining today
-                </span>
-              </div>
-            )}
 
             {/* Audit Button */}
             <button

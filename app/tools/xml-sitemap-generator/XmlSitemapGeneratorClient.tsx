@@ -343,28 +343,23 @@ export default function XmlSitemapGeneratorClient() {
 
           {/* LEFT BOX */}
           <div className="tool-box" style={{ maxWidth: 'none' }}>
-            <h2 className="tool-box-heading">XML Sitemap Generator</h2>
-
-            {/* Usage Counter */}
-            <div style={{ marginBottom: '1.25rem', padding: '12px 16px', background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.18)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="var(--blue-light)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 3v18h18" /><path d="m19 9-5 5-4-4-3 3" />
-                  </svg>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--blue-light)' }}>Session Usage</span>
+            {/* Usage strip */}
+            <div className="tool-usage-strip">
+              <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--gray-5)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Session Usage</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                {usageCount >= usageLimit && (
+                  <span style={{ fontSize: '0.7rem', fontFamily: 'var(--mono, monospace)', color: 'var(--red)', fontWeight: 700 }}>Limit reached — refresh page</span>
+                )}
+                <div style={{ width: '72px', height: '3px', background: 'var(--line)', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${Math.min((usageCount / usageLimit) * 100, 100)}%`, background: usageCount >= usageLimit ? 'var(--red)' : 'var(--green)', transition: 'width 0.3s' }} />
                 </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--blue-light)' }}>{usageLimit - usageCount} / {usageLimit}</div>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--gray-4)' }}>generations remaining</div>
-                </div>
+                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--mono, monospace)', color: usageCount >= usageLimit ? 'var(--red)' : 'var(--green)', fontWeight: 700 }}>
+                  {usageCount}/{usageLimit}
+                </span>
               </div>
-              {usageCount >= usageLimit && (
-                <div style={{ marginTop: '0.75rem', padding: '8px 12px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', color: 'var(--amber)', fontSize: '0.78rem', fontWeight: 500 }}>
-                  Session limit reached. Refresh page to continue.
-                </div>
-              )}
             </div>
+
+            <h2 className="tool-box-heading">XML Sitemap Generator</h2>
 
             {/* Input Mode Selection */}
             <label className="tool-box-label">How would you like to create your sitemap? *</label>
@@ -503,24 +498,13 @@ export default function XmlSitemapGeneratorClient() {
               </ul>
             </div>
 
-            {/* Human Verification */}
-            <div style={{ padding: '1rem 1.25rem', border: '1px solid var(--blue-mid)', borderLeft: '4px solid var(--blue)', background: 'var(--blue-pale)', marginBottom: '1.25rem' }}>
-              <div style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-                Human Verification Required
-              </div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--blue-dark)', marginBottom: '0.75rem', lineHeight: 1.5 }}>
-                Please verify that you&apos;re not a robot to generate your XML sitemap.
-              </p>
-              <div style={{ marginBottom: '0.5rem' }}>
-                <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''} onChange={handleCaptchaChange} theme="light" />
-              </div>
+            {/* Human Verification — widget label is self-explanatory */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <ReCAPTCHA ref={recaptchaRef} sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''} onChange={handleCaptchaChange} theme="light" />
               {isVerified && (
-                <div style={{ marginTop: '0.5rem', padding: '8px 12px', background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.25)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--green)' }}>
-                  &#10003; Verification successful! You can now generate your sitemap.
-                </div>
+                <p style={{ marginTop: '0.4rem', fontSize: '0.78rem', fontWeight: 600, color: 'var(--green)' }}>
+                  ✓ Verified — you can now generate your sitemap.
+                </p>
               )}
             </div>
 
