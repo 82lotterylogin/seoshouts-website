@@ -714,26 +714,27 @@ a.blog-title:hover { color: var(--blue); }
    ============================================= */
 
 /* TOOL HERO */
-.tool-hero { background: var(--ink); padding: 130px 2rem 3rem; position: relative; overflow: hidden; }
+/* Nav is in normal flow (sticky, occupies space) — no big top offset needed */
+.tool-hero { background: var(--ink); padding: 1.75rem 2rem 2rem; position: relative; overflow: hidden; }
 .tool-hero-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(37,99,235,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.07) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%); pointer-events: none; }
 .tool-hero-inner { max-width: 1360px; margin: 0 auto; position: relative; z-index: 1; }
-.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--gray-4); margin-bottom: 1.5rem; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--gray-4); margin-bottom: 1rem; }
 .breadcrumb a { color: var(--gray-4); transition: color 0.15s; }
 .breadcrumb a:hover { color: #fff; }
 .breadcrumb-sep { color: var(--gray-5); }
-.tool-hero-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(37,99,235,0.4); padding: 5px 12px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 1.25rem; }
-.tool-hero-h1 { font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 700; color: #fff; line-height: 1.05; letter-spacing: -0.03em; max-width: 900px; margin-bottom: 1.25rem; font-family: 'Space Grotesk', sans-serif; }
+.tool-hero-badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgba(37,99,235,0.4); padding: 5px 12px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-light); margin-bottom: 1rem; }
+.tool-hero-h1 { font-size: clamp(1.9rem, 3.4vw, 3.2rem); font-weight: 700; color: #fff; line-height: 1.05; letter-spacing: -0.03em; max-width: 900px; margin-bottom: 1rem; font-family: 'Space Grotesk', sans-serif; }
 .tool-hero-h1 span { color: var(--blue); }
 .tool-hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.55); max-width: 680px; line-height: 1.7; }
 
 /* TOOL INPUT BOX */
-.tool-input-section { background: var(--gray-1); padding: 3rem 2rem 4rem; border-top: 1px solid var(--line); }
+.tool-input-section { background: var(--gray-1); padding: 1.5rem 2rem 3rem; border-top: 1px solid var(--line); }
 .tool-input-inner { max-width: 1360px; margin: 0 auto; display: flex; justify-content: center; }
 /* Responsive 2-col grids used inside tool prose/CTA sections */
 .tool-grid-2col { display: grid; grid-template-columns: 1fr 1fr; }
-.tool-box { background: var(--white); border: 1px solid var(--line); box-shadow: 0 4px 32px rgba(0,0,0,0.08); max-width: 680px; width: 100%; padding: 2.5rem 2.5rem 2rem; }
+.tool-box { background: var(--white); border: 1px solid var(--line); box-shadow: 0 4px 32px rgba(0,0,0,0.08); max-width: 680px; width: 100%; padding: 1.75rem 2rem 1.5rem; }
 .tool-box-heading { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--ink); text-align: center; letter-spacing: -0.025em; margin-bottom: 0.5rem; }
-.tool-box-sub { font-size: 0.875rem; color: var(--gray-4); text-align: center; line-height: 1.6; margin-bottom: 1.75rem; }
+.tool-box-sub { font-size: 0.875rem; color: var(--gray-4); text-align: center; line-height: 1.6; margin-bottom: 1.25rem; }
 .tool-box-sub span { color: var(--blue); }
 .tool-box-label { font-size: 0.78rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; display: block; }
 .tool-url-input { width: 100%; background: var(--white); border: 1px solid var(--gray-3); color: var(--ink); font-size: 0.95rem; padding: 13px 16px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; border-radius: 6px; }
@@ -1017,7 +1018,7 @@ a.blog-title:hover { color: var(--blue); }
   .features-grid { grid-template-columns: 1fr 1fr; }
   .step-card { flex-basis: 100%; }
   .step-connector { display: none !important; }
-  .tool-hero { padding-top: 110px; }
+  .tool-hero { padding-top: 1.25rem; }
   .founder-inner { grid-template-columns: 1fr; gap: 1.5rem; }
   .related-tools-grid { grid-template-columns: 1fr 1fr 1fr; }
   .mistakes-grid { grid-template-columns: 1fr 1fr; }
