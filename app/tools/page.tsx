@@ -207,6 +207,13 @@ const CONTENT_TOOLS = [
     feats: ['AI meta generation', 'SEO optimization', 'Character count compliance'],
     iconPaths: ['M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z', 'M14 2v6h6', 'M16 13H8', 'M16 17H8'],
   },
+  {
+    name: 'Trending Hashtag Finder',
+    href: '/tools/trending-hashtag-finder/',
+    desc: 'Find trending hashtags across 15+ social media platforms with real-time analytics, difficulty scores, and AI-powered generation.',
+    feats: ['15+ platform hashtag trends', 'Difficulty & competitor insights', 'AI-powered hashtag generation'],
+    iconPaths: ['M4 9h16', 'M4 15h16', 'M10 3L8 21', 'M16 3l-2 18'],
+  },
 ]
 
 const DEVELOPER_TOOLS = [

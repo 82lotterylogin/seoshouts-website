@@ -913,6 +913,7 @@ a.blog-title:hover { color: var(--blue); }
 
 /* MISTAKES SECTION */
 .mistakes-section { background: var(--gray-1); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.mistakes-section.alt { background: var(--white); border-bottom: none; }
 .mistakes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 2.5rem; }
 .mistake-card { background: var(--white); border: 1px solid var(--line); display: flex; flex-direction: column; }
 .mistake-card-top { padding: 1.5rem 1.5rem 1.25rem; flex: 1; }

@@ -32,6 +32,7 @@ const TOOLS_MEGA = [
     { name: 'AI Blog Ideas Generator', desc: 'Blog topics with AI', href: '/tools/blog-ideas-generator/' },
     { name: 'SEO Meta Writer', desc: 'AI-powered meta content', href: '/tools/seo-meta-writer/' },
     { name: 'GEO & AEO Score Checker', desc: 'AI search readiness audit', href: '/tools/geo-aeo-checker/' },
+    { name: 'Trending Hashtag Finder', desc: 'Viral hashtags for social media', href: '/tools/trending-hashtag-finder/' },
   ]},
   { cat: 'Developer', tools: [
     { name: 'HTML Editor', desc: 'Online HTML, CSS & JS editor', href: '/tools/html-editor/' },
