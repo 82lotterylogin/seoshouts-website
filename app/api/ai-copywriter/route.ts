@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 
 // Backend for /tools/ai-copywriter. The client sends no recaptcha token and
 // expects { variations: [{ copy }], tips: [] } — a different contract from the
@@ -36,8 +36,7 @@ export async function POST(req: NextRequest) {
 
     const count = Math.min(Math.max(parseInt(numberOfVariations, 10) || 3, 1), 5)
 
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+    const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
     const prompt = `You are a professional conversion copywriter. Write ${count} distinct variations of ${copyType || 'marketing'} copy.
 
@@ -58,8 +57,11 @@ Respond with ONLY valid JSON in exactly this shape:
 
 Produce exactly ${count} variations and 2-3 tips.`
 
-    const result = await model.generateContent(prompt)
-    const text = result.response.text()
+    const result = await genAI.models.generateContent({
+      model: 'gemini-flash-latest',
+      contents: prompt,
+    })
+    const text = result.text ?? ''
 
     let variations: Array<{ copy: string }> = []
     let tips: string[] = []

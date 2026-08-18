@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
 async function verifyRecaptcha(token: string) {
   const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
@@ -42,8 +42,6 @@ export async function POST(req: NextRequest) {
       }, { status: 400 })
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
-
     // Updated prompt to only return titles
     const angleText = angle && angle !== 'Surprise me' ? `Focus on: ${angle}` : 'Use a mix of different content types and angles'
     
@@ -68,9 +66,11 @@ Return the results as a clean JSON array of strings:
 
 Generate exactly ${numberOfIdeas} titles for: ${mainTopic}`
 
-    const result = await model.generateContent(prompt)
-    const response = result.response
-    const text = response.text()
+    const response = await genAI.models.generateContent({
+      model: 'gemini-flash-latest',
+      contents: prompt,
+    })
+    const text = response.text ?? ''
 
     // Parse the response to extract only titles
     let blogTitles = []

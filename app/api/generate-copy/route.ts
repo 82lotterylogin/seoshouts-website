@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { GoogleGenAI } from '@google/genai'
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
 async function verifyRecaptcha(token: string) {
   const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
@@ -39,9 +39,6 @@ export async function POST(req: NextRequest) {
       }, { status: 400 })
     }
 
-    // Updated model name here ✅
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
-
     const prompt = `You are a professional copywriter. Create ${numberOfVariations} variations of ${copyType.toLowerCase()} copy with the following specifications:
 
 Product/Service: ${productDescription}
@@ -72,9 +69,11 @@ Example format:
 
 Generate exactly ${numberOfVariations} unique variations.`
 
-    const result = await model.generateContent(prompt)
-    const response = result.response
-    const text = response.text()
+    const response = await genAI.models.generateContent({
+      model: 'gemini-flash-latest',
+      contents: prompt,
+    })
+    const text = response.text ?? ''
 
     // Try to parse JSON response
     let copyOptions

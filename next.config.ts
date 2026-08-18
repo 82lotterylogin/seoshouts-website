@@ -1,15 +1,10 @@
-import { NextConfig } from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // Static export disabled to support admin system
   trailingSlash: true,
   images: {
     unoptimized: true,
-  },
-  // ESLint bypass for deployment
-  eslint: {
-    ignoreDuringBuilds: true,
-    dirs: [],
   },
   // TypeScript bypass for deployment
   typescript: {
