@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
+import { retryOn503 } from '../../lib/gemini-retry'
+
+export const maxDuration = 60
 
 const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
@@ -69,10 +72,10 @@ Example format:
 
 Generate exactly ${numberOfVariations} unique variations.`
 
-    const response = await genAI.models.generateContent({
+    const response = await retryOn503(() => genAI.models.generateContent({
       model: 'gemini-flash-latest',
       contents: prompt,
-    })
+    }))
     const text = response.text ?? ''
 
     // Try to parse JSON response

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
+import { retryOn503 } from '../../lib/gemini-retry'
+
+export const maxDuration = 60
 
 const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
@@ -66,10 +69,10 @@ Return the results as a clean JSON array of strings:
 
 Generate exactly ${numberOfIdeas} titles for: ${mainTopic}`
 
-    const response = await genAI.models.generateContent({
+    const response = await retryOn503(() => genAI.models.generateContent({
       model: 'gemini-flash-latest',
       contents: prompt,
-    })
+    }))
     const text = response.text ?? ''
 
     // Parse the response to extract only titles

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { retryOn503 } from '../../lib/gemini-retry'
+
+export const maxDuration = 60
 
 export async function POST(request: NextRequest) {
   try {
@@ -83,28 +86,41 @@ export async function POST(request: NextRequest) {
 
     console.log('Calling Gemini API...')
     
-    const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: promptText
-            }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1500,
+    let geminiResponse: Response | null = null
+    try {
+      geminiResponse = await retryOn503(async () => {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${process.env.GEMINI_API_KEY}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{
+                  text: promptText
+                }]
+              }],
+              generationConfig: {
+                temperature: 0.7,
+                maxOutputTokens: 1500,
+              }
+            })
           }
-        })
-      }
-    )
+        )
+        // Throw on transient overloads so retryOn503 retries; if all attempts
+        // fail it rethrows and we drop to the clean fallback below.
+        if (res.status === 503 || res.status === 429 || res.status === 500) {
+          throw { status: res.status }
+        }
+        return res
+      })
+    } catch {
+      geminiResponse = null
+    }
 
-    if (!geminiResponse.ok) {
+    if (!geminiResponse || !geminiResponse.ok) {
       console.error('Gemini API failed, using clean fallback')
       const fallbackResults = createCleanFallback(contentType, title as string, numberOfVariations)
       return NextResponse.json({

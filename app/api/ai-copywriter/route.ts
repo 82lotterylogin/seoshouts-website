@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenAI } from '@google/genai'
+import { retryOn503 } from '../../lib/gemini-retry'
 
 // Backend for /tools/ai-copywriter. The client sends no recaptcha token and
 // expects { variations: [{ copy }], tips: [] } — a different contract from the
 // older /api/generate-copy route, which is kept as-is.
+
+// Retries against Gemini 503s need headroom past Vercel's 10s default.
+export const maxDuration = 60
 
 export async function POST(req: NextRequest) {
   try {
@@ -57,10 +61,10 @@ Respond with ONLY valid JSON in exactly this shape:
 
 Produce exactly ${count} variations and 2-3 tips.`
 
-    const result = await genAI.models.generateContent({
+    const result = await retryOn503(() => genAI.models.generateContent({
       model: 'gemini-flash-latest',
       contents: prompt,
-    })
+    }))
     const text = result.text ?? ''
 
     let variations: Array<{ copy: string }> = []
