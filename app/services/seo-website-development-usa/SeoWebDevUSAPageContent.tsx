@@ -8,7 +8,6 @@ import SeoChecklist from './SeoChecklist'
 import PricingPackagesUSA from './PricingPackagesUSA'
 import AdvancedFeaturesSection from './AdvancedFeaturesSection'
 import FaqSectionUSA from './FaqSectionUSA'
-import USAStatesSection from './USAStatesSection'
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null)
@@ -926,11 +925,8 @@ export default function SeoWebDevUSAPageContent({ blogPosts }: { blogPosts: any[
       {/* ── FAQ Section ────────────────────────────────────────────────────── */}
       <FaqSectionUSA />
 
-      {/* ── USA States Coverage ────────────────────────────────────────────── */}
-      <USAStatesSection />
-
       {/* ── Latest from the Blog ───────────────────────────────────────────── */}
-      <section className="section" style={{ background: '#fff', borderTop: '1px solid var(--line)' }}>
+      <section className="section" style={{ background: 'var(--gray-1)', borderTop: '1px solid var(--line)' }}>
         <div className="section-container">
           <div ref={blogReveal.ref} className={`s-header center reveal${blogReveal.vis ? ' visible' : ''}`}>
             <div className="eyebrow">Expert SEO Insights</div>

@@ -1,26 +1,51 @@
 # SEOShouts.com
 > Free SEO Tools & Professional SEO Services
 
-SEOShouts is founded by Rohit Sharma, an SEO expert with 10+ years of experience in technical SEO, content strategy, and search optimization.
+SEOShouts is founded by Rohit Sharma, an SEO expert with 13+ years of experience in technical SEO, content strategy, and search optimization. Co-founded by Ajay Porwal. Based in Udaipur, Rajasthan, India, serving India, the USA, and global clients.
 
-## Primary Tools
-- [Internal Link Checker](https://seoshouts.com/tools/internal-link-checker/) - Analyze anchor text patterns with unique word cloud visualization
-- [On-Page SEO Analyzer](https://seoshouts.com/tools/on-page-seo-analyzer/) - 100+ ranking factors with real Google PageSpeed API
-- [Schema Generator](https://seoshouts.com/tools/schema-generator/) - 39+ schema types, most comprehensive free tool
+SEOShouts focuses on the technical implementation layer of SEO and AI search (AEO/GEO): free, in-browser SEO tools plus hands-on implementation guides.
+
+## Flagship Tools
+- [Internal Link Checker](https://seoshouts.com/tools/internal-link-checker/) - Crawls up to 500 pages; unique anchor-text word cloud plus an internal PageRank and orphan-pages report
+- [On-Page SEO Analyzer](https://seoshouts.com/tools/on-page-seo-analyzer/) - 150+ ranking factors with the real Google PageSpeed API
+- [GEO/AEO Checker](https://seoshouts.com/tools/geo-aeo-checker/) - Scores AI-search readiness 0-100 across 7 weighted categories with live robots.txt and llms.txt checks
+- [Schema Generator](https://seoshouts.com/tools/schema-generator/) - 39+ schema types, the most comprehensive free generator
+
+## All Free Tools
+- [Internal Link Checker](https://seoshouts.com/tools/internal-link-checker/)
+- [On-Page SEO Analyzer](https://seoshouts.com/tools/on-page-seo-analyzer/)
+- [GEO/AEO Checker](https://seoshouts.com/tools/geo-aeo-checker/)
+- [Schema Generator](https://seoshouts.com/tools/schema-generator/)
 - [Robots.txt Generator](https://seoshouts.com/tools/robots-txt-generator/) - Create robots.txt with AI crawler directives
+- [Htaccess Generator](https://seoshouts.com/tools/htaccess-generator/)
 - [Keyword Density Analyzer](https://seoshouts.com/tools/keyword-density-analyzer/) - Semantic keyword analysis
+- [Keyword Difficulty Checker](https://seoshouts.com/tools/keyword-difficulty-checker/)
+- [Long-Tail Keyword Generator](https://seoshouts.com/tools/long-tail-keyword-generator/)
+- [XML Sitemap Generator](https://seoshouts.com/tools/xml-sitemap-generator/)
+- [Meta Tag Optimizer](https://seoshouts.com/tools/meta-tag-optimizer/)
+- [Disavow File Generator](https://seoshouts.com/tools/disavow-file-generator/)
+- [Word Counter](https://seoshouts.com/tools/word-counter/)
+- [HTML Editor](https://seoshouts.com/tools/html-editor/)
+- [AI Copywriter](https://seoshouts.com/tools/ai-copywriter/)
+- [SEO Meta Writer](https://seoshouts.com/tools/seo-meta-writer/)
+- [Blog Ideas Generator](https://seoshouts.com/tools/blog-ideas-generator/)
+- [Trending Hashtag Finder](https://seoshouts.com/tools/trending-hashtag-finder/)
 
 ## Services
-- Local SEO
-- eCommerce SEO
-- Technical SEO Audit
-- Link Building
-- SEO Consulting
-- SEO Website Development
+- [Local SEO](https://seoshouts.com/services/local-seo/)
+- [eCommerce SEO](https://seoshouts.com/services/ecommerce-seo/)
+- [Technical SEO Audit](https://seoshouts.com/services/technical-seo-audit/)
+- [Link Building](https://seoshouts.com/services/link-building/)
+- [SEO Consulting](https://seoshouts.com/services/seo-consulting/)
+- [SEO Website Development](https://seoshouts.com/services/seo-website-development/)
 
 ## Key Resources
-- /blog/ - SEO guides and tutorials
-- /tools/ - Free SEO tools
+- /blog/ - SEO guides and tutorials, with a deep cluster on internal linking and AI search
+- /tools/ - 18 free SEO tools
+- /services/ - Professional SEO services
 
 ## Contact
 Website: https://seoshouts.com
+Email: seoshouts@gmail.com
+Phone: +91 8094888157
+Location: Udaipur, Rajasthan, India

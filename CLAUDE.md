@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Memory (read this first)
 
-The single source of truth for this project — strategy, live inventory, content backlog, the full design system, writing/feedback rules, current tool-enhancement state, and known blockers — lives OUTSIDE the repo at:
+All project memory (strategy, live inventory, content backlog, design system, writing rules, audit status, known blockers) lives OUTSIDE the repo at:
 
-**`W:\Personal Projects\seoshouts\PROJECT_MEMORY.md`**
+**`D:/Projects/seoshouts/memory/MAIN.md`**
 
-Read it at the start of any session before making changes. Per the project's folder convention, `D:\Projects\seoshouts\seoshouts` is CODE ONLY; all planning, docs, audits, and memory live under `W:\Personal Projects\seoshouts`. Keep `PROJECT_MEMORY.md` updated as the project evolves — it is the one memory file (there is no `~/.claude` auto-memory for this project anymore).
+Read it at the start of every session, ask which type of work the session is (unless already stated), and follow its session-start protocol. Code-related memory is in `memory/website-development/INDEX.md`. Per the folder convention, `D:/Projects/seoshouts/seoshouts` is CODE ONLY; write memory only in `D:/Projects/seoshouts/memory/`, never in this repo or on the C-drive. The old `W:\Personal Projects\seoshouts\PROJECT_MEMORY.md` is frozen.
 
 ## Development Commands
 

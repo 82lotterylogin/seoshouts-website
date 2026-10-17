@@ -3,6 +3,14 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   // Static export disabled to support admin system
   trailingSlash: true,
+  // The 50 programmatic USA state pages were removed (near-duplicates, cannibalising
+  // the USA service page). Send every old /usa/ URL to that page with a 301.
+  async redirects() {
+    return [
+      { source: '/usa', destination: '/services/seo-website-development-usa/', statusCode: 301 },
+      { source: '/usa/:path*', destination: '/services/seo-website-development-usa/', statusCode: 301 },
+    ];
+  },
   images: {
     unoptimized: true,
   },
