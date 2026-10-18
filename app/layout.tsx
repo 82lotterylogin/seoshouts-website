@@ -48,9 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          "name": "SEO Shouts",
-          "alternateName": "SEOShouts",
-          "url": "https://seoshouts.com",
+          "@id": "https://seoshouts.com/#organization",
+          "name": "SEOShouts",
+          "alternateName": "SEO Shouts",
+          "url": "https://seoshouts.com/",
           "logo": {
             "@type": "ImageObject",
             "url": "https://seoshouts.com/logo.png",
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           },
           "description": "Professional SEO services and free tools for businesses, agencies, and marketers worldwide, founded in 2016 by Rohit Sharma, who has 13+ years of SEO experience. Services cover SEO website development, local SEO, link building, and technical audits.",
           "foundingDate": "2016",
+          "founder": { "@type": "Person", "@id": "https://seoshouts.com/founder/#person", "name": "Rohit Sharma", "url": "https://seoshouts.com/founder/" },
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Udaipur",
@@ -82,9 +84,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }
           ],
           "sameAs": [
-            "https://twitter.com/seo_shouts",
-            "https://www.linkedin.com/company/seoshouts",
-            "https://www.facebook.com/seoshouts"
+            "https://x.com/seo_shouts",
+            "https://www.linkedin.com/company/seoshouts/",
+            "https://www.facebook.com/seoshouts/"
           ],
           "hasOfferCatalog": {
             "@type": "OfferCatalog",

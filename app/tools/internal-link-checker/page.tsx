@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import InternalLinkCheckerClient from './InternalLinkCheckerClient'
 
 export const metadata: Metadata = {
-  title: 'Free Internal Link Checker — Analyze Anchor Text & Site Structure | SEOShouts',
+  title: 'Free Internal Link Checker & Analyzer: Anchor Text and Site Structure | SEOShouts',
   description: 'Free internal link checker that crawls up to 500 pages, analyzes anchor text distribution with a visual word cloud, and identifies over-optimization. No login required.',
   keywords: 'internal link checker, anchor text analyzer, internal link analysis, internal linking tool, SEO analysis, anchor text distribution, internal link audit, link checker, anchor cloud, free SEO tool, anchor text cloud',
   metadataBase: new URL('https://seoshouts.com'),
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     canonical: 'https://seoshouts.com/tools/internal-link-checker/',
   },
   openGraph: {
-    title: 'Free Internal Link Checker — Analyze Anchor Text & Site Structure',
+    title: 'Free Internal Link Checker & Analyzer: Anchor Text and Site Structure',
     description: 'Crawl up to 500 pages, visualize anchor text with word clouds, detect keyword stuffing & generic links. The only free internal link checker with visual anchor analysis.',
     url: 'https://seoshouts.com/tools/internal-link-checker/',
     siteName: 'SEOShouts',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Free Internal Link Checker — Analyze Anchor Text & Site Structure',
+    title: 'Free Internal Link Checker & Analyzer: Anchor Text and Site Structure',
     description: 'Visual word cloud analysis, anchor text distribution, keyword stuffing detection. Free, no login, up to 500 pages.',
     images: ['https://seoshouts.com/images/internal-link-checker-og.png'],
   },
@@ -93,7 +93,7 @@ export default function InternalLinkCheckerPage() {
             "screenshot": "https://seoshouts.com/images/internal-link-checker-screenshot.png",
             "softwareVersion": "2.0",
             "datePublished": "2024-01-01",
-            "dateModified": "2026-02-07"
+            "dateModified": "2026-10-18"
           })
         }}
       />

@@ -765,15 +765,11 @@ export default async function FounderPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": ["Person", "Founder"],
+            "@type": "Person",
+            "@id": "https://seoshouts.com/founder/#person",
             "name": "Rohit Sharma",
             "jobTitle": "Founder & CEO",
-            "worksFor": {
-              "@type": "Organization",
-              "name": "SEOShouts",
-              "foundingDate": "2016"
-            },
-            "foundingDate": "2016",
+            "worksFor": { "@id": "https://seoshouts.com/#organization" },
             "url": "https://seoshouts.com/founder/",
             "image": "https://seoshouts.com/images/team/rohit-sharma.jpg",
             "description": "Visionary founder and CEO behind SEOShouts. 13+ year journey from SEO trainee to industry leader, building scalable SEO solutions for businesses worldwide.",

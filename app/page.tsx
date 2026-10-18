@@ -256,21 +256,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Organization Schema */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "SEOShouts",
-        "url": "https://seoshouts.com",
-        "logo": "https://seoshouts.com/logo.png",
-        "description": "Professional SEO tools and services. Founded in 2016 by Rohit Sharma, who has 13+ years of SEO experience.",
-        "foundingDate": "2016",
-        "founder": { "@type": "Person", "name": "Rohit Sharma", "jobTitle": "SEO Expert" },
-        "contactPoint": { "@type": "ContactPoint", "telephone": "+91-8094888157", "contactType": "customer service", "email": "seoshouts@gmail.com" },
-        "address": { "@type": "PostalAddress", "addressLocality": "Udaipur", "addressRegion": "Rajasthan", "addressCountry": "IN" },
-        "sameAs": ["https://www.facebook.com/seoshouts/", "https://www.linkedin.com/company/seoshouts/", "https://x.com/seo_shouts"]
-      })}} />
-
+      {/* Organization schema lives once, site-wide, in app/layout.tsx (@id #organization) */}
       {/* Breadcrumb Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
@@ -284,7 +270,7 @@ export default async function HomePage() {
         "@type": "Service",
         "name": "SEO Services",
         "description": "Professional SEO services including local SEO, eCommerce SEO, link building, technical audits, and SEO consulting.",
-        "provider": { "@type": "Organization", "name": "SEOShouts", "url": "https://seoshouts.com/" },
+        "provider": { "@id": "https://seoshouts.com/#organization" },
         "serviceType": "SEO Services",
         "offers": [
           { "@type": "Offer", "name": "Local SEO", "url": "https://seoshouts.com/services/local-seo/" },
