@@ -57,8 +57,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             "width": 150,
             "height": 40
           },
-          "description": "Professional SEO services and free tools for businesses, agencies, and marketers worldwide. 13+ years of expertise in SEO website development, local SEO, link building, and technical audits.",
-          "foundingDate": "2012",
+          "description": "Professional SEO services and free tools for businesses, agencies, and marketers worldwide, founded in 2016 by Rohit Sharma, who has 13+ years of SEO experience. Services cover SEO website development, local SEO, link building, and technical audits.",
+          "foundingDate": "2016",
           "address": {
             "@type": "PostalAddress",
             "addressLocality": "Udaipur",

@@ -6,7 +6,7 @@ import RevealInit from './components/RevealInit'
 
 export const metadata: Metadata = {
   title: 'SEOShouts — Professional SEO Services & 18 Free Tools',
-  description: "India's premier SEO agency. Professional SEO services and 18 free tools — helping businesses rank higher, generate more leads, and grow organic revenue. Founded 2014.",
+  description: "India's premier SEO agency. Professional SEO services and 18 free tools — helping businesses rank higher, generate more leads, and grow organic revenue. Founded 2016.",
   keywords: 'SEO tools, SEO services, free SEO analysis, keyword research, technical SEO, link building, local SEO, SEO consulting, India SEO',
   authors: [{ name: 'Rohit Sharma' }],
   creator: 'SEOShouts',
@@ -263,8 +263,8 @@ export default async function HomePage() {
         "name": "SEOShouts",
         "url": "https://seoshouts.com",
         "logo": "https://seoshouts.com/logo.png",
-        "description": "Professional SEO tools and services. Founded by Rohit Sharma with 10+ years of SEO experience.",
-        "foundingDate": "2014",
+        "description": "Professional SEO tools and services. Founded in 2016 by Rohit Sharma, who has 13+ years of SEO experience.",
+        "foundingDate": "2016",
         "founder": { "@type": "Person", "name": "Rohit Sharma", "jobTitle": "SEO Expert" },
         "contactPoint": { "@type": "ContactPoint", "telephone": "+91-8094888157", "contactType": "customer service", "email": "seoshouts@gmail.com" },
         "address": { "@type": "PostalAddress", "addressLocality": "Udaipur", "addressRegion": "Rajasthan", "addressCountry": "IN" },
@@ -332,7 +332,7 @@ export default async function HomePage() {
             "name": "How long has SEOShouts been providing SEO services?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "SEOShouts was founded in 2012 and has been providing professional SEO services for over 13 years. The company is headquartered in Udaipur, Rajasthan, India and serves clients across India, USA, UK, Australia, and Canada."
+              "text": "SEOShouts was founded in 2016 and has been providing professional SEO services for 10 years. Its founder, Rohit Sharma, has worked in SEO since 2013. The company is headquartered in Udaipur, Rajasthan, India and serves clients across India, USA, UK, Australia, and Canada."
             }
           },
           {
@@ -348,7 +348,7 @@ export default async function HomePage() {
             "name": "What makes SEOShouts different from other SEO agencies?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "SEOShouts combines professional SEO services with a free suite of 18 SEO tools, offering clients both hands-on expertise and self-serve capabilities. The agency specializes in AI-era SEO including Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO), in addition to traditional technical SEO, link building, and local SEO. With 13+ years of experience and a 90-day performance guarantee on select services, SEOShouts focuses on measurable organic growth."
+              "text": "SEOShouts combines professional SEO services with a free suite of 18 SEO tools, offering clients both hands-on expertise and self-serve capabilities. The agency specializes in AI-era SEO including Generative Engine Optimization (GEO) and Answer Engine Optimization (AEO), in addition to traditional technical SEO, link building, and local SEO. With a founder who has 13+ years of SEO experience and a 90-day performance guarantee on select services, SEOShouts focuses on measurable organic growth."
             }
           }
         ]
@@ -424,7 +424,7 @@ export default async function HomePage() {
             <div>
               <div className="eyebrow">About SEOShouts</div>
               <h2 className="s-title">Founded by SEO Expert <span className="blue">Rohit Sharma</span></h2>
-              <p className="s-sub">SEOShouts is founded by <strong>Rohit Sharma</strong>, an SEO expert with <strong>10+ years of experience</strong> in technical SEO, content strategy, and search optimization.</p>
+              <p className="s-sub">SEOShouts is founded by <strong>Rohit Sharma</strong>, an SEO expert with <strong>13+ years of experience</strong> in technical SEO, content strategy, and search optimization.</p>
               <div className="about-stats">
                 {[{ n: '10+', l: 'Years Experience' }, { n: '15+', l: 'Free SEO Tools' }, { n: '#1', l: 'Internal Link Checker' }].map(({ n, l }) => (
                   <div key={l} className="about-stat">

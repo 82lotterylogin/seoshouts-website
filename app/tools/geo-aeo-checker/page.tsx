@@ -5,7 +5,7 @@ const faqItems = [
   {
     question: 'What is a GEO/AEO score?',
     answer:
-      'A GEO/AEO score is a 0–100 composite measure of how well-optimized a web page is for AI search engines and answer engines. It combines scores across seven categories: schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and page performance. A higher score correlates with higher citation frequency in Google AI Overviews, ChatGPT, Perplexity, and other AI search platforms.',
+      'A GEO/AEO score is a 0–100 composite measure of how well-optimized a web page is for AI search engines and answer engines. It combines scores across seven categories: schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and page performance. A higher score means more of the signals AI systems can read are in place. It does not guarantee citations in Google AI Overviews, ChatGPT or Perplexity.',
   },
   {
     question: 'What is the difference between GEO and AEO?',
@@ -20,7 +20,7 @@ const faqItems = [
   {
     question: 'Why is my schema score low when I have schema markup?',
     answer:
-      'The checker looks for specific, high-impact schema types: FAQPage, Organization, Author (Person), and BreadcrumbList. Having WebSite or Product schema alone will not score highly. FAQPage schema is the single most impactful schema type for AI citation and receives the most weight in the schema category.',
+      'The checker looks for specific, high-impact schema types: FAQPage, Organization, Author (Person), and BreadcrumbList. Having WebSite or Product schema alone will not score highly. FAQPage schema carries the most weight in the schema category because it maps questions to answers directly.',
   },
   {
     question: 'Can a page score 100?',
@@ -90,7 +90,7 @@ export default function GeoAeoCheckerPage() {
     operatingSystem: 'Any (Web Browser)',
     softwareVersion: '1.1',
     datePublished: '2026-01-15',
-    dateModified: '2026-07-04',
+    dateModified: '2026-10-18',
     publisher: {
       '@type': 'Organization',
       name: 'SEOShouts',

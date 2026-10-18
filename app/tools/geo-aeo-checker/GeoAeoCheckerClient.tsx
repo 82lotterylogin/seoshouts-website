@@ -47,10 +47,10 @@ const FEATURE_ITEMS = [
 ]
 
 const FAQ_ITEMS = [
-  { q: 'What is a GEO/AEO score?', a: "A GEO/AEO score is a 0–100 composite measure of how well-optimized a web page is for AI search engines and answer engines. It combines scores across seven categories: schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and page performance. A higher score correlates with higher citation frequency in Google AI Overviews, ChatGPT, Perplexity, and other AI search platforms." },
+  { q: 'What is a GEO/AEO score?', a: "A GEO/AEO score is a 0–100 composite measure of how well-optimized a web page is for AI search engines and answer engines. It combines scores across seven categories: schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and page performance. A higher score means more of the signals AI systems can read are in place. It does not guarantee citations in Google AI Overviews, ChatGPT or Perplexity." },
   { q: 'What is the difference between GEO and AEO?', a: "AEO (Answer Engine Optimization) focuses on structuring content so AI answer engines can extract direct answers — through FAQPage schema, question-format headings, and concise answer paragraphs. GEO (Generative Engine Optimization) is broader — it focuses on making content trustworthy and citable by generative AI models, which requires E-E-A-T signals, proprietary data, and expert attribution in addition to structural signals. In practice, optimizing for both simultaneously is the most effective approach." },
   { q: 'How accurate is the GEO/AEO score?', a: "The score is based on signals that are directly detectable in your page's HTML and HTTP headers. It does not access Google's internal scoring, Perplexity's index, or any AI model's training data. Think of it as a structural audit — it tells you whether your page has the signals that research shows correlate with AI citations. Actual citation frequency depends on many factors including domain authority, content quality, and competition." },
-  { q: 'Why is my schema score low when I have schema markup?', a: "The checker looks for specific, high-impact schema types: FAQPage, Organization, Author (Person), and BreadcrumbList. Having WebSite or Product schema alone will not score highly. FAQPage schema is the single most impactful schema type for AI citation and receives the most weight in the schema category." },
+  { q: 'Why is my schema score low when I have schema markup?', a: "The checker looks for specific, high-impact schema types: FAQPage, Organization, Author (Person), and BreadcrumbList. Having WebSite or Product schema alone will not score highly. FAQPage schema carries the most weight in the schema category because it maps questions to answers directly." },
   { q: 'Can a page score 100?', a: "In theory yes, but in practice a score of 85–90 is excellent. Some checks — like hreflang (relevant only for multilingual sites) — may not apply to your page. Focus on A grade (85+) rather than perfect 100." },
   { q: 'How often should I run the GEO/AEO checker?', a: "Run it after any significant content update, after adding schema markup, after changing your robots.txt, and monthly as part of your regular SEO audit. The tool tracks your score history per URL automatically (stored privately in your browser): re-check the same page and it shows your previous score next to the new one, so you can measure the impact of each improvement. You can also download a branded report of any run to share with your team or clients." },
   { q: 'Does improving my GEO/AEO score hurt traditional SEO?', a: "No — the signals this tool checks (schema markup, E-E-A-T, content structure, FAQ sections) are all positive signals for traditional Google search rankings too. GEO/AEO optimization and traditional SEO are complementary, not competing." },
@@ -60,13 +60,13 @@ const FAQ_ITEMS = [
 
 // The 7 weighted audit categories (points sum to 100). Used by the score-composition explorer.
 const AUDIT_CATEGORIES = [
-  { id: 'schema',      title: '1. Schema Markup',                    pts: 20, text: "Schema markup is the single highest-impact signal for AI search readiness. AI models are trained to recognize Schema.org vocabulary as authoritative metadata about your page. This category checks for FAQPage schema (the most impactful for AI answer extraction), Organization schema with entity signals, BreadcrumbList for hierarchy understanding, Article schema with author attribution, and HowTo or SoftwareApplication for tool and tutorial pages. Pages with comprehensive schema markup are cited in Google AI Overviews at rates 3–4x higher than pages with no schema (Conductor, 2025)." },
-  { id: 'ai-crawl',   title: '2. AI Crawler Access',                pts: 18, text: "Your content cannot be cited by AI if AI crawlers cannot access it. This category fetches your site's live robots.txt and tests all 12 major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot and more) against it for this page, checks page-level blocks via meta robots tags or X-Robots-Tag headers, verifies a canonical tag is present, confirms HTTPS, and checks whether a real /llms.txt file is served at the domain root — the emerging standard for telling AI models what a site is about." },
+  { id: 'schema',      title: '1. Schema Markup',                    pts: 20, text: "Schema markup gives AI systems clean, machine-readable facts about your page: what it is, who wrote it and who publishes it. This category carries the most points because it is easy to verify, but schema alone does not earn citations; it works together with the content and E-E-A-T signals below. It checks for FAQPage schema (the most impactful for AI answer extraction), Organization schema with entity signals, BreadcrumbList for hierarchy understanding, Article schema with author attribution, and HowTo or SoftwareApplication for tool and tutorial pages." },
+  { id: 'ai-crawl',   title: '2. AI Crawler Access',                pts: 18, text: "Your content cannot be cited by AI if AI crawlers cannot access it. This category fetches your site's live robots.txt and tests 15 AI crawlers (including GPTBot, OAI-SearchBot, ClaudeBot, Claude-SearchBot, PerplexityBot and Google-Extended) against it for this page, checks page-level blocks via meta robots tags or X-Robots-Tag headers, verifies a canonical tag is present, confirms HTTPS, and checks whether a real /llms.txt file is served at the domain root, the emerging standard for telling AI models what a site is about." },
   { id: 'content',    title: '3. Content Structure for AI Extraction', pts: 18, text: "AI models extract answers from content that is structured for extraction. This category checks for a direct answer capsule in the first 300 characters, question-format H2/H3 headings, presence of data and statistics, appropriate paragraph length (under 120 words), comparison tables, and minimum content depth (500+ words). The key insight: AI models do not read content the way humans do. They parse structure." },
   { id: 'eeat',       title: '4. E-E-A-T Signals',                  pts: 15, text: "Google's E-E-A-T framework (Experience, Expertise, Authoritativeness, Trustworthiness) governs both traditional ranking and AI citation eligibility. This category checks for visible author attribution, author schema with Person type, explicit expertise or credential mentions, links to About/Team pages, external citations and references, publication dates, contact information, and legal page links." },
-  { id: 'faq',        title: '5. FAQ & Q&A Readiness',              pts: 12, text: "FAQs are the highest-ROI content format for AI citation. AI models are specifically designed to match user questions to pages that answer them. This category checks for FAQPage schema with 3+ Q&A pairs, a visual FAQ section in the HTML, question-format headings throughout the content, and substantive answers (50+ words each) in the FAQ schema." },
+  { id: 'faq',        title: '5. FAQ & Q&A Readiness',              pts: 12, text: "FAQs give AI systems ready-made question and answer pairs to match against what users ask. This category checks for FAQPage schema with 3+ Q&A pairs, a visual FAQ section in the HTML, question-format headings throughout the content, and substantive answers (50+ words each) in the FAQ schema." },
   { id: 'technical',  title: '6. Technical AI Readiness',           pts: 10, text: "Basic technical signals that affect AI model confidence in your content: meta description presence, Open Graph tags (used by AI scraping tools for entity data), HTML lang attribute for language classification, UTF-8 charset declaration, viewport meta for mobile-friendliness, and hreflang for multilingual sites." },
-  { id: 'performance', title: '7. Page Performance Signals',        pts: 7,  text: "Performance signals that correlate with AI citation worthiness: GZIP/Brotli compression, image alt text coverage, browser caching headers, and lazy loading. Slower pages are crawled less frequently by all bots — including AI training crawlers — reducing the recency and completeness of your content in AI model training data." },
+  { id: 'performance', title: '7. Page Performance Signals',        pts: 7,  text: "Performance signals that affect how easily bots can crawl your page: GZIP/Brotli compression, image alt text coverage, browser caching headers, and lazy loading. Slow pages tend to be crawled less often by all bots, including AI crawlers, so your updates take longer to be picked up." },
 ]
 
 // ─── Score Calculation Helpers ────────────────────────────────────────────────
@@ -452,6 +452,7 @@ export default function GeoAeoCheckerClient() {
           <p className="tool-hero-sub">
             An AEO checker audits your web page across seven AI readiness categories — schema markup, AI crawler access, content structure, E-E-A-T signals, FAQ readiness, technical signals, and performance — returning a 0–100 score with specific fixes for every failed check.
           </p>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.8rem', marginTop: '0.75rem' }}>Last updated 18 October 2026</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem 2rem', marginTop: '1.5rem' }}>
             {['7-Category Audit', 'AI Crawler Detection', '30+ Checks', 'Free · No Login'].map((label) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -834,10 +835,10 @@ export default function GeoAeoCheckerClient() {
           </div>
           <div className="prose-content reveal">
             <p>GEO (Generative Engine Optimization) and AEO (Answer Engine Optimization) are the two dominant optimization frameworks for AI-era search. While traditional SEO focuses on ranking in blue-link search results, GEO and AEO focus on getting your content cited, extracted, and surfaced by AI systems — including Google AI Overviews, ChatGPT, Perplexity, Claude, Gemini, and Copilot.</p>
-            <p>The distinction matters because AI search is changing where web traffic originates. According to SparkToro&apos;s 2025 Zero-Click Search study, <strong>58.5% of Google searches now end without a click</strong> — users get their answers directly from AI-generated summaries. For brands not cited in these summaries, that traffic is invisible.</p>
+            <p>The distinction matters because AI search is changing where web traffic originates. SparkToro&apos;s <a href="https://sparktoro.com/blog/2024-zero-click-search-study-for-every-1000-us-google-searches-only-374-clicks-go-to-the-open-web-in-the-eu-its-360/" target="_blank" rel="noopener noreferrer">2024 zero-click study</a> (clickstream data from 2022 to 2024) found that <strong>58.5% of US Google searches ended without a click</strong> to any website. As AI Overviews and AI Mode answer more queries on the results page, being the source those answers cite matters more.</p>
             <p><strong>AEO</strong> focuses on structuring content so that AI answer engines — voice assistants, featured snippets, and AI chatbots — can extract clear, direct answers to specific questions. It prioritizes question-format headings, FAQPage schema, concise answer paragraphs, and structured data markup.</p>
             <p><strong>GEO</strong> is broader — it focuses on building content that generative AI models trust enough to cite as a source. This requires not just structural signals but also E-E-A-T signals, external citations, factual depth, and proprietary data that AI models cannot generate themselves.</p>
-            <p>Research from Search Engine Journal&apos;s 2025 AI citation analysis found that <strong>pages with FAQPage schema were cited in AI Overviews 3.6x more frequently</strong> than pages without it. seoClarity found that pages with clear author attribution received <strong>2.8x more AI citations</strong> than anonymous content. The signals are measurable — and that&apos;s exactly what this tool measures.</p>
+            <p>The research is still early, and much of it comes from tool vendors. One of the few peer-reviewed studies, the <a href="https://arxiv.org/abs/2311.09735" target="_blank" rel="noopener noreferrer">GEO paper from Princeton and partners (KDD 2024)</a>, found that adding citations, quotations and statistics to content raised its visibility in generative engine answers by up to about 40%. Evidence that schema markup alone earns AI citations is mixed. That is why this tool scores structure, crawler access and E-E-A-T together instead of relying on any single signal.</p>
           </div>
         </div>
       </section>
@@ -880,6 +881,10 @@ export default function GeoAeoCheckerClient() {
           <div className="s-header reveal">
             <p className="eyebrow">Score Guide</p>
             <h2 className="s-title">How to read your AEO and <span className="blue">GEO score</span></h2>
+          </div>
+          <div className="prose-content reveal" style={{ marginTop: '1.5rem' }}>
+            <p><strong>How the score is calculated.</strong> The tool fetches the live HTML and HTTP headers of your URL, plus your site&apos;s robots.txt and /llms.txt. It runs 43 checks across the 7 categories above. Each check is rated High (3), Medium (2) or Low (1) impact, and a category&apos;s points are shared out by the weight of the checks you pass. For example, passing checks worth 6 of 9 weight in the 18-point Content Structure category scores 12. The 7 category scores add up to your total out of 100.</p>
+            <p><strong>What the score cannot see.</strong> It reads the HTML your server sends, so content that only appears after JavaScript runs is not counted. It does not measure backlinks, domain authority or brand mentions, and it does not ask ChatGPT, Gemini or Perplexity whether they cite you. Treat it as a readiness check, then confirm with the citation tests further down this page.</p>
           </div>
           <div className="reveal" style={{ border: '1px solid var(--line)', overflow: 'hidden', marginTop: '2.5rem' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -942,6 +947,41 @@ export default function GeoAeoCheckerClient() {
         </div>
       </section>
 
+      {/* ── EXAMPLE REPORTS (real runs of this tool, 18 Oct 2026) ─────────── */}
+      <section className="section prose-section alt">
+        <div className="section-container">
+          <div className="s-header reveal">
+            <p className="eyebrow">Example Reports</p>
+            <h2 className="s-title">What a GEO/AEO report looks like: <span className="blue">two real results</span></h2>
+            <p className="s-sub">Both results come from running this tool on 18 October 2026: a bare demo page and one of our own blog posts.</p>
+          </div>
+          <div className="why-grid reveal" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', marginTop: '2.5rem' }}>
+            {[
+              { url: 'example.com', score: 21, grade: 'F, Critical', passed: '8 of 43', clr: '#dc2626',
+                cats: [['Schema Markup', '0/20'], ['AI Crawler Access', '10/18'], ['Content Structure', '5/18'], ['E-E-A-T Signals', '0/15'], ['FAQ & Q&A Readiness', '0/12'], ['Technical AI Readiness', '2/10'], ['Page Performance', '4/7']],
+                note: 'Top fixes the tool lists: add Organization and WebPage schema, add FAQPage schema, add a canonical tag, rewrite H2s as questions, and add a visible author byline with Person schema.' },
+              { url: 'seoshouts.com/blog/internal-linking-ai-search/', score: 98, grade: 'A, AI-Ready', passed: '41 of 43', clr: '#15803d',
+                cats: [['Schema Markup', '19/20'], ['AI Crawler Access', '18/18'], ['Content Structure', '18/18'], ['E-E-A-T Signals', '15/15'], ['FAQ & Q&A Readiness', '12/12'], ['Technical AI Readiness', '9/10'], ['Page Performance', '7/7']],
+                note: 'The two failed checks are HowTo or SoftwareApplication schema and hreflang. Neither applies to a single-language article, which is why 85 or more counts as AI-ready.' },
+            ].map((r) => (
+              <div key={r.url} className="why-card">
+                <p className="why-card-title" style={{ wordBreak: 'break-all' }}>{r.url}</p>
+                <p style={{ fontSize: '2rem', fontWeight: 700, color: r.clr, margin: '0.25rem 0' }}>{r.score}<span style={{ fontSize: '1rem', color: 'var(--gray-5)' }}>/100</span></p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--gray-5)', marginBottom: '0.75rem' }}>Grade {r.grade} · {r.passed} checks passed</p>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 0.75rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                  {r.cats.map(([name, pts]) => (
+                    <li key={name} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--gray-5)', borderBottom: '1px solid var(--line)', paddingBottom: '0.3rem' }}>
+                      <span>{name}</span><strong style={{ color: 'var(--ink)' }}>{pts}</strong>
+                    </li>
+                  ))}
+                </ul>
+                <p className="why-card-body">{r.note}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FASTEST GEO/AEO WINS ─────────────────────────────────────────────── */}
       <section className="section features-section">
         <div className="section-container">
@@ -952,11 +992,11 @@ export default function GeoAeoCheckerClient() {
           </div>
           <div className="features-grid reveal">
             {[
-              { id: 'faq',        title: 'Add FAQPage Schema',        text: 'This single change is responsible for more AI citation improvements than any other. Use our Schema Generator to create FAQPage markup.', extra: 'Impact: +8–15 points.' },
+              { id: 'faq',        title: 'Add FAQPage Schema',        text: 'It is the highest-weighted check in this tool and one of the quickest to add. Use our Schema Generator to create FAQPage markup.', extra: 'Impact: +8–15 points.' },
               { id: 'content',    title: 'Write an Answer Capsule',   text: 'A 120–300 character direct-answer paragraph as the first content on the page. No preamble — just a factual answer to the primary question.', extra: 'AI models extract this as the page summary.' },
               { id: 'eeat',       title: 'Convert H2s to Questions',  text: 'Change "Our Services" to "What SEO Services Does SEOShouts Offer?" AI models match user question intent to question-format headings directly.', extra: 'Convert 2–3 H2s per page.' },
               { id: 'schema',     title: 'Add Organization Schema',   text: 'Organization schema with sameAs links to your LinkedIn, Twitter/X, YouTube, and other profiles tells AI models that your brand is a real entity with verified presence across the web.', extra: '' },
-              { id: 'ai-crawl',   title: 'Unblock AI Crawlers',       text: 'Check your robots.txt for blocks on GPTBot, ClaudeBot, PerplexityBot, and Google-Extended. Use our Robots.txt Generator to fix this correctly.', extra: '' },
+              { id: 'ai-crawl',   title: 'Unblock AI Crawlers',       text: 'Check your robots.txt for blocks on GPTBot, OAI-SearchBot, ClaudeBot, Claude-SearchBot, PerplexityBot and Google-Extended. Use our Robots.txt Generator to fix this correctly.', extra: '' },
               { id: 'technical',  title: 'Track & Re-Test Weekly',    text: 'After implementing fixes, re-run this checker weekly. AI crawlers re-index pages within days. Schema changes show in rich results within 2–4 weeks.', extra: 'Citation frequency increases in 4–12 weeks.' },
             ].map((item, i) => (
               <div key={i} className="feature-card">
@@ -1025,7 +1065,7 @@ export default function GeoAeoCheckerClient() {
           <div className="why-grid reveal" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: '2.5rem' }}>
             {[
               { title: 'Queries to test', icon: 'faq', items: ['"[Your brand name] reviews"', '"best [service] for [audience]"', '"[primary keyword your page targets]"', '"how to [thing your tool helps with]"', '"what is [topic your page defines]"'] },
-              { title: 'Platforms to test', icon: 'ai-crawl', items: ['ChatGPT (GPT-4)', 'Perplexity', 'Claude (claude.ai)', 'Google AI Overviews', 'Gemini & Microsoft Copilot'] },
+              { title: 'Platforms to test', icon: 'ai-crawl', items: ['ChatGPT (with search)', 'Perplexity', 'Claude (claude.ai)', 'Google AI Overviews', 'Gemini & Microsoft Copilot'] },
               { title: 'What to track', icon: 'content', items: ['Was your brand cited? (Yes/No)', 'What content was cited? (URL)', 'Which competitors were cited?', 'What sentiment was expressed?', 'Change after GEO fixes (2–3 weeks)'] },
             ].map((col, i) => (
               <div key={i} className="why-card">
@@ -1056,29 +1096,29 @@ export default function GeoAeoCheckerClient() {
         <div className="section-container">
           <div className="s-header reveal">
             <div className="eyebrow">Tool Comparison</div>
-            <h2 className="s-title">SEOShouts vs other <span className="blue">GEO/AEO tools</span></h2>
+            <h2 className="s-title">Free AEO checkers compared: <span className="blue">page scanners vs brand graders</span></h2>
+            <p className="s-sub">AEO tools come in two types. Page scanners, like this one, <a href="https://foglift.io/aeo-checker" target="_blank" rel="noopener noreferrer">Foglift</a> and <a href="https://visrank.org/aeo-checker" target="_blank" rel="noopener noreferrer">VisRank</a>, check whether a page has the signals AI systems can read. Brand graders such as <a href="https://www.hubspot.com/ai-search-grader" target="_blank" rel="noopener noreferrer">HubSpot AI Search Grader</a> ask AI engines what they say about your brand. Use a scanner to fix pages and a grader to see the result. Details checked on each tool&apos;s own page on 18 October 2026.</p>
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table className="comparison-table">
               <thead>
                 <tr>
-                  {['Feature', 'SEOShouts', 'AI Rank Lab', 'HubSpot AEO Grader', 'Insites GEO', 'Zicy Extension'].map((h, j) => (
+                  {['Feature', 'SEOShouts', 'Foglift', 'VisRank', 'HubSpot AI Search Grader'].map((h, j) => (
                     <th key={h} className={j === 1 ? 'highlight' : ''}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {[
-                  ['Composite 0–100 Score',          '✅', '✅', '✅', '✅', '✅'],
-                  ['Schema Markup Analysis',          '✅ Deep (6 checks)', '✅ Basic', '✅ Basic', '❌', '✅'],
-                  ['AI Crawler Access Check',         '✅', '✅', '❌', '✅', '✅'],
-                  ['E-E-A-T Signal Scoring',          '✅ 8 checks', '❌', '❌', '✅ Basic', '❌'],
-                  ['FAQ/Q&A Readiness',               '✅ 5 checks', '✅', '✅', '❌', '✅'],
-                  ['Content Structure Audit',         '✅ 8 checks', '❌', '❌', '✅', '❌'],
-                  ['Per-Check Fix Recommendations',   '✅ Every check', '❌', '❌', '❌', '❌'],
-                  ['llms.txt Detection',              '✅', '❌', '❌', '❌', '❌'],
-                  ['No Login Required',               '✅', '✅', '✅', '❌', '✅'],
-                  ['Free',                            '✅ Fully free', '✅ Limited', '✅ Basic only', '❌ Paid', '✅'],
+                  ['What it checks',                  'Your page', 'Your page', 'Your page', 'Your brand in AI answers'],
+                  ['0–100 page score',                '✅', '✅', '✅', '❌'],
+                  ['Schema markup',                   '✅ 6 checks', '✅', '✅', '❌'],
+                  ['AI crawler access (robots.txt)',  '✅ 15 bots', '✅', '✅', '❌'],
+                  ['llms.txt check',                  '✅', 'Listed as a fix', 'Optional', '❌'],
+                  ['Author and E-E-A-T signals',      '✅ 8 checks', 'Entity identity', 'Entity clarity', '❌'],
+                  ['Fix for each failed check',       '✅', 'Issues and wins', 'Paid report ($10)', '❌'],
+                  ['Asks AI engines about you',       '❌', 'Separate tool', '❌', '✅ ChatGPT, Perplexity, Gemini'],
+                  ['Price',                           '✅ Free, no login', 'Free scan; account adds history', 'Free scan; $10 report', 'Free one-time check'],
                 ].map((row, ri) => (
                   <tr key={ri}>
                     {row.map((cell, ci) => (
@@ -1107,7 +1147,7 @@ export default function GeoAeoCheckerClient() {
           <div className="checklist-grid reveal">
             {[
               { title: '📋 Schema Markup',    items: ['FAQPage schema with 3+ Q&A pairs', 'Organization schema with name, url, logo, sameAs', 'Article/WebPage schema with author Person entity', 'BreadcrumbList schema on all inner pages', 'HowTo or SoftwareApplication schema where applicable'] },
-              { title: '🤖 AI Crawler Access', items: ['GPTBot, ClaudeBot, PerplexityBot allowed in robots.txt', 'Google-Extended allowed (for AI Overviews)', 'Canonical tag on every page', 'HTTPS on all pages', 'llms.txt file at domain root'] },
+              { title: '🤖 AI Crawler Access', items: ['GPTBot, OAI-SearchBot, ClaudeBot, Claude-SearchBot, PerplexityBot allowed in robots.txt', 'Google-Extended allowed (for AI Overviews)', 'Canonical tag on every page', 'HTTPS on all pages', 'llms.txt file at domain root'] },
               { title: '📝 Content Structure', items: ['Answer capsule (120–300 chars) as first paragraph', '2+ H2s in question format', 'Statistics cited every 150–200 words', 'No paragraphs over 120 words', 'Comparison table present for decision queries', '500+ words minimum'] },
               { title: '🏆 E-E-A-T',           items: ['Visible author byline on all content pages', 'Author schema (Person) with credentials', 'Credentials explicitly stated ("X years experience")', 'Link to About/Team/Experts page', '3+ external authoritative citations', 'Publication + last updated date visible'] },
               { title: '❓ FAQ & Q&A',         items: ['FAQ section present on key pages', 'FAQPage schema with answers 50+ words each', 'Question-format headings throughout content'] },

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import ContactForm from '../components/ContactForm'
 
 export const metadata: Metadata = {
@@ -120,7 +121,7 @@ export default function ContactPage() {
               <h2>Tell us about <span className="blue">your project</span></h2>
               <p>The more context you give us, the sharper the free analysis we send back.</p>
             </div>
-            <ContactForm />
+            <Suspense fallback={null}><ContactForm /></Suspense>
           </div>
 
           {/* Info rail */}
@@ -247,7 +248,7 @@ export default function ContactPage() {
           </div>
           <div className="ct-team-cards">
             {[
-              { href: "/authors/rohit-sharma/", img: "/images/team/rohit-sharma.jpg", alt: "Rohit Sharma", name: "Rohit Sharma", role: "SEO & Founder", desc: "Organic, local, eCommerce & AI search. 10+ years." },
+              { href: "/authors/rohit-sharma/", img: "/images/team/rohit-sharma.jpg", alt: "Rohit Sharma", name: "Rohit Sharma", role: "SEO & Founder", desc: "Organic, local, eCommerce & AI search. 13+ years." },
               { href: "/authors/ajay-porwal/", img: "/images/team/ajay-porwal.jpg", alt: "Ajay Porwal", name: "Ajay Porwal", role: "Ads & Social Founder", desc: "Paid ads & social that perform, not just spend." },
             ].map((m, i) => (
               <a key={i} href={m.href} className="ct-team-mini">

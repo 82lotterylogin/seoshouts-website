@@ -106,6 +106,9 @@ export const AI_CRAWLER_BOTS = [
   'Amazonbot',
   'meta-externalagent',
   'Applebot-Extended',
+  'Claude-SearchBot',
+  'Claude-User',
+  'Perplexity-User',
 ] as const
 
 export const SEARCH_CRAWLER_BOTS = ['Googlebot', 'Bingbot', 'DuckDuckBot'] as const

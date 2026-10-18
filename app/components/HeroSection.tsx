@@ -63,7 +63,7 @@ export default function HeroSection() {
         {/* Label */}
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(37,99,235,0.4)', padding: '6px 14px', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--blue-light)', marginBottom: '2.2rem' }}>
           <span style={{ width: 5, height: 5, background: 'var(--blue-light)', animation: 'blink 1.8s infinite', display: 'inline-block' }} />
-          Professional SEO &amp; Free Tools · Founded 2014
+          Professional SEO &amp; Free Tools · Founded 2016
         </div>
 
         {/* H1 */}
